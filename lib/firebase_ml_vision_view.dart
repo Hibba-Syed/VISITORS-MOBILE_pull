@@ -17,7 +17,11 @@ class _OCRScreenState extends State<OCRScreen> {
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 539,
+      maxHeight: 340
+    );
 
     if (pickedFile != null) {
       setState(() {
