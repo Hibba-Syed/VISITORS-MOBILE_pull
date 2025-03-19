@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:visitors/eid_card_scanner.dart';
 import 'package:visitors/firebase_ml_vision_view.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/utils/routes/app_pages.dart';
 import 'package:visitors/view/Screen/device_decider_screen.dart';
 
 void main() {
@@ -25,9 +27,9 @@ class MyApp extends StatelessWidget {
   //   );
   // }
   Widget build(BuildContext context) {
-    // MultiBlocProvider(
-    //     providers: [...AppPages.getAllBlocProviders(context)],),
-    return MaterialApp(
+    return MultiBlocProvider(
+        providers: [...AppPages.getAllBlocProviders(context)],
+    child:  MaterialApp(
       title: 'Visitors Mobile',
       theme: ThemeData(
         textTheme: GoogleFonts.interTextTheme(),
@@ -43,9 +45,10 @@ class MyApp extends StatelessWidget {
           color: AppColors.primary,
         ),
       ),
-      home: const DeviceDeciderScreen(),
+      onGenerateRoute: AppPages.generateRouteSettings,
+      home:  DeviceDeciderScreen(),
       debugShowCheckedModeBanner: false,
-
+    )
     );
   }
 }

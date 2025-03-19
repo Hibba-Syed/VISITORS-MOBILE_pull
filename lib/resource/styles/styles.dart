@@ -168,5 +168,20 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle styleReferencePrimaryColor400 = TextStyle(
+    color: AppColors.primary,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle style16Grey600 = TextStyle(
+    color: AppColors.darkGrey,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style20black600 = TextStyle(
+    color: AppColors.black,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
 
 }

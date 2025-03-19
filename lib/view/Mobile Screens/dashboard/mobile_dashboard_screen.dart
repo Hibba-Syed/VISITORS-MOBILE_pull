@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import '../../../resource/constants/app_colors.dart';
-import '../../../resource/constants/app_pading.dart';
+import '../../../resource/constants/app_padding.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../widgets/icon_text_widget.dart';
 import '../../widgets/logout_widget.dart';
 import '../check ins/componants/check_in_container_widget.dart';
-import '../services/components/services_card_widget.dart';
-import '../work order/components/work_order_card_widget.dart';
+import '../services/components/services_dashboard_card_widget.dart';
+import '../work order/components/work_order_dashboard_card_widget.dart';
 class MobileDashboardScreen extends StatelessWidget {
-  const MobileDashboardScreen({super.key});
+
+  const MobileDashboardScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +181,7 @@ class MobileDashboardScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconTextWidget(
-                          containerColor: AppColors.containerColor,
+                          containerColor: AppColors.lightGrey1,
                           isTextColor: true,
                           text: "Gate: 2",
                           image: AppImages.gate,
@@ -193,14 +195,14 @@ class MobileDashboardScreen extends StatelessWidget {
                     widget: Row(
                       children: [
                         IconTextWidget(
-                          containerColor: AppColors.containerColor,
+                          containerColor: AppColors.lightGrey1,
                           isTextColor: true,
                           text: DateFormat("MMM dd, yyyy ").format(DateTime.now()),
                           image: AppImages.date,
                         ),
                         const Gap(10),
-                        IconTextWidget(
-                          containerColor: AppColors.containerColor,
+                        const IconTextWidget(
+                          containerColor: AppColors.lightGrey1,
                           isTextColor: true,
                           text: "Visitor Count: 10",
                           image: AppImages.count,
@@ -234,7 +236,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 primary: false,
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
-                  return const ServicesCardWidget(
+                  return const ServicesDashboardCardWidget(
                     count: '1006',
                     title: 'Facility Booking',
                     secondTitle: 'FO202401101791',
@@ -274,11 +276,14 @@ class MobileDashboardScreen extends StatelessWidget {
                   return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
               },
               ),
-              const Row(
+               Row(
                 children: [
-                  Text('Work Orders / RFPs', style: AppTextStyles.style14Primary500,),
-                  Spacer(),
+                  const Text('Work Orders / RFPs', style: AppTextStyles.style14Primary500,),
+                   const Spacer(),
                   IconTextWidget(
+                    onPressed: (){
+                      Navigator.pushNamed(context, AppRoutes.workOrderRfpListScreen);
+                    },
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
@@ -287,12 +292,12 @@ class MobileDashboardScreen extends StatelessWidget {
                 ],
               ),
               const Gap(10),
-              ListView.builder(
+              ListView.separated(
                 shrinkWrap: true,
                 primary: false,
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
-                  return const WorkOrderCardWidget(
+                  return const WorkOrderDashboardCardWidget(
                     status: 'Active',
                     name: 'Work Order',
                     title: '(2 Months) Services Contract',
@@ -303,7 +308,9 @@ class MobileDashboardScreen extends StatelessWidget {
                     containerText2: 'Jan 7, 2025',
                     image:  AppImages.hammer,
                   );
-                },
+                }, separatorBuilder: (BuildContext context, int index) {
+                  return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
+              },
 
               ),
             ],

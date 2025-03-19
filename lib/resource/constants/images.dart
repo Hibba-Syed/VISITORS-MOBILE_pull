@@ -4,7 +4,7 @@ class AppImages {
   static const String baseJsonPath = 'assets/json/';
 
   ///images
-  static const String drawer_logo = "${basePngPath}drawer_logo.png";
+  static const String drawerLogo = "${basePngPath}drawer_logo.png";
   static const String background = "${basePngPath}background.png";
 
   ///icons
@@ -35,6 +35,9 @@ class AppImages {
   static const String message = "${baseSvgPath}message.svg";
   static const String services = "${baseSvgPath}services.svg";
   static const String person = "${baseSvgPath}person.svg";
+  static const String filter = "${baseSvgPath}filter.svg";
+  static const String link = "${baseSvgPath}link.svg";
+  static const String search = "${baseSvgPath}search.svg";
 
 
   ///lottie animations

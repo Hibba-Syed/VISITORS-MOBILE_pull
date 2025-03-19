@@ -9,7 +9,7 @@ import '../../../widgets/icon_text_widget.dart';
 import '../../../widgets/logout_widget.dart';
 import '../../../widgets/status_widget.dart';
 
-class WorkOrderCardWidget extends StatelessWidget {
+class WorkOrderDashboardCardWidget extends StatelessWidget {
   final String? image;
   final String? title;
   final String? secondTitle;
@@ -19,7 +19,8 @@ class WorkOrderCardWidget extends StatelessWidget {
   final String? containerImage2;
   final String? containerText2;
   final String? status;
-  const WorkOrderCardWidget({super.key,
+  final String? reference;
+  const WorkOrderDashboardCardWidget({super.key,
     this.image,
     this.title,
     this.name,
@@ -29,13 +30,14 @@ class WorkOrderCardWidget extends StatelessWidget {
     this.containerText1,
     this.containerImage2,
     this.containerText2,
+    this.reference,
   });
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppColors.white
@@ -43,37 +45,37 @@ class WorkOrderCardWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 65,
-            height: 65,
-            padding: const EdgeInsets.all(0),
-            decoration: BoxDecoration(
-              color: AppColors.lightGrey1,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Column(
-              children: [
-                const Gap(15),
-                SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                    image ?? "",
-                    width: 16,
-                    height: 16,
-                    colorFilter: const ColorFilter.mode(
-                      AppColors.primary,
-                      BlendMode.srcIn,
+            Container(
+              width: 65,
+              height: 65,
+              padding: const EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                color: AppColors.lightGrey1,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Column(
+                children: [
+                  const Gap(15),
+                  SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: SvgPicture.asset(
+                      image ?? "",
+                      width: 16,
+                      height: 16,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.primary,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                ),
-                const Gap(2),
-                Expanded(child: Text(name ?? "",style: AppTextStyles.style8Primary500,textAlign: TextAlign.center,
-                  maxLines: 2,)),
-              ],
+                  const Gap(2),
+                  Expanded(child: Text(name ?? "",style: AppTextStyles.style8Primary500,textAlign: TextAlign.center,
+                    maxLines: 2,)),
+                ],
+              ),
             ),
-          ),
-          const Gap(5),
+            const Gap(5),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,18 +83,16 @@ class WorkOrderCardWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(title ?? "",style: AppTextStyles.style12Black500,),
-                    const Gap(40),
-                    StatusWidget(status: status ?? "N/P",
+                    StatusWidget(status: status ?? "--",
                       dotColor: AppColors.green,
                       statusColor: AppColors.green,
                       containerColor: AppColors.green.withAlpha(20),
                     ),
                   ],
                 ),
-                const Gap(1),
+                const Gap(5),
                 Text(secondTitle ?? "",style: AppTextStyles.style10Grey400,),
-                const Gap(2),
+                const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -118,7 +118,7 @@ class WorkOrderCardWidget extends StatelessWidget {
                       ],
                     ),
                     const LogoutWidget(
-                      containerColor: AppColors.red,
+                      containerColor:  AppColors.red ,
                       image: AppImages.logout,
                     ),
                   ],
@@ -133,3 +133,7 @@ class WorkOrderCardWidget extends StatelessWidget {
     );
   }
 }
+// ReferenceContainerWidget(
+// text: reference,
+// svg: AppImages.link,
+// ),

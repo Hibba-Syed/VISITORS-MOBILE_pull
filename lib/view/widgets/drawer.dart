@@ -120,7 +120,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 const Gap(10),
                 Image.asset(
-                  AppImages.drawer_logo,
+                  AppImages.drawerLogo,
                   scale: 1,
                 ),
                 const Gap(10),
@@ -143,7 +143,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 padding: const EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: AppColors.white
                 ),
                 child: ListTile(

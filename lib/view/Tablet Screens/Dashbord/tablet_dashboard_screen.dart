@@ -4,12 +4,12 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
 import '../../../resource/constants/app_colors.dart';
-import '../../../resource/constants/app_pading.dart';
+import '../../../resource/constants/app_padding.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../Mobile Screens/check ins/componants/check_in_container_widget.dart';
-import '../../Mobile Screens/services/components/services_card_widget.dart';
-import '../../Mobile Screens/work order/components/work_order_card_widget.dart';
+import '../../Mobile Screens/services/components/services_dashboard_card_widget.dart';
+import '../../Mobile Screens/work order/components/work_order_dashboard_card_widget.dart';
 import '../../widgets/icon_text_widget.dart';
 import '../../widgets/logout_widget.dart';
 
@@ -236,21 +236,21 @@ class TabletDashboardScreen extends StatelessWidget {
                     widget: Row(
                       children: [
                         IconTextWidget(
-                          containerColor: AppColors.containerColor,
+                          containerColor: AppColors.lightGrey1,
                           isTextColor: true,
                           text: DateFormat("MMM dd, yyyy ").format(DateTime.now()),
                           image: AppImages.date,
                         ),
                         const Gap(10),
                         const IconTextWidget(
-                          containerColor: AppColors.containerColor,
+                          containerColor: AppColors.lightGrey1,
                           isTextColor: true,
                           text: "Visitor Count: 10",
                           image: AppImages.count,
                         ),
                         const Gap(10),
                         const IconTextWidget(
-                          containerColor: AppColors.containerColor,
+                          containerColor: AppColors.lightGrey1,
                           isTextColor: true,
                           text: "Gate: 2",
                           image: AppImages.gate,
@@ -285,7 +285,7 @@ class TabletDashboardScreen extends StatelessWidget {
                 primary: false,
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
-                  return const ServicesCardWidget(
+                  return const ServicesDashboardCardWidget(
                     count: '1006',
                     title: 'Facility Booking',
                     secondTitle: 'FO202401101791',
@@ -342,7 +342,7 @@ class TabletDashboardScreen extends StatelessWidget {
                 primary: false,
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
-                  return const WorkOrderCardWidget(
+                  return const WorkOrderDashboardCardWidget(
                     name: 'Work Order',
                     title: '(2 Months) Services Contract',
                     secondTitle: 'JB001-24-00102',

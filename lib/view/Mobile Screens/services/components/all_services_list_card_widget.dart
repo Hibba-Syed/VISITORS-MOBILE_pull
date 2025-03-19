@@ -5,14 +5,14 @@ import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
 import '../../../widgets/status_widget.dart';
 
-class ServicesCardWidget extends StatelessWidget {
+class ServicesListCardWidget extends StatelessWidget {
   final String? image;
   final String? title;
   final String? secondTitle;
   final String? count;
   final Widget? widget;
   final String? status;
-  const ServicesCardWidget({
+  const ServicesListCardWidget({
     super.key,
     this.image,
     this.title,
@@ -26,7 +26,7 @@ class ServicesCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10), color: AppColors.white),
       child: Row(

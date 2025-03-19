@@ -17,8 +17,10 @@ class AppColors{
   static const Color darkGrey = Color(0xFF898888);
   static const Color white = Colors.white;
   static const Color whiteBack = Color(0xFFFFFFFF);
-  static const Color containerColor = Color(0xFFF2F2F2);
   static const Color drawerColor = Color(0xFF8F98B7);
+  static const secondaryTextColor = Color(0xffB2B1B1);
+  static const searchBarIconColor = Color(0xff575757);
+  static const referenceColor = Color(0xffF1EAEE);
 
 
 

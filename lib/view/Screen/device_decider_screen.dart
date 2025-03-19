@@ -1,33 +1,371 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+import 'package:visitors/view/Tablet%20Screens/Dashbord/tablet_dashboard_screen.dart';
+
+import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../resource/constants/app_colors.dart';
+import '../../resource/constants/app_constants.dart';
+import '../../resource/constants/images.dart';
 import '../../resource/styles/styles.dart';
 import '../Mobile Screens/dashboard/mobile_dashboard_screen.dart';
-import '../Tablet Screens/Dashbord/tablet_dashboard_screen.dart';
-import '../widgets/drawer.dart';
+import '../Mobile Screens/work order/work_order_rfp_list_screen.dart';
+import '../widgets/app_bar/appbar_widget.dart';
+import '../widgets/button/custom_button.dart';
+import '../widgets/drawer/drawer_list_tile.dart';
 import '../widgets/responsive_layout_Widget.dart';
+import 'Components/drawer_item_model.dart';
 class DeviceDeciderScreen extends StatelessWidget {
-  const DeviceDeciderScreen({super.key});
-
+   DeviceDeciderScreen({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+   final List<DrawerItemModel> _drawerItems = [
+     DrawerItemModel(
+       index: AppConstants.dashboardIndex,
+       title: 'Dashboard',
+       iconPath: AppImages.mdDashboard,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.checkInsIndex,
+       title: 'check-Ins',
+       iconPath: AppImages.mcheckin,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.eServicesIndex,
+       title: 'E-Services',
+       iconPath: AppImages.mEservices,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.workOrderRfpIndex,
+       title: 'workOrder/RFPs',
+       iconPath: AppImages.mrfps,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.messagesIndex,
+       title: 'messages',
+       iconPath: AppImages.mmsg,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.checkOutsIndex,
+       title: 'check-Outs',
+       iconPath: AppImages.mCheckout,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.directoryIndex,
+       title: 'Directory',
+       iconPath: AppImages.directory,
+       onTap: () {},
+     ),
+     DrawerItemModel(
+       index: AppConstants.logoutIndex,
+       title: 'Logout',
+       iconPath: AppImages.logouts,
+       onTap: () async {},
+     ),
+   ];
   @override
+
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Dashboard', style: AppTextStyles.style20Black500)),
-      drawer:  const Drawer(
-          backgroundColor: AppColors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
+    return BlocBuilder<MainDashboardCubit, MainDashboardState>(
+      builder: (context, state) {
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, dynamic) async {
+            if (didPop) return;
+            showDialog(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  content: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.exit_to_app,
+                          color: AppColors.primary,
+                          size: 50,
+                        ),
+                        const Gap(16.0),
+                        const Text(
+                          'Are you sure you want to exit?',
+                          style: AppTextStyles.style16Grey600,
+                        ),
+                       const  Gap(20.0),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: CustomButton(
+                                text: 'Cancel',
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                            const Gap(10.0),
+                            Flexible(
+                              child: CustomButton(
+                                text: 'Yes, Exit',
+                                invert: true,
+                                onPressed: () {
+                                  exit(0);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+          child: GestureDetector(
+            onTap: () {
+              // context
+              //     .read<DashboardCubit>()
+              //     .onChangeIsFloatingButtonExpanded(false);
+            },
+            child: Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBarWidget(
+                leading: IconButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                    // context
+                    //     .read<DashboardCubit>()
+                    //     .onChangeIsFloatingButtonExpanded(false);
+                  },
+                  icon: const Icon(
+                    Icons.menu,
+                    color: AppColors.black,
+                  ),
+                ),
+                title: _getTitle(state),
+              ),
+              drawer: Drawer(
+                backgroundColor: AppColors.white,
+                child: ListView(
+                  children: [
+                    DrawerHeader(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage(
+                            AppImages.background,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            AppImages.drawerLogo,
+                            width: 200,
+                            height: 80,
+                          ),
+                         const  Gap(10.0),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: const Text(
+                              'VMS APPLICATION',
+                              style: AppTextStyles.style10White500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 16.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                            itemCount: (_drawerItems.length),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              DrawerItemModel item = _drawerItems[index];
+                              return DrawerListTile(
+                                  title: item.title,
+                                  iconPath: item.iconPath,
+                                  onTap: () {
+                                    if (item.index ==
+                                        AppConstants.logoutIndex) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return AlertDialog(
+                                            content: SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.logout,
+                                                    color: AppColors.primary,
+                                                    size: 40,
+                                                  ),
+                                                  const Gap(16.0),
+                                                  const Text(
+                                                    'Are you sure you want to logout?',
+                                                    style: AppTextStyles
+                                                        .style16Grey600,
+                                                  ),
+                                                  const Gap(20.0),
+                                                  Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: CustomButton(
+                                                          text: 'Cancel',
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const Gap(
+                                                          10.0),
+                                                      Flexible(
+                                                        child: CustomButton(
+                                                          text: 'Logout',
+                                                          invert: true,
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            // context.read<AuthCubit>().logout(context);
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      context
+                                          .read<MainDashboardCubit>()
+                                          .onChangeSelectedIndex(
+                                          context, item.index);
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  isSelected:
+                                  item.index == state.selectedIndex);
+                            },
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              body:   ResponsiveLayoutWidget(
+              mobile:  _getMobileScreen(state),
+              tablet: _getTabletScreen(state),
+            ),
+              bottomNavigationBar:
+              Padding(
+                padding:  EdgeInsets.only(bottom: 25,left: MediaQuery.sizeOf(context).width * 0.09),
+                child: Text("© ${DateTime.now().year} ISKAAN TECH - v1.2.0" ,
+                    style: AppTextStyles.styleDrawerColor400
+                ),
+              ),
+            ),
           ),
-          child: CustomDrawer()
-      ),
-      body: const ResponsiveLayoutWidget(
-        mobile: MobileDashboardScreen(),
-        tablet: TabletDashboardScreen(),
-      )
+        );
+      },
     );
   }
 
+   String _getTitle(MainDashboardState state) {
+     print('_getTitle${state.selectedIndex}');
+     if (state.selectedIndex == AppConstants.dashboardIndex) {
+       return 'Dashboard';
+     } else if (state.selectedIndex == AppConstants.checkInsIndex) {
+       return 'Check-Ins';
+     } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+       return 'E-Services';
+     } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+       return 'Work Order & RFPs List';
+     }
+     else if (state.selectedIndex == AppConstants.messagesIndex) {
+       return 'Messages';
+     }
+     else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+       return 'Check-Outs';
+     }
+     else if (state.selectedIndex == AppConstants.directoryIndex) {
+       return 'Directory';
+     }
+     return '';
+   }
+
+   Widget _getMobileScreen(MainDashboardState state) {
+     print('_getMobileScreen${state.selectedIndex}');
+     if (state.selectedIndex == AppConstants.dashboardIndex) {
+       return  const MobileDashboardScreen();
+     }
+     // else if (state.selectedIndex == AppConstants.checkInsIndex) {
+     //   return const ;
+     // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+     //   return const ;
+     // }
+     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+       return const WorkOrderRfpListScreen();
+     }
+     // else if (state.selectedIndex == AppConstants.messagesIndex) {
+     //   return const ;
+     // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+     //   return const ;
+     // }else if (state.selectedIndex == AppConstants.directoryIndex) {
+     //   return const ;
+     // }
+     return const SizedBox.shrink();
+   }
+   Widget _getTabletScreen(MainDashboardState state) {
+     print('_getTabletScreen${state.selectedIndex}');
+     if (state.selectedIndex == AppConstants.dashboardIndex) {
+       return  const TabletDashboardScreen();
+     }
+     // else if (state.selectedIndex == AppConstants.checkInsIndex) {
+     //   return const ;
+     // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+     //   return const ;
+     // }
+     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+       return const WorkOrderRfpListScreen();
+     }
+     // else if (state.selectedIndex == AppConstants.messagesIndex) {
+     //   return const ;
+     // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+     //   return const ;
+     // }else if (state.selectedIndex == AppConstants.directoryIndex) {
+     //   return const ;
+     // }
+     return const SizedBox.shrink();
+   }
 }

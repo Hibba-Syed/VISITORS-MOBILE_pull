@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import '../../utils/text_utils.dart';
-import 'custom_text.dart';
 
 class StatusWidget extends StatelessWidget {
   final String status;
@@ -39,10 +38,10 @@ class StatusWidget extends StatelessWidget {
         children: [
           (hideDot ?? false)
               ? const SizedBox.shrink()
-              : CustomText(
-                  text: "●",
-                  color: dotColor,
-                  fontSize: 9,
+              : Text("●",style: TextStyle(
+              color: dotColor,
+              fontSize: 9
+          ),
                 ),
           (hideDot ?? false) ? const SizedBox.shrink() : const Gap(3),
           Flexible(
@@ -54,12 +53,6 @@ class StatusWidget extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-            // CustomText(
-            //   text: TextUtils.capitalizeWords(status),
-            //   color: statusColor,
-            //   fontWeight: fontWeight ?? FontWeight.normal,
-            //   textOverflow: TextOverflow.ellipsis,
-            // ),
           ),
         ],
       ),
