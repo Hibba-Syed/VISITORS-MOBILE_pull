@@ -55,7 +55,7 @@ class SearchTextField extends StatelessWidget {
                   onTap: onSearchPressed,
                   child: const Icon(
                     Icons.search,
-                    color: AppColors.searchBarIconColor,
+                    color: AppColors.charcoalGray,
                   ),
                 ),
                 alignLabelWithHint: false,

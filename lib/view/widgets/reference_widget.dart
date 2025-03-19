@@ -5,10 +5,10 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 
 
-class ReferenceContainerWidget extends StatelessWidget {
+class ReferenceWidget extends StatelessWidget {
   final String? text;
   final String? svg;
-  final Color? bgColor;
+  final Color? backgroundColor;
   final Color? textColor;
   final Color? borderColor;
   final Color? imageColor;
@@ -20,10 +20,10 @@ class ReferenceContainerWidget extends StatelessWidget {
   final double? maxContainerWidth;
   final Widget? widgetOnFrontOfReference;
   final double iconSize;
-  const ReferenceContainerWidget({
+  const ReferenceWidget({
     super.key,
     this.text,
-    this.bgColor,
+    this.backgroundColor,
     this.textColor,
     this.imageColor,
     this.borderColor,
@@ -49,7 +49,7 @@ class ReferenceContainerWidget extends StatelessWidget {
             vertical: verticalPadding ?? 5, horizontal: horizontalPadding ?? 4),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: bgColor ?? AppColors.referenceColor,
+            color: backgroundColor ?? AppColors.lightGrey,
             border: Border.all(color: borderColor ?? Colors.transparent)),
         child: Row(
           mainAxisSize: MainAxisSize.min,

@@ -9,11 +9,11 @@ class AppImages {
 
   ///icons
   static const String mEservices = "${baseSvgPath}meservices.svg";
-  static const String gCheckIn = "${baseSvgPath}gcheckin.svg";
+  static const String guestCheckIn = "${baseSvgPath}guestCheckin.svg";
   static const String guests = "${baseSvgPath}guests.svg";
   static const String mmsg = "${baseSvgPath}mmsg.svg";
   static const String mrfps = "${baseSvgPath}mrfps.svg";
-  static const String users = "${baseSvgPath}users.svg";
+  static const String checkIn = "${baseSvgPath}checkin.svg";
   static const String guide = "${baseSvgPath}guide.svg";
   static const String view = "${baseSvgPath}view.svg";
   static const String checkout = "${baseSvgPath}checkout.svg";

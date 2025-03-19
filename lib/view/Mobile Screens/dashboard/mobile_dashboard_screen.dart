@@ -4,85 +4,111 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import '../../../resource/constants/app_colors.dart';
-import '../../../resource/constants/app_padding.dart';
+import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
-import '../../widgets/icon_text_widget.dart';
-import '../../widgets/logout_widget.dart';
+import '../../Screen/Components/actions_item_model.dart';
+import '../../widgets/button/action_button.dart';
 import '../check ins/componants/check_in_container_widget.dart';
-import '../services/components/services_dashboard_card_widget.dart';
-import '../work order/components/work_order_dashboard_card_widget.dart';
-class MobileDashboardScreen extends StatelessWidget {
+import '../services/components/services_card_widget.dart';
+import '../work order/components/work_order_rfp_card_widget.dart';
 
-  const MobileDashboardScreen({super.key,});
+class MobileDashboardScreen extends StatelessWidget {
+  const MobileDashboardScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final List<Map> categories = [
-      {
-        "name": "All Check-Ins",
-        "count": "10",
-        "svg": AppImages.users,
-        "onTap": () {
-          // Navigator.pushNamed(context, AppRoutes.incoming);
+    final List<ActionsItemModel> actions = [
+      ActionsItemModel(
+        title: 'All Check-Ins',
+        count: '10',
+        iconPath: AppImages.checkIn,
+        backgroundColor: AppColors.white,
+        forGroundColor: AppColors.green,
+        onTap: () {
+          // Navigator.pushNamed(context, AppRoutes.);
         },
-      },
-      {
-        "name": "Guests",
-        "count": "10",
-        "svg": AppImages.guests,
-        "onTap": () {},
-      },
-      {
-        "name": "E-services",
-        "count": "5",
-        "svg": AppImages.eServices,
-        "onTap": () {},
-      },
-      {
-        "name": "work order / RFPs",
-        "count": "0",
-        "svg": AppImages.rfps,
-        "onTap": () {
-
+      ),
+      ActionsItemModel(
+        title: 'Guests',
+        count: '10',
+        iconPath: AppImages.guests,
+        backgroundColor: AppColors.white,
+        forGroundColor: AppColors.yellow,
+        onTap: () {
+          // Navigator.pushNamed(context, AppRoutes.);
         },
-      },
-      {
-        "name": "Guest Check-In",
-        "count": "",
-        "svg": AppImages.gCheckIn,
-        "onTap": () {
-
+      ),
+      ActionsItemModel(
+        title: 'E-Services',
+        count: '5',
+        iconPath: AppImages.eServices,
+        backgroundColor: AppColors.white,
+        forGroundColor: AppColors.cyanBlue,
+        onTap: () {
+          // Navigator.pushNamed(context, AppRoutes.);
         },
-      },
-      {
-        "name": "Message",
-        "count": "",
-        "svg": AppImages.message,
-        "onTap": () {
-
+      ),
+      ActionsItemModel(
+        title: 'Work Order / RFPs',
+        count: '2',
+        iconPath: AppImages.rfps,
+        backgroundColor: AppColors.white,
+        forGroundColor: AppColors.blue,
+        onTap: () {
+           Navigator.pushNamed(context, AppRoutes.workOrderRfpScreen);
         },
-      },
+      ),
+      ActionsItemModel(
+        title: 'Guest Check-In',
+        count: '',
+        iconPath: AppImages.guestCheckIn,
+        backgroundColor: AppColors.green,
+        forGroundColor: AppColors.white,
+        onTap: () {
+          // Navigator.pushNamed(context, AppRoutes.);
+        },
+      ),
+      ActionsItemModel(
+        title: 'Message',
+        count: '',
+        iconPath: AppImages.message,
+        backgroundColor: AppColors.blue,
+        forGroundColor: AppColors.white,
+        onTap: () {
+          // Navigator.pushNamed(context, AppRoutes.);
+        },
+      ),
     ];
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppPadding.verticalPadding, horizontal: AppPadding.horizontalPadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: AppConstants.verticalPadding,
+            horizontal: AppConstants.horizontalPadding),
         child: SingleChildScrollView(
           child: Column(
             children: [
               const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Text('Welcome,',style: AppTextStyles.style12Grey500,),
-                     Text('Apricot Tower (Gate 2)',style: AppTextStyles.style14Primary500,),
-                   ],
-                 ),
-                  Spacer(),
-                  IconTextWidget(
-                  text: 'VMS Guide',
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome,',
+                        style: AppTextStyles.style12Grey500,
+                      ),
+                      Text(
+                        'Apricot Tower (Gate 2)',
+                        style: AppTextStyles.style14Primary500,
+                      ),
+                    ],
+                  ),
+                  ActionButton(
+                    text: 'VMS Guide',
                     imageColor: AppColors.white,
                     image: AppImages.guide,
                   ),
@@ -96,73 +122,91 @@ class MobileDashboardScreen extends StatelessWidget {
                     crossAxisCount: 2,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
-                  mainAxisExtent: 100
-                ),
-                itemCount: categories.length,
+                    mainAxisExtent: 100),
+                itemCount: actions.length,
                 itemBuilder: (BuildContext context, int index) {
+                  ActionsItemModel actionsItem = actions[index];
                   return InkWell(
                     overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                    onTap: categories[index]["onTap"],
+                    onTap: actionsItem.onTap,
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: getContainerColors(categories[index]["name"]),
+                        color: actionsItem.backgroundColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                          mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ((categories[index]["svg"] as String)
-                                .split(".")
-                                .last == "png") ? Image.asset(
-                              categories[index]["svg"],
-                              color: AppColors.primary,
-                              scale: 3,
-                            ) : SvgPicture.asset(
-                              categories[index]["svg"],
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.fill,
-                            ),
+                            ((actionsItem.iconPath)
+                                        .split(".")
+                                        .last ==
+                                    "png")
+                                ? Image.asset(
+                                     actionsItem.iconPath,
+                                    color: AppColors.primary,
+                                    scale: 3,
+                                  )
+                                : SvgPicture.asset(
+                                    actionsItem.iconPath,
+                                    height: 30,
+                                    width: 30,
+                                    fit: BoxFit.fill,
+                                  ),
                             const Gap(5),
-                            if (categories[index]["count"].toString().isNotEmpty) ...[
+                            if (actionsItem.count
+                                .toString()
+                                .isNotEmpty) ...[
                               Text(
-                                categories[index]["count"],
+                              actionsItem.count,
                                 style: TextStyle(
-                                  color: getTextColors(categories[index]["name"]),
+                                  fontFamily: 'Inter',
+                                  fontSize: 14,
+                                  color: actionsItem.forGroundColor,
+                                  fontWeight: FontWeight.w600
                                 ),
-                              ),
+                                //AppTextStyles.style14white600,
+                                ),
                             ],
-                            Text(categories[index]["name"], style: TextStyle(
-                              color: getTextColors(categories[index]["name"]),
-                            ),
-                            ),
+                            Text( actionsItem.title,
+                              style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 14,
+                                  color: actionsItem.forGroundColor,
+                                  fontWeight: FontWeight.w500
+                              ),
+                              //AppTextStyles.style14white500
+                              ),
+
                           ]),
                     ),
                   );
                 },
               ),
               const Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Check-Ins', style: AppTextStyles.style14Primary500,),
+                  Text(
+                    'Check-Ins',
+                    style: AppTextStyles.style14Primary500,
+                  ),
                   Spacer(),
-                  IconTextWidget(
+                  ActionButton(
                     text: 'Check-Outs',
                     image: AppImages.checkout,
                     imageColor: AppColors.white,
-                    containerColor: AppColors.red,
+                    backgroundColor: AppColors.red,
                   ),
                   Gap(10),
-                  IconTextWidget(
+                  ActionButton(
                     verticalPadding: 6.4,
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
-                    containerColor: AppColors.blue,
+                    backgroundColor: AppColors.blue,
                   ),
-
                 ],
               ),
               const Gap(10),
@@ -170,64 +214,32 @@ class MobileDashboardScreen extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 itemCount: 3,
-                itemBuilder: ( context,  index) {
-                  return CheckInContainerWidget(
-                    count: 'visit',
-                    title: 'John Henry',
+                itemBuilder: (context, index) {
+                  return CheckInCardWidget(
+                    boxText: 'visit',
+                    name: 'John Henry',
                     image: AppImages.gates,
-                    secondTitle: 'Guest',
-                    containerText1: 'Jan 7, 2025, 10:40 AM',
-                    mobileWidget: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconTextWidget(
-                          containerColor: AppColors.lightGrey1,
-                          isTextColor: true,
-                          text: "Gate: 2",
-                          image: AppImages.gate,
-                        ),
-                        LogoutWidget(
-                          containerColor: AppColors.red,
-                          image: AppImages.logout,
-                        ),
-                      ],
-                    ),
-                    widget: Row(
-                      children: [
-                        IconTextWidget(
-                          containerColor: AppColors.lightGrey1,
-                          isTextColor: true,
-                          text: DateFormat("MMM dd, yyyy ").format(DateTime.now()),
-                          image: AppImages.date,
-                        ),
-                        const Gap(10),
-                        const IconTextWidget(
-                          containerColor: AppColors.lightGrey1,
-                          isTextColor: true,
-                          text: "Visitor Count: 10",
-                          image: AppImages.count,
-                        ),
-                      ],
-                    ),
-                    // containerImage1: AppImages.date,
-                    // containerImage2: AppImages.count,
-                    // containerText2: 'Visitor Count: 10',
-                    // containerImage3: AppImages.gate,
-                    // containerText3: 'Gate: 2',
+                    type: 'Guest',
+                    date: DateFormat("MMM dd, yyyy ")
+                        .format(DateTime.now()),
+                    visitorCount: 'Visitor Count: 10',
+                    gate: "Gate: 2",
                   );
                 },
               ),
               const Row(
                 children: [
-                  Text('E-services', style: AppTextStyles.style14Primary500,),
+                  Text(
+                    'E-Services',
+                    style: AppTextStyles.style14Primary500,
+                  ),
                   Spacer(),
-                  IconTextWidget(
+                  ActionButton(
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
-                    containerColor: AppColors.blue,
+                    backgroundColor: AppColors.blue,
                   ),
-
                 ],
               ),
               const Gap(10),
@@ -235,59 +247,38 @@ class MobileDashboardScreen extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 itemCount: 3,
-                itemBuilder: ( context,  index) {
-                  return const ServicesDashboardCardWidget(
+                itemBuilder: (context, index) {
+                  return  ServicesCardWidget(
                     count: '1006',
                     title: 'Facility Booking',
-                    secondTitle: 'FO202401101791',
+                    reference: 'FO202401101791',
                     status: 'Active',
-                    widget:  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            IconTextWidget(
-                              image:AppImages.services,
-                              text:  "Fit Out NOC",
-                              containerColor: AppColors.lightGrey1,
-                              verticalPadding: 4,
-                              horizontalPadding: 6,
-                              isTextColor: true,
-                            ),
-                            Gap(10),
-                            IconTextWidget(
-                              image:  AppImages.person ,
-                              text: 'Syed Suhaan',
-                              containerColor: AppColors.lightGrey1,
-                              verticalPadding: 4,
-                              horizontalPadding: 6,
-                              isTextColor: true,
-                            ),
-                          ],
-                        ),
-                        LogoutWidget(
-                          containerColor: AppColors.green,
-                          image: AppImages.logout,
-                        ),
-                      ],
-                    ),
+                    serviceType: 'Fit Out NOC',
+                    name: 'Suhaan',
+                    logoutOnPressed: (){},
                   );
-                }, separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
-              },
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5));
+                },
               ),
-               Row(
+              Row(
                 children: [
-                  const Text('Work Orders / RFPs', style: AppTextStyles.style14Primary500,),
-                   const Spacer(),
-                  IconTextWidget(
-                    onPressed: (){
-                      Navigator.pushNamed(context, AppRoutes.workOrderRfpListScreen);
+                  const Text(
+                    'Work Orders / RFPs',
+                    style: AppTextStyles.style14Primary500,
+                  ),
+                  const Spacer(),
+                  ActionButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.workOrderRfpScreen);
                     },
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
-                    containerColor: AppColors.blue,
+                    backgroundColor: AppColors.blue,
                   ),
                 ],
               ),
@@ -296,71 +287,28 @@ class MobileDashboardScreen extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 itemCount: 3,
-                itemBuilder: ( context,  index) {
-                  return const WorkOrderDashboardCardWidget(
+                itemBuilder: (context, index) {
+                  return  WorkOrderDashboardCardWidget(
                     status: 'Active',
                     name: 'Work Order',
                     title: '(2 Months) Services Contract',
-                    secondTitle: 'JB001-24-00102',
-                    containerText1: 'Onlinist Vendor',
-                    containerImage1: AppImages.vendor,
-                    containerImage2: AppImages.date,
-                    containerText2: 'Jan 7, 2025',
-                    image:  AppImages.hammer,
-                  );
-                }, separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
-              },
+                    reference: 'JB001-24-00102',
+                    vendorName: 'Onlinist Vendor',
+                    date: 'Jan 7, 2025',
+                    boxImage: AppImages.hammer,
+                      logoutOnPressed: (){}
 
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5));
+                },
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Color getTextColors(String? text) {
-    if (text == "All Check-Ins") {
-      return AppColors.green;
-    }
-    if (text == "Guests") {
-      return AppColors.yellow;
-    }
-    if (text == "E-services") {
-      return AppColors.cGreen;
-    }
-    if (text == "work order / RFPs") {
-      return AppColors.blue;
-    }
-    if (text == "Guest Check-In") {
-      return AppColors.white;
-    }
-    if (text == "Message") {
-      return AppColors.white;
-    }
-    return Colors.orange;
-  }
-  //AspectRatio
-  Color getContainerColors(String? text) {
-    if (text == "All Check-Ins") {
-      return AppColors.white;
-    }
-    if (text == "Guests") {
-      return AppColors.white;
-    }
-    if (text == "E-services") {
-      return AppColors.white;
-    }
-    if (text == "work order / RFPs") {
-      return AppColors.white;
-    }
-    if (text == "Guest Check-In") {
-      return AppColors.green;
-    }
-    if (text == "Message") {
-      return AppColors.blue;
-    }
-    return AppColors.primary;
   }
 }

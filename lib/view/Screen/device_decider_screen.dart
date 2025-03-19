@@ -11,67 +11,67 @@ import '../../resource/constants/app_constants.dart';
 import '../../resource/constants/images.dart';
 import '../../resource/styles/styles.dart';
 import '../Mobile Screens/dashboard/mobile_dashboard_screen.dart';
-import '../Mobile Screens/work order/work_order_rfp_list_screen.dart';
+import '../Mobile Screens/work order/work_order_rfp_screen.dart';
 import '../widgets/app_bar/appbar_widget.dart';
 import '../widgets/button/custom_button.dart';
 import '../widgets/drawer/drawer_list_tile.dart';
 import '../widgets/responsive_layout_Widget.dart';
 import 'Components/drawer_item_model.dart';
-class DeviceDeciderScreen extends StatelessWidget {
-   DeviceDeciderScreen({super.key});
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-   final List<DrawerItemModel> _drawerItems = [
-     DrawerItemModel(
-       index: AppConstants.dashboardIndex,
-       title: 'Dashboard',
-       iconPath: AppImages.mdDashboard,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.checkInsIndex,
-       title: 'check-Ins',
-       iconPath: AppImages.mcheckin,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.eServicesIndex,
-       title: 'E-Services',
-       iconPath: AppImages.mEservices,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.workOrderRfpIndex,
-       title: 'workOrder/RFPs',
-       iconPath: AppImages.mrfps,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.messagesIndex,
-       title: 'messages',
-       iconPath: AppImages.mmsg,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.checkOutsIndex,
-       title: 'check-Outs',
-       iconPath: AppImages.mCheckout,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.directoryIndex,
-       title: 'Directory',
-       iconPath: AppImages.directory,
-       onTap: () {},
-     ),
-     DrawerItemModel(
-       index: AppConstants.logoutIndex,
-       title: 'Logout',
-       iconPath: AppImages.logouts,
-       onTap: () async {},
-     ),
-   ];
-  @override
 
+class DeviceDeciderScreen extends StatelessWidget {
+  DeviceDeciderScreen({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final List<DrawerItemModel> _drawerItems = [
+    DrawerItemModel(
+      index: AppConstants.dashboardIndex,
+      title: 'Dashboard',
+      iconPath: AppImages.mdDashboard,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.checkInsIndex,
+      title: 'Check-Ins',
+      iconPath: AppImages.mcheckin,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.eServicesIndex,
+      title: 'E-Services',
+      iconPath: AppImages.mEservices,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.workOrderRfpIndex,
+      title: 'Work Order/RFPs',
+      iconPath: AppImages.mrfps,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.messagesIndex,
+      title: 'messages',
+      iconPath: AppImages.mmsg,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.checkOutsIndex,
+      title: 'Check-Outs',
+      iconPath: AppImages.mCheckout,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.directoryIndex,
+      title: 'directory',
+      iconPath: AppImages.directory,
+      onTap: () {},
+    ),
+    DrawerItemModel(
+      index: AppConstants.logoutIndex,
+      title: 'Logout',
+      iconPath: AppImages.logouts,
+      onTap: () async {},
+    ),
+  ];
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainDashboardCubit, MainDashboardState>(
       builder: (context, state) {
@@ -98,7 +98,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                           'Are you sure you want to exit?',
                           style: AppTextStyles.style16Grey600,
                         ),
-                       const  Gap(20.0),
+                        const Gap(20.0),
                         Row(
                           children: [
                             Flexible(
@@ -173,7 +173,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                             width: 200,
                             height: 80,
                           ),
-                         const  Gap(10.0),
+                          const Gap(10.0),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8.0, vertical: 4.0),
@@ -243,8 +243,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                           },
                                                         ),
                                                       ),
-                                                      const Gap(
-                                                          10.0),
+                                                      const Gap(10.0),
                                                       Flexible(
                                                         child: CustomButton(
                                                           text: 'Logout',
@@ -268,31 +267,30 @@ class DeviceDeciderScreen extends StatelessWidget {
                                       context
                                           .read<MainDashboardCubit>()
                                           .onChangeSelectedIndex(
-                                          context, item.index);
+                                              context, item.index);
                                       Navigator.of(context).pop();
                                     }
                                   },
                                   isSelected:
-                                  item.index == state.selectedIndex);
+                                      item.index == state.selectedIndex);
                             },
                           ),
-
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: 25, vertical: 50),
+                          //   child: Text(
+                          //       "© ${DateTime.now().year} ISKAAN TECH - v1.2.0",
+                          //       style: AppTextStyles.styleDrawerColor400),
+                          // ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              body:   ResponsiveLayoutWidget(
-              mobile:  _getMobileScreen(state),
-              tablet: _getTabletScreen(state),
-            ),
-              bottomNavigationBar:
-              Padding(
-                padding:  EdgeInsets.only(bottom: 25,left: MediaQuery.sizeOf(context).width * 0.09),
-                child: Text("© ${DateTime.now().year} ISKAAN TECH - v1.2.0" ,
-                    style: AppTextStyles.styleDrawerColor400
-                ),
+              body: ResponsiveLayoutWidget(
+                mobile: _getMobileScreen(state),
+                tablet: _getTabletScreen(state),
               ),
             ),
           ),
@@ -301,71 +299,69 @@ class DeviceDeciderScreen extends StatelessWidget {
     );
   }
 
-   String _getTitle(MainDashboardState state) {
-     print('_getTitle${state.selectedIndex}');
-     if (state.selectedIndex == AppConstants.dashboardIndex) {
-       return 'Dashboard';
-     } else if (state.selectedIndex == AppConstants.checkInsIndex) {
-       return 'Check-Ins';
-     } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-       return 'E-Services';
-     } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-       return 'Work Order & RFPs List';
-     }
-     else if (state.selectedIndex == AppConstants.messagesIndex) {
-       return 'Messages';
-     }
-     else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-       return 'Check-Outs';
-     }
-     else if (state.selectedIndex == AppConstants.directoryIndex) {
-       return 'Directory';
-     }
-     return '';
-   }
+  String _getTitle(MainDashboardState state) {
+    print('_getTitle${state.selectedIndex}');
+    if (state.selectedIndex == AppConstants.dashboardIndex) {
+      return 'Dashboard';
+    } else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      return 'Check-Ins';
+    } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+      return 'E-Services';
+    } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+      return 'Work Order & RFPs List';
+    } else if (state.selectedIndex == AppConstants.messagesIndex) {
+      return 'messages';
+    } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      return 'Check-Outs';
+    } else if (state.selectedIndex == AppConstants.directoryIndex) {
+      return 'directory';
+    }
+    return '';
+  }
 
-   Widget _getMobileScreen(MainDashboardState state) {
-     print('_getMobileScreen${state.selectedIndex}');
-     if (state.selectedIndex == AppConstants.dashboardIndex) {
-       return  const MobileDashboardScreen();
-     }
-     // else if (state.selectedIndex == AppConstants.checkInsIndex) {
-     //   return const ;
-     // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-     //   return const ;
-     // }
-     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-       return const WorkOrderRfpListScreen();
-     }
-     // else if (state.selectedIndex == AppConstants.messagesIndex) {
-     //   return const ;
-     // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-     //   return const ;
-     // }else if (state.selectedIndex == AppConstants.directoryIndex) {
-     //   return const ;
-     // }
-     return const SizedBox.shrink();
-   }
-   Widget _getTabletScreen(MainDashboardState state) {
-     print('_getTabletScreen${state.selectedIndex}');
-     if (state.selectedIndex == AppConstants.dashboardIndex) {
-       return  const TabletDashboardScreen();
-     }
-     // else if (state.selectedIndex == AppConstants.checkInsIndex) {
-     //   return const ;
-     // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-     //   return const ;
-     // }
-     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-       return const WorkOrderRfpListScreen();
-     }
-     // else if (state.selectedIndex == AppConstants.messagesIndex) {
-     //   return const ;
-     // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-     //   return const ;
-     // }else if (state.selectedIndex == AppConstants.directoryIndex) {
-     //   return const ;
-     // }
-     return const SizedBox.shrink();
-   }
+  Widget _getMobileScreen(MainDashboardState state) {
+    print('_getMobileScreen${state.selectedIndex}');
+    if (state.selectedIndex == AppConstants.dashboardIndex) {
+      return  MobileDashboardScreen();
+    }
+    // else if (state.selectedIndex == AppConstants.checkInsIndex) {
+    //   return const ;
+    // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+    //   return const ;
+    // }
+    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+      return const WorkOrderRfpScreen();
+    }
+    // else if (state.selectedIndex == AppConstants.messagesIndex) {
+    //   return const ;
+    // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+    //   return const ;
+    // }else if (state.selectedIndex == AppConstants.directoryIndex) {
+    //   return const ;
+    // }
+    return const SizedBox.shrink();
+  }
+
+  Widget _getTabletScreen(MainDashboardState state) {
+    print('_getTabletScreen${state.selectedIndex}');
+    if (state.selectedIndex == AppConstants.dashboardIndex) {
+      return  TabletDashboardScreen();
+    }
+    // else if (state.selectedIndex == AppConstants.checkInsIndex) {
+    //   return const ;
+    // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+    //   return const ;
+    // }
+    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+      return const WorkOrderRfpScreen();
+    }
+    // else if (state.selectedIndex == AppConstants.messagesIndex) {
+    //   return const ;
+    // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+    //   return const ;
+    // }else if (state.selectedIndex == AppConstants.directoryIndex) {
+    //   return const ;
+    // }
+    return const SizedBox.shrink();
+  }
 }

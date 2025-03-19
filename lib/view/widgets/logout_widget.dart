@@ -3,27 +3,33 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../resource/constants/app_colors.dart';
 class LogoutWidget extends StatelessWidget {
-  final Color? containerColor;
+  final Color? backgroundColor;
   final String? image;
+  final VoidCallback? onPressed;
   const LogoutWidget({super.key,
-    this.containerColor,
+    this.backgroundColor,
     this.image,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 25,
-      width: 25,
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: containerColor ?? AppColors.red,
-        borderRadius: BorderRadius.circular(5),
+    return InkWell(
+      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+      onTap: onPressed,
+      child: Container(
+        height: 25,
+        width: 25,
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: backgroundColor ?? AppColors.red,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child:  SvgPicture.asset(image ?? "", colorFilter: const ColorFilter.mode(
+           AppColors.white,
+          BlendMode.srcIn,
+        ),height: 6),
       ),
-      child:  SvgPicture.asset(image ?? "", colorFilter: const ColorFilter.mode(
-         AppColors.white,
-        BlendMode.srcIn,
-      ),height: 6),
     );
   }
 }

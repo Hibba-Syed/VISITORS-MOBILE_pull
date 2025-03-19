@@ -5,32 +5,28 @@ import 'package:gap/gap.dart';
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
-import '../../../widgets/icon_text_widget.dart';
+import '../../../widgets/icon_text_container_widget.dart';
 import '../../../widgets/logout_widget.dart';
 import '../../../widgets/status_widget.dart';
 
 class WorkOrderDashboardCardWidget extends StatelessWidget {
-  final String? image;
+  final String? boxImage;
   final String? title;
-  final String? secondTitle;
   final String? name;
-  final String? containerImage1;
-  final String? containerText1;
-  final String? containerImage2;
-  final String? containerText2;
+  final String? vendorName;
+  final String? date;
   final String? status;
   final String? reference;
+  final VoidCallback? logoutOnPressed;
   const WorkOrderDashboardCardWidget({super.key,
-    this.image,
+    this.boxImage,
     this.title,
     this.name,
     this.status,
-    this.secondTitle,
-    this.containerImage1,
-    this.containerText1,
-    this.containerImage2,
-    this.containerText2,
+    this.vendorName,
+    this.date,
     this.reference,
+    this.logoutOnPressed
   });
 
   @override
@@ -50,7 +46,7 @@ class WorkOrderDashboardCardWidget extends StatelessWidget {
               height: 65,
               padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
-                color: AppColors.lightGrey1,
+                color: AppColors.pearlGray,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Column(
@@ -60,7 +56,7 @@ class WorkOrderDashboardCardWidget extends StatelessWidget {
                     height: 20,
                     width: 20,
                     child: SvgPicture.asset(
-                      image ?? "",
+                      boxImage ?? "",
                       width: 16,
                       height: 16,
                       colorFilter: const ColorFilter.mode(
@@ -86,45 +82,43 @@ class WorkOrderDashboardCardWidget extends StatelessWidget {
                     StatusWidget(status: status ?? "--",
                       dotColor: AppColors.green,
                       statusColor: AppColors.green,
-                      containerColor: AppColors.green.withAlpha(20),
+                      backgroundColor: AppColors.green.withAlpha(20),
                     ),
                   ],
                 ),
                 const Gap(5),
-                Text(secondTitle ?? "",style: AppTextStyles.style10Grey400,),
+                Text(reference ?? "",style: AppTextStyles.style10Grey400,),
                 const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        IconTextWidget(
-                          image: containerImage1 ?? "",
-                          text: containerText1 ?? "",
-                          containerColor: AppColors.lightGrey1,
+                        IconTextContainerWidget(
+                          image: AppImages.vendor,
+                          text: vendorName ?? "",
+                          backgroundColor: AppColors.pearlGray,
                           verticalPadding: 3,
                           horizontalPadding: 4,
-                          isTextColor: true,
                         ),
                         const Gap(5),
-                        IconTextWidget(
-                          image: containerImage2 ?? "" ,
-                          text: containerText2 ?? "",
-                          containerColor: AppColors.lightGrey1,
+                        IconTextContainerWidget(
+                          image: AppImages.date,
+                          text: date ?? "",
+                          backgroundColor: AppColors.pearlGray,
                           verticalPadding: 3,
                           horizontalPadding: 4,
-                          isTextColor: true,
                         ),
                       ],
                     ),
-                    const LogoutWidget(
-                      containerColor:  AppColors.red ,
+                     LogoutWidget(
+                      onPressed: logoutOnPressed,
+                      backgroundColor:  AppColors.red ,
                       image: AppImages.logout,
                     ),
                   ],
                 ),
                 const Gap(5),
-            
               ],
             ),
           ),
@@ -133,7 +127,3 @@ class WorkOrderDashboardCardWidget extends StatelessWidget {
     );
   }
 }
-// ReferenceContainerWidget(
-// text: reference,
-// svg: AppImages.link,
-// ),

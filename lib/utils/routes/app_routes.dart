@@ -1,6 +1,6 @@
 class AppRoutes {
   static const String dashboard = '/dashboard';
-  static const String workOrderRfpListScreen = '/workOrderRfpListScreen';
+  static const String workOrderRfpScreen = '/workOrderRfpScreen';
 
 
 }

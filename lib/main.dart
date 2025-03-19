@@ -33,10 +33,10 @@ class MyApp extends StatelessWidget {
       title: 'Visitors Mobile',
       theme: ThemeData(
         textTheme: GoogleFonts.interTextTheme(),
-        scaffoldBackgroundColor: AppColors.whiteBack,
+        scaffoldBackgroundColor: AppColors.white,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.whiteBack,
-          surface: AppColors.whiteBack,
+          seedColor: AppColors.white,
+          surface: AppColors.white,
           primary: AppColors.primary,
         ),
         useMaterial3: true,

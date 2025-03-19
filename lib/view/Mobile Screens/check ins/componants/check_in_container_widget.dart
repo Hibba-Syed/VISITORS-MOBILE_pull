@@ -1,38 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
+import 'package:visitors/view/widgets/button/action_button.dart';
+import 'package:visitors/view/widgets/icon_text_container_widget.dart';
+import 'package:visitors/view/widgets/logout_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
+import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
 
-class CheckInContainerWidget extends StatelessWidget {
+class CheckInCardWidget extends StatelessWidget {
   final String? image;
-  final String? title;
-  final String? secondTitle;
-  final String? count;
-  // final String? containerImage1;
-  final String? containerText1;
-  // final String? containerImage2;
-  // final String? containerText2;
-  // final String? containerImage3;
-  // final String? containerText3;
-  final Widget? widget;
-  final Widget? mobileWidget;
-  const CheckInContainerWidget(
+  final String? name;
+  final String? type;
+  final String? boxText;
+  final String? visitorCount;
+  final String? date;
+  final String? gate;
+  final VoidCallback? logoutOnPressed;
+  const CheckInCardWidget(
       {super.key,
       this.image,
-      this.title,
-      this.count,
-      this.secondTitle,
-      // this.containerImage1,
-      this.containerText1,
-      // this.containerImage2,
-      // this.containerText2,
-      // this.containerImage3,
-      // this.containerText3,
-        this.widget,
-        this.mobileWidget,
+      this.name,
+      this.boxText,
+      this.type,
+      this.visitorCount,
+      this.date,
+        this.gate,
+        this.logoutOnPressed
       });
 
   @override
@@ -56,7 +51,7 @@ class CheckInContainerWidget extends StatelessWidget {
             height: 65,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.lightGrey1,
+              color: AppColors.pearlGray,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Column(
@@ -77,7 +72,7 @@ class CheckInContainerWidget extends StatelessWidget {
                 ),
                 const Gap(2),
                 Text(
-                  count ?? "",
+                  boxText ?? "",
                   style: AppTextStyles.style12Black500,
                   textAlign: TextAlign.center,
                   maxLines: 2,
@@ -91,61 +86,54 @@ class CheckInContainerWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title ?? "",
+                  name ?? "",
                   style: AppTextStyles.style12Black500,
                 ),
                 const Gap(2),
                 Text(
-                  secondTitle ?? "",
+                  type ?? "",
                   style: AppTextStyles.style10Grey400,
                 ),
                 const Gap(2),
-                widget ?? SizedBox.shrink(),
-                // Row(
-                //   children: [
-                //     IconTextContainerWidget(
-                //       image: containerImage1 ?? "",
-                //       text: containerText1 ?? "",
-                //       containerColor: AppColors.lightGrey1,
-                //       verticalPadding: 4,
-                //       horizontalPadding: 6,
-                //       isTextColor: true,
-                //     ),
-                //     const Gap(5),
-                //     IconTextContainerWidget(
-                //       isCountContainer: true,
-                //       image: containerImage2 ?? "" ,
-                //       text: containerText2 ?? "",
-                //       containerColor: AppColors.lightGrey1,
-                //       verticalPadding: 4,
-                //       horizontalPadding: 6,
-                //       isTextColor: true,
-                //     ),
-                //
-                //
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    IconTextContainerWidget(
+                      image: AppImages.date,
+                      text: date ?? "",
+                      backgroundColor: AppColors.pearlGray,
+                      verticalPadding: 4,
+                      horizontalPadding: 6,
+                    ),
+                    const Gap(5),
+                    IconTextContainerWidget(
+                      isCountContainer: true,
+                      image: AppImages.count ,
+                      text: visitorCount ?? "",
+                      backgroundColor: AppColors.pearlGray,
+                      verticalPadding: 4,
+                      horizontalPadding: 6,
+                    ),
+
+                  ],
+                ),
                 const Gap(5),
-                mobileWidget ?? SizedBox.shrink(),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     IconTextContainerWidget(
-                //       isCountContainer: true,
-                //       image: containerImage3 ?? "",
-                //       text: containerText3 ?? "",
-                //       containerColor: AppColors.lightGrey1,
-                //       verticalPadding: 4,
-                //       horizontalPadding: 6,
-                //       isTextColor: true,
-                //     ),
-                //     Flexible(
-                //       child: IconContainerWidget(
-                //         image: AppImages.logout,
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconTextContainerWidget(
+                      image: AppImages.gate,
+                      text: gate ?? "",
+                      backgroundColor: AppColors.pearlGray,
+                      verticalPadding: 4,
+                      horizontalPadding: 6,
+                    ),
+                    LogoutWidget(
+                      onPressed: logoutOnPressed,
+                      image: AppImages.logout,
+                      backgroundColor: AppColors.red,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

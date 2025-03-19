@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visitors/resource/constants/images.dart';
 
-import '../../resource/constants/app_colors.dart';
+import '../../../resource/constants/app_colors.dart';
 
 class FilterContainerWidget extends StatelessWidget {
   final VoidCallback onPressed;
@@ -34,7 +34,7 @@ class FilterContainerWidget extends StatelessWidget {
                 width: 27,
                 height: 27,
                 colorFilter: const ColorFilter.mode(
-                  AppColors.searchBarIconColor,
+                  AppColors.charcoalGray,
                   BlendMode.srcIn,
                 ),
               ),

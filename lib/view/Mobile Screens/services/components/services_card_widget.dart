@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/view/widgets/icon_text_container_widget.dart';
+import 'package:visitors/view/widgets/logout_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
 import '../../../widgets/status_widget.dart';
 
-class ServicesListCardWidget extends StatelessWidget {
+class ServicesCardWidget extends StatelessWidget {
   final String? image;
   final String? title;
-  final String? secondTitle;
+  final String? reference;
   final String? count;
-  final Widget? widget;
   final String? status;
-  const ServicesListCardWidget({
+  final String? name;
+  final String? serviceType;
+  final VoidCallback? logoutOnPressed;
+
+  const ServicesCardWidget({
     super.key,
     this.image,
     this.title,
     this.count,
-    this.secondTitle,
-    this.widget,
+    this.reference,
     this.status,
+    this.name,
+    this.serviceType,
+    this.logoutOnPressed
   });
 
   @override
@@ -38,7 +46,7 @@ class ServicesListCardWidget extends StatelessWidget {
             height: 65,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: AppColors.lightGrey1,
+              color: AppColors.pearlGray,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
@@ -62,17 +70,45 @@ class ServicesListCardWidget extends StatelessWidget {
                       status: status ?? "N/A",
                       dotColor: AppColors.green,
                       statusColor: AppColors.green,
-                      containerColor: AppColors.green.withAlpha(20),
+                      backgroundColor: AppColors.green.withAlpha(20),
                     ),
                   ],
                 ),
-                const Gap(1),
+                const Gap(5),
                 Text(
-                  secondTitle ?? "",
+                  reference ?? "",
                   style: AppTextStyles.style10Grey400,
                 ),
-                const Gap(2),
-                widget ?? const SizedBox.shrink(),
+                const Gap(10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconTextContainerWidget(
+                          image: AppImages.services,
+                          text: serviceType ?? "",
+                          backgroundColor: AppColors.pearlGray,
+                          verticalPadding: 4,
+                          horizontalPadding: 6,
+                        ),
+                        const Gap(10),
+                         IconTextContainerWidget(
+                          image: AppImages.person,
+                          text: name ?? "",
+                          backgroundColor: AppColors.pearlGray,
+                          verticalPadding: 4,
+                          horizontalPadding: 6,
+                        ),
+                      ],
+                    ),
+                     LogoutWidget(
+                      onPressed: logoutOnPressed,
+                      backgroundColor: AppColors.green,
+                      image: AppImages.logout,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

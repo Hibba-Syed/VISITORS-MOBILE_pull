@@ -8,7 +8,7 @@ class StatusWidget extends StatelessWidget {
   final String status;
   final Color dotColor;
   final Color statusColor;
-  final Color containerColor;
+  final Color backgroundColor;
   final FontWeight? fontWeight;
   final bool? hideDot;
   const StatusWidget({
@@ -16,7 +16,7 @@ class StatusWidget extends StatelessWidget {
     required this.status,
     required this.dotColor,
     required this.statusColor,
-    required this.containerColor,
+    required this.backgroundColor,
     this.fontWeight,
     this.hideDot = false,
   });
@@ -30,7 +30,7 @@ class StatusWidget extends StatelessWidget {
               (MediaQuery.of(context).size.shortestSide >= 600) ? 15 : 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: containerColor,
+        color: backgroundColor,
         // border: Border.all(color: kBlue1)
       ),
       child: Row(

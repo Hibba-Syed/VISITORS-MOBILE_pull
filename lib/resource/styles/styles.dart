@@ -164,7 +164,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static const TextStyle styleDrawerColor400 = TextStyle(
-    color: AppColors.drawerColor,
+    color: AppColors.steelBlue,
     fontSize: 14,
     fontWeight: FontWeight.w400,
   );
@@ -181,6 +181,16 @@ class AppTextStyles {
   static const TextStyle style20black600 = TextStyle(
     color: AppColors.black,
     fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style14white500 = TextStyle(
+    color: AppColors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle style14white600 = TextStyle(
+    color: AppColors.white,
+    fontSize: 14,
     fontWeight: FontWeight.w600,
   );
 

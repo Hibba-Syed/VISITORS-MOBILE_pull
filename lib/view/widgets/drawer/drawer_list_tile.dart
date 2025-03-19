@@ -39,7 +39,7 @@ class DrawerListTile extends StatelessWidget {
           width: 22,
           height: 22,
           colorFilter: ColorFilter.mode(
-            isSelected ? AppColors.primary : AppColors.drawerColor,
+            isSelected ? AppColors.primary : AppColors.steelBlue,
             BlendMode.srcIn,
           ),
         ),
@@ -47,7 +47,7 @@ class DrawerListTile extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: isSelected ? AppColors.primary : AppColors.drawerColor,
+          color: isSelected ? AppColors.primary : AppColors.steelBlue,
           fontSize: 16.0,
           fontWeight: FontWeight.w400,
         ),
