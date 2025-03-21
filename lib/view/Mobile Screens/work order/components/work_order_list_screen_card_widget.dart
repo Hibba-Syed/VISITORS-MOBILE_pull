@@ -61,9 +61,9 @@ class WorkOrderListScreenCardWidget extends StatelessWidget {
             ],
           ),
           const Gap(5),
-          Text(title ?? "",style: AppTextStyles.style12Black500,),
+          Text(title ?? "",style: AppTextStyles.style14Black600,),
           const Gap(5),
-          Text(secondTitle ?? "",style: AppTextStyles.style10Grey400,),
+          Text(secondTitle ?? "",style: AppTextStyles.style12darkGrey400,),
           const Gap(10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

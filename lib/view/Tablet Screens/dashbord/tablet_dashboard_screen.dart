@@ -95,15 +95,15 @@ class TabletDashboardScreen extends StatelessWidget {
           child: Column(
             children: [
               const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Welcome,',style: AppTextStyles.style12Grey500,),
-                      Text('Apricot Tower (Gate 2)',style: AppTextStyles.style14Primary500,),
+                      Text('Apricot Tower (Gate 2)',style: AppTextStyles.style16Primary600,),
                     ],
                   ),
-                  Spacer(),
                   ActionButton(
                     text: 'VMS Guide',
                     imageColor: AppColors.white,
@@ -151,11 +151,6 @@ class TabletDashboardScreen extends StatelessWidget {
                                 width: 30,
                                 fit: BoxFit.fill,
                               ),
-                              // Image.asset(
-                              //   categories[index]["icon"],
-                              //   color: primaryColor,
-                              //   scale: 3,
-                              // ),
                               const Gap(5),
                               if (actionsItem.count
                                   .toString()
@@ -241,25 +236,34 @@ class TabletDashboardScreen extends StatelessWidget {
                 },
               ),
               const Gap(10),
-              const Row(
+               Row(
                 children: [
-                  Text('Check-Ins', style: AppTextStyles.style14Primary500,),
-                  Spacer(),
+                 const Text('Check-Ins', style: AppTextStyles.style16Primary600,),
+                 const Spacer(),
                   ActionButton(
                     text: 'Check-Outs',
                     image: AppImages.checkout,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.red,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
+                    },
                   ),
-                  Gap(20),
+                  const Gap(20),
                   ActionButton(
                     verticalPadding: 6.4,
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.blue,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+                    },
                   ),
-
                 ],
               ),
               const Gap(5),
@@ -271,7 +275,7 @@ class TabletDashboardScreen extends StatelessWidget {
                   return CheckInCardWidget(
                     boxText: 'visit',
                     name: 'John Henry',
-                    image: AppImages.gates,
+                    boxImage: AppImages.gates,
                     type: 'Guest',
                     date: DateFormat("MMM dd, yyyy ")
                         .format(DateTime.now()),
@@ -281,15 +285,20 @@ class TabletDashboardScreen extends StatelessWidget {
                 },
               ),
               const Gap(10),
-              const Row(
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('E-services', style: AppTextStyles.style14Primary500,),
-                  Spacer(),
+                  const Text('E-services', style: AppTextStyles.style16Primary600,),
                   ActionButton(
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.blue,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
+                    },
                   ),
 
                 ],
@@ -312,15 +321,20 @@ class TabletDashboardScreen extends StatelessWidget {
                 },
               ),
               const Gap(10),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Work Orders / RFPs', style: AppTextStyles.style14Primary500,),
+                 const  Text('Work Orders / RFPs', style: AppTextStyles.style16Primary600,),
                   ActionButton(
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.blue,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
+                    },
                   ),
                 ],
               ),

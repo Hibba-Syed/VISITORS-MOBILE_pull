@@ -49,8 +49,8 @@ class IconTextContainerWidget extends StatelessWidget {
                 BlendMode.srcIn,
               ), height: 14),
               const Gap(5),
-              Text("$text ",style: AppTextStyles.style10Black400,),
-              Text(count ?? "",style: AppTextStyles.style10Black500,),
+              Text("$text ",style: AppTextStyles.style12Black400,),
+              Text(count ?? "",style: AppTextStyles.style12Black400,),
             ]else...[
               SvgPicture.asset(image ?? "", colorFilter: ColorFilter.mode(
                 imageColor ?? AppColors.darkGrey,
@@ -59,9 +59,9 @@ class IconTextContainerWidget extends StatelessWidget {
               const Gap(5),
               Text(text ?? "",
                 style: TextStyle(
-                  color: textColor ?? AppColors.darkGrey,
+                  color: textColor ?? AppColors.black,
                   fontWeight: FontWeight.w400,
-                  fontSize: 10,
+                  fontSize: 12,
                    //AppTextStyles.style10Black400
                 ),
               ),

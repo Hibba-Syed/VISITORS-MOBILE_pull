@@ -10,7 +10,7 @@ import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
 
 class CheckInCardWidget extends StatelessWidget {
-  final String? image;
+  final String? boxImage;
   final String? name;
   final String? type;
   final String? boxText;
@@ -20,7 +20,7 @@ class CheckInCardWidget extends StatelessWidget {
   final VoidCallback? logoutOnPressed;
   const CheckInCardWidget(
       {super.key,
-      this.image,
+      this.boxImage,
       this.name,
       this.boxText,
       this.type,
@@ -61,7 +61,7 @@ class CheckInCardWidget extends StatelessWidget {
                   height: 20,
                   width: 20,
                   child: SvgPicture.asset(
-                    image ?? "",
+                    boxImage ?? "",
                     width: 19,
                     height: 19,
                     colorFilter: const ColorFilter.mode(
@@ -73,7 +73,7 @@ class CheckInCardWidget extends StatelessWidget {
                 const Gap(2),
                 Text(
                   boxText ?? "",
-                  style: AppTextStyles.style12Black500,
+                  style: AppTextStyles.style14Black600,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                 )
@@ -87,12 +87,12 @@ class CheckInCardWidget extends StatelessWidget {
               children: [
                 Text(
                   name ?? "",
-                  style: AppTextStyles.style12Black500,
+                  style: AppTextStyles.style14Black600,
                 ),
-                const Gap(2),
+                const Gap(5),
                 Text(
                   type ?? "",
-                  style: AppTextStyles.style10Grey400,
+                  style: AppTextStyles.style12darkGrey400,
                 ),
                 const Gap(2),
                 Row(
@@ -116,7 +116,7 @@ class CheckInCardWidget extends StatelessWidget {
 
                   ],
                 ),
-                const Gap(5),
+                const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

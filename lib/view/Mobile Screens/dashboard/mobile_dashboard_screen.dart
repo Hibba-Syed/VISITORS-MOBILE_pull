@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
@@ -110,7 +109,7 @@ class MobileDashboardScreen extends StatelessWidget {
                       ),
                       Text(
                         'Apricot Tower (Gate 2)',
-                        style: AppTextStyles.style14Primary500,
+                        style: AppTextStyles.style16Primary600,
                       ),
                     ],
                   ),
@@ -134,7 +133,6 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: actions.length,
                 itemBuilder: (BuildContext context, int index) {
                   ActionsItemModel actionsItem = actions[index];
-                  print('onTab***${actionsItem.onTap}');
                   return InkWell(
                     overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                     onTap: actionsItem.onTap,
@@ -194,27 +192,36 @@ class MobileDashboardScreen extends StatelessWidget {
                   );
                 },
               ),
-              const Row(
-                // mainAxisAlignment: MainAxisAlignment.center,
+               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Check-Ins',
-                    style: AppTextStyles.style14Primary500,
+                    style: AppTextStyles.style16Primary600,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   ActionButton(
                     text: 'Check-Outs',
                     image: AppImages.checkout,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.red,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
+                    },
                   ),
-                  Gap(10),
+                  const Gap(10),
                   ActionButton(
                     verticalPadding: 6.4,
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.blue,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+                    },
                   ),
                 ],
               ),
@@ -228,7 +235,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   return CheckInCardWidget(
                     boxText: 'visit',
                     name: 'John Henry',
-                    image: AppImages.gates,
+                    boxImage: AppImages.gates,
                     type: 'Guest',
                     date: DateFormat("MMM dd, yyyy ")
                         .format(DateTime.now()),
@@ -237,18 +244,23 @@ class MobileDashboardScreen extends StatelessWidget {
                   );
                 },
               ),
-              const Row(
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'E-Services',
-                    style: AppTextStyles.style14Primary500,
+                    style: AppTextStyles.style16Primary600,
                   ),
-                  Spacer(),
                   ActionButton(
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
                     backgroundColor: AppColors.blue,
+                    onPressed: (){
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
+                    },
                   ),
                 ],
               ),
@@ -279,7 +291,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 children: [
                   const Text(
                     'Work Orders / RFPs',
-                    style: AppTextStyles.style14Primary500,
+                    style: AppTextStyles.style16Primary600,
                   ),
                   const Spacer(),
                   ActionButton(
@@ -310,7 +322,6 @@ class MobileDashboardScreen extends StatelessWidget {
                     date: 'Jan 7, 2025',
                     boxImage: AppImages.hammer,
                       logoutOnPressed: (){}
-
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

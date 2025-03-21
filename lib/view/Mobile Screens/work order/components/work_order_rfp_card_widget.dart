@@ -87,7 +87,7 @@ class WorkOrderDashboardCardWidget extends StatelessWidget {
                   ],
                 ),
                 const Gap(5),
-                Text(reference ?? "",style: AppTextStyles.style10Grey400,),
+                Text(reference ?? "",style: AppTextStyles.style12darkGrey400,),
                 const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

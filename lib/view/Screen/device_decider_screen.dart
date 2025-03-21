@@ -47,13 +47,13 @@ class DeviceDeciderScreen extends StatelessWidget {
     ),
     DrawerItemModel(
       index: AppConstants.workOrderRfpIndex,
-      title: 'Work Order/RFPs',
+      title: 'Work Order / RFPs',
       iconPath: AppImages.mrfps,
       onTap: () {},
     ),
     DrawerItemModel(
       index: AppConstants.messagesIndex,
-      title: 'messages',
+      title: 'Messages',
       iconPath: AppImages.mmsg,
       onTap: () {},
     ),
@@ -65,7 +65,7 @@ class DeviceDeciderScreen extends StatelessWidget {
     ),
     DrawerItemModel(
       index: AppConstants.directoryIndex,
-      title: 'directory',
+      title: 'Directory',
       iconPath: AppImages.directory,
       onTap: () {},
     ),
@@ -135,9 +135,6 @@ class DeviceDeciderScreen extends StatelessWidget {
           },
           child: GestureDetector(
             onTap: () {
-              // context
-              //     .read<DashboardCubit>()
-              //     .onChangeIsFloatingButtonExpanded(false);
             },
             child: Scaffold(
               key: _scaffoldKey,
@@ -145,9 +142,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                 leading: IconButton(
                   onPressed: () {
                     _scaffoldKey.currentState?.openDrawer();
-                    // context
-                    //     .read<DashboardCubit>()
-                    //     .onChangeIsFloatingButtonExpanded(false);
+
                   },
                   icon: const Icon(
                     Icons.menu,
@@ -207,13 +202,11 @@ class DeviceDeciderScreen extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              print('length${_drawerItems.length}');
                               DrawerItemModel item = _drawerItems[index];
                               return DrawerListTile(
                                   title: item.title,
                                   iconPath: item.iconPath,
                                   onTap: () {
-                                    print('item.index${item.index}');
                                     if (item.index ==
                                         AppConstants.logoutIndex) {
                                       showDialog(
@@ -258,7 +251,6 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                           onPressed: () {
                                                             Navigator.pop(
                                                                 context);
-                                                            // context.read<AuthCubit>().logout(context);
                                                           },
                                                         ),
                                                       ),
@@ -308,7 +300,6 @@ class DeviceDeciderScreen extends StatelessWidget {
   }
 
   String _getTitle(MainDashboardState state) {
-    print('_getTitle${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
       return 'Dashboard';
     } else if (state.selectedIndex == AppConstants.checkInsIndex) {
@@ -328,7 +319,6 @@ class DeviceDeciderScreen extends StatelessWidget {
   }
 
   Widget _getMobileScreen(MainDashboardState state) {
-    print('_getMobileScreen${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
       return  const MobileDashboardScreen();
     }
@@ -353,7 +343,7 @@ class DeviceDeciderScreen extends StatelessWidget {
   }
 
   Widget _getTabletScreen(MainDashboardState state) {
-    print('_getTabletScreen${state.selectedIndex}');
+    // print('_getTabletScreen${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
       return  const TabletDashboardScreen();
     }

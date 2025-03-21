@@ -51,7 +51,7 @@ class ServicesCardWidget extends StatelessWidget {
             ),
             child: Text(
               count ?? "",
-              style: AppTextStyles.style12Black500,
+              style: AppTextStyles.style14Black600,
             ),
           ),
           const Gap(5),
@@ -64,7 +64,7 @@ class ServicesCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       title ?? "",
-                      style: AppTextStyles.style12Black500,
+                      style: AppTextStyles.style14Black600,
                     ),
                     StatusWidget(
                       status: status ?? "N/A",
@@ -77,7 +77,7 @@ class ServicesCardWidget extends StatelessWidget {
                 const Gap(5),
                 Text(
                   reference ?? "",
-                  style: AppTextStyles.style10Grey400,
+                  style: AppTextStyles.style12darkGrey400,
                 ),
                 const Gap(10),
                 Row(
