@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
-import '../../../resource/styles/styles.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/search_text_field.dart';
 class AllServicesScreen extends StatelessWidget {
@@ -13,16 +12,6 @@ class AllServicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-          centerTitle: true,
-          title: const Text('All', style: AppTextStyles.style20Black500)),
-      // drawer:  const Drawer(
-      //     backgroundColor: AppColors.white,
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.zero,
-      //     ),
-      //     child: CustomDrawer()
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
         child: Column(

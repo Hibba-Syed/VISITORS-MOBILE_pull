@@ -38,6 +38,7 @@ class AppImages {
   static const String filter = "${baseSvgPath}filter.svg";
   static const String link = "${baseSvgPath}link.svg";
   static const String search = "${baseSvgPath}search.svg";
+  static const String profile = "${baseSvgPath}profile.svg";
 
 
   ///lottie animations

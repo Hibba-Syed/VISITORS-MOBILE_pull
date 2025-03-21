@@ -13,16 +13,6 @@ class AllServicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-          centerTitle: true,
-          title: const Text('All', style: AppTextStyles.style20Black500)),
-      // drawer:  const Drawer(
-      //     backgroundColor: AppColors.white,
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.zero,
-      //     ),
-      //     child: CustomDrawer()
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
         child: Column(

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/view/Mobile%20Screens/work%20order/work_order_rfp_screen.dart';
 
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
+import '../../view/Mobile Screens/check ins/check_in_screen.dart';
+import '../../view/Mobile Screens/services/all_services_screen.dart';
 import '../../view/Screen/device_decider_screen.dart';
 import 'app_routes.dart';
 
@@ -28,7 +30,23 @@ class AppPages {
       page: const WorkOrderRfpScreen(),
       // bloc:
       // BlocProvider(
-      //   create: (context) => AuthCubit(),
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.allServicesScreen,
+      page: const AllServicesScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.checkInScreen,
+      page: const CheckInsScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
       // ),
     ),
   ];

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Screen/Components/actions_item_model.dart';
 
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
@@ -12,8 +15,6 @@ import '../../Mobile Screens/check ins/componants/check_in_container_widget.dart
 import '../../Mobile Screens/services/components/services_card_widget.dart';
 import '../../Mobile Screens/work order/components/work_order_rfp_card_widget.dart';
 import '../../widgets/button/action_button.dart';
-import '../../widgets/icon_text_container_widget.dart';
-import '../../widgets/logout_widget.dart';
 
 class TabletDashboardScreen extends StatelessWidget {
    const TabletDashboardScreen({super.key});
@@ -58,7 +59,9 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.blue,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<MainDashboardCubit>()
+              .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
+          Navigator.pushNamed(context, AppRoutes.workOrderRfpScreen);
         },
       ),
     ];
@@ -67,8 +70,8 @@ class TabletDashboardScreen extends StatelessWidget {
         title: 'Guest Check-In',
         count: '',
         iconPath: AppImages.guestCheckIn,
-        backgroundColor: AppColors.white,
-        forGroundColor: AppColors.green,
+        backgroundColor: AppColors.green,
+        forGroundColor: AppColors.white,
         onTap: () {
           // Navigator.pushNamed(context, AppRoutes.);
         },
@@ -77,8 +80,8 @@ class TabletDashboardScreen extends StatelessWidget {
         title: 'Message',
         count: '',
         iconPath: AppImages.message,
-        backgroundColor: AppColors.white,
-        forGroundColor: AppColors.blue,
+        backgroundColor: AppColors.blue,
+        forGroundColor: AppColors.white,
         onTap: () {
           // Navigator.pushNamed(context, AppRoutes.);
         },
@@ -130,53 +133,55 @@ class TabletDashboardScreen extends StatelessWidget {
                         color: actionsItem.backgroundColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ((actionsItem.iconPath)
-                                .split(".")
-                                .last == "png") ? Image.asset(
-                              actionsItem.iconPath,
-                              color: AppColors.primary,
-                              scale: 3,
-                            ) : SvgPicture.asset(
-                              actionsItem.iconPath,
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.fill,
-                            ),
-                            // Image.asset(
-                            //   categories[index]["icon"],
-                            //   color: primaryColor,
-                            //   scale: 3,
-                            // ),
-                            const Gap(5),
-                            if (actionsItem.count
-                                .toString()
-                                .isNotEmpty) ...[
-                              Text(
-                                actionsItem.count,
+                      child: Expanded(
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ((actionsItem.iconPath)
+                                  .split(".")
+                                  .last == "png") ? Image.asset(
+                                actionsItem.iconPath,
+                                color: AppColors.primary,
+                                scale: 3,
+                              ) : SvgPicture.asset(
+                                actionsItem.iconPath,
+                                height: 30,
+                                width: 30,
+                                fit: BoxFit.fill,
+                              ),
+                              // Image.asset(
+                              //   categories[index]["icon"],
+                              //   color: primaryColor,
+                              //   scale: 3,
+                              // ),
+                              const Gap(5),
+                              if (actionsItem.count
+                                  .toString()
+                                  .isNotEmpty) ...[
+                                Text(
+                                  actionsItem.count,
+                                  style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 14,
+                                      color: actionsItem.forGroundColor,
+                                      fontWeight: FontWeight.w600
+                                  ),
+                                  //AppTextStyles.style14white600,
+                                ),
+                              ],
+                              Text( actionsItem.title,
                                 style: TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 14,
                                     color: actionsItem.forGroundColor,
-                                    fontWeight: FontWeight.w600
+                                    fontWeight: FontWeight.w500
                                 ),
-                                //AppTextStyles.style14white600,
+                                //AppTextStyles.style14white500
                               ),
-                            ],
-                            Text( actionsItem.title,
-                              style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 14,
-                                  color: actionsItem.forGroundColor,
-                                  fontWeight: FontWeight.w500
-                              ),
-                              //AppTextStyles.style14white500
-                            ),
-                          ]),
+                            ]),
+                      ),
                     ),
                   );
                 },

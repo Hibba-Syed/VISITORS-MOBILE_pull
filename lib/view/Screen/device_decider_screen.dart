@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/view/Mobile%20Screens/check%20ins/check_in_screen.dart';
+import 'package:visitors/view/Mobile%20Screens/check%20outs/check_outs_screen.dart';
+import 'package:visitors/view/Mobile%20Screens/directory/directory_screen.dart';
+import 'package:visitors/view/Mobile%20Screens/messages/message_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/Dashbord/tablet_dashboard_screen.dart';
 
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
@@ -12,6 +16,7 @@ import '../../resource/constants/images.dart';
 import '../../resource/styles/styles.dart';
 import '../Mobile Screens/dashboard/mobile_dashboard_screen.dart';
 import '../Mobile Screens/work order/work_order_rfp_screen.dart';
+import '../Tablet Screens/services/all_services_screen.dart';
 import '../widgets/app_bar/appbar_widget.dart';
 import '../widgets/button/custom_button.dart';
 import '../widgets/drawer/drawer_list_tile.dart';
@@ -202,11 +207,13 @@ class DeviceDeciderScreen extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
+                              print('length${_drawerItems.length}');
                               DrawerItemModel item = _drawerItems[index];
                               return DrawerListTile(
                                   title: item.title,
                                   iconPath: item.iconPath,
                                   onTap: () {
+                                    print('item.index${item.index}');
                                     if (item.index ==
                                         AppConstants.logoutIndex) {
                                       showDialog(
@@ -272,7 +279,8 @@ class DeviceDeciderScreen extends StatelessWidget {
                                     }
                                   },
                                   isSelected:
-                                      item.index == state.selectedIndex);
+                                      item.index == state.selectedIndex
+                              );
                             },
                           ),
                           // Padding(
@@ -308,7 +316,7 @@ class DeviceDeciderScreen extends StatelessWidget {
     } else if (state.selectedIndex == AppConstants.eServicesIndex) {
       return 'E-Services';
     } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-      return 'Work Order & RFPs List';
+      return 'Work Order / RFPs';
     } else if (state.selectedIndex == AppConstants.messagesIndex) {
       return 'messages';
     } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
@@ -322,45 +330,49 @@ class DeviceDeciderScreen extends StatelessWidget {
   Widget _getMobileScreen(MainDashboardState state) {
     print('_getMobileScreen${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  MobileDashboardScreen();
+      return  const MobileDashboardScreen();
     }
-    // else if (state.selectedIndex == AppConstants.checkInsIndex) {
-    //   return const ;
-    // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-    //   return const ;
-    // }
+    else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      return const CheckInsScreen();
+    }
+    else if (state.selectedIndex == AppConstants.eServicesIndex) {
+      return const AllServicesScreen();
+    }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
     }
-    // else if (state.selectedIndex == AppConstants.messagesIndex) {
-    //   return const ;
-    // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-    //   return const ;
-    // }else if (state.selectedIndex == AppConstants.directoryIndex) {
-    //   return const ;
-    // }
+    else if (state.selectedIndex == AppConstants.messagesIndex) {
+      return const MessageScreen();
+    }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      return const CheckOutsScreen() ;
+    }
+    else if (state.selectedIndex == AppConstants.directoryIndex) {
+      return const DirectoryScreen();
+    }
     return const SizedBox.shrink();
   }
 
   Widget _getTabletScreen(MainDashboardState state) {
     print('_getTabletScreen${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  TabletDashboardScreen();
+      return  const TabletDashboardScreen();
     }
     // else if (state.selectedIndex == AppConstants.checkInsIndex) {
-    //   return const ;
-    // } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-    //   return const ;
+    //   return const CheckInsScreen();
+    //  }
+    // else if (state.selectedIndex == AppConstants.eServicesIndex) {
+    //   return const AllServicesScreen();
     // }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
     }
     // else if (state.selectedIndex == AppConstants.messagesIndex) {
-    //   return const ;
+    //   return const MessageScreen();
     // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-    //   return const ;
-    // }else if (state.selectedIndex == AppConstants.directoryIndex) {
-    //   return const ;
+    //   return const CheckOutsScreen() ;
+    // }
+    // else if (state.selectedIndex == AppConstants.directoryIndex) {
+    //   return const DirectoryScreen();
     // }
     return const SizedBox.shrink();
   }

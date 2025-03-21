@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-
 import '../../../resource/constants/images.dart';
 import '../../widgets/Filter/filter_widget.dart';
-import '../../widgets/app_bar/appbar_widget.dart';
 import '../../widgets/search_text_field.dart';
 import 'components/work_order_list_screen_card_widget.dart';
 class WorkOrderRfpScreen extends StatefulWidget {
@@ -21,10 +18,6 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBarWidget(
-        title: "work order",
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
         child: Column(

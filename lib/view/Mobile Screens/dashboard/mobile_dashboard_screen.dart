@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
@@ -28,7 +30,9 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.green,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<MainDashboardCubit>()
+              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+
         },
       ),
       ActionsItemModel(
@@ -48,7 +52,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.cyanBlue,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<MainDashboardCubit>()
+              .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
         },
       ),
       ActionsItemModel(
@@ -58,7 +63,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.blue,
         onTap: () {
-           Navigator.pushNamed(context, AppRoutes.workOrderRfpScreen);
+          context.read<MainDashboardCubit>()
+              .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
         },
       ),
       ActionsItemModel(
@@ -68,7 +74,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<MainDashboardCubit>()
+              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
         },
       ),
       ActionsItemModel(
@@ -78,12 +85,12 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.blue,
         forGroundColor: AppColors.white,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<MainDashboardCubit>()
+              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
         },
       ),
     ];
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(
             vertical: AppConstants.verticalPadding,
@@ -116,6 +123,7 @@ class MobileDashboardScreen extends StatelessWidget {
               ),
               const Gap(10),
               GridView.builder(
+                padding: const EdgeInsets.only(bottom: 10),
                 primary: false,
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -126,16 +134,17 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: actions.length,
                 itemBuilder: (BuildContext context, int index) {
                   ActionsItemModel actionsItem = actions[index];
+                  print('onTab***${actionsItem.onTap}');
                   return InkWell(
                     overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                     onTap: actionsItem.onTap,
-                    child: Container(
+                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: actionsItem.backgroundColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
+                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -211,6 +220,7 @@ class MobileDashboardScreen extends StatelessWidget {
               ),
               const Gap(10),
               ListView.builder(
+                padding: const EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
                 primary: false,
                 itemCount: 3,
@@ -242,8 +252,9 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(10),
+              const Gap(15),
               ListView.separated(
+                padding: const EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
                 primary: false,
                 itemCount: 3,
@@ -263,6 +274,7 @@ class MobileDashboardScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 5));
                 },
               ),
+              const Gap(5),
               Row(
                 children: [
                   const Text(
@@ -272,8 +284,9 @@ class MobileDashboardScreen extends StatelessWidget {
                   const Spacer(),
                   ActionButton(
                     onPressed: () {
-                      Navigator.pushNamed(
-                          context, AppRoutes.workOrderRfpScreen);
+                      context
+                          .read<MainDashboardCubit>()
+                          .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
                     },
                     text: 'View All',
                     image: AppImages.view,
@@ -282,7 +295,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(10),
+              const Gap(15),
               ListView.separated(
                 shrinkWrap: true,
                 primary: false,

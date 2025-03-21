@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-class DirectoryScreen extends StatelessWidget {
-  const DirectoryScreen({super.key});
+import 'package:visitors/resource/constants/app_colors.dart';
+class CheckInsScreen extends StatelessWidget {
+  const CheckInsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -8,7 +9,7 @@ class DirectoryScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: Text('Directory Screen')),
+          Center(child: Text('Check-In Screen')),
         ],
       ),
     );
