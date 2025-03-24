@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
-import 'package:visitors/view/widgets/icon_text_container_widget.dart';
-import 'package:visitors/view/widgets/logout_widget.dart';
+import 'package:visitors/view/widgets/container_widget/icon_text_container_widget.dart';
+import 'package:visitors/view/widgets/button/logout_button.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
-import '../../../widgets/status_widget.dart';
+import '../../../widgets/status/status_widget.dart';
 
 class ServicesCardWidget extends StatelessWidget {
   final String? image;
@@ -46,7 +46,7 @@ class ServicesCardWidget extends StatelessWidget {
             height: 65,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: AppColors.pearlGray,
+              color: AppColors.gray,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
@@ -88,7 +88,7 @@ class ServicesCardWidget extends StatelessWidget {
                         IconTextContainerWidget(
                           image: AppImages.services,
                           text: serviceType ?? "",
-                          backgroundColor: AppColors.pearlGray,
+                          backgroundColor: AppColors.gray,
                           verticalPadding: 4,
                           horizontalPadding: 6,
                         ),
@@ -96,13 +96,13 @@ class ServicesCardWidget extends StatelessWidget {
                          IconTextContainerWidget(
                           image: AppImages.person,
                           text: name ?? "",
-                          backgroundColor: AppColors.pearlGray,
+                          backgroundColor: AppColors.gray,
                           verticalPadding: 4,
                           horizontalPadding: 6,
                         ),
                       ],
                     ),
-                     LogoutWidget(
+                     LogoutButton(
                       onPressed: logoutOnPressed,
                       backgroundColor: AppColors.green,
                       image: AppImages.logout,

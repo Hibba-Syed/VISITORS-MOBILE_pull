@@ -3,10 +3,10 @@ import 'package:gap/gap.dart';
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
-import '../../../widgets/icon_text_container_widget.dart';
-import '../../../widgets/logout_widget.dart';
-import '../../../widgets/reference_widget.dart';
-import '../../../widgets/status_widget.dart';
+import '../../../widgets/container_widget/icon_text_container_widget.dart';
+import '../../../widgets/button/logout_button.dart';
+import '../../../widgets/reference/reference_widget.dart';
+import '../../../widgets/status/status_widget.dart';
 
 class WorkOrderListScreenCardWidget extends StatelessWidget {
   final String? image;
@@ -73,7 +73,7 @@ class WorkOrderListScreenCardWidget extends StatelessWidget {
                   IconTextContainerWidget(
                     image: containerImage1 ?? "",
                     text: containerText1 ?? "",
-                    backgroundColor: AppColors.pearlGray,
+                    backgroundColor: AppColors.gray,
                     verticalPadding: 3,
                     horizontalPadding: 4,
                   ),
@@ -81,13 +81,13 @@ class WorkOrderListScreenCardWidget extends StatelessWidget {
                   IconTextContainerWidget(
                     image: containerImage2 ?? "" ,
                     text: containerText2 ?? "",
-                    backgroundColor: AppColors.pearlGray,
+                    backgroundColor: AppColors.gray,
                     verticalPadding: 3,
                     horizontalPadding: 4,
                   ),
                 ],
               ),
-              const LogoutWidget(
+              const LogoutButton(
                 backgroundColor:  AppColors.green ,
                 image: AppImages.logout,
               ),

@@ -4,7 +4,7 @@ import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
 import 'package:visitors/view/Mobile%20Screens/messages/components/send_chat_button_contrainer_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
-import '../../../widgets/loader_widget.dart';
+import '../../../widgets/loader/loader_widget.dart';
 
 class ChatBottomRowWidget extends StatefulWidget {
   final VoidCallback onAttach;

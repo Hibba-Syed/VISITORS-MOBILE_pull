@@ -15,8 +15,8 @@ class _MessageScreenState extends State<MessageScreen> {
   final TextEditingController messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final List<Map<String, dynamic>> messages = [
-    {"text": "Hello!", "isMe": true, "time": "10:30 AM"}, // User's message
-    {"text": "Hi, how are you?", "isMe": false, "time": "10:32 AM"}, // Received message
+    {"text": "Hello!", "isMe": true, "time": "10:30 AM", "date" : "july 11 2025"}, // User's message
+    {"text": "Hi, how are you?", "isMe": false, "time": "10:32 AM","date" : "july 11 2025"}, // Received message
   ];
 
   @override
@@ -27,28 +27,32 @@ class _MessageScreenState extends State<MessageScreen> {
           padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.verticalPadding),
           child: Column(
             children: [
-              ListView.builder(
-               controller: _scrollController,
-                padding: const EdgeInsets.only(bottom: 0),
-                shrinkWrap: true,
-                primary: false,
-                itemCount: messages.length,
-                  itemBuilder: (context, index){
-                    final message = messages[index];
-                    return Align(
-                      alignment: message['isMe'] ? Alignment.topRight : Alignment.topLeft,
-                      child:MessageCardWidget(
-                        backgroundColor: message['isMe'] ? AppColors.white :AppColors.primary,
-                        textColor: message['isMe'] ? AppColors.black : AppColors.white,
-                        timeColor: message['isMe'] ? AppColors.darkGrey : AppColors.white,
-                        message: 'Chat Message',
-                        time: '11-7-2025 10:55',
-                        //DateTimeUtil.getFormattedDate(''),
-                        userName: 'Ahmed',
-                        profileImage: "",
-                      ),
-                    );
-                  }
+              Expanded(
+                child: ListView.builder(
+                 controller: _scrollController,
+                  padding: const EdgeInsets.only(bottom: 0),
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: messages.length,
+                    itemBuilder: (context, index){
+                      final message = messages[index];
+                      return
+                        Row(
+                          mainAxisAlignment: message['isMe'] ? MainAxisAlignment.start : MainAxisAlignment.end,
+                          children: [
+                            MessageCardWidget(
+                              backgroundColor: message['isMe'] ? AppColors.white : AppColors.primary,
+                              textColor: message['isMe'] ? AppColors.black : AppColors.white,
+                              timeColor: message['isMe'] ? AppColors.darkGrey : AppColors.white,
+                              message: message['text'],
+                              time: "${message['date']} ${ message['time']}",
+                              userName: message['isMe'] ? "Ahmed" : "",
+                              profileImage: "",
+                            ),
+                          ],
+                        );
+                    }
+                ),
               ),
             ],
           ),

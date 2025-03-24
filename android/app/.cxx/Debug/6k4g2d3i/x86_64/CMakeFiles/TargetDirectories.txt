@@ -1,0 +1,2 @@
+D:/VISITORS-MOBILES/android/app/.cxx/Debug/6k4g2d3i/x86_64/CMakeFiles/edit_cache.dir
+D:/VISITORS-MOBILES/android/app/.cxx/Debug/6k4g2d3i/x86_64/CMakeFiles/rebuild_cache.dir

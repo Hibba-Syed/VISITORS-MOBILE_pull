@@ -3,15 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
-import 'package:visitors/view/Screen/Components/actions_item_model.dart';
-
-import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
+import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_container_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
-import '../../Mobile Screens/check ins/componants/check_in_container_widget.dart';
 import '../../Mobile Screens/services/components/services_card_widget.dart';
 import '../../Mobile Screens/work order/components/work_order_rfp_card_widget.dart';
 import '../../widgets/button/action_button.dart';
@@ -59,7 +58,7 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.blue,
         onTap: () {
-          context.read<MainDashboardCubit>()
+          context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
           Navigator.pushNamed(context, AppRoutes.workOrderRfpScreen);
         },
@@ -100,7 +99,7 @@ class TabletDashboardScreen extends StatelessWidget {
                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Welcome,',style: AppTextStyles.style12Grey500,),
+                      Text('Welcome,',style: AppTextStyles.style13Grey500,),
                       Text('Apricot Tower (Gate 2)',style: AppTextStyles.style16Primary600,),
                     ],
                   ),
@@ -247,7 +246,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.red,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
                     },
                   ),
@@ -260,7 +259,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.blue,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
                     },
                   ),
@@ -273,13 +272,12 @@ class TabletDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
                   return CheckInCardWidget(
-                    boxText: 'visit',
                     name: 'John Henry',
-                    boxImage: AppImages.gates,
+                    valueImage: AppImages.gates,
                     type: 'Guest',
                     date: DateFormat("MMM dd, yyyy ")
                         .format(DateTime.now()),
-                    visitorCount: 'Visitor Count: 10',
+                    phone: 'Visitor Count: 10',
                     gate: "Gate: 2",
                   );
                 },
@@ -296,7 +294,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.blue,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
                     },
                   ),
@@ -332,7 +330,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.blue,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
                     },
                   ),

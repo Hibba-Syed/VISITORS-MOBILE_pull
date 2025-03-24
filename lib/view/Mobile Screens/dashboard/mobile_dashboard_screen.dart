@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
+import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_container_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
-import '../../Screen/Components/actions_item_model.dart';
 import '../../widgets/button/action_button.dart';
-import '../check ins/componants/check_in_container_widget.dart';
 import '../services/components/services_card_widget.dart';
 import '../work order/components/work_order_rfp_card_widget.dart';
 
@@ -29,7 +29,7 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.green,
         onTap: () {
-          context.read<MainDashboardCubit>()
+          context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
 
         },
@@ -51,7 +51,7 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.cyanBlue,
         onTap: () {
-          context.read<MainDashboardCubit>()
+          context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
         },
       ),
@@ -62,7 +62,7 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.blue,
         onTap: () {
-          context.read<MainDashboardCubit>()
+          context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
         },
       ),
@@ -73,7 +73,7 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
         onTap: () {
-          context.read<MainDashboardCubit>()
+          context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
         },
       ),
@@ -84,7 +84,7 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.blue,
         forGroundColor: AppColors.white,
         onTap: () {
-          context.read<MainDashboardCubit>()
+          context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.messagesIndex);
         },
       ),
@@ -105,18 +105,13 @@ class MobileDashboardScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Welcome,',
-                        style: AppTextStyles.style12Grey500,
+                        style: AppTextStyles.style13Grey500,
                       ),
                       Text(
                         'Apricot Tower (Gate 2)',
                         style: AppTextStyles.style16Primary600,
                       ),
                     ],
-                  ),
-                  ActionButton(
-                    text: 'VMS Guide',
-                    imageColor: AppColors.white,
-                    image: AppImages.guide,
                   ),
                 ],
               ),
@@ -206,7 +201,7 @@ class MobileDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.red,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
                     },
                   ),
@@ -219,7 +214,7 @@ class MobileDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.blue,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
                     },
                   ),
@@ -233,14 +228,16 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return CheckInCardWidget(
-                    boxText: 'visit',
-                    name: 'John Henry',
-                    boxImage: AppImages.gates,
+                    name: 'MUHAMMAD AHMED MOHAMMED ',
+                    profileImage: "",
                     type: 'Guest',
                     date: DateFormat("MMM dd, yyyy ")
                         .format(DateTime.now()),
-                    visitorCount: 'Visitor Count: 10',
-                    gate: "Gate: 2",
+                    phone: '34567890098',
+                    gate: "Gate",
+                    value: "The W Residences Reception",
+                    valueImage: AppImages.gate,
+
                   );
                 },
               ),
@@ -258,7 +255,7 @@ class MobileDashboardScreen extends StatelessWidget {
                     backgroundColor: AppColors.blue,
                     onPressed: (){
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
                     },
                   ),
@@ -297,7 +294,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   ActionButton(
                     onPressed: () {
                       context
-                          .read<MainDashboardCubit>()
+                          .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
                     },
                     text: 'View All',

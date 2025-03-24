@@ -14,6 +14,7 @@ class MessageCardWidget extends StatelessWidget {
         this.backgroundColor,
         this.textColor,
         this.timeColor,
+
       });
   final String? message;
   final String? time;
@@ -64,7 +65,7 @@ class MessageCardWidget extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 15,
-                          backgroundColor: AppColors.pearlGray,
+                          backgroundColor: AppColors.gray,
                           backgroundImage:
                           NetworkImage(profileImage ?? ""
                           ),
@@ -145,7 +146,7 @@ class MessageCardWidget extends StatelessWidget {
                         time?.toString() ?? "--",
                         style: TextStyle(
                           fontSize: 10,
-                          color: timeColor ?? AppColors.pearlGray,
+                          color: timeColor ?? AppColors.gray,
                         ),
                       ),
                     ),
