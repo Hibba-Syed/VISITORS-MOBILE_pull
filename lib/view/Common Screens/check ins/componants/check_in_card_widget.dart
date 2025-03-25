@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/view/widgets/container_widget/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/button/logout_button.dart';
+import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
+import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
-import '../../../widgets/container_widget/icon_title_value_container_widget.dart';
 
 class CheckInCardWidget extends StatelessWidget {
   final String? profileImageUrl;

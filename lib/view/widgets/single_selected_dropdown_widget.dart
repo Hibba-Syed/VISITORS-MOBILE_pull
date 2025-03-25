@@ -100,7 +100,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: 'Search ',
                   contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 0.0),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7),
                     borderSide: const BorderSide(

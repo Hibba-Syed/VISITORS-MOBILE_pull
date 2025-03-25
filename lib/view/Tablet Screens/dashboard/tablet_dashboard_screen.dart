@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
@@ -28,7 +27,8 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.green,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<DeviceDeciderCubit>()
+              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
         },
       ),
       ActionsItemModel(
@@ -48,7 +48,8 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.cyanBlue,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<DeviceDeciderCubit>()
+              .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
         },
       ),
       ActionsItemModel(
@@ -60,7 +61,6 @@ class TabletDashboardScreen extends StatelessWidget {
         onTap: () {
           context.read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
-          Navigator.pushNamed(context, AppRoutes.workOrderRfpScreen);
         },
       ),
     ];
@@ -72,7 +72,8 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<DeviceDeciderCubit>()
+              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
         },
       ),
       ActionsItemModel(
@@ -82,7 +83,8 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.blue,
         forGroundColor: AppColors.white,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<DeviceDeciderCubit>()
+              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
         },
       ),
     ];

@@ -14,6 +14,8 @@ class IconTextContainerWidget extends StatelessWidget {
   final double? verticalPadding;
   final Color? imageColor;
   final VoidCallback? onPressed;
+  final IconData? icon;
+  final Color? iconColor;
 
   const IconTextContainerWidget({super.key,
     this.text,
@@ -24,6 +26,8 @@ class IconTextContainerWidget extends StatelessWidget {
     this.imageColor,
     this.textColor,
     this.onPressed,
+    this.icon,
+    this.iconColor
 
   });
 
@@ -42,12 +46,32 @@ class IconTextContainerWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-              SvgPicture.asset(image ?? "",
-                height: 16,
-                colorFilter: ColorFilter.mode(
-                imageColor ?? AppColors.darkGrey,
-                BlendMode.srcIn,
-              ),),
+            if (image != null)
+              Row(
+                children: [
+                  SvgPicture.asset(image ?? "",
+                    height: 16,
+                    colorFilter: ColorFilter.mode(
+                    imageColor ?? AppColors.darkGrey,
+                    BlendMode.srcIn,
+                  ),),
+                  const Gap(3),
+                ],
+              )
+            else if (icon != null)
+              Row(
+                children: [
+                  Icon(
+                    icon,
+                    color: iconColor ?? AppColors.primary,
+                    size: 17,
+                  ),
+                  const Gap(3),
+                ],
+              )
+            else
+              const SizedBox.shrink(),
+            const Gap(2),
               const Gap(5),
               Text( text ?? "",
                 style: TextStyle(

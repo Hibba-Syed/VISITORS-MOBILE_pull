@@ -198,6 +198,26 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w600,
   );
+  static const TextStyle style14primary600 = TextStyle(
+    color: AppColors.primary,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style16primary600 = TextStyle(
+    color: AppColors.primary,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style16black600 = TextStyle(
+    color: AppColors.black,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style12darkGreyW500 = TextStyle(
+    color: AppColors.darkGrey,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  );
   //
   static const TextStyle styleNotAvailable = TextStyle(
     color: AppColors.gray,

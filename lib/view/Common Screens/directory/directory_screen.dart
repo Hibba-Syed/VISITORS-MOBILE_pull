@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
+
+import 'components/directory_card_widget.dart';
 class DirectoryScreen extends StatelessWidget {
   const DirectoryScreen({super.key});
 
@@ -12,7 +15,9 @@ class DirectoryScreen extends StatelessWidget {
             body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Gap(10),
             SingleSelectedDropdownWidget<String?>(
                 hint: "Select ",
                 fillColor: AppColors.white,
@@ -22,21 +27,21 @@ class DirectoryScreen extends StatelessWidget {
                 items: ['1','2','3','4'],
                 onChanged: (value) {
                 }),
+            const Gap(20),
+            const Text('RESIDENT INFORMATION',style: AppTextStyles.style14primary600,),
             const Gap(10),
-            Expanded(
-              child:  ListView.separated(
-                padding: const EdgeInsets.only(bottom: 10),
-                shrinkWrap: true,
-                primary: false,
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  return  Container();
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5));
-                },
-              ),
+            const DirectoryCardWidget(
+              name: 'Fiza Rameez',
+              phone: '23456789789',
+              email: 'Fiza@gmail.com',
+            ),
+            const Gap(20),
+            const Text('OWNER INFORMATION',style: AppTextStyles.style14primary600,),
+            const Gap(10),
+            const DirectoryCardWidget(
+              name: 'Hamid Aijaz',
+              phone: '23456789789',
+              email: 'Hamid@gmail.com',
             ),
           ],
         ),

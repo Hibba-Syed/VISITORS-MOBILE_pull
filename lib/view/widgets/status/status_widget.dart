@@ -2,19 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import '../../../utils/text_utils.dart';
 
 class StatusWidget extends StatelessWidget {
   final String status;
-  final Color dotColor;
-  final Color statusColor;
-  final Color backgroundColor;
   const StatusWidget({
     super.key,
     required this.status,
-    required this.dotColor,
-    required this.statusColor,
-    required this.backgroundColor,
   });
 
   @override
@@ -25,14 +20,14 @@ class StatusWidget extends StatelessWidget {
           horizontal: 7 ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: backgroundColor,
+        color: AppConstants.getStatusColor(status).withAlpha(24),
         // border: Border.all(color: kBlue1)
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text("●",style: TextStyle(
-              color: dotColor,
+              color: AppConstants.getStatusColor(status),
               fontSize: 9
           ),
                 ),
@@ -40,8 +35,8 @@ class StatusWidget extends StatelessWidget {
           Flexible(
             child: Text(
               TextUtils.capitalizeWords(status),
-              style: TextStyle(
-                color: statusColor,
+              style:  TextStyle(
+                color: AppConstants.getStatusColor(status),
                 fontWeight:  FontWeight.w500,
                 fontSize: 12,
               ),
