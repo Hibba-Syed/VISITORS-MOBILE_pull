@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/work%20order/work_order_rfp_screen.dart';
+import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 
-import '../../view/Mobile Screens/services/all_services_screen.dart';
 import 'app_routes.dart';
 
 

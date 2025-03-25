@@ -24,7 +24,7 @@ class StatusWidget extends StatelessWidget {
           vertical: 4,
           horizontal: 7 ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(5),
         color: backgroundColor,
         // border: Border.all(color: kBlue1)
       ),
@@ -43,7 +43,7 @@ class StatusWidget extends StatelessWidget {
               style: TextStyle(
                 color: statusColor,
                 fontWeight:  FontWeight.w500,
-                fontSize: 11,
+                fontSize: 12,
               ),
             ),
           ),

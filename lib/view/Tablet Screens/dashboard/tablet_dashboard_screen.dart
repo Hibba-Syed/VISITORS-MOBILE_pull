@@ -6,13 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_container_widget.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
-import '../../Mobile Screens/services/components/services_card_widget.dart';
-import '../../Mobile Screens/work order/components/work_order_rfp_card_widget.dart';
 import '../../widgets/button/action_button.dart';
 
 class TabletDashboardScreen extends StatelessWidget {
@@ -273,12 +273,10 @@ class TabletDashboardScreen extends StatelessWidget {
                 itemBuilder: ( context,  index) {
                   return CheckInCardWidget(
                     name: 'John Henry',
-                    valueImage: AppImages.gates,
                     type: 'Guest',
                     date: DateFormat("MMM dd, yyyy ")
                         .format(DateTime.now()),
                     phone: 'Visitor Count: 10',
-                    gate: "Gate: 2",
                   );
                 },
               ),
@@ -308,7 +306,7 @@ class TabletDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
                   return ServicesCardWidget(
-                    count: '1006',
+                    unit: '1006',
                     title: 'Facility Booking',
                     reference: 'FO202401101791',
                     serviceType: 'Fit Out NOC',
@@ -342,13 +340,11 @@ class TabletDashboardScreen extends StatelessWidget {
                 primary: false,
                 itemCount: 3,
                 itemBuilder: ( context,  index) {
-                  return const WorkOrderDashboardCardWidget(
-                    name: 'Work Order',
+                  return const WorkOrderRFPCardWidget(
                     title: '(2 Months) Services Contract',
                     reference: 'JB001-24-00102',
                     vendorName: 'Onlinist Vendor',
                     date: 'Jan 7, 2025',
-                    boxImage:  AppImages.hammer,
                   );
                 },
 

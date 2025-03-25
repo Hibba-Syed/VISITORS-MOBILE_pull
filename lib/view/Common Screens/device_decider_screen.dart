@@ -5,18 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
+import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
+import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart' show AllServicesScreen;
+import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Mobile%20Screens/check%20outs/check_outs_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/directory/directory_screen.dart';
 import 'package:visitors/view/Mobile%20Screens/messages/message_screen.dart';
-import 'package:visitors/view/Tablet%20Screens/Dashbord/tablet_dashboard_screen.dart';
+import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 
 import '../../resource/constants/app_colors.dart';
 import '../../resource/constants/app_constants.dart';
 import '../../resource/constants/images.dart';
 import '../../resource/styles/styles.dart';
 import '../Mobile Screens/dashboard/mobile_dashboard_screen.dart';
-import '../Mobile Screens/work order/work_order_rfp_screen.dart';
-import '../Tablet Screens/services/all_services_screen.dart';
 import '../widgets/app_bar/appbar_widget.dart';
 import '../widgets/button/custom_button.dart';
 import '../widgets/drawer/drawer_list_tile.dart';
@@ -309,11 +309,11 @@ class DeviceDeciderScreen extends StatelessWidget {
     } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return 'Work Order / RFPs';
     } else if (state.selectedIndex == AppConstants.messagesIndex) {
-      return 'messages';
+      return 'Messages';
     } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
       return 'Check-Outs';
     } else if (state.selectedIndex == AppConstants.directoryIndex) {
-      return 'directory';
+      return 'Directory';
     }
     return '';
   }
@@ -350,9 +350,9 @@ class DeviceDeciderScreen extends StatelessWidget {
     else if (state.selectedIndex == AppConstants.checkInsIndex) {
       return const CheckInsScreen();
      }
-    // else if (state.selectedIndex == AppConstants.eServicesIndex) {
-    //   return const AllServicesScreen();
-    // }
+    else if (state.selectedIndex == AppConstants.eServicesIndex) {
+      return const AllServicesScreen();
+    }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
     }
@@ -361,9 +361,9 @@ class DeviceDeciderScreen extends StatelessWidget {
     // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
     //   return const CheckOutsScreen() ;
     // }
-    // else if (state.selectedIndex == AppConstants.directoryIndex) {
-    //   return const DirectoryScreen();
-    // }
+    else if (state.selectedIndex == AppConstants.directoryIndex) {
+      return const DirectoryScreen();
+    }
     return const SizedBox.shrink();
   }
 }

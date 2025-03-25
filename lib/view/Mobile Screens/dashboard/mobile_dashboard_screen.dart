@@ -5,14 +5,14 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_container_widget.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../widgets/button/action_button.dart';
-import '../services/components/services_card_widget.dart';
-import '../work order/components/work_order_rfp_card_widget.dart';
 
 class MobileDashboardScreen extends StatelessWidget {
   const MobileDashboardScreen({
@@ -187,6 +187,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   );
                 },
               ),
+               const Gap(5),
                Row(
                 children: [
                   const Text(
@@ -220,8 +221,8 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(10),
-              ListView.builder(
+              const Gap(35),
+              ListView.separated(
                 padding: const EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
                 primary: false,
@@ -229,18 +230,20 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return CheckInCardWidget(
                     name: 'MUHAMMAD AHMED MOHAMMED ',
-                    profileImage: "",
+                    profileImageUrl: "",
                     type: 'Guest',
                     date: DateFormat("MMM dd, yyyy ")
                         .format(DateTime.now()),
                     phone: '34567890098',
-                    gate: "Gate",
-                    value: "The W Residences Reception",
-                    valueImage: AppImages.gate,
+                    gateValue: "The W Residences Reception",
 
                   );
                 },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Padding(padding: EdgeInsets.symmetric(vertical: 20));
+                },
               ),
+               const Gap(5),
                Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -269,12 +272,13 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return  ServicesCardWidget(
-                    count: '1006',
+                    unit: '1006',
                     title: 'Facility Booking',
                     reference: 'FO202401101791',
-                    status: 'Active',
+                    status: 'Notified',
                     serviceType: 'Fit Out NOC',
                     name: 'Suhaan',
+                    countValue: '10',
                     logoutOnPressed: (){},
                   );
                 },
@@ -310,14 +314,12 @@ class MobileDashboardScreen extends StatelessWidget {
                 primary: false,
                 itemCount: 3,
                 itemBuilder: (context, index) {
-                  return  WorkOrderDashboardCardWidget(
+                  return  WorkOrderRFPCardWidget(
                     status: 'Active',
-                    name: 'Work Order',
                     title: '(2 Months) Services Contract',
                     reference: 'JB001-24-00102',
-                    vendorName: 'Onlinist Vendor',
+                    vendorName: 'Mohammed Faisal Al-Haddad',
                     date: 'Jan 7, 2025',
-                    boxImage: AppImages.hammer,
                       logoutOnPressed: (){}
                   );
                 },

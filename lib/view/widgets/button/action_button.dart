@@ -13,6 +13,7 @@ class ActionButton extends StatelessWidget {
   final double? verticalPadding;
   final Color? imageColor;
   final VoidCallback? onPressed;
+  final double? buttonWidth;
   const ActionButton({super.key,
     this.text,
     this.image,
@@ -22,6 +23,7 @@ class ActionButton extends StatelessWidget {
     this.imageColor,
     this.textColor,
     this.onPressed,
+    this.buttonWidth,
 
   });
 
@@ -30,13 +32,13 @@ class ActionButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
+        width: buttonWidth,
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: backgroundColor ?? AppColors.primary,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
               SvgPicture.asset(image ?? "", colorFilter: ColorFilter.mode(
                 imageColor ?? AppColors.white,

@@ -30,6 +30,7 @@ class AppImages {
   static const String mCheckout = "${baseSvgPath}mcheckout.svg";
   static const String mcheckin = "${baseSvgPath}mcheckin.svg";
   static const String mRfps = "${baseSvgPath}mrfps.svg";
+  static const String checkInButton = "${baseSvgPath}checkinButton.svg";
   static const String eServices = "${baseSvgPath}eservices.svg";
   static const String rfps = "${baseSvgPath}rfps.svg";
   static const String message = "${baseSvgPath}message.svg";

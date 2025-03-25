@@ -34,7 +34,10 @@ class IconTextContainerWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 6),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: const BorderRadius.only(
+            bottomRight: Radius.circular(5),
+            bottomLeft: Radius.circular(5),
+          ),
           color: backgroundColor ?? AppColors.primary,
         ),
         child: Row(

@@ -133,10 +133,10 @@ class AppTextStyles {
     fontSize: 13,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle style12Black500 = TextStyle(
+  static const TextStyle style12Black600 = TextStyle(
     color: AppColors.black,
     fontSize: 12,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   );
   static const TextStyle style12Black400 = TextStyle(
     color: AppColors.black,
@@ -148,7 +148,7 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle style12darkGrey400 = TextStyle(
+  static const TextStyle style12darkGrey500 = TextStyle(
     color: AppColors.darkGrey,
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -197,6 +197,12 @@ class AppTextStyles {
     color: AppColors.white,
     fontSize: 12,
     fontWeight: FontWeight.w600,
+  );
+  //
+  static const TextStyle styleNotAvailable = TextStyle(
+    color: AppColors.gray,
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
   );
 
 }
