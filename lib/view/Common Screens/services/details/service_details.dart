@@ -6,6 +6,7 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
+import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 class ServiceDetails extends StatelessWidget {
   const ServiceDetails({super.key});
@@ -27,8 +28,8 @@ class ServiceDetails extends StatelessWidget {
               const Gap(20),
               const Row(
                 children: [
-                  Text('Facility Booking | ',style: AppTextStyles.style16primary600,),
-                  Text('HB202408072524',style: AppTextStyles.style16black600,),
+                   HeadingWidget(heading: 'Facility Booking | ',),
+                   HeadingWidget(heading: 'HB202408072524',style: AppTextStyles.style16black600,),
                   Spacer(),
                   StatusWidget(
                       status: 'Approved'
@@ -73,7 +74,7 @@ class ServiceDetails extends StatelessWidget {
                 ),
               ),
               const Gap(20),
-              const Text('Applicant Details',style: AppTextStyles.style16primary600,),
+              const HeadingWidget(heading: 'Applicant Details',),
               const Gap(10),
               Container(
                 padding: const EdgeInsets.all(15),

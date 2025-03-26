@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
-import 'components/directory_card_widget.dart';
+import '../../widgets/phone_email_information_card_widget.dart';
 class DirectoryScreen extends StatelessWidget {
   const DirectoryScreen({super.key});
 
@@ -28,17 +28,17 @@ class DirectoryScreen extends StatelessWidget {
                 onChanged: (value) {
                 }),
             const Gap(20),
-            const Text('RESIDENT INFORMATION',style: AppTextStyles.style14primary600,),
+            const HeadingWidget(heading: 'RESIDENT INFORMATION',),
             const Gap(10),
-            const DirectoryCardWidget(
+            const PhoneEmailInformationCardWidget(
               name: 'Fiza Rameez',
               phone: '23456789789',
               email: 'Fiza@gmail.com',
             ),
             const Gap(20),
-            const Text('OWNER INFORMATION',style: AppTextStyles.style14primary600,),
+            const HeadingWidget(heading: 'OWNER INFORMATION',),
             const Gap(10),
-            const DirectoryCardWidget(
+            const PhoneEmailInformationCardWidget(
               name: 'Hamid Aijaz',
               phone: '23456789789',
               email: 'Hamid@gmail.com',

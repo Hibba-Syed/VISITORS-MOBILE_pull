@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 
-class DirectoryCardWidget extends StatelessWidget {
+class PhoneEmailInformationCardWidget extends StatelessWidget {
   final String? name;
   final String? email;
   final String? phone;
-   const DirectoryCardWidget({super.key,
+   const PhoneEmailInformationCardWidget({super.key,
      this.name,
      this.email,
      this.phone,

@@ -3,7 +3,8 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
-import 'package:visitors/view/Common%20Screens/directory/components/directory_card_widget.dart';
+import 'package:visitors/view/widgets/heading_widget.dart';
+import 'package:visitors/view/widgets/phone_email_information_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
@@ -26,10 +27,10 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(20),
-              const Row(
+               const Row(
                 children: [
-                  Text('Work Order | ',style: AppTextStyles.style16primary600,),
-                  Text('JB001-22-00092',style: AppTextStyles.style16black600,),
+                  HeadingWidget(heading: 'Work Order | '),
+                  HeadingWidget(heading: 'JB001-22-00092',style: AppTextStyles.style16black600,),
                   Spacer(),
                   StatusWidget(
                       status: 'Active'
@@ -70,17 +71,17 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                 ),
               ),
               const Gap(20),
-              const Text('Vendor Details',style: AppTextStyles.style16primary600,),
+             const HeadingWidget(heading: 'Vendor Details'),
               const Gap(10),
-              const DirectoryCardWidget(
+              const PhoneEmailInformationCardWidget(
                 name: 'Onlinist Vendorr',
                 phone: '23456789789',
                 email: 'support@onlinist.com',
               ),
               const Gap(20),
-             const  Text('Contact Person',style: AppTextStyles.style16primary600,),
+              const HeadingWidget(heading: 'Contact Person'),
               const Gap(10),
-              const DirectoryCardWidget(
+              const PhoneEmailInformationCardWidget(
                 name: 'Hamid Aijaz',
                 phone: '23456789789',
                 email: 'Hamid@gmail.com',
