@@ -38,11 +38,8 @@ class IconTitleValueContainerWidget extends StatelessWidget {
             horizontal: horizontalPadding ?? 10,
             vertical: verticalPadding ?? 6),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(5),
-            bottomLeft: Radius.circular(5),
-          ),
-          color: backgroundColor ?? AppColors.primary,
+          borderRadius:  BorderRadius.circular(5),
+          color: backgroundColor ?? AppColors.gray,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

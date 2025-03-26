@@ -6,7 +6,7 @@ import 'package:visitors/view/Common%20Screens/services/components/services_card
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../widgets/Filter/filter_widget.dart';
-import '../../widgets/search_text_field.dart';
+import '../../widgets/text field/search_text_field.dart';
 class AllServicesScreen extends StatelessWidget {
   const AllServicesScreen({super.key});
 

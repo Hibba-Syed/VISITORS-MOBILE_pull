@@ -41,6 +41,8 @@ class AppImages {
   static const String search = "${baseSvgPath}search.svg";
   static const String phone = "${baseSvgPath}phone.svg";
   static const String profile = "${baseSvgPath}profile.svg";
+  static const String log = "${baseSvgPath}log.svg";
+  static const String scan = "${baseSvgPath}scan.svg";
 
 
   ///lottie animations

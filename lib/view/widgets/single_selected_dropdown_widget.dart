@@ -1,4 +1,12 @@
-import 'package:dropdown_search/dropdown_search.dart' show DropDownDecoratorProps, DropdownButtonProps, DropdownSearch, DropdownSuffixProps, PopupProps, TextFieldProps;
+import 'package:dropdown_search/dropdown_search.dart'
+    show
+        ClearButtonProps,
+        DropDownDecoratorProps,
+        DropdownButtonProps,
+        DropdownSearch,
+        DropdownSuffixProps,
+        PopupProps,
+        TextFieldProps;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -35,12 +43,22 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label?.isNotEmpty ?? false)
-          Text(label!, style: const TextStyle(fontSize: 16, color: AppColors.darkGrey)),
+          Text(label!,
+              style: const TextStyle(fontSize: 16, color: AppColors.darkGrey)),
         if (label?.isNotEmpty ?? false) const Gap(8),
         DropdownSearch<T>(
           enabled: enabled,
-          suffixProps: const DropdownSuffixProps(
-            dropdownButtonProps: DropdownButtonProps(
+          suffixProps: DropdownSuffixProps(
+            clearButtonProps: ClearButtonProps(
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.zero,
+                icon: const Icon(
+                  Icons.clear,
+                  size: 16,
+                  color: AppColors.darkGrey,
+                ),
+                isVisible: selectedItem != null && selectedItem.toString().isNotEmpty,),
+            dropdownButtonProps: const DropdownButtonProps(
               iconClosed: Icon(
                 Icons.keyboard_arrow_down_outlined,
               ),
@@ -55,9 +73,9 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
             decoration: InputDecoration(
               isDense: true,
               contentPadding:
-              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 2),
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 2),
               hintText: hint,
-              hintStyle: const TextStyle(fontSize: 13, color: AppColors.gray),
+              hintStyle: const TextStyle(fontSize: 11, color: AppColors.gray),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               alignLabelWithHint: false,
               fillColor: fillColor ?? AppColors.white,
@@ -71,7 +89,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(7),
-                borderSide:const  BorderSide(
+                borderSide: const BorderSide(
                   color: AppColors.gray,
                 ),
               ),
@@ -98,28 +116,28 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
             fit: FlexFit.loose,
             searchFieldProps: TextFieldProps(
                 decoration: InputDecoration(
-                  hintText: 'Search ',
-                  contentPadding:
+              hintText: 'Search ',
+              contentPadding:
                   const EdgeInsets.symmetric(horizontal: 8, vertical: 0.0),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(
-                      color: AppColors.gray,
-                    ),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(
-                      color: AppColors.gray,
-                    ),
-                  ),
-                )),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: const BorderSide(
+                  color: AppColors.primary,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: const BorderSide(
+                  color: AppColors.gray,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: const BorderSide(
+                  color: AppColors.gray,
+                ),
+              ),
+            )),
           ),
           onChanged: onChanged,
           validator: validator,

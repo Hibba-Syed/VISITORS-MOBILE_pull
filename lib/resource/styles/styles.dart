@@ -218,10 +218,14 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w500,
   );
-  //
-  static const TextStyle styleNotAvailable = TextStyle(
-    color: AppColors.gray,
-    fontSize: 11,
+  static const TextStyle style12DarkGrey500 = TextStyle(
+    color: AppColors.darkGrey,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle style12black500 = TextStyle(
+    color: AppColors.black,
+    fontSize: 12,
     fontWeight: FontWeight.w500,
   );
 

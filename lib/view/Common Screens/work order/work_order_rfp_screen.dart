@@ -4,7 +4,7 @@ import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
 import '../../widgets/Filter/filter_widget.dart';
-import '../../widgets/search_text_field.dart';
+import '../../widgets/text field/search_text_field.dart';
 class WorkOrderRfpScreen extends StatefulWidget {
   const WorkOrderRfpScreen({super.key});
 

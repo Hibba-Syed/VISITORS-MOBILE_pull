@@ -95,13 +95,12 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                     IconTextContainerWidget(
                       image: AppImages.vendor,
                       text: vendorName ?? "",
-                      backgroundColor: AppColors.gray,
+
                     ),
                     const Gap(5),
                     IconTextContainerWidget(
                       image: AppImages.date,
                       text: date ?? "",
-                      backgroundColor: AppColors.gray,
                     ),
                   ],
                 ),

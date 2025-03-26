@@ -27,25 +27,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [...AppPages.getAllBlocProviders(context)],
-    child:  MaterialApp(
-      title: 'Visitors Mobile',
-      theme: ThemeData(
-        textTheme: GoogleFonts.interTextTheme(),
-        scaffoldBackgroundColor: AppColors.backgroundColor,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.white,
-          surface: AppColors.white,
-          primary: AppColors.primary,
+    child:  GestureDetector(
+      onTap: (){
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: MaterialApp(
+        title: 'Visitors Mobile',
+        theme: ThemeData(
+          textTheme: GoogleFonts.interTextTheme(),
+          scaffoldBackgroundColor: AppColors.backgroundColor,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.white,
+            surface: AppColors.white,
+            primary: AppColors.primary,
+          ),
+          useMaterial3: true,
+          fontFamily: 'Inter',
+          iconTheme: const IconThemeData(
+            color: AppColors.primary,
+          ),
         ),
-        useMaterial3: true,
-        fontFamily: 'Inter',
-        iconTheme: const IconThemeData(
-          color: AppColors.primary,
-        ),
+        onGenerateRoute: AppPages.generateRouteSettings,
+        home:  DeviceDeciderScreen(),
+        debugShowCheckedModeBanner: false,
       ),
-      onGenerateRoute: AppPages.generateRouteSettings,
-      home:  DeviceDeciderScreen(),
-      debugShowCheckedModeBanner: false,
     )
     );
   }

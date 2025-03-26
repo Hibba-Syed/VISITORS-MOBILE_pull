@@ -65,7 +65,6 @@ class MessageCardWidget extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 15,
-                          backgroundColor: AppColors.gray,
                           backgroundImage:
                           NetworkImage(profileImage ?? ""
                           ),

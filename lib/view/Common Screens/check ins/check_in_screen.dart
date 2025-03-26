@@ -7,7 +7,7 @@ import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/action_button.dart' show ActionButton;
-import 'package:visitors/view/widgets/search_text_field.dart';
+import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 class CheckInsScreen extends StatelessWidget {
   const CheckInsScreen({super.key});
 

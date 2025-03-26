@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../resource/constants/app_colors.dart';
-import '../../resource/styles/styles.dart';
+import '../../../resource/constants/app_colors.dart';
+import '../../../resource/styles/styles.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? initialValue;

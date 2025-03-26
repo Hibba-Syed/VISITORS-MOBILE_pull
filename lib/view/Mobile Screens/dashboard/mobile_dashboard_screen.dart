@@ -4,10 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
+import 'package:visitors/view/widgets/button/visitor_passes_button.dart';
+import 'package:visitors/view/widgets/heading_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
@@ -41,7 +44,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.yellow,
         onTap: () {
-          // Navigator.pushNamed(context, AppRoutes.);
+          context.read<DeviceDeciderCubit>()
+              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
         },
       ),
       ActionsItemModel(
@@ -73,8 +77,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
         onTap: () {
-          context.read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+          Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
+
         },
       ),
       ActionsItemModel(
@@ -103,14 +107,8 @@ class MobileDashboardScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Welcome,',
-                        style: AppTextStyles.style13Grey500,
-                      ),
-                      Text(
-                        'Apricot Tower (Gate 2)',
-                        style: AppTextStyles.style16Primary600,
-                      ),
+                      HeadingWidget(heading: 'Welcome',style: AppTextStyles.style13Grey500,),
+                      HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
                     ],
                   ),
                 ],
@@ -245,12 +243,18 @@ class MobileDashboardScreen extends StatelessWidget {
               ),
                const Gap(5),
                Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'E-Services',
                     style: AppTextStyles.style16Primary600,
                   ),
+                 const Spacer(),
+                   VisitorPassesButton(
+                   count: '45',
+                   onPressed: (){
+                   },
+                  ),
+                  const Gap(10),
                   ActionButton(
                     text: 'View All',
                     image: AppImages.view,

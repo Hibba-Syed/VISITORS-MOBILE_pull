@@ -125,13 +125,11 @@ class CheckInCardWidget extends StatelessWidget {
                             IconTextContainerWidget(
                               image: AppImages.date,
                               text: date ?? "",
-                              backgroundColor: AppColors.gray,
                             ),
                             const Gap(5),
                             IconTextContainerWidget(
                               image: AppImages.phone,
                               text: phone ?? "",
-                              backgroundColor: AppColors.gray,
                             ),
                           ],
                         ),
@@ -140,7 +138,6 @@ class CheckInCardWidget extends StatelessWidget {
                           image: AppImages.gate,
                           title:  'Gate',
                           value: gateValue ?? "",
-                          backgroundColor: AppColors.gray,
                         ),
                       ],
                     ),

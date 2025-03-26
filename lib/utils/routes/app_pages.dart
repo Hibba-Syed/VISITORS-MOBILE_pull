@@ -8,6 +8,7 @@ import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart
 import 'package:visitors/view/Common%20Screens/services/details/service_details.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/details/work_order_job_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
+import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/guest_check_in_screen.dart';
 
 import 'app_routes.dart';
 
@@ -44,8 +45,8 @@ class AppPages {
       // ),
     ),
     PageEntity(
-      route: AppRoutes.checkInScreen,
-      page: const CheckInsScreen(),
+      route: AppRoutes.guestCheckInScreen,
+      page: const GuestCheckInScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,

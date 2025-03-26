@@ -39,6 +39,7 @@ class ActionButton extends StatelessWidget {
           color: backgroundColor ?? AppColors.primary,
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
               SvgPicture.asset(image ?? "", colorFilter: ColorFilter.mode(
                 imageColor ?? AppColors.white,

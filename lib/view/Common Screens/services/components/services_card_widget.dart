@@ -91,13 +91,11 @@ class ServicesCardWidget extends StatelessWidget {
                           IconTextContainerWidget(
                             image: AppImages.services,
                             text: serviceType ?? "",
-                            backgroundColor: AppColors.gray,
                           ),
                           const Gap(10),
                            IconTextContainerWidget(
                             image: AppImages.person,
                             text: name ?? "",
-                            backgroundColor: AppColors.gray,
                            ),
                         ],
                       ),
@@ -106,7 +104,6 @@ class ServicesCardWidget extends StatelessWidget {
                         image: AppImages.count,
                         title:  "Check-In Count",
                         value: countValue ?? "",
-                        backgroundColor: AppColors.gray,
                       ),
                     ],
                   ),

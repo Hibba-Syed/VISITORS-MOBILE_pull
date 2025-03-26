@@ -1,0 +1,115 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
+import 'package:timeline_tile/timeline_tile.dart'
+    show IndicatorStyle, LineStyle, TimelineAlign, TimelineTile;
+import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
+
+class ActivityLogWidget extends StatelessWidget {
+  final String? status;
+  final String? byValue;
+  final String? description;
+  final String? dateTime;
+  const ActivityLogWidget({
+    super.key,
+    this.status,
+    this.byValue,
+    this.description,
+    this.dateTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          const Gap(10),
+          Column(
+            children: List.generate(
+              4,
+              (index) {
+                return TimelineTile(
+                  alignment: TimelineAlign.values.first,
+                  isLast: false,
+                  afterLineStyle: const LineStyle(
+                    color: AppColors.lightGrey,
+                    thickness: 2,
+                  ),
+                  indicatorStyle: IndicatorStyle(
+                    indicatorXY: 0.0,
+                    width: 25,
+                    height: 25,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 2,
+                    ),
+                    drawGap: true,
+                    indicator:
+                    Container(
+                      height: 25,
+                      width: 25,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child:  Center(
+                        child: SvgPicture.asset(
+                          AppImages.log,
+                          height: 30,
+                          width: 30,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                  endChild: Container(
+                    constraints: const BoxConstraints(
+                      minHeight: 105,
+                      maxWidth: double.infinity,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(status ?? "",
+                                  style: AppTextStyles.style14Black600),
+                              Flexible(
+                                child: Text(byValue ?? "",
+                                    style: AppTextStyles.style14Primary600),
+                              ),
+                            ],
+                          ),
+                          const Gap(5),
+                          Text(
+                            description ?? "",
+                            style: AppTextStyles.style12DarkGrey500,
+                          ),
+                          const Gap(10),
+                          IconTextContainerWidget(
+                            image: AppImages.date,
+                            text: dateTime ?? "",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
