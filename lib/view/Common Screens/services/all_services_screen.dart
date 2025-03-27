@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart' show ServicesCardWidget;
 
 import '../../../resource/constants/app_colors.dart';
@@ -40,15 +41,20 @@ class AllServicesScreen extends StatelessWidget {
                 primary: false,
                 itemCount: 12,
                 itemBuilder: (context, index) {
-                  return  ServicesCardWidget(
-                    unit: '1006',
-                    title: 'Facility Booking',
-                    reference: 'FO202401101791',
-                    status: 'Notified',
-                    serviceType: 'Fit Out NOC',
-                    name: 'Suhaan',
-                    countValue: '10',
-                    logoutOnPressed: (){},
+                  return  InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context, AppRoutes.servicesDetailsScreen);
+                    },
+                    child: ServicesCardWidget(
+                      unit: '1006',
+                      title: 'Facility Booking',
+                      reference: 'FO202401101791',
+                      status: 'Notified',
+                      serviceType: 'Fit Out NOC',
+                      name: 'Suhaan',
+                      countValue: '10',
+                      logoutOnPressed: (){},
+                    ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

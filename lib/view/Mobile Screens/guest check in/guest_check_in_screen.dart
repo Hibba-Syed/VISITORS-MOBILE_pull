@@ -12,6 +12,7 @@ import 'package:visitors/view/widgets/button/action_button.dart';
 import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
+
 class GuestCheckInScreen extends StatefulWidget {
   const GuestCheckInScreen({super.key});
 
@@ -31,10 +32,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   String? selectedItemUnit;
   String? selectedItemNationality;
 
-
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: Scaffold(
         appBar: const AppBarWidget(
           title: 'Guest Check-In',
@@ -42,7 +42,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           iconColor: AppColors.black,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.verticalPadding),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalPadding,
+              vertical: AppConstants.verticalPadding),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,15 +58,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       shape: BoxShape.circle,
                       color: AppColors.white,
                     ),
-                    child:
-                    ClipOval(
+                    child: ClipOval(
                       child: Image.network(
-                         "",
+                        "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
-                        loadingBuilder:
-                            (context, child, loadingProgress) {
+                        loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) {
                             return child;
                           }
@@ -73,7 +73,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           );
                         },
                         errorBuilder: (context, error, stackTrace) =>
-                        const Icon(
+                            const Icon(
                           Icons.person,
                           color: AppColors.white,
                           size: 40,
@@ -83,11 +83,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   ),
                 ),
                 const Gap(20),
-                  const ActionButton(
-                    verticalPadding: 10,
+                const ActionButton(
+                  verticalPadding: 10,
                   image: AppImages.scan,
-                   text: "Scan ID",
-                   textColor: AppColors.white,
+                  text: "Scan ID",
+                  textColor: AppColors.white,
                 ),
                 const Gap(20),
                 Container(
@@ -124,17 +124,23 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 ),
                 const Gap(20),
                 const Align(
-                  alignment: Alignment.topLeft,
-                    child: Text("Type*",style: AppTextStyles.style12Black600,)),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Type*",
+                      style: AppTextStyles.style12Black600,
+                    )),
                 const Gap(8),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Select ",
+                    hint: "Select Type",
                     fillColor: AppColors.white,
                     selectedItem: selectedItemType,
                     compareFn: (p0, p1) => p0 == p1,
-                    items: const ['Unit Visit','Community Visit',],
+                    items: const [
+                      'Unit Visit',
+                      'Community Visit',
+                    ],
                     onChanged: (value) {
-                      selectedItemType= value;
+                      selectedItemType = value;
                     }),
                 fieldsTile(
                   "Visitor Count*",
@@ -151,29 +157,38 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 const Gap(10),
                 const Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Purpose*",style: AppTextStyles.style12Black600,)),
+                    child: Text(
+                      "Purpose*",
+                      style: AppTextStyles.style12Black600,
+                    )),
                 const Gap(8),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Select ",
+                    hint: "Select Purpose",
                     fillColor: AppColors.white,
                     selectedItem: selectedItemPurpose,
                     compareFn: (p0, p1) => p0 == p1,
-                    items: const ['purpose','purpose',],
+                    items: const [
+                      'purpose',
+                      'purpose',
+                    ],
                     onChanged: (value) {
                       selectedItemPurpose = value;
                     }),
                 const Gap(10),
                 const Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Unit Number*",style: AppTextStyles.style12Black600,)),
+                    child: Text(
+                      "Unit Number*",
+                      style: AppTextStyles.style12Black600,
+                    )),
                 const Gap(8),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Select ",
+                    hint: "Select Unit",
                     fillColor: AppColors.white,
                     selectedItem: selectedItemUnit,
                     // itemAsString: (type) => type ?? "--",
                     compareFn: (p0, p1) => p0 == p1,
-                    items: const ['233','2','4567'],
+                    items: const ['233', '2', '4567'],
                     onChanged: (value) {
                       selectedItemUnit = value;
                     }),
@@ -206,7 +221,32 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(13),
                   ],
-
+                  suffix: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      bottomRight: Radius.circular(5),
+                    ),
+                      border: Border.all(color: AppColors.primary)
+                    ),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      onPressed: () {
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (context){
+                        //       return AlertDialog(
+                        //         content: Text('info'),
+                        //       );
+                        //     }
+                        //);
+                      },
+                      child: const Text("Get Info",
+                          style: TextStyle(color: AppColors.primary)),
+                    ),
+                  ),
                 ),
                 fieldsTile(
                   "Email*",
@@ -222,17 +262,22 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 const Gap(10),
                 const Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Nationality*",style: AppTextStyles.style12Black600,)),
+                    child: Text(
+                      "Nationality*",
+                      style: AppTextStyles.style12Black600,
+                    )),
                 const Gap(8),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Select ",
+                    hint: "Select Nationality",
                     fillColor: AppColors.white,
                     selectedItem: selectedItemNationality,
                     compareFn: (p0, p1) => p0 == p1,
-                    items: const ['pakistan','Australia',],
+                    items: const [
+                      'pakistan',
+                      'Australia',
+                    ],
                     onChanged: (value) {
                       selectedItemNationality = value;
-
                     }),
                 fieldsTile(
                   "Entry Card Number*",
@@ -244,7 +289,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                     }
                     return null;
                   },
-                ), fieldsTile(
+                ),
+                fieldsTile(
                   "Description*",
                   "Enter description ",
                   controller: descriptionController,
@@ -259,8 +305,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
             ),
           ),
         ),
-        bottomNavigationBar:  const Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.verticalPadding),
+        bottomNavigationBar: const Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalPadding,
+              vertical: AppConstants.verticalPadding),
           child: LogoutButton(
             backgroundColor: AppColors.green,
             image: AppImages.checkInButton,
@@ -272,27 +320,28 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   Widget fieldsTile(
-      String text,
-      String hintText, {
-        TextEditingController? controller,
-        TextInputType? keyboardType,
-        bool enabled = true,
-        final Widget? suffix,
-        List<TextInputFormatter>? inputFormatters,
-        void Function()? onTap,
-        String? Function(String?)? validator,
-        bool obscureText = false,
-        int? maxLength,
-      }) {
+    String text,
+    String hintText, {
+    TextEditingController? controller,
+    TextInputType? keyboardType,
+    bool enabled = true,
+    final Widget? suffix,
+    List<TextInputFormatter>? inputFormatters,
+    void Function()? onTap,
+    String? Function(String?)? validator,
+    bool obscureText = false,
+    int? maxLength,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Gap(10),
-        Text( text,style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-          color: AppColors.black
-        ),
+        Text(
+          text,
+          style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              color: AppColors.black),
         ),
         const Gap(10),
         GestureDetector(
@@ -304,7 +353,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
             controller: controller,
             validator: validator,
             keyboardType: keyboardType,
-            inputFormatters: (inputFormatters?.isEmpty??true)?[RemoveEmojiInputFormatter()]:inputFormatters,
+            inputFormatters: (inputFormatters?.isEmpty ?? true)
+                ? [RemoveEmojiInputFormatter()]
+                : inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             obscureText: obscureText,
             decoration: InputDecoration(
@@ -313,12 +364,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 borderSide: const BorderSide(color: AppColors.gray, width: 1),
               ),
               contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
               counterText: "",
               suffixIcon: suffix,
               isDense: true,
               hintText: hintText,
-              hintStyle: const TextStyle(color: AppColors.darkGrey, fontSize: 13),
+              hintStyle:
+                  const TextStyle(color: AppColors.darkGrey, fontSize: 13),
               fillColor: Colors.white,
               filled: true,
               errorStyle: const TextStyle(color: AppColors.red),

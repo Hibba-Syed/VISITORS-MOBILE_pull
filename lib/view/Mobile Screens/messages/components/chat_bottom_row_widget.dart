@@ -8,16 +8,12 @@ import '../../../widgets/loader/loader_widget.dart';
 
 class ChatBottomRowWidget extends StatefulWidget {
   final VoidCallback onAttach;
-  final VoidCallback onCamera;
-  final Future<bool> Function()? onSend;
-  final Future<bool> Function()? onSendVendor;
+  final VoidCallback onSend;
   final TextEditingController messageController;
   const ChatBottomRowWidget({
     super.key,
     required this.onAttach,
-    required this.onCamera,
-    this.onSend,
-    this.onSendVendor,
+    required this.onSend,
     required this.messageController,
   });
 
@@ -27,19 +23,6 @@ class ChatBottomRowWidget extends StatefulWidget {
 
 class _ChatBottomRowWidgetState extends State<ChatBottomRowWidget> {
   bool isLoading = false;
-  bool isLoadingVendor = false;
-
-  Future<void> _handleSend() async {
-    if (widget.onSend != null) {
-      setState(() => isLoading = true);
-      await widget.onSend!();
-      setState(() => isLoading = false);
-      // if (success) Navigator.of(context).pop();
-    } else {
-      Navigator.of(context).pop();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -105,7 +88,7 @@ class _ChatBottomRowWidgetState extends State<ChatBottomRowWidget> {
                     height: 50,
                     // width: 35,
                     child: Center(child: LoaderWidget()))
-                : SendChatButtonContainerWidget(onPressed: _handleSend),
+                : SendChatButtonContainerWidget(onPressed: widget.onSend),
           ],
         ),
       ),

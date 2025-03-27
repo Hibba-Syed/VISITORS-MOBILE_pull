@@ -6,9 +6,15 @@ import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../widgets/phone_email_information_card_widget.dart';
-class DirectoryScreen extends StatelessWidget {
+class DirectoryScreen extends StatefulWidget {
   const DirectoryScreen({super.key});
 
+  @override
+  State<DirectoryScreen> createState() => _DirectoryScreenState();
+}
+
+class _DirectoryScreenState extends State<DirectoryScreen> {
+  String? selectedUnit ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +24,15 @@ class DirectoryScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Gap(10),
-            SingleSelectedDropdownWidget<String?>(
-                hint: "Select ",
+            SingleSelectedDropdownWidget<String>(
+                hint: "Select Unit",
                 fillColor: AppColors.white,
-                selectedItem: 'Select',
+                selectedItem: selectedUnit,
                 itemAsString: (type) => type ?? "--",
                 compareFn: (p0, p1) => p0 == p1,
                 items: ['1','2','3','4'],
                 onChanged: (value) {
+                  selectedUnit = value;
                 }),
             const Gap(20),
             const HeadingWidget(heading: 'RESIDENT INFORMATION',),

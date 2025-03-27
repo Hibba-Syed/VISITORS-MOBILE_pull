@@ -4,7 +4,9 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
 import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/action_button.dart' show ActionButton;
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
@@ -28,6 +30,7 @@ class CheckInsScreen extends StatelessWidget {
                   const Gap(6),
                   FilterContainerWidget(
                     onPressed: () {
+                      _checkInFilterBottomSheet(context);
                     },
                   )
                 ],
@@ -55,15 +58,20 @@ class CheckInsScreen extends StatelessWidget {
                primary: false,
                itemCount: 12,
                itemBuilder: (context, index) {
-                 return CheckInCardWidget(
-                   name: 'MUHAMMAD AHMED MOHAMMED ',
-                   profileImageUrl: "",
-                   type: 'Guest',
-                   date: DateFormat("MMM dd, yyyy ")
-                       .format(DateTime.now()),
-                   phone: '34567890098',
-                   gateValue: "The W Residences Reception",
+                 return InkWell(
+                   onTap: (){
+                     Navigator.pushNamed(context, AppRoutes.checkInDetailsScreen);
+                   },
+                   child: CheckInCardWidget(
+                     name: 'MUHAMMAD AHMED MOHAMMED ',
+                     profileImageUrl: "",
+                     type: 'Guest',
+                     date: DateFormat("MMM dd, yyyy ")
+                         .format(DateTime.now()),
+                     phone: '34567890098',
+                     gateValue: "The W Residences Reception",
 
+                   ),
                  );
                },
                separatorBuilder: (BuildContext context, int index) {
@@ -74,6 +82,16 @@ class CheckInsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+  _checkInFilterBottomSheet(context) {
+    showModalBottomSheet(
+      //isScrollControlled: true,
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        return const CheckInFilterBottomSheet();
+      },
     );
   }
 }

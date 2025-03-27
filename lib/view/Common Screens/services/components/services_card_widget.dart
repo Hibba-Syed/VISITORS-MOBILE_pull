@@ -34,91 +34,86 @@ class ServicesCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.pushNamed(context, AppRoutes.servicesDetailsScreen);
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: AppColors.white),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title ?? "",
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: AppColors.white),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title ?? "",
+                style: AppTextStyles.style14Black600,
+              ),
+              StatusWidget(
+                status: status ?? "",
+              ),
+            ],
+          ),
+          const Gap(5),
+          Text(
+            reference ?? "",
+            style: AppTextStyles.style12darkGrey500,
+          ),
+          const Gap(10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 65,
+                height: 65,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: AppColors.gray,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  unit ?? "",
                   style: AppTextStyles.style14Black600,
                 ),
-                StatusWidget(
-                  status: status ?? "",
+              ),
+              const Gap(6),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        IconTextContainerWidget(
+                          image: AppImages.services,
+                          text: serviceType ?? "",
+                        ),
+                        const Gap(10),
+                         IconTextContainerWidget(
+                          image: AppImages.person,
+                          text: name ?? "",
+                         ),
+                      ],
+                    ),
+                    const Gap(5),
+                     IconTitleValueContainerWidget(
+                      image: AppImages.count,
+                      title:  "Check-In Count",
+                      value: countValue ?? "",
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            const Gap(5),
-            Text(
-              reference ?? "",
-              style: AppTextStyles.style12darkGrey500,
-            ),
-            const Gap(10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: 65,
-                  height: 65,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: AppColors.gray,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    unit ?? "",
-                    style: AppTextStyles.style14Black600,
-                  ),
-                ),
-                const Gap(6),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          IconTextContainerWidget(
-                            image: AppImages.services,
-                            text: serviceType ?? "",
-                          ),
-                          const Gap(10),
-                           IconTextContainerWidget(
-                            image: AppImages.person,
-                            text: name ?? "",
-                           ),
-                        ],
-                      ),
-                      const Gap(5),
-                       IconTitleValueContainerWidget(
-                        image: AppImages.count,
-                        title:  "Check-In Count",
-                        value: countValue ?? "",
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Gap(10),
-            LogoutButton(
-              text: 'Check-In',
-              onPressed: logoutOnPressed,
-              backgroundColor: AppColors.green,
-              image: AppImages.checkInButton,
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          const Gap(10),
+          LogoutButton(
+            text: 'Check-In',
+            onPressed: logoutOnPressed,
+            backgroundColor: AppColors.green,
+            image: AppImages.checkInButton,
+          ),
+        ],
       ),
     );
   }

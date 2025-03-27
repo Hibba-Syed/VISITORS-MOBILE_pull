@@ -43,6 +43,7 @@ class AppImages {
   static const String profile = "${baseSvgPath}profile.svg";
   static const String log = "${baseSvgPath}log.svg";
   static const String scan = "${baseSvgPath}scan.svg";
+  static const String noFilter = "${baseSvgPath}nofilter.svg";
 
 
   ///lottie animations

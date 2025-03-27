@@ -48,22 +48,23 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
         if (label?.isNotEmpty ?? false) const Gap(8),
         DropdownSearch<T>(
           enabled: enabled,
-          suffixProps: DropdownSuffixProps(
+          suffixProps: const DropdownSuffixProps(
             clearButtonProps: ClearButtonProps(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.zero,
-                icon: const Icon(
+                icon: Icon(
                   Icons.clear,
                   size: 16,
                   color: AppColors.darkGrey,
                 ),
-                isVisible: selectedItem != null && selectedItem.toString().isNotEmpty,),
-            dropdownButtonProps: const DropdownButtonProps(
+                isVisible: true,
+            ),
+            dropdownButtonProps: DropdownButtonProps(
               iconClosed: Icon(
-                Icons.keyboard_arrow_down_outlined,
+                Icons.keyboard_arrow_down_outlined,color: AppColors.darkGrey,
               ),
               iconOpened: Icon(
-                Icons.keyboard_arrow_up_outlined,
+                Icons.keyboard_arrow_up_outlined,color: AppColors.darkGrey,
               ),
             ),
           ),
@@ -75,7 +76,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 2),
               hintText: hint,
-              hintStyle: const TextStyle(fontSize: 11, color: AppColors.gray),
+              hintStyle: const TextStyle(fontSize: 13, color: AppColors.darkGrey,fontWeight: FontWeight.w500),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               alignLabelWithHint: false,
               fillColor: fillColor ?? AppColors.white,

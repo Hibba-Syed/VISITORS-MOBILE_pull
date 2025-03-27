@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/details/service_details.dart';
-import 'package:visitors/view/Common%20Screens/work%20order/details/work_order_job_details_screen.dart';
+import 'package:visitors/view/Common%20Screens/services/detail/service_details.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/guest_check_in_screen.dart';
 
@@ -47,6 +46,13 @@ class AppPages {
     PageEntity(
       route: AppRoutes.guestCheckInScreen,
       page: const GuestCheckInScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),PageEntity(
+      route: AppRoutes.checkInDetailsScreen,
+      page: const CheckInDetailsScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,

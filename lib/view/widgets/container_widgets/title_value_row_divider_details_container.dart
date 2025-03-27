@@ -26,7 +26,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Text(
                 title,
                 style: AppTextStyles.style12Black600,
