@@ -73,7 +73,8 @@ class CheckInCardWidget extends StatelessWidget {
                                   if (loadingProgress == null) {
                                     return child;
                                   }
-                                  return Container(
+                                  return
+                                    Container(
                                     color: AppColors.gray,
                                   );
                                 },

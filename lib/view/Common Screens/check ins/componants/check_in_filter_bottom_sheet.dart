@@ -75,7 +75,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 compareFn: (p0, p1) => p0 == p1,
                 items:typeList,
                 onChanged: (value) {
-                  selectedRang = value;
+                  selectedType = value;
                 }),
             const Gap(10),
             SingleSelectedDropdownWidget<String>(

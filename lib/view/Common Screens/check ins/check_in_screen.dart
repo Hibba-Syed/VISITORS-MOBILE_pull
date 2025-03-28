@@ -64,7 +64,7 @@ class CheckInsScreen extends StatelessWidget {
                    },
                    child: CheckInCardWidget(
                      name: 'MUHAMMAD AHMED MOHAMMED ',
-                     profileImageUrl: "",
+                     profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                      type: 'Guest',
                      date: DateFormat("MMM dd, yyyy ")
                          .format(DateTime.now()),
@@ -86,7 +86,6 @@ class CheckInsScreen extends StatelessWidget {
   }
   _checkInFilterBottomSheet(context) {
     showModalBottomSheet(
-      //isScrollControlled: true,
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {

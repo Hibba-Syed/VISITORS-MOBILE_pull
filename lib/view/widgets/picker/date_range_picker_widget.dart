@@ -34,6 +34,7 @@ class _CustomDateRangePickerWidgetState
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: () async {
         await showDateRangePicker(
+          // barrierColor: AppColors.primary,
             context: context,
             currentDate: DateTime.now(),
             initialDateRange: (selectedDate?.isEmpty ?? true)

@@ -55,9 +55,8 @@ class _MessageScreenState extends State<MessageScreen> {
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(
+                child: ListView.separated(
                     controller: _scrollController,
-                    padding: const EdgeInsets.only(bottom: 0),
                     shrinkWrap: true,
                     primary: false,
                     itemCount: messages.length,
@@ -82,7 +81,9 @@ class _MessageScreenState extends State<MessageScreen> {
                                 ),
                         ],
                       );
-                    }),
+                    }, separatorBuilder: (BuildContext context, int index) {
+                      return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
+                },),
               ),
               if (file?.path.isNotEmpty ?? false)
                 Container(

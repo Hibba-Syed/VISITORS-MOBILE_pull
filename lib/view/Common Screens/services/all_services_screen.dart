@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart' show ServicesCardWidget;
+import 'package:visitors/view/Common%20Screens/services/components/services_filter_bottom_sheet.dart';
 
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
@@ -28,6 +29,7 @@ class AllServicesScreen extends StatelessWidget {
                   const Gap(6),
                   FilterContainerWidget(
                     onPressed: () {
+                      _servicesFilterBottomSheet(context);
                     },
                   )
                 ],
@@ -68,4 +70,14 @@ class AllServicesScreen extends StatelessWidget {
       ),
     );
   }
+  _servicesFilterBottomSheet(context) {
+    showModalBottomSheet(
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        return const ServicesFilterBottomSheet();
+      },
+    );
+  }
+
 }

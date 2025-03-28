@@ -28,7 +28,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                 hint: "Select Unit",
                 fillColor: AppColors.white,
                 selectedItem: selectedUnit,
-                itemAsString: (type) => type ?? "--",
+                itemAsString: (type) => type ,
                 compareFn: (p0, p1) => p0 == p1,
                 items: ['1','2','3','4'],
                 onChanged: (value) {

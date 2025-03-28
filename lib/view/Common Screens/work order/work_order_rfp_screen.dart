@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
@@ -32,6 +33,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                   const Gap(6),
                   FilterContainerWidget(
                     onPressed: () {
+                      _workOrderFilterBottomSheet(context);
                     },
                   )
                 ],
@@ -66,6 +68,15 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
           ],
         ),
       ),
+    );
+  }
+  _workOrderFilterBottomSheet(context) {
+    showModalBottomSheet(
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        return const WorkOrderFilterBottomSheet();
+      },
     );
   }
 }
