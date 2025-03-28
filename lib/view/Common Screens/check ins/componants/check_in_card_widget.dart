@@ -32,14 +32,28 @@ class CheckInCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(8),
+                topLeft: Radius.circular(8),
+              ),
+              color: AppColors.blue),
+          child: Text(
+            unit ?? "",
+            style: AppTextStyles.style13white500,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10),
               bottomRight: Radius.circular(10),
               bottomLeft: Radius.circular(10),
             ),
@@ -156,23 +170,7 @@ class CheckInCardWidget extends StatelessWidget {
             ],
           ),
         ),
-        Positioned(
-          top: -32,
-          child: Container(
-            margin: EdgeInsets.zero,
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  topLeft: Radius.circular(8),
-                ),
-                color: AppColors.blue),
-            child: Text(
-              unit ?? "Mughal-1024",
-              style: AppTextStyles.style12white500,
-            ),
-          ),
-        ),
+
       ],
     );
   }

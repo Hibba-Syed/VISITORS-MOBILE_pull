@@ -116,7 +116,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 const Gap(20),
-                const Text('Check-In Log',style: AppTextStyles.style16primary600,),
+                const Text('Check-In Log',style: AppTextStyles.style18primary600,),
                 const Gap(10),
                 ActivityLogWidget(
                   status: 'Check-In',

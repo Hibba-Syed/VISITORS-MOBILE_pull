@@ -35,7 +35,7 @@ class IconTitleValueContainerWidget extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding ?? 10,
+            horizontal: horizontalPadding ?? 8,
             vertical: verticalPadding ?? 6),
         decoration: BoxDecoration(
           borderRadius:  BorderRadius.circular(5),
@@ -57,7 +57,7 @@ class IconTitleValueContainerWidget extends StatelessWidget {
             ),
             Text(
               value ?? "",
-              style: AppTextStyles.style12Black400,
+              style: AppTextStyles.style13Black400,
             ),
           ],
         ),

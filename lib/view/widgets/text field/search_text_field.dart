@@ -49,7 +49,7 @@ class SearchTextField extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: 15.0, vertical: 10.0),
                 hintText: hint,
-                hintStyle: AppTextStyles.style13Grey500,
+                hintStyle: AppTextStyles.style15Grey500,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 suffixIcon: GestureDetector(
                   onTap: onSearchPressed,

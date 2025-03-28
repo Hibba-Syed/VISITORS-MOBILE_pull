@@ -24,7 +24,7 @@ class VisitorPassesButton extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             width: 40,
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 5,vertical: verticalPadding ?? 5),
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
               decoration: const BoxDecoration(
                  borderRadius: BorderRadius.only(
                    topLeft: Radius.circular(5),
@@ -32,11 +32,11 @@ class VisitorPassesButton extends StatelessWidget {
                  ),
                 color:AppColors.lightYellow,
               ),
-              child: Text(count ?? "",style: AppTextStyles.style12white500,)),
+              child: Text(count ?? "",style: AppTextStyles.style15white600,)),
           Container(
             alignment: Alignment.center,
             width: 110,
-           padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 5,vertical: verticalPadding ?? 5),
+           padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(5),
@@ -45,7 +45,7 @@ class VisitorPassesButton extends StatelessWidget {
               color: AppColors.yellow,
             ),
             child: const Text("Visitor Passes",
-              style: AppTextStyles.style12white500
+              style: AppTextStyles.style15white600
               //AppTextStyles.style12white500
             ),
           ),

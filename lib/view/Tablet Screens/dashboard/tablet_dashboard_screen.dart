@@ -101,7 +101,7 @@ class TabletDashboardScreen extends StatelessWidget {
                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Welcome,',style: AppTextStyles.style13Grey500,),
+                      Text('Welcome,',style: AppTextStyles.style15Grey500,),
                       Text('Apricot Tower (Gate 2)',style: AppTextStyles.style16Primary600,),
                     ],
                   ),

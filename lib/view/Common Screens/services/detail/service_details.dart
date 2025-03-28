@@ -124,7 +124,7 @@ class ServiceDetails extends StatelessWidget {
                   ),
                 ),
                 const Gap(20),
-                const Text('Activity Log',style: AppTextStyles.style16primary600,),
+                const Text('Activity Log',style: AppTextStyles.style18primary600,),
                 const Gap(10),
                 ActivityLogWidget(
                   status: 'Request Received By ',

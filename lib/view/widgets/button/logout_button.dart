@@ -43,7 +43,7 @@ class LogoutButton extends StatelessWidget {
             ),
             ),
             const Gap(10),
-            Text(text ?? 'button text',style: AppTextStyles.style12white500,)
+            Text(text ?? 'button text',style: AppTextStyles.style15white600,)
           ],
         ),
       ),

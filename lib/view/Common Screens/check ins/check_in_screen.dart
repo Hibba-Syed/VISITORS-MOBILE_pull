@@ -44,16 +44,15 @@ class CheckInsScreen extends StatelessWidget {
                 image: AppImages.checkout,
                 imageColor: AppColors.white,
                 backgroundColor: AppColors.red,
-                verticalPadding: 7,
                 buttonWidth: 140,
                 onPressed: (){
                 },
               ),
             ),
-            const Gap(15),
+            const Gap(5),
            Expanded(
              child:  ListView.separated(
-               padding: const EdgeInsets.only(bottom: 10,top: 35),
+               padding: const EdgeInsets.only(bottom: 10),
                shrinkWrap: true,
                primary: false,
                itemCount: 12,
@@ -75,7 +74,7 @@ class CheckInsScreen extends StatelessWidget {
                  );
                },
                separatorBuilder: (BuildContext context, int index) {
-                 return const Padding(padding: EdgeInsets.symmetric(vertical: 20));
+                 return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
                },
              ),
            ),

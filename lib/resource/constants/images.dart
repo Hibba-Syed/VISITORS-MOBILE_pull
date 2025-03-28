@@ -44,8 +44,9 @@ class AppImages {
   static const String log = "${baseSvgPath}log.svg";
   static const String scan = "${baseSvgPath}scan.svg";
   static const String noFilter = "${baseSvgPath}nofilter.svg";
+  static const String serviceable = "${baseSvgPath}serviceable.svg";
 
 
   ///lottie animations
-  static const String forgotJson = "${baseJsonPath}forgot.json";
+ // static const String forgotJson = "${baseJsonPath}forgot.json";
 }

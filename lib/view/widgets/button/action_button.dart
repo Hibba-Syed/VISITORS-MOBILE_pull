@@ -33,7 +33,7 @@ class ActionButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: buttonWidth,
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 6),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: backgroundColor ?? AppColors.primary,
@@ -49,7 +49,7 @@ class ActionButton extends StatelessWidget {
               Text(text ?? "",
                   style: TextStyle(
                     color: textColor ?? AppColors.white,
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: FontWeight.w500
                   ),
                   //AppTextStyles.style12white500

@@ -36,7 +36,7 @@ class IconTextContainerWidget extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 6),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 8,vertical: verticalPadding ?? 6),
         decoration: BoxDecoration(
           borderRadius:  BorderRadius.circular(5),
           color: backgroundColor ?? AppColors.gray,
@@ -70,12 +70,11 @@ class IconTextContainerWidget extends StatelessWidget {
             else
               const SizedBox.shrink(),
             const Gap(2),
-              const Gap(5),
               Text( text ?? "",
                 style: TextStyle(
                   color: textColor ?? AppColors.black,
                   fontWeight: FontWeight.w500,
-                  fontSize: 12,
+                  fontSize: 13,
                    //AppTextStyles.style10Black400
                 ),
               ),

@@ -107,7 +107,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeadingWidget(heading: 'Welcome',style: AppTextStyles.style13Grey500,),
+                      HeadingWidget(heading: 'Welcome',style: AppTextStyles.style15Grey500,),
                       HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
                     ],
                   ),
@@ -194,6 +194,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   ActionButton(
+                    verticalPadding: 9.5,
                     text: 'Check-Outs',
                     image: AppImages.checkout,
                     imageColor: AppColors.white,
@@ -206,7 +207,6 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                   const Gap(10),
                   ActionButton(
-                    verticalPadding: 6.4,
                     text: 'View All',
                     image: AppImages.view,
                     imageColor: AppColors.white,
@@ -219,7 +219,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(35),
+              const Gap(10),
               ListView.separated(
                 padding: const EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
@@ -227,6 +227,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return CheckInCardWidget(
+                    unit: 'Rose-1024',
                     name: 'MUHAMMAD AHMED MOHAMMED ',
                     profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                     type: 'Guest',
@@ -238,7 +239,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(padding: EdgeInsets.symmetric(vertical: 20));
+                  return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
                 },
               ),
                const Gap(5),
@@ -319,6 +320,8 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return  WorkOrderRFPCardWidget(
+                    typeText: 'Work Order',
+                    typeAssetImage: AppImages.hammer,
                     status: 'Active',
                     title: '(2 Months) Services Contract',
                     reference: 'JB001-24-00102',
