@@ -28,7 +28,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: const BorderRadius.only(

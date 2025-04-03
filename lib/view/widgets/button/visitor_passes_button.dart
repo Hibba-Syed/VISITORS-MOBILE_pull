@@ -32,10 +32,15 @@ class VisitorPassesButton extends StatelessWidget {
                  ),
                 color:AppColors.lightYellow,
               ),
-              child: Text(count ?? "",style: AppTextStyles.style15white600,)),
+              child: Text(count ?? "",style:const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.white
+              ),
+              )),
           Container(
             alignment: Alignment.center,
-            width: 110,
+            // width: 120,
            padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -45,8 +50,13 @@ class VisitorPassesButton extends StatelessWidget {
               color: AppColors.yellow,
             ),
             child: const Text("Visitor Passes",
-              style: AppTextStyles.style15white600
-              //AppTextStyles.style12white500
+              style: TextStyle(
+                fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                 color: AppColors.white
+              ),
+              // AppTextStyles.style15white600
+
             ),
           ),
         ],

@@ -5,6 +5,8 @@ import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/detail/service_details.dart';
+import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_check_ins_screen.dart';
+import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/guest_check_in_screen.dart';
@@ -50,9 +52,26 @@ class AppPages {
       // BlocProvider(
       //   create: (context) => ,
       // ),
-    ),PageEntity(
+    ),
+    PageEntity(
       route: AppRoutes.checkInDetailsScreen,
       page: const CheckInDetailsScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.visitorPassesScreen,
+      page: const VisitorPassesScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.serviceableCheckInsScreen,
+      page: const ServiceableCheckInsScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,

@@ -7,10 +7,12 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/action_button.dart';
 import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
+import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
@@ -224,24 +226,68 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   suffix: Container(
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(5),
-                      bottomRight: Radius.circular(5),
-                    ),
-                      border: Border.all(color: AppColors.primary)
-                    ),
+                          topRight: Radius.circular(5),
+                          bottomRight: Radius.circular(5),
+                        ),
+                        border: Border.all(color: AppColors.primary)),
                     child: TextButton(
                       style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
                       ),
                       onPressed: () {
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (context){
-                        //       return AlertDialog(
-                        //         content: Text('info'),
-                        //       );
-                        //     }
-                        //);
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialogBox(
+                                hideBothButtons: true,
+                                insetPadding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                title: 'Select Visitor',
+                                contentBuilder: (context, setState) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        '3',
+                                        style: AppTextStyles.style36Blue500,
+                                      ),
+                                      const Text(
+                                        'Visitor records found for this number',
+                                        style: AppTextStyles.style14Black600,
+                                      ),
+                                      const Divider(
+                                        color: AppColors.lightGrey,
+                                      ),
+                                      ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                             maxHeight: 250),
+                                        child: ListView.separated(
+                                          shrinkWrap: true,
+                                          primary: false,
+                                          itemCount: 10,
+                                          itemBuilder: (context, index) {
+                                            return const GetInfoCardWidget(
+                                              name:
+                                                  'Muhammad Ahmad Bin Ali Al Shehzad ur Rahman',
+                                              country: 'pakistan',
+                                              profileImageUrl:
+                                                  'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return const Divider(
+                                              color: AppColors.lightGrey,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
                       },
                       child: const Text("Get Info",
                           style: TextStyle(color: AppColors.primary)),

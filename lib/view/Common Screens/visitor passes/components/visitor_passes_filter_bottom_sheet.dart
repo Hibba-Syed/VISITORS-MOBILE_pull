@@ -6,20 +6,17 @@ import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
-class WorkOrderFilterBottomSheet extends StatefulWidget {
-  const WorkOrderFilterBottomSheet({super.key});
+class VisitorPassesFilterBottomSheet extends StatefulWidget {
+  const VisitorPassesFilterBottomSheet({super.key});
 
   @override
-  State<WorkOrderFilterBottomSheet> createState() =>
-      _WorkOrderFilterBottomSheetState();
+  State<VisitorPassesFilterBottomSheet> createState() =>
+      _VisitorPassesFilterBottomSheetState();
 }
 
-class _WorkOrderFilterBottomSheetState extends State<WorkOrderFilterBottomSheet> {
-  String? selectedType;
-  String? selectedVendor;
+class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBottomSheet> {
+  String? selectedUnit;
 
-
-  final List<String> typeList = ['RFPs', 'Work Orders',];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,30 +37,19 @@ class _WorkOrderFilterBottomSheetState extends State<WorkOrderFilterBottomSheet>
                 const Align(
                   alignment: Alignment.center,
                   child: HeadingWidget(
-                      heading: 'Work Order / RFP Filter',
+                      heading: 'Visitor Passes Filter',
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Type",
+                    hint: "Units",
                     fillColor: AppColors.white,
-                    selectedItem: selectedType,
+                    selectedItem: selectedUnit,
                     itemAsString: (type) => type,
                     compareFn: (p0, p1) => p0 == p1,
-                    items:typeList,
+                    items: ['1','2','3'],
                     onChanged: (value) {
-                      selectedType = value;
-                    }),
-                const Gap(10),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Vendors",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedVendor,
-                    itemAsString: (type) => type,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: ['A','B','C'],
-                    onChanged: (value) {
-                      selectedVendor = value;
+                      selectedUnit = value;
                     }),
                 const Gap(30),
                 FilterButtonWidget(

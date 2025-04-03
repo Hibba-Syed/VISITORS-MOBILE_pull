@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
+import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
@@ -38,45 +39,12 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  color: AppColors.blue),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    typeAssetImage ?? "",
-                    height: 13,
-                    width: 13,
-                    colorFilter:  const ColorFilter.mode(
-                      AppColors.white,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  const Gap(3),
-                  Text(
-                    typeText ?? "",
-                    style: AppTextStyles.style13white500,
-                  ),
-                ],
-              ),
+            OverlapContainerWidget(
+              text: typeText,
+              image: typeAssetImage,
             ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  color: AppColors.blue),
-              child: Text(
-                reference ?? "",
-                style: AppTextStyles.style13white500,
-              ),
+            OverlapContainerWidget(
+              text: reference,
             ),
           ],
         ),

@@ -86,6 +86,7 @@ class DeviceDeciderScreen extends StatelessWidget {
           onPopInvokedWithResult: (bool didPop, dynamic) async {
             if (didPop) return;
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (ctx) {
                 return AlertDialog(
@@ -211,6 +212,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                     if (item.index ==
                                         AppConstants.logoutIndex) {
                                       showDialog(
+                                        barrierDismissible: false,
                                         context: context,
                                         builder: (ctx) {
                                           return AlertDialog(

@@ -227,7 +227,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return CheckInCardWidget(
-                    unit: 'Rose-1024',
+                    typeText: 'Rose-1024',
                     name: 'MUHAMMAD AHMED MOHAMMED ',
                     profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                     type: 'Guest',
@@ -253,6 +253,7 @@ class MobileDashboardScreen extends StatelessWidget {
                    VisitorPassesButton(
                    count: '45',
                    onPressed: (){
+                     Navigator.pushNamed(context, AppRoutes.visitorPassesScreen);
                    },
                   ),
                   const Gap(10),
@@ -284,7 +285,8 @@ class MobileDashboardScreen extends StatelessWidget {
                     serviceType: 'Fit Out NOC',
                     name: 'Suhaan',
                     countValue: '10',
-                    logoutOnPressed: (){},
+                    checkInOnPressed: (){},
+                    serviceableOnPressed: (){},
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

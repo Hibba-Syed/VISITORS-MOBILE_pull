@@ -313,7 +313,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     reference: 'FO202401101791',
                     serviceType: 'Fit Out NOC',
                     name: 'Suhaan',
-                    logoutOnPressed: (){},
+                    checkInOnPressed: (){},
 
                   );
                 },

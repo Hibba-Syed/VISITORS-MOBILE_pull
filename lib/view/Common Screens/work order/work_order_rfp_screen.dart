@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
@@ -51,6 +52,8 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                       Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
                     },
                     child: WorkOrderRFPCardWidget(
+                        typeAssetImage: AppImages.hammer,
+                        typeText: 'Work Order',
                         status: 'Active',
                         title: '(2 Months) Services Contract',
                         reference: 'JB001-24-00102',

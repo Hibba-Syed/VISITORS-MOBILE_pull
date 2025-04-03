@@ -6,7 +6,7 @@ import 'loader/loader_widget.dart';
 
 class CustomAlertDialogBox extends StatefulWidget {
   final String? title;
-  final String? noButtonText;
+  final String? cancelButtonText;
   final String? confirmButtonText;
   final Future<bool> Function()?
   onConfirm;
@@ -15,7 +15,7 @@ class CustomAlertDialogBox extends StatefulWidget {
   contentBuilder;
   final bool showCloseIcon;
   final Color? confirmButtonColor;
-  final Color? noButtonColor;
+  final Color? cancelButtonColor;
   final bool? hideBothButtons;
   final double? horizontalPadding;
   final bool? disableCancelButtonBorder;
@@ -29,14 +29,14 @@ class CustomAlertDialogBox extends StatefulWidget {
   const CustomAlertDialogBox({
     super.key,
     this.title,
-    this.noButtonText = "Cancel",
+    this.cancelButtonText = "Cancel",
     this.confirmButtonText = "Confirm",
     this.onConfirm,
     this.onCancel,
     this.contentBuilder,
     this.showCloseIcon = true,
     this.confirmButtonColor,
-    this.noButtonColor,
+    this.cancelButtonColor,
     this.horizontalPadding,
     this.hideBothButtons = false,
     this.disableCancelButtonBorder = false,
@@ -87,7 +87,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColors.white,
       insetPadding: widget.insetPadding,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -112,10 +112,10 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.title ?? "--",style: const TextStyle(
+                                widget.title ?? "--",style:  const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: AppColors.black,
                               ),
 
                               ),
@@ -184,7 +184,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                           Navigator.of(context).pop(),
                                       style: TextButton.styleFrom(
                                         backgroundColor:
-                                        widget.noButtonColor ??
+                                        widget.cancelButtonColor ??
                                             Colors.white,
                                         padding: EdgeInsets.symmetric(
                                             horizontal: widget
@@ -204,7 +204,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                       ),
                                       child: Text(
                                         textAlign: TextAlign.center,
-                                        widget.noButtonText!,
+                                        widget.cancelButtonText!,
                                         style: TextStyle(
                                             color: widget
                                                 .cancelButtonTextColor ??

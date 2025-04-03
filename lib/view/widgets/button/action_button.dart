@@ -32,7 +32,7 @@ class ActionButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        width: buttonWidth,
+        width: buttonWidth ,
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -45,11 +45,11 @@ class ActionButton extends StatelessWidget {
                 imageColor ?? AppColors.white,
                 BlendMode.srcIn,
               ),height: 16),
-              const Gap(5),
+              const Gap(4),
               Text(text ?? "",
                   style: TextStyle(
                     color: textColor ?? AppColors.white,
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: FontWeight.w500
                   ),
                   //AppTextStyles.style12white500

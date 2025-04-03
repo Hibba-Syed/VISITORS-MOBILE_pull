@@ -10,7 +10,7 @@ import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
 
-class CheckInCardWidget extends StatelessWidget {
+class ServiceableCheckInsCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
   final String? gateValue;
@@ -19,18 +19,23 @@ class CheckInCardWidget extends StatelessWidget {
   final String? date;
   final String? typeText;
   final String? typeImage;
+  final String? reference;
+  final String? purpose;
+
   final VoidCallback? checkOutOnPressed;
-  const CheckInCardWidget(
+  const ServiceableCheckInsCardWidget(
       {super.key,
-      this.profileImageUrl,
-      this.name,
-      this.type,
-      this.phone,
-      this.typeText,
-      this.date,
-      this.gateValue,
+        this.profileImageUrl,
+        this.name,
+        this.type,
+        this.phone,
+        this.typeText,
+        this.date,
+        this.gateValue,
         this.typeImage,
-      this.checkOutOnPressed});
+        this.reference,
+        this.purpose,
+        this.checkOutOnPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +48,10 @@ class CheckInCardWidget extends StatelessWidget {
             OverlapContainerWidget(
               text: typeText,
               image: typeImage,
-            ),
-            OverlapContainerWidget(
-              text: typeText,
+            ), OverlapContainerWidget(
+              referenceBackground: AppColors.yellow,
+              text:reference,
+
             ),
           ],
         ),
@@ -90,11 +96,11 @@ class CheckInCardWidget extends StatelessWidget {
                                   }
                                   return
                                     Container(
-                                    color: AppColors.gray,
-                                  );
+                                      color: AppColors.gray,
+                                    );
                                 },
                                 errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(
+                                const Icon(
                                   Icons.person,
                                   color: AppColors.white,
                                   size: 40,
@@ -137,18 +143,9 @@ class CheckInCardWidget extends StatelessWidget {
                           style: AppTextStyles.style14Black600,
                         ),
                         const Gap(6),
-                        Row(
-                          children: [
-                            IconTextContainerWidget(
-                              image: AppImages.date,
-                              text: date ?? "",
-                            ),
-                            const Gap(5),
-                            IconTextContainerWidget(
-                              image: AppImages.phone,
-                              text: phone ?? "",
-                            ),
-                          ],
+                        IconTextContainerWidget(
+                          image: AppImages.date,
+                          text: date ?? "",
                         ),
                         const Gap(5),
                         IconTitleValueContainerWidget(
@@ -156,9 +153,21 @@ class CheckInCardWidget extends StatelessWidget {
                           title:  'Gate',
                           value: gateValue ?? "",
                         ),
+                        const Gap(5),
+                        IconTextContainerWidget(
+                          image: AppImages.phone,
+                          text: phone ?? "",
+                        ),
                       ],
                     ),
                   ),
+                ],
+              ),
+              const Gap(5),
+              Row(
+                children: [
+                  const Text('Purpose: ',style: AppTextStyles.style14Black600,),
+                  Text( purpose ?? "",style: AppTextStyles.style14DarkGrey400,),
                 ],
               ),
               const Gap(10),

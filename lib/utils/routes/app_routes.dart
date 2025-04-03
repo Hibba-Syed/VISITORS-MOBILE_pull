@@ -4,6 +4,8 @@ class AppRoutes {
   static const String servicesDetailsScreen = '/servicesDetailsScreen';
   static const String guestCheckInScreen = '/guestCheckInScreen';
   static const String checkInDetailsScreen = '/checkInDetailsScreen';
+  static const String visitorPassesScreen = '/visitorPassesScreen';
+  static const String serviceableCheckInsScreen = '/serviceableCheckInsScreen';
 
 
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart'
     show IconTitleValueContainerWidget;
+import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
@@ -19,7 +19,8 @@ class ServicesCardWidget extends StatelessWidget {
   final String? name;
   final String? serviceType;
   final String? countValue;
-  final VoidCallback? logoutOnPressed;
+  final VoidCallback? checkInOnPressed;
+  final VoidCallback? serviceableOnPressed;
 
   const ServicesCardWidget(
       {super.key,
@@ -30,44 +31,24 @@ class ServicesCardWidget extends StatelessWidget {
       this.name,
       this.serviceType,
       this.countValue,
-      this.logoutOnPressed});
+      this.checkInOnPressed,
+        this.serviceableOnPressed,
+      });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  color: AppColors.blue),
-              child: Text(
-                unit ?? "",
-                style: AppTextStyles.style13white500,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  color: AppColors.blue),
-              child: Text(
-                reference ?? "",
-                style: AppTextStyles.style13white500,
-              ),
-            ),
-          ],
-        ),
+         Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+             OverlapContainerWidget(
+               text: unit,),
+             OverlapContainerWidget(
+               text: reference,),
+           ],
+         ),
         Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(10),
@@ -147,14 +128,14 @@ class ServicesCardWidget extends StatelessWidget {
               const Gap(10),
               LogoutButton(
                 text: 'Check-In',
-                onPressed: logoutOnPressed,
+                onPressed: checkInOnPressed,
                 backgroundColor: AppColors.green,
                 image: AppImages.checkInButton,
               ),
               const Gap(8),
               LogoutButton(
                 text: 'Serviceable Check - Ins',
-                onPressed: logoutOnPressed,
+                onPressed: serviceableOnPressed,
                 backgroundColor: AppColors.cyanBlue,
                 image: AppImages.serviceable,
               ),
