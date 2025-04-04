@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 import '../../../utils/text_utils.dart';
 
 class StatusWidget extends StatelessWidget {
@@ -20,14 +21,14 @@ class StatusWidget extends StatelessWidget {
           horizontal: 7 ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: AppConstants.getStatusColor(status).withAlpha(24),
+        color: AppUtils.getStatusColor(status).withAlpha(24),
         // border: Border.all(color: kBlue1)
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text("●",style: TextStyle(
-              color: AppConstants.getStatusColor(status),
+              color: AppUtils.getStatusColor(status),
               fontSize: 9
           ),
                 ),
@@ -36,7 +37,7 @@ class StatusWidget extends StatelessWidget {
             child: Text(
               TextUtils.capitalizeWords(status),
               style:  TextStyle(
-                color: AppConstants.getStatusColor(status),
+                color: AppUtils.getStatusColor(status),
                 fontWeight:  FontWeight.w500,
                 fontSize: 12,
               ),

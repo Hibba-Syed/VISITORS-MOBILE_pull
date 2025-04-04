@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors;
-import 'package:visitors/resource/constants/app_colors.dart';
 
 class AppConstants {
   /// drawer indexes
@@ -15,20 +13,6 @@ class AppConstants {
   static const int logoutIndex = 7;
 
   //App Padding
-  static const double horizontalPadding  =  10;
-  static const double verticalPadding  =  10;
-  // Status colors
-  static  Color getStatusColor(String? status) {
-    if (status?.toLowerCase() == "active") {
-      return AppColors.green;
-    }
-    if (status?.toLowerCase()=="approved") {
-      return AppColors.primary;
-    }
-    if (status?.toLowerCase() == "notified") {
-      return AppColors.blue;
-    }
-
-    return AppColors.red;
-  }
+  static const double horizontalPadding = 10;
+  static const double verticalPadding = 10;
 }

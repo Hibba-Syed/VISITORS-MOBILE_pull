@@ -30,37 +30,37 @@ class DeviceDeciderScreen extends StatelessWidget {
     DrawerItemModel(
       index: AppConstants.dashboardIndex,
       title: 'Dashboard',
-      iconPath: AppImages.mdDashboard,
+      iconPath: AppImages.dashboard,
       onTap: () {},
     ),
     DrawerItemModel(
       index: AppConstants.checkInsIndex,
       title: 'Check-Ins',
-      iconPath: AppImages.mcheckin,
+      iconPath: AppImages.menuCheckin,
       onTap: () {},
     ),
     DrawerItemModel(
       index: AppConstants.eServicesIndex,
       title: 'E-Services',
-      iconPath: AppImages.mEservices,
+      iconPath: AppImages.menuEservices,
       onTap: () {},
     ),
     DrawerItemModel(
       index: AppConstants.workOrderRfpIndex,
       title: 'Work Order / RFPs',
-      iconPath: AppImages.mrfps,
+      iconPath: AppImages.menuRFPs,
       onTap: () {},
     ),
     DrawerItemModel(
       index: AppConstants.messagesIndex,
       title: 'Messages',
-      iconPath: AppImages.mmsg,
+      iconPath: AppImages.menuMsg,
       onTap: () {},
     ),
     DrawerItemModel(
       index: AppConstants.checkOutsIndex,
       title: 'Check-Outs',
-      iconPath: AppImages.mCheckout,
+      iconPath: AppImages.menuCheckout,
       onTap: () {},
     ),
     DrawerItemModel(
@@ -102,7 +102,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                         const Gap(16.0),
                         const Text(
                           'Are you sure you want to exit?',
-                          style: AppTextStyles.style16Grey600,
+                          style: AppTextStyles.style16DarkGrey600,
                         ),
                         const Gap(20.0),
                         Row(
@@ -231,7 +231,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                   const Text(
                                                     'Are you sure you want to logout?',
                                                     style: AppTextStyles
-                                                        .style16Grey600,
+                                                        .style16DarkGrey600,
                                                   ),
                                                   const Gap(20.0),
                                                   Row(

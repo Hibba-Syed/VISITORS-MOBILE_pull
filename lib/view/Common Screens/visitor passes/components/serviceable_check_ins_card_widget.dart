@@ -5,6 +5,7 @@ import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
+import 'package:visitors/view/widgets/network_image_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
@@ -75,41 +76,11 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.gray,
-                        ),
-                        child: Stack(
+                     Stack(
                           clipBehavior: Clip.none,
                           alignment: Alignment.center,
                           children: [
-                            ClipOval(
-                              child: Image.network(
-                                profileImageUrl ?? "",
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return
-                                    Container(
-                                      color: AppColors.gray,
-                                    );
-                                },
-                                errorBuilder: (context, error, stackTrace) =>
-                                const Icon(
-                                  Icons.person,
-                                  color: AppColors.white,
-                                  size: 40,
-                                ),
-                              ),
-                            ),
+                            NetworkImageWidget(url: profileImageUrl,),
                             Positioned(
                               top: -10,
                               right: -6,
@@ -128,11 +99,10 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
                       const Gap(3),
                       Text(
                         type ?? "",
-                        style: AppTextStyles.style12darkGrey500,
+                        style: AppTextStyles.style12DarkGrey500,
                       ),
                     ],
                   ),

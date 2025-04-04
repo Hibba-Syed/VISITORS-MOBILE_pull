@@ -8,12 +8,12 @@ class AppImages {
   static const String background = "${basePngPath}background.png";
 
   ///icons
-  static const String mEservices = "${baseSvgPath}meservices.svg";
-  static const String guestCheckIn = "${baseSvgPath}guestCheckin.svg";
+  static const String menuEservices = "${baseSvgPath}menu_services.svg";
+  static const String guestCheckIn = "${baseSvgPath}guest_checkin.svg";
   static const String guests = "${baseSvgPath}guests.svg";
-  static const String mmsg = "${baseSvgPath}mmsg.svg";
-  static const String mrfps = "${baseSvgPath}mrfps.svg";
-  static const String checkIn = "${baseSvgPath}checkin.svg";
+  static const String menuMsg = "${baseSvgPath}menu_msg.svg";
+  static const String menuRFPs = "${baseSvgPath}menu_rfps.svg";
+  static const String checkIn = "${baseSvgPath}check_in.svg";
   static const String guide = "${baseSvgPath}guide.svg";
   static const String view = "${baseSvgPath}view.svg";
   static const String checkout = "${baseSvgPath}checkout.svg";
@@ -26,11 +26,10 @@ class AppImages {
   static const String vendor = "${baseSvgPath}vendor.svg";
   static const String directory = "${baseSvgPath}directory.svg";
   static const String logouts = "${baseSvgPath}logouts.svg";
-  static const String mdDashboard = "${baseSvgPath}dashboard.svg";
-  static const String mCheckout = "${baseSvgPath}mcheckout.svg";
-  static const String mcheckin = "${baseSvgPath}mcheckin.svg";
-  static const String mRfps = "${baseSvgPath}mrfps.svg";
-  static const String checkInButton = "${baseSvgPath}checkinButton.svg";
+  static const String dashboard = "${baseSvgPath}dashboard.svg";
+  static const String menuCheckout = "${baseSvgPath}menu_checkout.svg";
+  static const String menuCheckin = "${baseSvgPath}menu_checkin.svg";
+  static const String checkInButton = "${baseSvgPath}checkin_button.svg";
   static const String eServices = "${baseSvgPath}eservices.svg";
   static const String rfps = "${baseSvgPath}rfps.svg";
   static const String message = "${baseSvgPath}message.svg";
@@ -43,7 +42,7 @@ class AppImages {
   static const String profile = "${baseSvgPath}profile.svg";
   static const String log = "${baseSvgPath}log.svg";
   static const String scan = "${baseSvgPath}scan.svg";
-  static const String noFilter = "${baseSvgPath}nofilter.svg";
+  static const String noFilter = "${baseSvgPath}no_filter.svg";
   static const String serviceable = "${baseSvgPath}serviceable.svg";
   static const String community = "${baseSvgPath}community.svg";
   static const String question = "${baseSvgPath}question.svg";

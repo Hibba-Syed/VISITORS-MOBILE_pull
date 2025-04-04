@@ -68,6 +68,7 @@ class CheckInsScreen extends StatelessWidget {
                           context, AppRoutes.checkInDetailsScreen);
                     },
                     child: CheckInCardWidget(
+                      count: 5,
                       typeImage: AppImages.community,
                       typeText: "Community Visit",
                       reference: 'FO202401101791',
@@ -79,7 +80,7 @@ class CheckInsScreen extends StatelessWidget {
                       phone: '34567890098',
                       gateValue: "The W Residences Reception",
                       checkOutOnPressed: () {
-                          TextEditingController visitorsNoController = TextEditingController();
+                        final  TextEditingController _visitorsNoController = TextEditingController();
                           showDialog(
                             barrierDismissible: false,
                             context: context,
@@ -100,14 +101,14 @@ class CheckInsScreen extends StatelessWidget {
                                           ),
                                           const Gap(5),
                                           TextFieldWidget(
-                                            controller: visitorsNoController,
+                                            controller: _visitorsNoController,
                                             hint: 'No. of visitors checking-out',
                                             onChanged: (value) {
                                               setState(() {});
                                             },
                                           ),
                                           const Gap(20),
-                                          visitorsNoController.text.isEmpty
+                                          _visitorsNoController.text.isEmpty
                                               ? CustomButton(
                                             borderRadius: 6,
                                             buttonColor: AppColors.red,

@@ -15,8 +15,8 @@ import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 
-class ServiceDetails extends StatelessWidget {
-  const ServiceDetails({super.key});
+class ServiceDetailsScreen extends StatelessWidget {
+  const ServiceDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

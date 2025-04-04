@@ -31,7 +31,7 @@ class MobileDashboardScreen extends StatelessWidget {
     final List<ActionsItemModel> actions = [
       ActionsItemModel(
         title: 'All Check-Ins',
-        count: '10',
+        count: 10,
         iconPath: AppImages.checkIn,
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.green,
@@ -43,7 +43,7 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
       ActionsItemModel(
         title: 'Guests',
-        count: '10',
+        count: 10,
         iconPath: AppImages.guests,
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.yellow,
@@ -54,7 +54,7 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
       ActionsItemModel(
         title: 'E-Services',
-        count: '5',
+        count: 6,
         iconPath: AppImages.eServices,
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.cyanBlue,
@@ -65,7 +65,7 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
       ActionsItemModel(
         title: 'Work Order / RFPs',
-        count: '2',
+        count: 2,
         iconPath: AppImages.rfps,
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.blue,
@@ -76,7 +76,6 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
       ActionsItemModel(
         title: 'Guest Check-In',
-        count: '',
         iconPath: AppImages.guestCheckIn,
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
@@ -87,7 +86,6 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
       ActionsItemModel(
         title: 'Message',
-        count: '',
         iconPath: AppImages.message,
         backgroundColor: AppColors.blue,
         forGroundColor: AppColors.white,
@@ -98,266 +96,277 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
     ];
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
             vertical: AppConstants.verticalPadding,
             horizontal: AppConstants.horizontalPadding),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HeadingWidget(heading: 'Welcome',style: AppTextStyles.style15Grey500,),
-                      HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
-                    ],
-                  ),
-                ],
-              ),
-              const Gap(10),
-              GridView.builder(
-                padding: const EdgeInsets.only(bottom: 10),
-                primary: false,
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    mainAxisExtent: 100),
-                itemCount: actions.length,
-                itemBuilder: (BuildContext context, int index) {
-                  ActionsItemModel actionsItem = actions[index];
-                  return InkWell(
-                    overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                    onTap: actionsItem.onTap,
-                     child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: actionsItem.backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ((actionsItem.iconPath)
-                                        .split(".")
-                                        .last ==
-                                    "png")
-                                ? Image.asset(
-                                     actionsItem.iconPath,
-                                    color: AppColors.primary,
-                                    scale: 3,
-                                  )
-                                : SvgPicture.asset(
-                                    actionsItem.iconPath,
-                                    height: 30,
-                                    width: 30,
-                                    fit: BoxFit.fill,
-                                  ),
-                            const Gap(5),
-                            if (actionsItem.count
-                                .toString()
-                                .isNotEmpty) ...[
-                              Text(
-                              actionsItem.count,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 14,
-                                  color: actionsItem.forGroundColor,
-                                  fontWeight: FontWeight.w600
-                                ),
-                                //AppTextStyles.style14white600,
-                                ),
-                            ],
-                            Text( actionsItem.title,
-                              style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 14,
-                                  color: actionsItem.forGroundColor,
-                                  fontWeight: FontWeight.w500
-                              ),
-                              //AppTextStyles.style14white500
-                              ),
-
-                          ]),
+        child: Column(
+          children: [
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HeadingWidget(heading: 'Welcome',style: AppTextStyles.style15DarkGrey500,),
+                    HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
+                  ],
+                ),
+              ],
+            ),
+            const Gap(10),
+            GridView.builder(
+              padding: const EdgeInsets.only(bottom: 10),
+              primary: false,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  mainAxisExtent: 100),
+              itemCount: actions.length,
+              itemBuilder: (BuildContext context, int index) {
+                ActionsItemModel actionsItem = actions[index];
+                return InkWell(
+                  overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+                  onTap: actionsItem.onTap,
+                   child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: actionsItem.backgroundColor,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                },
-              ),
-               const Gap(5),
-               Row(
-                children: [
-                  const Text(
-                    'Check-Ins',
-                    style: AppTextStyles.style16Primary600,
-                  ),
-                  const Spacer(),
-                  ActionButton(
-                    verticalPadding: 9.5,
-                    text: 'Check-Outs',
-                    image: AppImages.checkout,
-                    imageColor: AppColors.white,
-                    backgroundColor: AppColors.red,
-                    onPressed: (){
-                      context
-                          .read<DeviceDeciderCubit>()
-                          .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
-                    },
-                  ),
-                  const Gap(10),
-                  ActionButton(
-                    text: 'View All',
-                    image: AppImages.view,
-                    imageColor: AppColors.white,
-                    backgroundColor: AppColors.blue,
-                    onPressed: (){
-                      context
-                          .read<DeviceDeciderCubit>()
-                          .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
-                    },
-                  ),
-                ],
-              ),
-              const Gap(10),
-              ListView.separated(
-                padding: const EdgeInsets.only(bottom: 10),
-                shrinkWrap: true,
-                primary: false,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return CheckInCardWidget(
-                    typeText: 'Rose-1024',
-                    name: 'MUHAMMAD AHMED MOHAMMED ',
-                    profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                    type: 'Guest',
-                    date: DateFormat("MMM dd, yyyy ")
-                        .format(DateTime.now()),
-                    phone: '34567890098',
-                    gateValue: "The W Residences Reception",
-                    checkOutOnPressed: (){
-                       _showCheckoutDialog(context);
-                    },
+                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ((actionsItem.iconPath)
+                                      .split(".")
+                                      .last ==
+                                  "png")
+                              ? Image.asset(
+                                   actionsItem.iconPath,
+                                  color: AppColors.primary,
+                                  scale: 3,
+                                )
+                              : SvgPicture.asset(
+                                  actionsItem.iconPath,
+                                  height: 30,
+                                  width: 30,
+                                  fit: BoxFit.fill,
+                                ),
+                          const Gap(5),
+                          if (actionsItem.count.toString()
+                              .isNotEmpty) ...[
+                            Text(
+                            actionsItem.count?.toString() ?? "",
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                                color: actionsItem.forGroundColor,
+                                fontWeight: FontWeight.w600
+                              ),
+                              //AppTextStyles.style14white600,
+                              ),
+                          ],
+                          Text( actionsItem.title,
+                            style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                                color: actionsItem.forGroundColor,
+                                fontWeight: FontWeight.w500
+                            ),
+                            //AppTextStyles.style14white500
+                            ),
 
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
-                },
-              ),
-               const Gap(5),
-               Row(
-                children: [
-                  const Text(
-                    'E-Services',
-                    style: AppTextStyles.style16Primary600,
+                        ]),
                   ),
-                 const Spacer(),
-                   VisitorPassesButton(
-                   count: '45',
-                   onPressed: (){
-                     Navigator.pushNamed(context, AppRoutes.visitorPassesScreen);
-                   },
-                  ),
-                  const Gap(10),
-                  ActionButton(
-                    text: 'View All',
-                    image: AppImages.view,
-                    imageColor: AppColors.white,
-                    backgroundColor: AppColors.blue,
-                    onPressed: (){
-                      context
-                          .read<DeviceDeciderCubit>()
-                          .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
-                    },
-                  ),
-                ],
-              ),
-              const Gap(15),
-              ListView.separated(
-                padding: const EdgeInsets.only(bottom: 10),
-                shrinkWrap: true,
-                primary: false,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return  ServicesCardWidget(
-                    unit: '1006',
-                    title: 'Facility Booking',
-                    reference: 'FO202401101791',
-                    status: 'Notified',
-                    serviceType: 'Fit Out NOC',
-                    name: 'Suhaan',
-                    countValue: '10',
-                    checkInOnPressed: (){
+                );
+              },
+            ),
+             const Gap(5),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 const Row(
+                  children: [
+                     Text(
+                      'Check-Ins',
+                      style: AppTextStyles.style16Primary600,
+                    ),
+                  ],),
+                 Row(
+                   children: [
+                     ActionButton(
+                       verticalPadding: 9.5,
+                       text: 'Check-Outs',
+                       image: AppImages.checkout,
+                       imageColor: AppColors.white,
+                       backgroundColor: AppColors.red,
+                       onPressed: (){
+                         context
+                             .read<DeviceDeciderCubit>()
+                             .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
+                       },
+                     ),
+                     const Gap(10),
+                     ActionButton(
+                       text: 'View All',
+                       image: AppImages.view,
+                       imageColor: AppColors.white,
+                       backgroundColor: AppColors.blue,
+                       onPressed: (){
+                         context
+                             .read<DeviceDeciderCubit>()
+                             .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+                       },
+                     ),
+                   ],
+                 ),
+               ],
+             ),
+            const Gap(10),
+            ListView.separated(
+              padding: const EdgeInsets.only(bottom: 10),
+              shrinkWrap: true,
+              primary: false,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return CheckInCardWidget(
+                  count: 5,
+                  typeText: 'Rose-1024',
+                  name: 'MUHAMMAD AHMED MOHAMMED ',
+                  profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                  type: 'Guest',
+                  date: DateFormat("MMM dd, yyyy ")
+                      .format(DateTime.now()),
+                  phone: '34567890098',
+                  gateValue: "The W Residences Reception",
+                  checkOutOnPressed: (){
+                     _showCheckoutDialog(context);
+                  },
+
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Gap(10);
+              },
+            ),
+             const Gap(5),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 const Row(
+                  children: [
+                     Text(
+                      'E-Services',
+                      style: AppTextStyles.style16Primary600,
+                    ),
+
+                  ],
+                             ),
+                 Row(
+                   children: [
+                     VisitorPassesButton(
+                       count: '45',
+                       onPressed: (){
+                         Navigator.pushNamed(context, AppRoutes.visitorPassesScreen);
+                       },
+                     ),
+                     const Gap(10),
+                     ActionButton(
+                       text: 'View All',
+                       image: AppImages.view,
+                       imageColor: AppColors.white,
+                       backgroundColor: AppColors.blue,
+                       onPressed: (){
+                         context
+                             .read<DeviceDeciderCubit>()
+                             .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
+                       },
+                     ),
+                   ],
+                 ),
+               ],
+             ),
+            const Gap(15),
+            ListView.separated(
+              padding: const EdgeInsets.only(bottom: 10),
+              shrinkWrap: true,
+              primary: false,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return  ServicesCardWidget(
+                  unit: '1006',
+                  title: 'Facility Booking',
+                  reference: 'FO202401101791',
+                  status: 'Notified',
+                  serviceType: 'Fit Out NOC',
+                  name: 'Suhaan',
+                  checkInOnPressed: (){
+                    Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
+                  },
+                  serviceableOnPressed: (){
+                    Navigator.pushNamed(context, AppRoutes.serviceableCheckInsScreen);
+                  },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Gap(10);
+              },
+            ),
+            const Gap(5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Work Orders / RFPs',
+                  style: AppTextStyles.style16Primary600,
+                ),
+                ActionButton(
+                  onPressed: () {
+                    context
+                        .read<DeviceDeciderCubit>()
+                        .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
+                  },
+                  text: 'View All',
+                  image: AppImages.view,
+                  imageColor: AppColors.white,
+                  backgroundColor: AppColors.blue,
+                ),
+              ],
+            ),
+            const Gap(15),
+            ListView.separated(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return  WorkOrderRFPCardWidget(
+                  typeText: 'Work Order',
+                  typeAssetImage: AppImages.hammer,
+                  status: 'Active',
+                  title: '(2 Months) Services Contract',
+                  reference: 'JB001-24-00102',
+                  vendorName: 'Mohammed Faisal Al-Haddad',
+                  date: 'Jan 7, 2025',
+                    checkInPressed: (){
                       Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
-                    },
-                    serviceableOnPressed: (){
-                      Navigator.pushNamed(context, AppRoutes.serviceableCheckInsScreen);
-                    },
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5));
-                },
-              ),
-              const Gap(5),
-              Row(
-                children: [
-                  const Text(
-                    'Work Orders / RFPs',
-                    style: AppTextStyles.style16Primary600,
-                  ),
-                  const Spacer(),
-                  ActionButton(
-                    onPressed: () {
-                      context
-                          .read<DeviceDeciderCubit>()
-                          .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
-                    },
-                    text: 'View All',
-                    image: AppImages.view,
-                    imageColor: AppColors.white,
-                    backgroundColor: AppColors.blue,
-                  ),
-                ],
-              ),
-              const Gap(15),
-              ListView.separated(
-                shrinkWrap: true,
-                primary: false,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return  WorkOrderRFPCardWidget(
-                    typeText: 'Work Order',
-                    typeAssetImage: AppImages.hammer,
-                    status: 'Active',
-                    title: '(2 Months) Services Contract',
-                    reference: 'JB001-24-00102',
-                    vendorName: 'Mohammed Faisal Al-Haddad',
-                    date: 'Jan 7, 2025',
-                      checkInPressed: (){
-                        Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
-                      }
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5));
-                },
-              ),
-            ],
-          ),
+                    }
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Gap(10);
+              },
+            ),
+          ],
         ),
       ),
     );
   }
   void _showCheckoutDialog(BuildContext context) {
-    TextEditingController visitorsNoController = TextEditingController();
+  final TextEditingController _visitorsNoController = TextEditingController();
 
     showDialog(
       barrierDismissible: false,
@@ -379,14 +388,14 @@ class MobileDashboardScreen extends StatelessWidget {
                     ),
                     const Gap(5),
                     TextFieldWidget(
-                      controller: visitorsNoController,
+                      controller: _visitorsNoController,
                       hint: 'No. of visitors checking-out',
                       onChanged: (value) {
-                        setState(() {}); // Rebuild UI when text changes
+                        setState(() {});
                       },
                     ),
                     const Gap(20),
-                    visitorsNoController.text.isEmpty
+                    _visitorsNoController.text.isEmpty
                         ? CustomButton(
                       borderRadius: 6,
                       buttonColor: AppColors.red,

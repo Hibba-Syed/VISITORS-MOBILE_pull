@@ -68,7 +68,7 @@ class ReferenceWidget extends StatelessWidget {
               ),
               Flexible(
                 child: Text(text ?? "",
-                  style: AppTextStyles.styleReferencePrimaryColor400,
+                  style: AppTextStyles.style10PrimaryColor400,
                 ),
               ),
           ],

@@ -6,6 +6,7 @@ import 'package:visitors/view/widgets/container_widgets/icon_text_container_widg
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart'
     show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
+import 'package:visitors/view/widgets/network_image_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
@@ -49,9 +50,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                      ),
              OverlapContainerWidget(
               text: reference,
-               backgroundColor: AppColors.yellow,
-                     ),
-
+               backgroundColor: AppColors.yellow),
            ],
          ),
         Container(
@@ -71,38 +70,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.gray,
-                        ),
-                        child: ClipOval(
-                          child: Image.network(
-                            profileImageUrl ?? "",
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                            loadingBuilder:
-                                (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              }
-                              return
-                                Container(
-                                  color: AppColors.gray,
-                                );
-                            },
-                            errorBuilder: (context, error, stackTrace) =>
-                            const Icon(
-                              Icons.person,
-                              color: AppColors.white,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      ),
+                      NetworkImageWidget(url: profileImageUrl,),
                     ],
                   ),
                   const Gap(14),

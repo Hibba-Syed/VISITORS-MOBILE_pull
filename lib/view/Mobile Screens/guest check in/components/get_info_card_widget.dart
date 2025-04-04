@@ -4,6 +4,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/network_image_widget.dart';
 
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
@@ -24,35 +25,10 @@ class GetInfoCardWidget extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.gray,
-              ),
-              child: ClipOval(
-                child: Image.network(
-                  profileImageUrl ?? "",
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Container(
-                      color: AppColors.gray,
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.person,
-                    color: AppColors.white,
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
+            NetworkImageWidget(
+              height: 50,
+              width: 50,
+              url: profileImageUrl,),
             const Gap(10),
             Expanded(
               child: Column(
@@ -67,7 +43,7 @@ class GetInfoCardWidget extends StatelessWidget {
                   const Gap(5),
                   Text(
                     country ?? "",
-                    style: AppTextStyles.style12darkGrey500,
+                    style: AppTextStyles.style12DarkGrey500,
                   ),
                 ],
               ),
