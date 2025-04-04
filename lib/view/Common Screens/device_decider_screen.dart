@@ -5,12 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
+import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
+import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart' show AllServicesScreen;
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
-import 'package:visitors/view/Mobile%20Screens/check%20outs/check_outs_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/guest_check_in_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/messages/message_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 
 import '../../resource/constants/app_colors.dart';
@@ -360,11 +359,12 @@ class DeviceDeciderScreen extends StatelessWidget {
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
     }
-    // else if (state.selectedIndex == AppConstants.messagesIndex) {
-    //   return const MessageScreen();
-    // }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-    //   return const CheckOutsScreen() ;
-    // }
+    else if (state.selectedIndex == AppConstants.messagesIndex) {
+      return const MessageScreen();
+    }
+    else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      return const CheckOutsScreen() ;
+    }
     else if (state.selectedIndex == AppConstants.directoryIndex) {
       return const DirectoryScreen();
     }

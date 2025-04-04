@@ -24,7 +24,7 @@ class LogoutButton extends StatelessWidget {
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: onPressed,
       child: Container(
-        height: 35,
+        height: 42,
         width: width,
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(

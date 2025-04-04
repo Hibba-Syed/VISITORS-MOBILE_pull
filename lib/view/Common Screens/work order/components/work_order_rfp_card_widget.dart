@@ -19,7 +19,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
   final String? typeText;
   final String? typeAssetImage;
 
-  final VoidCallback? logoutOnPressed;
+  final VoidCallback? checkInPressed;
   const WorkOrderRFPCardWidget({super.key,
     this.title,
     this.status,
@@ -27,7 +27,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
     this.date,
     this.reference,
     this.typeText,
-    this.logoutOnPressed,
+    this.checkInPressed,
     this.typeAssetImage,
   });
 
@@ -129,7 +129,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
               const Gap(10),
               LogoutButton(
                 text: 'Check-In',
-                onPressed: logoutOnPressed,
+                onPressed: checkInPressed,
                 backgroundColor:  AppColors.green ,
                 image: AppImages.checkInButton,
               ),

@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-import 'package:visitors/view/Mobile%20Screens/messages/components/attachment_card_widget.dart';
-import 'package:visitors/view/Mobile%20Screens/messages/components/chat_bottom_row_widget.dart';
-import 'package:visitors/view/Mobile%20Screens/messages/components/message_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/messages/components/attachment_card_widget.dart';
+import 'package:visitors/view/Common%20Screens/messages/components/chat_bottom_row_widget.dart';
+import 'package:visitors/view/Common%20Screens/messages/components/message_card_widget.dart';
+
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});

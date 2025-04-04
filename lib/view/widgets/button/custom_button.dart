@@ -10,8 +10,9 @@ class CustomButton extends StatelessWidget {
   final Color? buttonColor;
   final String text;
   final Widget? icon;
-  final Color textColor;
+  final Color? textColor;
   final TextAlign? textAlign;
+  final double? borderRadius;
   final VoidCallback onPressed;
   final int maxLines;
   final bool invert;
@@ -31,10 +32,12 @@ class CustomButton extends StatelessWidget {
       this.fontSize = 16,
       this.maxLines = 1,
       this.padding = const EdgeInsets.all(10),
-      this.textColor = AppColors.white,
+      this.textColor,
       required this.onPressed,
       this.invert = false,
-      this.fontWeight = FontWeight.bold});
+      this.fontWeight = FontWeight.bold,
+        this.borderRadius,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class CustomButton extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(borderRadius ?? 10),
             border: invert == true
                 ? Border.all(color: buttonColor ?? AppColors.primary, width: 1)
                 : null,
@@ -61,7 +64,7 @@ class CustomButton extends StatelessWidget {
                 text,
                 style: invert
                     ? TextStyle(
-                        color: AppColors.primary,
+                        color: textColor ?? AppColors.primary,
                         fontSize: fontSize,
                         fontWeight: FontWeight.w500,
                       )

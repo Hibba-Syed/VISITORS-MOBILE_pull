@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
@@ -19,6 +18,7 @@ class CheckInCardWidget extends StatelessWidget {
   final String? date;
   final String? typeText;
   final String? typeImage;
+  final String? reference;
   final VoidCallback? checkOutOnPressed;
   const CheckInCardWidget(
       {super.key,
@@ -30,24 +30,18 @@ class CheckInCardWidget extends StatelessWidget {
       this.date,
       this.gateValue,
         this.typeImage,
-      this.checkOutOnPressed});
+        this.reference,
+      this.checkOutOnPressed
+      });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OverlapContainerWidget(
-              text: typeText,
-              image: typeImage,
-            ),
-            OverlapContainerWidget(
-              text: typeText,
-            ),
-          ],
+        OverlapContainerWidget(
+          text: typeText,
+          image: typeImage,
         ),
         Container(
           padding: const EdgeInsets.all(10),
@@ -113,7 +107,7 @@ class CheckInCardWidget extends StatelessWidget {
                                         color: AppColors.white, width: 4)),
                                 child: const Text(
                                   '5',
-                                  style: AppTextStyles.style12white600,
+                                  style: AppTextStyles.style12white400,
                                 ),
                               ),
                             ),

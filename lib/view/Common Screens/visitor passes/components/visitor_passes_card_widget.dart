@@ -49,7 +49,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                      ),
              OverlapContainerWidget(
               text: reference,
-               referenceBackground: AppColors.yellow,
+               backgroundColor: AppColors.yellow,
                      ),
 
            ],

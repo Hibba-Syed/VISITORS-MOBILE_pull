@@ -13,7 +13,6 @@ class IconTextContainerWidget extends StatelessWidget {
   final double? horizontalPadding;
   final double? verticalPadding;
   final Color? imageColor;
-  final VoidCallback? onPressed;
   final IconData? icon;
   final Color? iconColor;
 
@@ -25,7 +24,6 @@ class IconTextContainerWidget extends StatelessWidget {
     this.verticalPadding,
     this.imageColor,
     this.textColor,
-    this.onPressed,
     this.icon,
     this.iconColor
 
@@ -33,53 +31,50 @@ class IconTextContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 8,vertical: verticalPadding ?? 6),
-        decoration: BoxDecoration(
-          borderRadius:  BorderRadius.circular(5),
-          color: backgroundColor ?? AppColors.gray,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (image != null)
-              Row(
-                children: [
-                  SvgPicture.asset(image ?? "",
-                    height: 16,
-                    colorFilter: ColorFilter.mode(
-                    imageColor ?? AppColors.darkGrey,
-                    BlendMode.srcIn,
-                  ),),
-                  const Gap(3),
-                ],
-              )
-            else if (icon != null)
-              Row(
-                children: [
-                  Icon(
-                    icon,
-                    color: iconColor ?? AppColors.primary,
-                    size: 17,
-                  ),
-                  const Gap(3),
-                ],
-              )
-            else
-              const SizedBox.shrink(),
-            const Gap(2),
-              Text( text ?? "",
-                style: TextStyle(
-                  color: textColor ?? AppColors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13,
-                   //AppTextStyles.style10Black400
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 8,vertical: verticalPadding ?? 6),
+      decoration: BoxDecoration(
+        borderRadius:  BorderRadius.circular(5),
+        color: backgroundColor ?? AppColors.gray,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (image != null)
+            Row(
+              children: [
+                SvgPicture.asset(image ?? "",
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                  imageColor ?? AppColors.darkGrey,
+                  BlendMode.srcIn,
+                ),),
+                const Gap(3),
+              ],
+            )
+          else if (icon != null)
+            Row(
+              children: [
+                Icon(
+                  icon,
+                  color: iconColor ?? AppColors.primary,
+                  size: 17,
                 ),
+                const Gap(3),
+              ],
+            )
+          else
+            const SizedBox.shrink(),
+          const Gap(2),
+            Text( text ?? "",
+              style: TextStyle(
+                color: textColor ?? AppColors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 13,
+                 //AppTextStyles.style10Black400
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

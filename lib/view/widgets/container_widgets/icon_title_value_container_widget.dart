@@ -14,7 +14,6 @@ class IconTitleValueContainerWidget extends StatelessWidget {
   final double? horizontalPadding;
   final double? verticalPadding;
   final Color? imageColor;
-  final VoidCallback? onPressed;
 
   const IconTitleValueContainerWidget({
     super.key,
@@ -25,42 +24,41 @@ class IconTitleValueContainerWidget extends StatelessWidget {
     this.verticalPadding,
     this.imageColor,
     this.textColor,
-    this.onPressed,
     this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding ?? 8,
-            vertical: verticalPadding ?? 6),
-        decoration: BoxDecoration(
-          borderRadius:  BorderRadius.circular(5),
-          color: backgroundColor ?? AppColors.gray,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(image ?? "",
-                colorFilter: ColorFilter.mode(
-                  imageColor ?? AppColors.darkGrey,
-                  BlendMode.srcIn,
-                ),
-                height: 14),
-            const Gap(5),
-            Text(
-              "$title: ",
-              style: AppTextStyles.style12Black600,
-            ),
-            Text(
-              value ?? "",
-              style: AppTextStyles.style13Black400,
-            ),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding ?? 8,
+          vertical: verticalPadding ?? 6),
+      decoration: BoxDecoration(
+        borderRadius:  BorderRadius.circular(5),
+        color: backgroundColor ?? AppColors.gray,
+      ),
+      child: Row(
+         mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(image ?? "",
+              colorFilter: ColorFilter.mode(
+                imageColor ?? AppColors.darkGrey,
+                BlendMode.srcIn,
+              ),
+              height: 14),
+          const Gap(5),
+          Text(
+            "$title: ",
+            style: AppTextStyles.style13Black600,
+          ),
+          Text(
+            value ?? "",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style:
+            AppTextStyles.style13Black400,
+          ),
+        ],
       ),
     );
   }

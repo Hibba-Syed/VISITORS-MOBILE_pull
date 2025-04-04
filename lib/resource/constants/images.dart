@@ -47,5 +47,6 @@ class AppImages {
   static const String serviceable = "${baseSvgPath}serviceable.svg";
   static const String community = "${baseSvgPath}community.svg";
   static const String question = "${baseSvgPath}question.svg";
+  static const String export = "${baseSvgPath}export.svg";
 
 }

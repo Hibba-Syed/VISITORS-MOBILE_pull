@@ -10,35 +10,34 @@ import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
 
-class ServiceableCheckInsCardWidget extends StatelessWidget {
+class CheckOutsCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final String? gateValue;
+  final String? visitorCount;
+  final String? checkInGateValue;
+  final String? checkOutGateValue;
   final String? type;
   final String? phone;
-  final String? date;
+  final String? checkInDate;
+  final String? checkOutDate;
   final String? typeText;
   final String? typeImage;
-  final String? reference;
-  final String? purpose;
-  final String? count;
-
-
   final VoidCallback? checkOutOnPressed;
-  const ServiceableCheckInsCardWidget(
+  const CheckOutsCardWidget(
       {super.key,
         this.profileImageUrl,
+        this.visitorCount,
         this.name,
         this.type,
         this.phone,
         this.typeText,
-        this.date,
-        this.gateValue,
+        this.checkInDate,
+        this.checkOutDate,
+        this.checkInGateValue,
+        this.checkOutGateValue,
         this.typeImage,
-        this.reference,
-        this.purpose,
-        this.count,
-        this.checkOutOnPressed});
+        this.checkOutOnPressed
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +50,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
             OverlapContainerWidget(
               text: typeText,
               image: typeImage,
-            ), OverlapContainerWidget(
-              backgroundColor: AppColors.yellow,
-              text:reference,
+              backgroundColor: AppColors.primary,
 
             ),
           ],
@@ -71,7 +68,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
                     children: [
@@ -117,11 +114,11 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AppColors.blue,
+                                    color: AppColors.primary,
                                     border: Border.all(
                                         color: AppColors.white, width: 3)),
                                 child:  Text(
-                                  count ?? '',
+                                  visitorCount ?? '',
                                   style: AppTextStyles.style12white400,
                                 ),
                               ),
@@ -137,48 +134,55 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name ?? "",
-                          style: AppTextStyles.style14Black600,
-                        ),
-                        const Gap(6),
-                        IconTextContainerWidget(
-                          image: AppImages.date,
-                          text: date ?? "",
-                        ),
-                        const Gap(5),
-                        IconTitleValueContainerWidget(
-                          image: AppImages.gate,
-                          title:  'Gate',
-                          value: gateValue ?? "",
-                        ),
-                        const Gap(5),
-                        IconTextContainerWidget(
-                          image: AppImages.phone,
-                          text: phone ?? "",
-                        ),
-                      ],
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name ?? "",
+                        style: AppTextStyles.style14Black600,
+                      ),
+                      const Gap(6),
+                      IconTextContainerWidget(
+                        image: AppImages.phone,
+                        text: phone ?? "",
+                      ),
+                      const Gap(5),
+                      const Text('Check-In',style: AppTextStyles.style13Black600,),
+                      const Gap(5),
+                      Row(
+                        children: [
+                          IconTextContainerWidget(
+                            image: AppImages.date,
+                            text: checkInDate ?? "",
+                          ),
+                          const Gap(5),
+                          IconTitleValueContainerWidget(
+                            image: AppImages.gate,
+                            title:  'Gate',
+                            value: checkInGateValue ?? "",
+                          ),
+                        ],
+                      ),
+                      const Gap(5),
+                      const Text('Check-Out',style: AppTextStyles.style13Black600,),
+                      const Gap(5),
+                      Row(
+                        children: [
+                          IconTextContainerWidget(
+                            image: AppImages.date,
+                            text: checkOutDate ?? "",
+                          ),
+                          const Gap(5),
+                          IconTitleValueContainerWidget(
+                            image: AppImages.gate,
+                            title:  'Gate',
+                            value: checkOutGateValue ?? "",
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
-              ),
-              const Gap(5),
-              Row(
-                children: [
-                  const Text('Purpose: ',style: AppTextStyles.style14Black600,),
-                  Text( purpose ?? "",style: AppTextStyles.style14DarkGrey400,),
-                ],
-              ),
-              const Gap(10),
-              LogoutButton(
-                text: 'Check Out',
-                onPressed: checkOutOnPressed,
-                image: AppImages.logout,
-                backgroundColor: AppColors.red,
               ),
             ],
           ),

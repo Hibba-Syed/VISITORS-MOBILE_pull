@@ -59,7 +59,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         reference: 'JB001-24-00102',
                         vendorName: 'Mohammed Faisal Al-Haddad',
                         date: 'Jan 7, 2025',
-                        logoutOnPressed: (){}
+                        checkInPressed: (){}
                     ),
                   );
                 }, separatorBuilder: (BuildContext context, int index) {

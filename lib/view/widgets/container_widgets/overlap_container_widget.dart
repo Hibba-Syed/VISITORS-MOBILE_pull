@@ -5,12 +5,12 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 class OverlapContainerWidget extends StatelessWidget {
   final String? text;
-  final Color? referenceBackground;
+  final Color? backgroundColor;
   final String? image;
   const OverlapContainerWidget({
     super.key,
     this.text,
-    this.referenceBackground,
+    this.backgroundColor,
     this.image,
 
   });
@@ -27,7 +27,7 @@ class OverlapContainerWidget extends StatelessWidget {
                 topRight: Radius.circular(8),
                 topLeft: Radius.circular(8),
               ),
-              color: referenceBackground ?? AppColors.blue),
+              color: backgroundColor ?? AppColors.blue),
           child: Row(
             children: [
           if (image != null && image!.isNotEmpty) ...[

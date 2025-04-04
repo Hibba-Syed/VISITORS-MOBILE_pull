@@ -260,13 +260,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       const Divider(
                                         color: AppColors.lightGrey,
                                       ),
+                                      const Gap(5),
                                       ConstrainedBox(
                                         constraints: const BoxConstraints(
                                              maxHeight: 250),
                                         child: ListView.separated(
                                           shrinkWrap: true,
                                           primary: false,
-                                          itemCount: 10,
+                                          itemCount: 3,
                                           itemBuilder: (context, index) {
                                             return const GetInfoCardWidget(
                                               name:

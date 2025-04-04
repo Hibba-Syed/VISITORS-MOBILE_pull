@@ -44,8 +44,8 @@ class ActionButton extends StatelessWidget {
               SvgPicture.asset(image ?? "", colorFilter: ColorFilter.mode(
                 imageColor ?? AppColors.white,
                 BlendMode.srcIn,
-              ),height: 16),
-              const Gap(4),
+              ),height: 15),
+              const Gap(5),
               Text(text ?? "",
                   style: TextStyle(
                     color: textColor ?? AppColors.white,
