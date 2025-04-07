@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
-import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
-import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/button/visitor_passes_button.dart';
+import 'package:visitors/view/widgets/container_widgets/actions_container_widget.dart';
 import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
-import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../widgets/button/action_button.dart';
+import '../../widgets/container_widgets/check_out_container_widget.dart';
 
 class MobileDashboardScreen extends StatelessWidget {
   const MobileDashboardScreen({
@@ -127,61 +125,13 @@ class MobileDashboardScreen extends StatelessWidget {
               itemCount: actions.length,
               itemBuilder: (BuildContext context, int index) {
                 ActionsItemModel actionsItem = actions[index];
-                return InkWell(
-                  overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                  onTap: actionsItem.onTap,
-                   child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: actionsItem.backgroundColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ((actionsItem.iconPath)
-                                      .split(".")
-                                      .last ==
-                                  "png")
-                              ? Image.asset(
-                                   actionsItem.iconPath,
-                                  color: AppColors.primary,
-                                  scale: 3,
-                                )
-                              : SvgPicture.asset(
-                                  actionsItem.iconPath,
-                                  height: 30,
-                                  width: 30,
-                                  fit: BoxFit.fill,
-                                ),
-                          const Gap(5),
-                          if (actionsItem.count.toString()
-                              .isNotEmpty) ...[
-                            Text(
-                            actionsItem.count?.toString() ?? "",
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 14,
-                                color: actionsItem.forGroundColor,
-                                fontWeight: FontWeight.w600
-                              ),
-                              //AppTextStyles.style14white600,
-                              ),
-                          ],
-                          Text( actionsItem.title,
-                            style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 14,
-                                color: actionsItem.forGroundColor,
-                                fontWeight: FontWeight.w500
-                            ),
-                            //AppTextStyles.style14white500
-                            ),
-
-                        ]),
-                  ),
+                return ActionsContainerWidget(
+                  title: actionsItem.title,
+                  count: actionsItem.count,
+                  backgroundColor: actionsItem.backgroundColor,
+                  forGroundColor: actionsItem.forGroundColor,
+                  iconPath: actionsItem.iconPath,
+                  actionOnTap: actionsItem.onTap,
                 );
               },
             ),
@@ -239,8 +189,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   name: 'MUHAMMAD AHMED MOHAMMED ',
                   profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                   type: 'Guest',
-                  date: DateFormat("MMM dd, yyyy ")
-                      .format(DateTime.now()),
+                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                   phone: '34567890098',
                   gateValue: "The W Residences Reception",
                   checkOutOnPressed: (){
@@ -269,7 +218,7 @@ class MobileDashboardScreen extends StatelessWidget {
                  Row(
                    children: [
                      VisitorPassesButton(
-                       count: '45',
+                       count: 45,
                        onPressed: (){
                          Navigator.pushNamed(context, AppRoutes.visitorPassesScreen);
                        },
@@ -350,7 +299,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   title: '(2 Months) Services Contract',
                   reference: 'JB001-24-00102',
                   vendorName: 'Mohammed Faisal Al-Haddad',
-                  date: 'Jan 7, 2025',
+                  date: '2025-04-04T05:33:36.000000Z',
                     checkInPressed: (){
                       Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
                     }
@@ -367,98 +316,23 @@ class MobileDashboardScreen extends StatelessWidget {
   }
   void _showCheckoutDialog(BuildContext context) {
   final TextEditingController _visitorsNoController = TextEditingController();
-
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return CustomAlertDialogBox(
-              insetPadding: const EdgeInsets.symmetric(horizontal: 10),
-              hideBothButtons: true,
-              title: 'Checkout for Ahmed',
-              contentBuilder: (context, setState) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      '3',
-                      style: AppTextStyles.style36Red500,
-                    ),
-                    const Gap(5),
-                    TextFieldWidget(
-                      controller: _visitorsNoController,
-                      hint: 'No. of visitors checking-out',
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                    ),
-                    const Gap(20),
-                    _visitorsNoController.text.isEmpty
-                        ? CustomButton(
-                      borderRadius: 6,
-                      buttonColor: AppColors.red,
-                      height: 42,
-                      text: 'Check-Out All',
-                      onPressed: () {},
-                    )
-                        : Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            borderRadius: 6,
-                            invert: true,
-                            height: 42,
-                            buttonColor: AppColors.red,
-                            textColor: AppColors.red,
-                            text: 'Check-Out',
-                            onPressed: () {},
-                          ),
-                        ),
-                        const Gap(8),
-                        Expanded(
-                          child: CustomButton(
-                            borderRadius: 6,
-                            buttonColor: AppColors.red,
-                            height: 42,
-                            text: 'Check-Out All',
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Gap(10),
-                    const Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Check-In Log',
-                        style: AppTextStyles.style14Black600,
-                      ),
-                    ),
-                    const Divider(color: AppColors.gray),
-                    const Gap(5),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 250),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return ActivityLogWidget(
-                            status: 'Check-In',
-                            byValue: '',
-                            description:
-                            '6 visitor(s) checked-in from gate ‘The W Residences’',
-                            dateTime: DateFormat("MMM dd, yyyy, hh:mm a")
-                                .format(DateTime.now()),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
+        return CustomAlertDialogBox(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+          hideBothButtons: true,
+          title: 'Checkout for Ahmed',
+          contentBuilder: (context, setState) {
+            return CheckOutContainerWidget(
+              checkOutAllOnPress: () {  },
+              checkOutOnPress: () {  },
+              controller: _visitorsNoController,
+              logDate: '2025-04-04T05:33:36.000000Z',
+              logStatus: 'Check-In',
+              logByValue: '',
+              logDescription: '6 visitor(s) checked-in from gate ‘The W Residences',
             );
           },
         );

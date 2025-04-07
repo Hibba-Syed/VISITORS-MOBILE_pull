@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/view/widgets/button/small_button.dart';
 import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 
@@ -13,10 +14,10 @@ class GetInfoCardWidget extends StatelessWidget {
   final VoidCallback? deleteOnPressed;
   const GetInfoCardWidget(
       {super.key,
-        this.profileImageUrl,
-        this.name,
-        this.country,
-        this.deleteOnPressed});
+      this.profileImageUrl,
+      this.name,
+      this.country,
+      this.deleteOnPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class GetInfoCardWidget extends StatelessWidget {
             NetworkImageWidget(
               height: 50,
               width: 50,
-              url: profileImageUrl,),
+              url: profileImageUrl,
+            ),
             const Gap(10),
             Expanded(
               child: Column(
@@ -53,52 +55,46 @@ class GetInfoCardWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: AppColors.green),
-              padding: const EdgeInsets.all(5),
-              child: const Icon(
-                Icons.check,
-                color: AppColors.white,
-              ),
+            SmallButton(
+              icon: Icons.check,
+              backgroundColor: AppColors.green,
+              onPressed: () {},
             ),
             const Gap(10),
-            InkWell(
-              onTap: (){
+            SmallButton(
+              icon: CupertinoIcons.delete,
+              backgroundColor: AppColors.red,
+              onPressed: () {
                 showDialog(
                     barrierDismissible: false,
                     context: context,
-                    builder: (context){
+                    builder: (context) {
                       return CustomAlertDialogBox(
                         isCancelButtonDisable: true,
                         confirmButtonText: 'Delete',
                         confirmButtonColor: AppColors.red,
-                        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+                        insetPadding:
+                            const EdgeInsets.symmetric(horizontal: 20),
                         title: 'Delete Visitor Record',
-                        contentBuilder: (context,setState){
+                        contentBuilder: (context, setState) {
                           return const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(CupertinoIcons.delete,size: 25,color: AppColors.red,),
-                               Gap(10),
-                              Text('Are you sure you want to delete this visitor record  forever?',style: AppTextStyles.style14Red600),
+                              Icon(
+                                CupertinoIcons.delete,
+                                size: 25,
+                                color: AppColors.red,
+                              ),
+                              Gap(10),
+                              Text(
+                                  'Are you sure you want to delete this visitor record  forever?',
+                                  style: AppTextStyles.style14Red600),
                             ],
                           );
                         },
                       );
-                    }
-                );
+                    });
               },
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5), color: AppColors.red),
-                padding: const EdgeInsets.all(5),
-                child: const Icon(
-                  CupertinoIcons.delete,
-                  color: AppColors.white,
-                ),
-              ),
             ),
           ],
         ),

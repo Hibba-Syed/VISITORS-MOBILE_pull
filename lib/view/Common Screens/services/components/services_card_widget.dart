@@ -73,11 +73,6 @@ class ServicesCardWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              // const Gap(5),
-              // Text(
-              //   reference ?? "",
-              //   style: AppTextStyles.style12darkGrey500,
-              // ),
               const Gap(5),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -40,7 +40,7 @@ class AppTextStyles {
   );
   static const TextStyle style12Black600 = TextStyle(
     color: AppColors.black,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: FontWeight.w600,
   );
   static const TextStyle style13Black400 = TextStyle(
@@ -62,11 +62,6 @@ class AppTextStyles {
     color: AppColors.white,
     fontSize: 10,
     fontWeight: FontWeight.w500,
-  );
-  static const TextStyle styleDrawerColor400 = TextStyle(
-    color: AppColors.drawerColor,
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
   );
   static const TextStyle style10PrimaryColor400 = TextStyle(
     color: AppColors.primary,

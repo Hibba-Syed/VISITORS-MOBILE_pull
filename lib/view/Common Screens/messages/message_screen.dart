@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/Common%20Screens/messages/components/attachment_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/messages/components/chat_bottom_row_widget.dart';
 import 'package:visitors/view/Common%20Screens/messages/components/message_card_widget.dart';
@@ -23,26 +24,22 @@ class _MessageScreenState extends State<MessageScreen> {
     {
       "text": "Hello!",
       "isSender": true,
-      "time": "10:30 AM",
-      "date": "july 11 2025"
+      "date": "2025-04-04T05:33:36.000000Z"
     },
     {
       "text": "Hi, how are you?",
       "isSender": false,
-      "time": "10:32 AM",
-      "date": "july 11 2025"
+      "date": "2025-04-04T05:33:36.000000Z"
     },
     {
       "text": "I am fine",
       "isSender": true,
-      "time": "10:30 AM",
-      "date": "july 11 2025"
+      "date": "2025-04-04T05:33:36.000000Z"
     },
     {
       "text": "What you wanna ask?",
       "isSender": false,
-      "time": "10:32 AM",
-      "date": "july 11 2025"
+      "date": "2025-04-04T05:33:36.000000Z"
     },
   ];
   @override
@@ -78,7 +75,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                 )
                               : MessageVisitorCardWidget(
                                   message: message['text'],
-                                  time: "${message['date']} ${message['time']}",
+                                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                                 ),
                         ],
                       );

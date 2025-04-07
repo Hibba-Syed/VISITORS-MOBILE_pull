@@ -13,7 +13,9 @@ import 'package:visitors/view/widgets/button/action_button.dart';
 import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
+import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
   const GuestCheckInScreen({super.key});
@@ -23,16 +25,16 @@ class GuestCheckInScreen extends StatefulWidget {
 }
 
 class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
-  TextEditingController visitorCountController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController cardNumberController = TextEditingController();
-  String? selectedItemType;
-  String? selectedItemPurpose;
-  String? selectedItemUnit;
-  String? selectedItemNationality;
+  final TextEditingController _visitorCountController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _cardNumberController = TextEditingController();
+  String? _selectedItemType;
+  String? _selectedItemPurpose;
+  String? _selectedItemUnit;
+  String? _selectedItemNationality;
 
   @override
   Widget build(BuildContext context) {
@@ -43,313 +45,249 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.verticalPadding),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 90,
-                    height: 90,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.center,
+                child: NetworkImageWidget(url: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                  height: 90,
+                  width: 90,
+                ),
+              ),
+              const Gap(20),
+              const ActionButton(
+                verticalPadding: 10,
+                image: AppImages.scan,
+                text: "Scan ID",
+                textColor: AppColors.white,
+              ),
+              const Gap(20),
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Column(
+                  children: [
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'ID Number',
+                      value: '5678967',
                     ),
-                    child: ClipOval(
-                      child: Image.network(
-                        "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return Container(
-                            color: AppColors.gray,
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(
-                          Icons.person,
-                          color: AppColors.white,
-                          size: 40,
-                        ),
-                      ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Issue Date',
+                      value: '--',
                     ),
-                  ),
-                ),
-                const Gap(20),
-                const ActionButton(
-                  verticalPadding: 10,
-                  image: AppImages.scan,
-                  text: "Scan ID",
-                  textColor: AppColors.white,
-                ),
-                const Gap(20),
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Column(
-                    children: [
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'ID Number',
-                        value: '5678967',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Issue Date',
-                        value: '--',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Expiry Date',
-                        value: '--',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Passport Number',
-                        value: '234567890',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        isLast: true,
-                        title: 'Passport Expiry',
-                        value: 'Aug 7, 2025',
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(20),
-                const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Type*",
-                      style: AppTextStyles.style12Black600,
-                    )),
-                const Gap(8),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Select Type",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedItemType,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: const [
-                      'Unit Visit',
-                      'Community Visit',
-                    ],
-                    onChanged: (value) {
-                      selectedItemType = value;
-                    }),
-                fieldsTile(
-                  "Visitor Count*",
-                  "Enter count",
-                  controller: visitorCountController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(10),
-                const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Purpose*",
-                      style: AppTextStyles.style12Black600,
-                    )),
-                const Gap(8),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Select Purpose",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedItemPurpose,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: const [
-                      'purpose',
-                      'purpose',
-                    ],
-                    onChanged: (value) {
-                      selectedItemPurpose = value;
-                    }),
-                const Gap(10),
-                const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Unit Number*",
-                      style: AppTextStyles.style12Black600,
-                    )),
-                const Gap(8),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Select Unit",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedItemUnit,
-                    // itemAsString: (type) => type ?? "--",
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: const ['233', '2', '4567'],
-                    onChanged: (value) {
-                      selectedItemUnit = value;
-                    }),
-                fieldsTile(
-                  "Name*",
-                  "Enter Name",
-                  controller: nameController,
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
-                    }
-                    return null;
-                  },
-                ),
-                fieldsTile(
-                  "Phone Number*",
-                  "Enter phone number",
-                  controller: phoneNumberController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Required max length 13 digits';
-                    }
-                    if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
-                      return 'Please enter a valid mobile number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(13),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Expiry Date',
+                      value: '--',
+                    ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Passport Number',
+                      value: '234567890',
+                    ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      isLast: true,
+                      title: 'Passport Expiry',
+                      value: 'Aug 7, 2025',
+                    ),
                   ],
-                  suffix: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(5),
-                          bottomRight: Radius.circular(5),
-                        ),
-                        border: Border.all(color: AppColors.primary)),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                ),
+              ),
+              const Gap(20),
+              const Text(
+                "Type*",
+                style: AppTextStyles.style12Black600,
+              ),
+              const Gap(8),
+              SingleSelectedDropdownWidget<String>(
+                  hint: "Select Type",
+                  fillColor: AppColors.white,
+                  selectedItem: _selectedItemType,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: const [
+                    'Unit Visit',
+                    'Community Visit',
+                  ],
+                  onChanged: (value) {
+                    _selectedItemType = value;
+                  }),
+              const Gap(5),
+              TextFieldWidget(
+                controller: _visitorCountController,
+                label: 'Visitor Count*',
+                hint: 'Enter count',
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'required';
+                  }
+                  return null;
+                },
+              ),
+              const Gap(5),
+             const  Text(
+                "Purpose*",
+                style: AppTextStyles.style12Black600,
+              ),
+              const Gap(8),
+              SingleSelectedDropdownWidget<String>(
+                  hint: "Select Purpose",
+                  fillColor: AppColors.white,
+                  selectedItem: _selectedItemPurpose,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: const [
+                    'purpose',
+                    'purpose',
+                  ],
+                  onChanged: (value) {
+                    _selectedItemPurpose = value;
+                  }),
+              const Gap(5),
+              const Text(
+                "Unit Number*",
+                style: AppTextStyles.style12Black600,
+              ),
+              const Gap(8),
+              SingleSelectedDropdownWidget<String>(
+                  hint: "Select Unit",
+                  fillColor: AppColors.white,
+                  selectedItem: _selectedItemUnit,
+                  // itemAsString: (type) => type ?? "--",
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: const ['233', '2', '4567'],
+                  onChanged: (value) {
+                    _selectedItemUnit = value;
+                  }),
+              const Gap(5),
+               TextFieldWidget(
+                 enabledBorder: InputBorder.none,
+                controller: _nameController,
+                 label: 'Name*',
+                 hint: 'Enter Name',
+                 keyboardType: TextInputType.text,
+                 validator: (value) {
+                   if (value == null || value.isEmpty) {
+                     return 'required';
+                   }
+                   return null;
+                 },
+              ),
+              const Gap(5),
+              TextFieldWidget(
+                label:  "Phone Number*",
+                hint:  "Enter phone number",
+                controller: _phoneNumberController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required max length 13 digits';
+                  }
+                  if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
+                    return 'Please enter a valid mobile number';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(13),
+                ],
+                suffix: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(5),
+                        bottomRight: Radius.circular(5),
                       ),
-                      onPressed: () {
-                        showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return CustomAlertDialogBox(
-                                hideBothButtons: true,
-                                insetPadding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                title: 'Select Visitor',
-                                contentBuilder: (context, setState) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        '3',
-                                        style: AppTextStyles.style36Blue500,
-                                      ),
-                                      const Text(
-                                        'Visitor records found for this number',
-                                        style: AppTextStyles.style14Black600,
-                                      ),
-                                      const Divider(
-                                        color: AppColors.lightGrey,
-                                      ),
-                                      const Gap(5),
-                                      ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                             maxHeight: 250),
-                                        child: ListView.separated(
-                                          shrinkWrap: true,
-                                          primary: false,
-                                          itemCount: 3,
-                                          itemBuilder: (context, index) {
-                                            return const GetInfoCardWidget(
-                                              name:
-                                                  'Muhammad Ahmad Bin Ali Al Shehzad ur Rahman',
-                                              country: 'pakistan',
-                                              profileImageUrl:
-                                                  'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                            );
-                                          },
-                                          separatorBuilder: (context, index) {
-                                            return const Divider(
-                                              color: AppColors.lightGrey,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            });
-                      },
-                      child: const Text("Get Info",
-                          style: TextStyle(color: AppColors.primary)),
+                      border: Border.all(color: AppColors.primary)),
+                  child: TextButton(
+                    style: ButtonStyle(
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
                     ),
+                    onPressed: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return CustomAlertDialogBox(
+                              hideBothButtons: true,
+                              insetPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              title: 'Select Visitor',
+                              contentBuilder: (context, setState) {
+                                return const SelectVisitorNumberWidget();
+                              },
+                            );
+                          });
+                    },
+                    child: const Text("Get Info",
+                        style: TextStyle(color: AppColors.primary)),
                   ),
                 ),
-                fieldsTile(
-                  "Email*",
-                  "Enter Email",
-                  controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(10),
-                const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Nationality*",
-                      style: AppTextStyles.style12Black600,
-                    )),
-                const Gap(8),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Select Nationality",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedItemNationality,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: const [
-                      'pakistan',
-                      'Australia',
-                    ],
-                    onChanged: (value) {
-                      selectedItemNationality = value;
-                    }),
-                fieldsTile(
-                  "Entry Card Number*",
-                  "Enter card number ",
-                  controller: cardNumberController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
-                    }
-                    return null;
-                  },
-                ),
-                fieldsTile(
-                  "Description*",
-                  "Enter description ",
-                  controller: descriptionController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            ),
+              ),
+              const Gap(5),
+              TextFieldWidget(
+                controller: _emailController,
+                label: 'Email*',
+                hint: 'Enter Email',
+
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'required';
+                  }
+                  return null;
+                },
+              ),
+              const Gap(5),
+             const  Text(
+                "Nationality*",
+                style: AppTextStyles.style12Black600,
+              ),
+              const Gap(8),
+              SingleSelectedDropdownWidget<String>(
+                  hint: "Select Nationality",
+                  fillColor: AppColors.white,
+                  selectedItem: _selectedItemNationality,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: const [
+                    'pakistan',
+                    'Australia',
+                  ],
+                  onChanged: (value) {
+                    _selectedItemNationality = value;
+                  }),
+              const Gap(5),
+              TextFieldWidget(
+                controller: _cardNumberController,
+                label: 'Entry Card Number*',
+                hint: 'Enter card number',
+
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'required';
+                  }
+                  return null;
+                },
+              ),
+              const Gap(5),
+              TextFieldWidget(
+                controller: _descriptionController,
+                label: 'Description*',
+                hint: 'Enter description',
+
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'required';
+                  }
+                  return null;
+                },
+              ),
+
+            ],
           ),
         ),
         bottomNavigationBar: const Padding(
@@ -365,81 +303,51 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       ),
     );
   }
+}
 
-  Widget fieldsTile(
-    String text,
-    String hintText, {
-    TextEditingController? controller,
-    TextInputType? keyboardType,
-    bool enabled = true,
-    final Widget? suffix,
-    List<TextInputFormatter>? inputFormatters,
-    void Function()? onTap,
-    String? Function(String?)? validator,
-    bool obscureText = false,
-    int? maxLength,
-  }) {
+class SelectVisitorNumberWidget extends StatelessWidget {
+  const SelectVisitorNumberWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Gap(10),
-        Text(
-          text,
-          style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              color: AppColors.black),
+        const Text(
+          '3',
+          style: AppTextStyles.style36Blue500,
         ),
-        const Gap(10),
-        GestureDetector(
-          //overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-          onTap: onTap,
-          child: TextFormField(
-            enabled: enabled,
-            maxLines: maxLength ?? 1,
-            controller: controller,
-            validator: validator,
-            keyboardType: keyboardType,
-            inputFormatters: (inputFormatters?.isEmpty ?? true)
-                ? [RemoveEmojiInputFormatter()]
-                : inputFormatters,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: const BorderSide(color: AppColors.gray, width: 1),
-              ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
-              counterText: "",
-              suffixIcon: suffix,
-              isDense: true,
-              hintText: hintText,
-              hintStyle:
-                  const TextStyle(color: AppColors.darkGrey, fontSize: 13),
-              fillColor: Colors.white,
-              filled: true,
-              errorStyle: const TextStyle(color: AppColors.red),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: const BorderSide(color: AppColors.gray, width: 1),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: const BorderSide(color: AppColors.gray, width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: const BorderSide(color: AppColors.gray, width: 1),
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                borderSide: BorderSide(
-                  color: AppColors.gray,
-                ),
-              ),
-            ),
+        const Text(
+          'Visitor records found for this number',
+          style: AppTextStyles.style14Black600,
+        ),
+        const Divider(
+          color: AppColors.lightGrey,
+        ),
+        const Gap(5),
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+               maxHeight: 250),
+          child: ListView.separated(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: 2,
+            itemBuilder: (context, index) {
+              return const GetInfoCardWidget(
+                name:
+                    'Muhammad Ahmad Bin Ali Al Shehzad ur Rahman',
+                country: 'pakistan',
+                profileImageUrl:
+                    'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const Divider(
+                color: AppColors.lightGrey,
+              );
+            },
           ),
         ),
       ],

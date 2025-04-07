@@ -77,7 +77,7 @@ class CheckInCardWidget extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: AppColors.blue,
                                     border: Border.all(
-                                        color: AppColors.white, width: 4)),
+                                        color: AppColors.white, width: 2)),
                                 child:  Text(
                                   count?.toString() ?? "",
                                   style: AppTextStyles.style12white400,
@@ -105,14 +105,18 @@ class CheckInCardWidget extends StatelessWidget {
                         const Gap(6),
                         Row(
                           children: [
-                            IconTextContainerWidget(
-                              image: AppImages.date,
-                              text: date ?? "",
+                            Expanded(
+                              child: IconTextContainerWidget(
+                                image: AppImages.date,
+                                text: date ?? "",
+                              ),
                             ),
                             const Gap(5),
-                            IconTextContainerWidget(
-                              image: AppImages.phone,
-                              text: phone ?? "",
+                            Expanded(
+                              child: IconTextContainerWidget(
+                                image: AppImages.phone,
+                                text: phone ?? "",
+                              ),
                             ),
                           ],
                         ),

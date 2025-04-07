@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
@@ -13,6 +15,7 @@ import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/button/action_button.dart'
     show ActionButton;
 import 'package:visitors/view/widgets/button/custom_button.dart';
+import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
@@ -42,7 +45,7 @@ class CheckInsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Gap(20),
+            const Gap(15),
             Align(
               alignment: Alignment.bottomRight,
               child: ActionButton(
@@ -51,7 +54,49 @@ class CheckInsScreen extends StatelessWidget {
                 imageColor: AppColors.white,
                 backgroundColor: AppColors.red,
                 buttonWidth: 145,
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return CustomAlertDialogBox(
+                        insetPadding:
+                        const EdgeInsets.symmetric(horizontal: 10),
+                        isCancelButtonDisable: true,
+                        confirmButtonColor: AppColors.red,
+                        confirmButtonText: 'Checkout All',
+                        title: 'Checkout for All Check-Ins',
+                        contentBuilder: (context, setState) {
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  AppImages.logout,
+                                  height: 30,
+                                  width: 30,
+                                  colorFilter: const ColorFilter.mode(
+                                    AppColors.red,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                                const Gap(15),
+                                const  Text(
+                                  'Are you sure you want to checkout currently listed checkins?',style: AppTextStyles.style13Black400,
+                                ),
+                                const Gap(5),
+                                const  Text(
+                                  'Selected filters will be applied',style: AppTextStyles.style13Black600,
+                                ),
+                                const Gap(15),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
             ),
             const Gap(5),
@@ -76,114 +121,17 @@ class CheckInsScreen extends StatelessWidget {
                       profileImageUrl:
                           "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                       type: 'Guest',
-                      date: DateFormat("MMM dd, yyyy ").format(DateTime.now()),
+                      date:  DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                       phone: '34567890098',
                       gateValue: "The W Residences Reception",
                       checkOutOnPressed: () {
-                        final  TextEditingController _visitorsNoController = TextEditingController();
-                          showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return StatefulBuilder(
-                                builder: (context, setState) {
-                                  return CustomAlertDialogBox(
-                                    insetPadding: const EdgeInsets.symmetric(horizontal: 10),
-                                    hideBothButtons: true,
-                                    title: 'Checkout for Ahmed',
-                                    contentBuilder: (context, setState) {
-                                      return Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            '3',
-                                            style: AppTextStyles.style36Red500,
-                                          ),
-                                          const Gap(5),
-                                          TextFieldWidget(
-                                            controller: _visitorsNoController,
-                                            hint: 'No. of visitors checking-out',
-                                            onChanged: (value) {
-                                              setState(() {});
-                                            },
-                                          ),
-                                          const Gap(20),
-                                          _visitorsNoController.text.isEmpty
-                                              ? CustomButton(
-                                            borderRadius: 6,
-                                            buttonColor: AppColors.red,
-                                            height: 42,
-                                            text: 'Check-Out All',
-                                            onPressed: () {},
-                                          )
-                                              : Row(
-                                            children: [
-                                              Expanded(
-                                                child: CustomButton(
-                                                  borderRadius: 6,
-                                                  invert: true,
-                                                  height: 42,
-                                                  buttonColor: AppColors.red,
-                                                  textColor: AppColors.red,
-                                                  text: 'Check-Out',
-                                                  onPressed: () {},
-                                                ),
-                                              ),
-                                              const Gap(8),
-                                              Expanded(
-                                                child: CustomButton(
-                                                  borderRadius: 6,
-                                                  buttonColor: AppColors.red,
-                                                  height: 42,
-                                                  text: 'Check-Out All',
-                                                  onPressed: () {},
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Gap(10),
-                                          const Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              'Check-In Log',
-                                              style: AppTextStyles.style14Black600,
-                                            ),
-                                          ),
-                                          const Divider(color: AppColors.gray),
-                                          const Gap(5),
-                                          ConstrainedBox(
-                                            constraints: const BoxConstraints(maxHeight: 250),
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              primary: false,
-                                              itemCount: 3,
-                                              itemBuilder: (context, index) {
-                                                return ActivityLogWidget(
-                                                  status: 'Check-In',
-                                                  byValue: '',
-                                                  description:
-                                                  '6 visitor(s) checked-in from gate ‘The W Residences’',
-                                                  dateTime: DateFormat("MMM dd, yyyy, hh:mm a")
-                                                      .format(DateTime.now()),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          );
+                        _showCheckoutDialog(context);
                         }
                     ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5));
+                  return const Gap(10);
                 },
               ),
             ),
@@ -192,7 +140,32 @@ class CheckInsScreen extends StatelessWidget {
       ),
     );
   }
+  void _showCheckoutDialog(BuildContext context) {
+    final TextEditingController _visitorsNoController = TextEditingController();
 
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return CustomAlertDialogBox(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+          hideBothButtons: true,
+          title: 'Checkout for Ahmed',
+          contentBuilder: (context, setState) {
+            return CheckOutContainerWidget(
+              checkOutAllOnPress: () {  },
+              checkOutOnPress: () {  },
+              logDate: "2025-04-04T05:33:36.000000Z",
+              controller: _visitorsNoController,
+              logStatus: 'Check-In',
+              logByValue: '',
+              logDescription: '6 visitor(s) checked-in from gate ‘The W Residences',
+            );
+          },
+        );
+      },
+    );
+  }
   _checkInFilterBottomSheet(context) {
     showModalBottomSheet(
       context: context,
@@ -202,4 +175,5 @@ class CheckInsScreen extends StatelessWidget {
       },
     );
   }
+
 }

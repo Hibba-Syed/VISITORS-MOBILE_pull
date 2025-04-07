@@ -66,12 +66,16 @@ class IconTextContainerWidget extends StatelessWidget {
           else
             const SizedBox.shrink(),
           const Gap(2),
-            Text( text ?? "",
-              style: TextStyle(
-                color: textColor ?? AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13,
-                 //AppTextStyles.style10Black400
+            Flexible(
+              child: Text( text ?? "",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: textColor ?? AppColors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                   //AppTextStyles.style10Black400
+                ),
               ),
             ),
         ],

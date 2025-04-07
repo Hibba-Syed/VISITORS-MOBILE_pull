@@ -38,23 +38,23 @@ class IconTitleValueContainerWidget extends StatelessWidget {
         color: backgroundColor ?? AppColors.gray,
       ),
       child: Row(
-         mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset(image ?? "",
               colorFilter: ColorFilter.mode(
                 imageColor ?? AppColors.darkGrey,
                 BlendMode.srcIn,
               ),
-              height: 14),
+              height: 14
+          ),
           const Gap(5),
           Text(
             "$title: ",
             style: AppTextStyles.style13Black600,
           ),
           Text(
-            value ?? "",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            value ?? "",
             style:
             AppTextStyles.style13Black400,
           ),

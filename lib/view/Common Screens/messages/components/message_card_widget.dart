@@ -99,10 +99,10 @@ class MessageVisitorCardWidget extends StatelessWidget {
   const MessageVisitorCardWidget(
       {super.key,
         this.message,
-        this.time,
+        this.date,
       });
   final String? message;
-  final String? time;
+  final String? date;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +141,7 @@ class MessageVisitorCardWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  time?.toString() ?? "--",
+                  date?.toString() ?? "--",
                   style: const TextStyle(
                     fontSize: 10,
                     color: AppColors.white,

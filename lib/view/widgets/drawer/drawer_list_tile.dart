@@ -29,17 +29,12 @@ class DrawerListTile extends StatelessWidget {
       contentPadding:const EdgeInsets.symmetric(horizontal: 10.0),
       leading: Container(
         padding: const EdgeInsets.all(3.0),
-        // decoration: BoxDecoration(
-        //   color: isSelected ? AppColors.primary : Colors.transparent,
-        //   borderRadius: BorderRadius.circular(5.0),
-        //   // border: Border.all(color: AppColors.lightGrey, width: 0.25),
-        // ),
         child: SvgPicture.asset(
           iconPath,
           width: 22,
           height: 22,
           colorFilter: ColorFilter.mode(
-            isSelected ? AppColors.primary : AppColors.drawerColor,
+            isSelected ? AppColors.primary : AppColors.darkGrey,
             BlendMode.srcIn,
           ),
         ),
@@ -47,7 +42,7 @@ class DrawerListTile extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: isSelected ? AppColors.primary : AppColors.drawerColor,
+          color: isSelected ? AppColors.primary : AppColors.darkGrey,
           fontSize: 16.0,
           fontWeight: FontWeight.w400,
         ),

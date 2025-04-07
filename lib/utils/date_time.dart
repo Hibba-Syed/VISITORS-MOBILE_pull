@@ -14,7 +14,7 @@ class DateTimeUtil {
       DateTime dateTime = DateTime.parse(inputDateTimeString!);
 
       String formattedDateString =
-      DateFormat("MMMM dd, yyyy, hh:mm a").format(dateTime);
+      DateFormat("MMMM dd, yyyy hh:mm a").format(dateTime);
       return formattedDateString;
     }
     return '--';

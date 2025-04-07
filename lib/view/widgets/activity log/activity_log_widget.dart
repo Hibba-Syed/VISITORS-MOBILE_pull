@@ -13,18 +13,20 @@ class ActivityLogWidget extends StatelessWidget {
   final String? byValue;
   final String? description;
   final String? dateTime;
+  final bool? isLast;
   const ActivityLogWidget({
     super.key,
     this.status,
     this.byValue,
     this.description,
     this.dateTime,
+    this.isLast
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
@@ -33,7 +35,7 @@ class ActivityLogWidget extends StatelessWidget {
         children: [
           TimelineTile(
         alignment: TimelineAlign.values.first,
-        isLast: false,
+        isLast: isLast ?? false,
         afterLineStyle: const LineStyle(
           color: AppColors.lightGrey,
           thickness: 2,

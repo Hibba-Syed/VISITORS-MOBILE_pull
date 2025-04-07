@@ -14,7 +14,7 @@ import '../../../../resource/styles/styles.dart';
 class CheckOutsCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final String? visitorCount;
+  final int? visitorCount;
   final String? checkInGateValue;
   final String? checkOutGateValue;
   final String? type;
@@ -45,16 +45,10 @@ class CheckOutsCardWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OverlapContainerWidget(
-              text: typeText,
-              image: typeImage,
-              backgroundColor: AppColors.primary,
-
-            ),
-          ],
+        OverlapContainerWidget(
+          text: typeText,
+          image: typeImage,
+          backgroundColor: AppColors.primary,
         ),
         Container(
           padding: const EdgeInsets.all(10),
@@ -87,9 +81,9 @@ class CheckOutsCardWidget extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: AppColors.primary,
                                     border: Border.all(
-                                        color: AppColors.white, width: 3)),
+                                        color: AppColors.white, width: 2)),
                                 child:  Text(
-                                  visitorCount ?? '',
+                                  visitorCount?.toString() ?? '',
                                   style: AppTextStyles.style12white400,
                                 ),
                               ),
@@ -104,53 +98,61 @@ class CheckOutsCardWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name ?? "",
-                        style: AppTextStyles.style14Black600,
-                      ),
-                      const Gap(6),
-                      IconTextContainerWidget(
-                        image: AppImages.phone,
-                        text: phone ?? "",
-                      ),
-                      const Gap(5),
-                      const Text('Check-In',style: AppTextStyles.style13Black600,),
-                      const Gap(5),
-                      Row(
-                        children: [
-                          IconTextContainerWidget(
-                            image: AppImages.date,
-                            text: checkInDate ?? "",
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name ?? "",
+                          style: AppTextStyles.style14Black600,
+                        ),
+                        const Gap(6),
+                        IconTextContainerWidget(
+                          image: AppImages.phone,
+                          text: phone ?? "",
+                        ),
+                        const Gap(5),
+                        const Text('Check-In',style: AppTextStyles.style13Black600,),
+                        const Gap(5),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              IconTextContainerWidget(
+                                image: AppImages.date,
+                                text: checkInDate ?? "",
+                              ),
+                              const Gap(5),
+                              IconTitleValueContainerWidget(
+                                image: AppImages.gate,
+                                title:  'Gate',
+                                value: checkInGateValue ?? "",
+                              ),
+                            ],
                           ),
-                          const Gap(5),
-                          IconTitleValueContainerWidget(
-                            image: AppImages.gate,
-                            title:  'Gate',
-                            value: checkInGateValue ?? "",
+                        ),
+                        const Gap(5),
+                        const Text('Check-Out',style: AppTextStyles.style13Black600,),
+                        const Gap(5),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              IconTextContainerWidget(
+                                image: AppImages.date,
+                                text: checkOutDate ?? "",
+                              ),
+                              const Gap(5),
+                              IconTitleValueContainerWidget(
+                                image: AppImages.gate,
+                                title:  'Gate',
+                                value: checkOutGateValue ?? "",
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      const Gap(5),
-                      const Text('Check-Out',style: AppTextStyles.style13Black600,),
-                      const Gap(5),
-                      Row(
-                        children: [
-                          IconTextContainerWidget(
-                            image: AppImages.date,
-                            text: checkOutDate ?? "",
-                          ),
-                          const Gap(5),
-                          IconTitleValueContainerWidget(
-                            image: AppImages.gate,
-                            title:  'Gate',
-                            value: checkOutGateValue ?? "",
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

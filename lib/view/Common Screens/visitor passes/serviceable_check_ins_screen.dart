@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/components/serviceable_check_ins_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
-import 'package:visitors/view/widgets/button/action_button.dart' show ActionButton;
+import 'package:visitors/view/widgets/button/action_button.dart'
+    show ActionButton;
+import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
+import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+
 class ServiceableCheckInsScreen extends StatelessWidget {
   const ServiceableCheckInsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: const AppBarWidget(
         title: 'Serviceable Check-Ins',
         titleColor: AppColors.black,
         iconColor: AppColors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding
+        ),
         child: Column(
           children: [
             const Gap(20),
@@ -31,7 +40,48 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                 image: AppImages.logout,
                 imageColor: AppColors.white,
                 backgroundColor: AppColors.red,
-                onPressed: (){
+                onPressed: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return CustomAlertDialogBox(
+                        insetPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                        isCancelButtonDisable: true,
+                        confirmButtonColor: AppColors.red,
+                        confirmButtonText: 'Checkout All',
+                        title: 'Checkout for All Check-Ins',
+                        contentBuilder: (context, setState) {
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  AppImages.logout,
+                                  height: 30,
+                                  width: 30,
+                                  colorFilter: const ColorFilter.mode(
+                                    AppColors.red,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                                const Gap(15),
+                               const  Text(
+                                  'Are you sure you want to checkout currently listed checkins?',style: AppTextStyles.style12black500,
+                                ),
+                                const Gap(5),
+                               const  Text(
+                                  'Selected filters will be applied',style: AppTextStyles.style12Black600,
+                                ),
+                                const Gap(15),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -48,25 +98,53 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                     reference: "VP001-25-00003",
                     typeText: "10007",
                     name: 'MUHAMMAD AHMED MOHAMMED ',
-                    profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                    profileImageUrl:
+                        "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                     type: 'Visitor Pass',
-                    date: DateFormat("MMM dd, yyyy ")
-                        .format(DateTime.now()),
+                    date: DateTimeUtil.getFormattedDateTime(
+                        '2025-04-04T05:33:36.000000Z'),
                     phone: '34567890098',
                     gateValue: "The W Residences Reception",
                     purpose: 'Apartment Viewing / RE Agent',
-                    checkOutOnPressed: (){},
-
+                    checkOutOnPressed: () {
+                      _showCheckoutDialog(context);
+                    },
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
+                  return const Gap(10);
                 },
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showCheckoutDialog(BuildContext context) {
+    final TextEditingController _visitorsNoController = TextEditingController();
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return CustomAlertDialogBox(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+          hideBothButtons: true,
+          title: 'Checkout for Ahmed',
+          contentBuilder: (context, setState) {
+            return CheckOutContainerWidget(
+              checkOutAllOnPress: () {},
+              checkOutOnPress: () {},
+              controller: _visitorsNoController,
+              logDate: '2025-04-04T05:33:36.000000Z',
+              logStatus: 'Check-In',
+              logByValue: '',
+              logDescription: '6 visitor(s) checked-in from gate ‘The W Residences',
+            );
+          },
+        );
+      },
     );
   }
 }

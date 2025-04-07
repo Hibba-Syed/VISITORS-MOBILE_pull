@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
@@ -58,12 +59,12 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         title: '(2 Months) Services Contract',
                         reference: 'JB001-24-00102',
                         vendorName: 'Mohammed Faisal Al-Haddad',
-                        date: 'Jan 7, 2025',
+                        date: '2025-04-04T05:33:36.000000Z',
                         checkInPressed: (){}
                     ),
                   );
                 }, separatorBuilder: (BuildContext context, int index) {
-                return const Padding(padding: EdgeInsets.symmetric(vertical: 5,));
+                return const Gap(10);
               },
               
               ),

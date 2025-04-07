@@ -3,7 +3,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 class VisitorPassesButton extends StatelessWidget {
-  final String? count;
+  final int? count;
   final double? horizontalPadding;
   final double? verticalPadding;
   final VoidCallback? onPressed;
@@ -32,7 +32,7 @@ class VisitorPassesButton extends StatelessWidget {
                  ),
                 color:AppColors.lightYellow,
               ),
-              child: Text(count ?? "",style:const TextStyle(
+              child: Text(count?.toString() ?? "",style:const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.white

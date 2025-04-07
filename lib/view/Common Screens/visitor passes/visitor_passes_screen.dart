@@ -69,8 +69,7 @@ class VisitorPassesScreen extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5));
+                  return const Gap(10);
                 },
               ),
             ),

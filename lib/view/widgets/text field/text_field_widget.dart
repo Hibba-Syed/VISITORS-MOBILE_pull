@@ -70,7 +70,7 @@ class TextFieldWidget extends StatelessWidget {
         if (label?.isNotEmpty ?? false)
           Text(
             label!,
-            style: AppTextStyles.style12black500,
+            style: AppTextStyles.style13Black600,
           ),
         if (label?.isNotEmpty ?? false) const Gap(8.0),
         TextFormField(
@@ -111,11 +111,8 @@ class TextFieldWidget extends StatelessWidget {
             ),
             //focusedBorder,
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                width: 0.0,
-                color: AppColors.darkGrey,
-              ),
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: const BorderSide(color: AppColors.gray, width: 1),
             ),
             //enabledBorder,
             errorBorder: errorBorder,

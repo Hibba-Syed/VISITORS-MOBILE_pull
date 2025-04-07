@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 
@@ -71,8 +72,6 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              // const Gap(2),
-              // Text(reference ?? "",style: AppTextStyles.style12darkGrey500,),
               const Gap(5),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +118,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                       const Gap(5),
                       IconTextContainerWidget(
                         image: AppImages.date,
-                        text: date ?? "",
+                        text: DateTimeUtil.getFormattedDateTime(date),
                       ),
                     ],
                   ),
