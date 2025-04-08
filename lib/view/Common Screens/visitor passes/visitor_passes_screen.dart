@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart' show ServicesCardWidget;
-import 'package:visitors/view/Common%20Screens/services/components/services_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/components/visitor_passes_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/components/visitor_passes_filter_bottom_sheet.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
@@ -61,7 +59,11 @@ class VisitorPassesScreen extends StatelessWidget {
                     profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                     reference: 'VP001-25-00003',
                     company:"Ellington Residential Developments",
-                    checkInOnPressed: (){},
+                    checkInOnPressed: (){
+                      (MediaQuery.of(context).size.shortestSide>=600)?
+                      Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
+                      Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+                    },
                     serviceableOnPressed: (){
                       Navigator.pushNamed(context, AppRoutes.serviceableCheckInsScreen);
                     },

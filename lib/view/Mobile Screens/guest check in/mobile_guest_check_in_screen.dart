@@ -2,29 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:gap/gap.dart' show Gap;
-import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
-import 'package:visitors/view/widgets/button/action_button.dart';
-import 'package:visitors/view/widgets/button/logout_button.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart' show CustomButton;
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 
-class GuestCheckInScreen extends StatefulWidget {
-  const GuestCheckInScreen({super.key});
+
+class MobileGuestCheckInScreen extends StatefulWidget {
+  const MobileGuestCheckInScreen({super.key});
 
   @override
-  State<GuestCheckInScreen> createState() => _GuestCheckInScreenState();
+  State<MobileGuestCheckInScreen> createState() => _MobileGuestCheckInScreenState();
 }
 
-class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
+class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
   final TextEditingController _visitorCountController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -60,12 +59,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 ),
               ),
               const Gap(20),
-              const ActionButton(
-                verticalPadding: 10,
-                image: AppImages.scan,
-                text: "Scan ID",
-                textColor: AppColors.white,
-              ),
+              CustomButton(
+                  buttonColor: AppColors.primary,
+                  text: 'Scan ID',
+                  height: 41,
+                  borderRadius: 6,
+                  image: AppImages.scan,
+                  onPressed: () {
+                  }),
               const Gap(20),
               Container(
                 padding: const EdgeInsets.all(15),
@@ -290,15 +291,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: const Padding(
-          padding: EdgeInsets.symmetric(
+        bottomNavigationBar:  Padding(
+          padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.verticalPadding),
-          child: LogoutButton(
-            backgroundColor: AppColors.green,
+          child: CustomButton(
             image: AppImages.checkInButton,
-            text: "Check-In",
-          ),
+              buttonColor: AppColors.green,
+              text: 'Check-In', onPressed: (){}),
         ),
       ),
     );

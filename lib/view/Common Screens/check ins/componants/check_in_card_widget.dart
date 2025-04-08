@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/view/widgets/button/logout_button.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
@@ -21,7 +21,8 @@ class CheckInCardWidget extends StatelessWidget {
   final String? typeText;
   final String? typeImage;
   final String? reference;
-  final VoidCallback? checkOutOnPressed;
+  final VoidCallback checkOutOnPressed;
+  final VoidCallback detailsOnPressed;
   const CheckInCardWidget(
       {super.key,
       this.profileImageUrl,
@@ -34,7 +35,8 @@ class CheckInCardWidget extends StatelessWidget {
         this.typeImage,
         this.reference,
         this.count,
-      this.checkOutOnPressed
+     required this.checkOutOnPressed,
+     required this.detailsOnPressed,
       });
 
   @override
@@ -46,99 +48,101 @@ class CheckInCardWidget extends StatelessWidget {
           text: typeText,
           image: typeImage,
         ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
+        InkWell(
+          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+          onTap: detailsOnPressed,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+              ),
             ),
-          ),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                        Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.center,
-                          children: [
-                            NetworkImageWidget(url: profileImageUrl,),
-                            Positioned(
-                              top: -5,
-                              right: -6,
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.blue,
-                                    border: Border.all(
-                                        color: AppColors.white, width: 2)),
-                                child:  Text(
-                                  count?.toString() ?? "",
-                                  style: AppTextStyles.style12white400,
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                          Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.center,
+                            children: [
+                              NetworkImageWidget(url: profileImageUrl,),
+                              Positioned(
+                                top: -5,
+                                right: -6,
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.blue,
+                                      border: Border.all(
+                                          color: AppColors.white, width: 2)),
+                                  child:  Text(
+                                    count?.toString() ?? "",
+                                    style: AppTextStyles.style12white400,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      const Gap(3),
-                      Text(
-                        type ?? "",
-                        style: AppTextStyles.style12DarkGrey500,
-                      ),
-                    ],
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                            ],
+                          ),
+                        const Gap(3),
                         Text(
-                          name ?? "",
-                          style: AppTextStyles.style14Black600,
-                        ),
-                        const Gap(6),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: IconTextContainerWidget(
-                                image: AppImages.date,
-                                text: date ?? "",
-                              ),
-                            ),
-                            const Gap(5),
-                            Expanded(
-                              child: IconTextContainerWidget(
-                                image: AppImages.phone,
-                                text: phone ?? "",
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(5),
-                        IconTitleValueContainerWidget(
-                          image: AppImages.gate,
-                          title:  'Gate',
-                          value: gateValue ?? "",
+                          type ?? "",
+                          style: AppTextStyles.style12DarkGrey500,
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const Gap(10),
-              LogoutButton(
-                text: 'Check Out',
-                onPressed: checkOutOnPressed,
-                image: AppImages.logout,
-                backgroundColor: AppColors.red,
-              ),
-            ],
+                    const Gap(10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name ?? "",
+                            style: AppTextStyles.style14Black600,
+                          ),
+                          const Gap(6),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: IconTextContainerWidget(
+                                  image: AppImages.date,
+                                  text: date ?? "",
+                                ),
+                              ),
+                              const Gap(5),
+                              Expanded(
+                                child: IconTextContainerWidget(
+                                  image: AppImages.phone,
+                                  text: phone ?? "",
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(5),
+                          IconTitleValueContainerWidget(
+                            image: AppImages.gate,
+                            title:  'Gate',
+                            value: gateValue ?? "",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(10),
+                CustomButton(
+                    image: AppImages.logout,
+                    buttonColor: AppColors.red,
+                    text: 'Check Out', onPressed: checkOutOnPressed),
+              ],
+            ),
           ),
         ),
 

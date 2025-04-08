@@ -11,10 +11,13 @@ class CheckOutContainerWidget extends StatefulWidget {
   final TextEditingController controller;
   final String? logDate;
   final String? logStatus;
+  final int? visitorsCount;
   final String? logByValue;
   final String? logDescription;
   final VoidCallback checkOutAllOnPress;
   final VoidCallback checkOutOnPress;
+  final bool? logIsLast;
+  final double? horizontalPadding;
    const CheckOutContainerWidget({super.key,
      required this.controller,
      this.logDate,
@@ -22,7 +25,10 @@ class CheckOutContainerWidget extends StatefulWidget {
      this.logByValue,
      this.logDescription,
      required this.checkOutAllOnPress,
-     required this.checkOutOnPress
+     required this.checkOutOnPress,
+     this.logIsLast = false,
+     this.visitorsCount,
+     this.horizontalPadding,
 
   });
 
@@ -36,8 +42,8 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          '3',
+         Text(
+          widget.visitorsCount?.toString() ?? "",
           style: AppTextStyles.style36Red500,
         ),
         const Gap(5),
@@ -86,19 +92,20 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
           alignment: Alignment.topLeft,
           child: Text(
             'Check-In Log',
-            style: AppTextStyles.style14Black600,
+            style: AppTextStyles.style16black600,
           ),
         ),
         const Divider(color: AppColors.gray),
-        const Gap(5),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 250),
+          constraints: const BoxConstraints(maxHeight: 240),
           child: ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: 3,
+            itemCount: 1,
             itemBuilder: (context, index) {
               return ActivityLogWidget(
+                horizontalPadding: widget.horizontalPadding,
+                isLast: widget.logIsLast,
                 status: widget.logStatus ?? "",
                 byValue: widget.logByValue ?? "",
                 description: widget.logDescription,

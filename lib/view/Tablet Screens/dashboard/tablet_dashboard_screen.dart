@@ -8,16 +8,16 @@ import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dar
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/button/visitor_passes_button.dart';
 import 'package:visitors/view/widgets/container_widgets/actions_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
-import '../../widgets/button/action_button.dart';
 
 class TabletDashboardScreen extends StatelessWidget {
   const TabletDashboardScreen({super.key});
@@ -79,9 +79,7 @@ class TabletDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
         onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+          Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
         },
       ),
       ActionsItemModel(
@@ -154,45 +152,51 @@ class TabletDashboardScreen extends StatelessWidget {
             ),
             const Gap(10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
-                  children: [
-                     Text(
-                      'Check-Ins',
-                      style: AppTextStyles.style16Primary600,
-                    ),
-                  ],
+                const Expanded(
+                  child: Row(
+                    children: [
+                      Text(
+                        'Check-Ins',
+                        style: AppTextStyles.style16Primary600,
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  children: [
-                    ActionButton(
-                      text: 'Check-Outs',
-                      image: AppImages.checkout,
-                      imageColor: AppColors.white,
-                      backgroundColor: AppColors.red,
-                      onPressed: () {
-                        context
-                            .read<DeviceDeciderCubit>()
-                            .onChangeSelectedIndex(
-                                context, AppConstants.checkOutsIndex);
-                      },
-                    ),
-                    const Gap(20),
-                    ActionButton(
-                      verticalPadding: 6.4,
-                      text: 'View All',
-                      image: AppImages.view,
-                      imageColor: AppColors.white,
-                      backgroundColor: AppColors.blue,
-                      onPressed: () {
-                        context
-                            .read<DeviceDeciderCubit>()
-                            .onChangeSelectedIndex(
-                                context, AppConstants.checkInsIndex);
-                      },
-                    ),
-                  ],
+                const Gap(20),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.red,
+                            text: 'Check-Outs',
+                            height: 41,
+                            borderRadius: 6,
+                            image: AppImages.checkout,
+                            onPressed: () {
+                              context.read<DeviceDeciderCubit>()
+                                  .onChangeSelectedIndex(
+                                  context, AppConstants.checkOutsIndex);
+                            }),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.blue,
+                            text: 'View All',
+                            height: 41,
+                            borderRadius: 6,
+                            image: AppImages.view,
+                            onPressed: () {
+                              context
+                                  .read<DeviceDeciderCubit>()
+                                  .onChangeSelectedIndex(
+                                  context, AppConstants.checkInsIndex);
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -213,6 +217,10 @@ class TabletDashboardScreen extends StatelessWidget {
                   checkOutOnPressed: (){
                     _showCheckoutDialog(context);
                   },
+                  detailsOnPressed: () {
+                    Navigator.pushNamed(
+                        context, AppRoutes.checkInDetailsScreen);
+                  },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -221,39 +229,45 @@ class TabletDashboardScreen extends StatelessWidget {
             ),
             const Gap(10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
-                  children: [
-                    Text(
-                      'E-Services',
-                      style: AppTextStyles.style16Primary600,
-                    ),
-                  ],
+                const Expanded(
+                  child: Row(
+                    children: [
+                      Text(
+                        'E-Services',
+                        style: AppTextStyles.style16Primary600,
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  children: [
-                    VisitorPassesButton(
-                      count: 45,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.visitorPassesScreen);
-                      },
-                    ),
-                    const Gap(10),
-                    ActionButton(
-                      text: 'View All',
-                      image: AppImages.view,
-                      imageColor: AppColors.white,
-                      backgroundColor: AppColors.blue,
-                      onPressed: () {
-                        context
-                            .read<DeviceDeciderCubit>()
-                            .onChangeSelectedIndex(
-                                context, AppConstants.eServicesIndex);
-                      },
-                    ),
-                  ],
+                const Gap(20),
+                Expanded(
+                  child: Row(
+                    children: [
+                      VisitorPassesButton(
+                        count: 45,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.visitorPassesScreen);
+                        },
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.blue,
+                            text: 'View All',
+                            height: 41,
+                            borderRadius: 6,
+                            image: AppImages.view,
+                            onPressed: () {
+                              context
+                                  .read<DeviceDeciderCubit>()
+                                  .onChangeSelectedIndex(
+                                  context, AppConstants.eServicesIndex);
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -270,7 +284,16 @@ class TabletDashboardScreen extends StatelessWidget {
                   serviceType: 'Fit Out NOC',
                   name: 'Suhaan',
                   status: 'Notified',
-                  checkInOnPressed: () {},
+                  checkInOnPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
+                  },
+                  serviceableOnPressed: () {
+                    Navigator.pushNamed(
+                        context, AppRoutes.serviceableCheckInsScreen);
+                  },
+                  detailsOnPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.servicesDetailsScreen);
+                },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -281,20 +304,24 @@ class TabletDashboardScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Work Orders / RFPs',
-                  style: AppTextStyles.style16Primary600,
-                ),
-                ActionButton(
-                  text: 'View All',
-                  image: AppImages.view,
-                  imageColor: AppColors.white,
-                  backgroundColor: AppColors.blue,
-                  onPressed: () {
-                    context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
-                        context, AppConstants.workOrderRfpIndex);
-                  },
-                ),
+              const Text(
+                 'Work Orders / RFPs',
+                 style: AppTextStyles.style16Primary600,
+               ),
+                const Gap(20),
+                CustomButton(
+                    buttonColor: AppColors.blue,
+                    text: 'View All',
+                    height: 41,
+                     width: 150,
+                    borderRadius: 6,
+                    image: AppImages.view,
+                    onPressed: () {
+                      context
+                          .read<DeviceDeciderCubit>()
+                          .onChangeSelectedIndex(
+                          context, AppConstants.workOrderRfpIndex);
+                    }),
               ],
             ),
             const Gap(10),
@@ -303,7 +330,7 @@ class TabletDashboardScreen extends StatelessWidget {
               primary: false,
               itemCount: 3,
               itemBuilder: (context, index) {
-                return const WorkOrderRFPCardWidget(
+                return  WorkOrderRFPCardWidget(
                   typeText: 'Work Order',
                   typeAssetImage: AppImages.hammer,
                   title: '(2 Months) Services Contract',
@@ -311,6 +338,13 @@ class TabletDashboardScreen extends StatelessWidget {
                   vendorName: 'Onlinist Vendor',
                   date: '2025-04-04T05:33:36.000000Z',
                   status: 'Active',
+                  checkInPressed: () {
+                    Navigator.pushNamed(
+                        context, AppRoutes.tabletGuestCheckInScreen);
+                  },
+                  detailsOnPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
+                  },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -337,6 +371,9 @@ class TabletDashboardScreen extends StatelessWidget {
             return CheckOutContainerWidget(
               checkOutAllOnPress: () {  },
               checkOutOnPress: () {  },
+              horizontalPadding: 0,
+              visitorsCount: 2,
+              logIsLast: true,
               logDate: "2025-04-04T05:33:36.000000Z",
               controller: _visitorsNoController,
               logStatus: 'Check-In',

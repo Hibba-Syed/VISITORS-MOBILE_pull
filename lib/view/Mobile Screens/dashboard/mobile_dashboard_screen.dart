@@ -8,15 +8,15 @@ import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dar
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/button/visitor_passes_button.dart';
 import 'package:visitors/view/widgets/container_widgets/actions_container_widget.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
-import '../../widgets/button/action_button.dart';
 import '../../widgets/container_widgets/check_out_container_widget.dart';
 
 class MobileDashboardScreen extends StatelessWidget {
@@ -34,9 +34,9 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.green,
         onTap: () {
-          context.read<DeviceDeciderCubit>()
+          context
+              .read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
-
         },
       ),
       ActionsItemModel(
@@ -46,7 +46,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.yellow,
         onTap: () {
-          context.read<DeviceDeciderCubit>()
+          context
+              .read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
         },
       ),
@@ -57,7 +58,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.cyanBlue,
         onTap: () {
-          context.read<DeviceDeciderCubit>()
+          context
+              .read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
         },
       ),
@@ -68,7 +70,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         forGroundColor: AppColors.blue,
         onTap: () {
-          context.read<DeviceDeciderCubit>()
+          context
+              .read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
         },
       ),
@@ -78,8 +81,7 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.green,
         forGroundColor: AppColors.white,
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
-
+          Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
         },
       ),
       ActionsItemModel(
@@ -88,7 +90,8 @@ class MobileDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.blue,
         forGroundColor: AppColors.white,
         onTap: () {
-          context.read<DeviceDeciderCubit>()
+          context
+              .read<DeviceDeciderCubit>()
               .onChangeSelectedIndex(context, AppConstants.messagesIndex);
         },
       ),
@@ -106,7 +109,10 @@ class MobileDashboardScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeadingWidget(heading: 'Welcome',style: AppTextStyles.style15DarkGrey500,),
+                    HeadingWidget(
+                      heading: 'Welcome',
+                      style: AppTextStyles.style15DarkGrey500,
+                    ),
                     HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
                   ],
                 ),
@@ -135,47 +141,50 @@ class MobileDashboardScreen extends StatelessWidget {
                 );
               },
             ),
-             const Gap(5),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 const Row(
+            const Gap(5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Row(
                   children: [
-                     Text(
+                    Text(
                       'Check-Ins',
                       style: AppTextStyles.style16Primary600,
                     ),
-                  ],),
-                 Row(
-                   children: [
-                     ActionButton(
-                       verticalPadding: 9.5,
-                       text: 'Check-Outs',
-                       image: AppImages.checkout,
-                       imageColor: AppColors.white,
-                       backgroundColor: AppColors.red,
-                       onPressed: (){
-                         context
-                             .read<DeviceDeciderCubit>()
-                             .onChangeSelectedIndex(context, AppConstants.checkOutsIndex);
-                       },
-                     ),
-                     const Gap(10),
-                     ActionButton(
-                       text: 'View All',
-                       image: AppImages.view,
-                       imageColor: AppColors.white,
-                       backgroundColor: AppColors.blue,
-                       onPressed: (){
-                         context
-                             .read<DeviceDeciderCubit>()
-                             .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
-                       },
-                     ),
-                   ],
-                 ),
-               ],
-             ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    CustomButton(
+                      buttonColor: AppColors.red,
+                        text: 'Check-Outs',
+                        height: 41,
+                        width: 125,
+                        borderRadius: 6,
+                        image: AppImages.checkout,
+                        onPressed: () {
+                          context.read<DeviceDeciderCubit>()
+                                  .onChangeSelectedIndex(
+                                      context, AppConstants.checkOutsIndex);
+                        }),
+                    const Gap(10),
+                    CustomButton(
+                        buttonColor: AppColors.blue,
+                        text: 'View All',
+                        height: 41,
+                        width: 100,
+                        borderRadius: 6,
+                        image: AppImages.view,
+                        onPressed: () {
+                          context
+                              .read<DeviceDeciderCubit>()
+                              .onChangeSelectedIndex(
+                              context, AppConstants.checkInsIndex);
+                        }),
+                  ],
+                ),
+              ],
+            ),
             const Gap(10),
             ListView.separated(
               padding: const EdgeInsets.only(bottom: 10),
@@ -187,58 +196,65 @@ class MobileDashboardScreen extends StatelessWidget {
                   count: 5,
                   typeText: 'Rose-1024',
                   name: 'MUHAMMAD AHMED MOHAMMED ',
-                  profileImageUrl: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                  profileImageUrl:
+                      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                   type: 'Guest',
-                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
+                  date: DateTimeUtil.getFormattedDateTime(
+                      '2025-04-04T05:33:36.000000Z'),
                   phone: '34567890098',
                   gateValue: "The W Residences Reception",
-                  checkOutOnPressed: (){
-                     _showCheckoutDialog(context);
+                  checkOutOnPressed: () {
+                    _showCheckoutDialog(context);
                   },
-
+                  detailsOnPressed: () {
+                    Navigator.pushNamed(
+                        context, AppRoutes.checkInDetailsScreen);
+                  },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const Gap(10);
               },
             ),
-             const Gap(5),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 const Row(
+            const Gap(5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Row(
                   children: [
-                     Text(
+                    Text(
                       'E-Services',
                       style: AppTextStyles.style16Primary600,
                     ),
-
                   ],
-                             ),
-                 Row(
-                   children: [
-                     VisitorPassesButton(
-                       count: 45,
-                       onPressed: (){
-                         Navigator.pushNamed(context, AppRoutes.visitorPassesScreen);
-                       },
-                     ),
-                     const Gap(10),
-                     ActionButton(
-                       text: 'View All',
-                       image: AppImages.view,
-                       imageColor: AppColors.white,
-                       backgroundColor: AppColors.blue,
-                       onPressed: (){
-                         context
-                             .read<DeviceDeciderCubit>()
-                             .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
-                       },
-                     ),
-                   ],
-                 ),
-               ],
-             ),
+                ),
+                Row(
+                  children: [
+                    VisitorPassesButton(
+                      count: 45,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.visitorPassesScreen);
+                      },
+                    ),
+                    const Gap(10),
+                    CustomButton(
+                        buttonColor: AppColors.blue,
+                        text: 'View All',
+                        height: 41,
+                        width: 100,
+                        borderRadius: 6,
+                        image: AppImages.view,
+                        onPressed: () {
+                          context
+                              .read<DeviceDeciderCubit>()
+                              .onChangeSelectedIndex(
+                              context, AppConstants.eServicesIndex);
+                        }),
+                  ],
+                ),
+              ],
+            ),
             const Gap(15),
             ListView.separated(
               padding: const EdgeInsets.only(bottom: 10),
@@ -246,19 +262,22 @@ class MobileDashboardScreen extends StatelessWidget {
               primary: false,
               itemCount: 3,
               itemBuilder: (context, index) {
-                return  ServicesCardWidget(
+                return ServicesCardWidget(
                   unit: '1006',
                   title: 'Facility Booking',
                   reference: 'FO202401101791',
                   status: 'Notified',
                   serviceType: 'Fit Out NOC',
                   name: 'Suhaan',
-                  checkInOnPressed: (){
-                    Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
+                  checkInOnPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                   },
-                  serviceableOnPressed: (){
-                    Navigator.pushNamed(context, AppRoutes.serviceableCheckInsScreen);
-                  },
+                  serviceableOnPressed: () {
+                    Navigator.pushNamed(
+                        context, AppRoutes.serviceableCheckInsScreen);
+                  }, detailsOnPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.servicesDetailsScreen);
+                },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -273,16 +292,17 @@ class MobileDashboardScreen extends StatelessWidget {
                   'Work Orders / RFPs',
                   style: AppTextStyles.style16Primary600,
                 ),
-                ActionButton(
-                  onPressed: () {
-                    context
-                        .read<DeviceDeciderCubit>()
-                        .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
-                  },
-                  text: 'View All',
-                  image: AppImages.view,
-                  imageColor: AppColors.white,
-                  backgroundColor: AppColors.blue,
+                Expanded(
+                  child: CustomButton(
+                      buttonColor: AppColors.blue,
+                      text: 'View All',
+                      height: 41,
+                      borderRadius: 6,
+                      image: AppImages.view,
+                      onPressed: () {
+                        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
+                            context, AppConstants.workOrderRfpIndex);
+                      }),
                 ),
               ],
             ),
@@ -292,18 +312,21 @@ class MobileDashboardScreen extends StatelessWidget {
               primary: false,
               itemCount: 3,
               itemBuilder: (context, index) {
-                return  WorkOrderRFPCardWidget(
-                  typeText: 'Work Order',
-                  typeAssetImage: AppImages.hammer,
-                  status: 'Active',
-                  title: '(2 Months) Services Contract',
-                  reference: 'JB001-24-00102',
-                  vendorName: 'Mohammed Faisal Al-Haddad',
-                  date: '2025-04-04T05:33:36.000000Z',
-                    checkInPressed: (){
-                      Navigator.pushNamed(context, AppRoutes.guestCheckInScreen);
-                    }
-                );
+                return WorkOrderRFPCardWidget(
+                    typeText: 'Work Order',
+                    typeAssetImage: AppImages.hammer,
+                    status: 'Active',
+                    title: '(2 Months) Services Contract',
+                    reference: 'JB001-24-00102',
+                    vendorName: 'Mohammed Faisal Al-Haddad',
+                    date: '2025-04-04T05:33:36.000000Z',
+                    checkInPressed: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.mobileGuestCheckInScreen);
+                    },
+                  detailsOnPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
+                  },);
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const Gap(10);
@@ -314,8 +337,9 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
     );
   }
+
   void _showCheckoutDialog(BuildContext context) {
-  final TextEditingController _visitorsNoController = TextEditingController();
+    final TextEditingController _visitorsNoController = TextEditingController();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -326,18 +350,21 @@ class MobileDashboardScreen extends StatelessWidget {
           title: 'Checkout for Ahmed',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              checkOutAllOnPress: () {  },
-              checkOutOnPress: () {  },
+              checkOutAllOnPress: () {},
+              checkOutOnPress: () {},
               controller: _visitorsNoController,
+              logIsLast: true,
+              visitorsCount: 4,
+              horizontalPadding: 0,
               logDate: '2025-04-04T05:33:36.000000Z',
               logStatus: 'Check-In',
               logByValue: '',
-              logDescription: '6 visitor(s) checked-in from gate ‘The W Residences',
+              logDescription:
+                  '6 visitor(s) checked-in from gate ‘The W Residences',
             );
           },
         );
       },
     );
   }
-
 }

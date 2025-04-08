@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 
-import 'loader/loader_widget.dart';
+import '../loader/loader_widget.dart';
 
 class CustomAlertDialogBox extends StatefulWidget {
   final String? title;

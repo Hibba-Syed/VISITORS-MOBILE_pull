@@ -23,7 +23,7 @@ class ActionsContainerWidget extends StatelessWidget {
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: actionOnTap,
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 8),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),
@@ -32,7 +32,6 @@ class ActionsContainerWidget extends StatelessWidget {
           alignment: Alignment.center,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
               SvgPicture.asset(
                   iconPath ?? "",

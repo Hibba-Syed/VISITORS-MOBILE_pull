@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -8,10 +7,10 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
-import 'package:visitors/view/widgets/button/logout_button.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/read_more_widget.dart';
@@ -113,14 +112,12 @@ class CheckInDetailsScreen extends StatelessWidget {
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.horizontalPadding),
-          child:  LogoutButton(
-            text: 'Check Out',
-            onPressed: (){
-              _showCheckoutDialog(context);
-            },
-            image: AppImages.logout,
-            backgroundColor: AppColors.red,
-          ),
+          child:  CustomButton(
+            image:  AppImages.logout,
+              buttonColor:  AppColors.red,
+              text: 'Check Out', onPressed: (){
+            _showCheckoutDialog(context);
+          }),
         ),
       ),
     );
@@ -138,8 +135,11 @@ class CheckInDetailsScreen extends StatelessWidget {
           title: 'Checkout for Ahmed',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
+              visitorsCount: 11,
+              horizontalPadding: 0,
               checkOutAllOnPress: () {  },
               checkOutOnPress: () {  },
+              logIsLast: true,
               logDate: "2025-04-04T05:33:36.000000Z",
               controller: _visitorsNoController,
               logStatus: 'Check-In',

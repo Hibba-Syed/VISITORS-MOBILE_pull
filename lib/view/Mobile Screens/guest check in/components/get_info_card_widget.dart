@@ -4,7 +4,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/small_button.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 
 class GetInfoCardWidget extends StatelessWidget {

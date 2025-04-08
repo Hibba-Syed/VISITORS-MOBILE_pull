@@ -48,20 +48,22 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                 primary: false,
                 itemCount: 10,
                 itemBuilder: ( context,  index) {
-                  return InkWell(
-                    onTap: (){
+                  return WorkOrderRFPCardWidget(
+                      typeAssetImage: AppImages.hammer,
+                      typeText: 'Work Order',
+                      status: 'Active',
+                      title: '(2 Months) Services Contract',
+                      reference: 'JB001-24-00102',
+                      vendorName: 'Mohammed Faisal Al-Haddad',
+                      date: '2025-04-04T05:33:36.000000Z',
+                      checkInPressed: (){
+                        (MediaQuery.of(context).size.shortestSide>=600)?
+                        Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
+                        Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+                      },
+                    detailsOnPressed: () {
                       Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
                     },
-                    child: WorkOrderRFPCardWidget(
-                        typeAssetImage: AppImages.hammer,
-                        typeText: 'Work Order',
-                        status: 'Active',
-                        title: '(2 Months) Services Contract',
-                        reference: 'JB001-24-00102',
-                        vendorName: 'Mohammed Faisal Al-Haddad',
-                        date: '2025-04-04T05:33:36.000000Z',
-                        checkInPressed: (){}
-                    ),
                   );
                 }, separatorBuilder: (BuildContext context, int index) {
                 return const Gap(10);

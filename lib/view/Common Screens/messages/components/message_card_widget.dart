@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/utils/date_time.dart';
 
 class MessageAssigneeCardWidget extends StatelessWidget {
   const MessageAssigneeCardWidget(
       {super.key,
         this.message,
-        this.time,
+        this.date,
         this.profileImage,
         this.userName,
 
       });
   final String? message;
-  final String? time;
+  final String? date;
   final String? profileImage;
   final String? userName;
   @override
@@ -81,7 +82,7 @@ class MessageAssigneeCardWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  time?.toString() ?? "--",
+                  DateTimeUtil.getFormattedDateTime(date?.toString() ?? "--"),
                   style: const TextStyle(
                     fontSize: 10,
                     color:  AppColors.darkGrey,
@@ -95,8 +96,8 @@ class MessageAssigneeCardWidget extends StatelessWidget {
     );
   }
 }
-class MessageVisitorCardWidget extends StatelessWidget {
-  const MessageVisitorCardWidget(
+class MessageSecurityCardWidget extends StatelessWidget {
+  const MessageSecurityCardWidget(
       {super.key,
         this.message,
         this.date,
@@ -141,7 +142,7 @@ class MessageVisitorCardWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  date?.toString() ?? "--",
+                    DateTimeUtil.getFormattedDateTime(date?.toString() ?? "--"),
                   style: const TextStyle(
                     fontSize: 10,
                     color: AppColors.white,

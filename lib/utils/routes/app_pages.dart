@@ -9,7 +9,8 @@ import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_chec
 import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
-import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/guest_check_in_screen.dart';
+import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
+import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
 
 import 'app_routes.dart';
 
@@ -46,8 +47,8 @@ class AppPages {
       // ),
     ),
     PageEntity(
-      route: AppRoutes.guestCheckInScreen,
-      page: const GuestCheckInScreen(),
+      route: AppRoutes.mobileGuestCheckInScreen,
+      page: const MobileGuestCheckInScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,
@@ -72,6 +73,14 @@ class AppPages {
     PageEntity(
       route: AppRoutes.serviceableCheckInsScreen,
       page: const ServiceableCheckInsScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.tabletGuestCheckInScreen,
+      page: const TabletGuestCheckInScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,

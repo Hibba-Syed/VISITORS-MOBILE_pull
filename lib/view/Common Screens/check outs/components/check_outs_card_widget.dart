@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
-import 'package:visitors/view/widgets/button/logout_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';

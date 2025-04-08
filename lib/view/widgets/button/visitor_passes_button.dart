@@ -19,47 +19,48 @@ class VisitorPassesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: Row(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            width: 40,
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
+      child: Expanded(
+        child: Row(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: 40,
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
+                decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                     topLeft: Radius.circular(5),
+                     bottomLeft: Radius.circular(5),
+                   ),
+                  color:AppColors.lightYellow,
+                ),
+                child: Text(count?.toString() ?? "",style:const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.white
+                ),
+                )),
+            Container(
+              alignment: Alignment.center,
+             padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
               decoration: const BoxDecoration(
-                 borderRadius: BorderRadius.only(
-                   topLeft: Radius.circular(5),
-                   bottomLeft: Radius.circular(5),
-                 ),
-                color:AppColors.lightYellow,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
+                color: AppColors.yellow,
               ),
-              child: Text(count?.toString() ?? "",style:const TextStyle(
+              child: const Text("Visitor Passes",
+                style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.white
+                    fontWeight: FontWeight.w500,
+                   color: AppColors.white
+                ),
+                // AppTextStyles.style15white600
+        
               ),
-              )),
-          Container(
-            alignment: Alignment.center,
-            // width: 120,
-           padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              color: AppColors.yellow,
             ),
-            child: const Text("Visitor Passes",
-              style: TextStyle(
-                fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                 color: AppColors.white
-              ),
-              // AppTextStyles.style15white600
-
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

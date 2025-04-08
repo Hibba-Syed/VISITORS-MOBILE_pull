@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
-import 'package:visitors/view/widgets/button/logout_button.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart'
     show IconTitleValueContainerWidget;
@@ -20,8 +20,8 @@ class VisitorPassesCardWidget extends StatelessWidget {
   final String? phone;
   final String? email;
   final String? profileImageUrl;
-  final VoidCallback? checkInOnPressed;
-  final VoidCallback? serviceableOnPressed;
+  final VoidCallback checkInOnPressed;
+  final VoidCallback serviceableOnPressed;
 
   const VisitorPassesCardWidget(
       {super.key,
@@ -33,8 +33,8 @@ class VisitorPassesCardWidget extends StatelessWidget {
         this.email,
         this.company,
         this.profileImageUrl,
-        this.checkInOnPressed,
-        this.serviceableOnPressed,
+        required this.checkInOnPressed,
+        required this.serviceableOnPressed,
       });
 
   @override
@@ -112,19 +112,15 @@ class VisitorPassesCardWidget extends StatelessWidget {
                 ],
               ),
               const Gap(10),
-              LogoutButton(
-                text: 'Check-In',
-                onPressed: checkInOnPressed,
-                backgroundColor: AppColors.green,
-                image: AppImages.checkInButton,
-              ),
+              CustomButton(
+                  buttonColor: AppColors.green,
+                  image: AppImages.checkInButton,
+                  text: 'Check-In', onPressed: checkInOnPressed ),
               const Gap(8),
-              LogoutButton(
-                text: 'Serviceable Check - Ins',
-                onPressed: serviceableOnPressed,
-                backgroundColor: AppColors.cyanBlue,
-                image: AppImages.serviceable,
-              ),
+              CustomButton(
+                  buttonColor: AppColors.cyanBlue,
+                  image: AppImages.serviceable,
+                  text: 'Serviceable Check - Ins', onPressed: serviceableOnPressed ),
             ],
           ),
         ),

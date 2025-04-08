@@ -10,7 +10,7 @@ import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
@@ -141,6 +141,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 ),
                 const Gap(10),
                 ActivityLogWidget(
+                  isLast: true,
                   status: 'Request Received By ',
                   byValue: 'System',
                   description: 'Application has been submitted successfully',
@@ -191,7 +192,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note *',
+                                      label: 'Note*',
                                     ),
                                   ],
                                 );
@@ -258,7 +259,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: noteController,
-                                      label: 'Note *',
+                                      label: 'Note*',
                                     ),
                                   ],
                                 );

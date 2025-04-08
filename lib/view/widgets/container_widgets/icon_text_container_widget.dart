@@ -38,7 +38,7 @@ class IconTextContainerWidget extends StatelessWidget {
         color: backgroundColor ?? AppColors.gray,
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+       // mainAxisSize: MainAxisSize.min,
         children: [
           if (image != null)
             Row(

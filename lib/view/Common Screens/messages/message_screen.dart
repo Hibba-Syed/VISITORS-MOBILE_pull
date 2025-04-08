@@ -68,14 +68,14 @@ class _MessageScreenState extends State<MessageScreen> {
                           message['isSender']
                               ? MessageAssigneeCardWidget(
                                   message: message['text'],
-                                  time: "${message['date']} ${message['time']}",
+                                  date: message['date'],
                                   userName: "Olivia",
                                   profileImage:
                                       "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                                 )
-                              : MessageVisitorCardWidget(
+                              : MessageSecurityCardWidget(
                                   message: message['text'],
-                                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
+                                  date: message['date'],
                                 ),
                         ],
                       );

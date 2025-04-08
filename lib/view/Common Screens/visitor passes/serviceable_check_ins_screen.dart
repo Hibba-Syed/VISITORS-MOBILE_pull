@@ -7,13 +7,12 @@ import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/date_time.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/components/serviceable_check_ins_card_widget.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/all_check_out_design_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
-import 'package:visitors/view/widgets/button/action_button.dart'
-    show ActionButton;
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
-import 'package:visitors/view/widgets/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 
 class ServiceableCheckInsScreen extends StatelessWidget {
   const ServiceableCheckInsScreen({super.key});
@@ -35,57 +34,38 @@ class ServiceableCheckInsScreen extends StatelessWidget {
             const Gap(20),
             Align(
               alignment: Alignment.bottomRight,
-              child: ActionButton(
-                text: 'Check-Out All',
-                image: AppImages.logout,
-                imageColor: AppColors.white,
-                backgroundColor: AppColors.red,
-                onPressed: () {
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return CustomAlertDialogBox(
-                        insetPadding:
-                            const EdgeInsets.symmetric(horizontal: 10),
-                        isCancelButtonDisable: true,
-                        confirmButtonColor: AppColors.red,
-                        confirmButtonText: 'Checkout All',
-                        title: 'Checkout for All Check-Ins',
-                        contentBuilder: (context, setState) {
-                          return Align(
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  AppImages.logout,
-                                  height: 30,
-                                  width: 30,
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.red,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                                const Gap(15),
-                               const  Text(
-                                  'Are you sure you want to checkout currently listed checkins?',style: AppTextStyles.style12black500,
-                                ),
-                                const Gap(5),
-                               const  Text(
-                                  'Selected filters will be applied',style: AppTextStyles.style12Black600,
-                                ),
-                                const Gap(15),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+              child:
+              CustomButton(
+                  buttonColor: AppColors.red,
+                  text: 'Check-Out All',
+                  height: 41,
+                  imageHeight: 18,
+                  borderRadius: 6,
+                  image: AppImages.logout,
+                  onPressed: () {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return CustomAlertDialogBox(
+                          insetPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                          isCancelButtonDisable: true,
+                          confirmButtonColor: AppColors.red,
+                          confirmButtonText: 'Checkout All',
+                          title: 'Checkout for All Check-Ins',
+                          contentBuilder: (context, setState) {
+                            return const Align(
+                              alignment: Alignment.center,
+                              child: AllCheckOutDesignWidget(),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }),
             ),
-            const Gap(10),
+            const Gap(15),
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -137,6 +117,9 @@ class ServiceableCheckInsScreen extends StatelessWidget {
               checkOutAllOnPress: () {},
               checkOutOnPress: () {},
               controller: _visitorsNoController,
+              logIsLast: true,
+              visitorsCount: 2,
+              horizontalPadding: 0,
               logDate: '2025-04-04T05:33:36.000000Z',
               logStatus: 'Check-In',
               logByValue: '',

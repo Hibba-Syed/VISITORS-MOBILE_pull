@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:timeline_tile/timeline_tile.dart'
     show IndicatorStyle, LineStyle, TimelineAlign, TimelineTile;
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
@@ -14,25 +15,30 @@ class ActivityLogWidget extends StatelessWidget {
   final String? description;
   final String? dateTime;
   final bool? isLast;
+  final double? verticalPadding;
+  final double? horizontalPadding;
   const ActivityLogWidget({
     super.key,
     this.status,
     this.byValue,
     this.description,
     this.dateTime,
-    this.isLast
+    this.isLast,
+    this.verticalPadding,
+    this.horizontalPadding
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 0),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         children: [
+          const Gap(10),
           TimelineTile(
         alignment: TimelineAlign.values.first,
         isLast: isLast ?? false,
@@ -42,24 +48,24 @@ class ActivityLogWidget extends StatelessWidget {
         ),
         indicatorStyle: IndicatorStyle(
           indicatorXY: 0.0,
-          width: 25,
-          height: 25,
+          width: 23,
+          height: 23,
           padding: const EdgeInsets.symmetric(
             horizontal: 0,
           ),
           drawGap: true,
           indicator:
           Container(
-            height: 25,
-            width: 25,
+            height: 23,
+            width: 23,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
             child:  Center(
               child: SvgPicture.asset(
                 AppImages.log,
-                height: 30,
-                width: 30,
+                height: 25,
+                width: 25,
                 fit: BoxFit.fill,
               ),
             ),
@@ -71,7 +77,7 @@ class ActivityLogWidget extends StatelessWidget {
             maxWidth: double.infinity,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 4, left: 10),
+            padding: const EdgeInsets.only(left: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

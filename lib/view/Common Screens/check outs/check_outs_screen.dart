@@ -4,14 +4,12 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/date_time.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/components/check_outs_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/components/check_outs_filter_bottom_sheet.dart';
 import 'package:visitors/view/widgets/Filter/filter_widget.dart';
-import 'package:visitors/view/widgets/button/action_button.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 
-import '../../../resource/constants/images.dart';
 class CheckOutsScreen extends StatelessWidget {
   const CheckOutsScreen({super.key});
 
@@ -38,14 +36,14 @@ class CheckOutsScreen extends StatelessWidget {
             const Gap(10),
             Align(
               alignment: Alignment.bottomRight,
-              child: ActionButton(
-                text: 'Export',
-                // image: AppImages.export,
-                imageColor: AppColors.white,
-                backgroundColor: AppColors.primary,
-                buttonWidth: 110,
-                onPressed: () {},
-              ),
+              child:  CustomButton(
+                  buttonColor: AppColors.primary,
+                  text: 'Export',
+                  height: 41,
+                  width: 90,
+                  borderRadius: 6,
+                  onPressed: () {
+                  }),
             ),
             const Gap(5),
             Expanded(

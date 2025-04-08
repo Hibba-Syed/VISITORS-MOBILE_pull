@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
-import 'package:visitors/view/widgets/button/logout_button.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
@@ -25,7 +24,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
   final String? count;
 
 
-  final VoidCallback? checkOutOnPressed;
+  final VoidCallback checkOutOnPressed;
   const ServiceableCheckInsCardWidget(
       {super.key,
         this.profileImageUrl,
@@ -39,7 +38,8 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
         this.reference,
         this.purpose,
         this.count,
-        this.checkOutOnPressed});
+       required this.checkOutOnPressed,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: AppColors.blue,
                                     border: Border.all(
-                                        color: AppColors.white, width: 3)),
+                                        color: AppColors.white, width: 2)),
                                 child:  Text(
                                   count ?? '',
                                   style: AppTextStyles.style12white400,
@@ -144,12 +144,11 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                 ],
               ),
               const Gap(10),
-              LogoutButton(
-                text: 'Check Out',
-                onPressed: checkOutOnPressed,
-                image: AppImages.logout,
-                backgroundColor: AppColors.red,
-              ),
+              CustomButton(
+                  text: 'Check Out',
+                  image: AppImages.logout,
+                  buttonColor:  AppColors.red,
+                  onPressed: checkOutOnPressed),
             ],
           ),
         ),
