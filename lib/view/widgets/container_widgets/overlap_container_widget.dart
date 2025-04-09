@@ -24,8 +24,8 @@ class OverlapContainerWidget extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration:  BoxDecoration(
               borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(8),
-                topLeft: Radius.circular(8),
+                topRight: Radius.circular(6),
+                topLeft: Radius.circular(6),
               ),
               color: backgroundColor ?? AppColors.blue),
           child: Row(

@@ -26,6 +26,7 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final Color? fillColor;
+  final Color? outLineColor;
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
   final InputBorder? errorBorder;
@@ -60,6 +61,7 @@ class TextFieldWidget extends StatelessWidget {
     this.errorBorder,
     this.focusedErrorBorder,
     this.contentPadding,
+    this.outLineColor,
   });
 
   @override
@@ -95,7 +97,7 @@ class TextFieldWidget extends StatelessWidget {
             contentPadding: contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: hint,
-            hintStyle: AppTextStyles.style14DarkGrey400,
+            hintStyle: AppTextStyles.style13black400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: prefix,
             suffixIcon: suffix,
@@ -112,7 +114,7 @@ class TextFieldWidget extends StatelessWidget {
             //focusedBorder,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(color: AppColors.gray, width: 1),
+              borderSide:  BorderSide(color: outLineColor ?? AppColors.outLineGray, width: 1),
             ),
             //enabledBorder,
             errorBorder: errorBorder,

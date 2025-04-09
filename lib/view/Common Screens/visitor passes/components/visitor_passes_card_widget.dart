@@ -73,7 +73,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                       NetworkImageWidget(url: profileImageUrl,),
                     ],
                   ),
-                  const Gap(14),
+                  const Gap(10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,15 +90,16 @@ class VisitorPassesCardWidget extends StatelessWidget {
                         ),
                         const Gap(5),
                         IconTextContainerWidget(
-                          image: AppImages.phone,
-                          text: phone ?? "",
-                        ),
-                        const Gap(5),
-                        IconTextContainerWidget(
                           icon: Icons.email_outlined,
                           iconColor: AppColors.darkGrey,
                           text: email,
                         ),
+                        const Gap(5),
+                        IconTextContainerWidget(
+                          image: AppImages.phone,
+                          text: phone ?? "",
+                        ),
+
                       ],
                     ),
                   ),
@@ -108,7 +109,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                Row(
                 children: [
                   const Text('Company: ',style: AppTextStyles.style14Black600,),
-                  Text( company ?? "",style: AppTextStyles.style14DarkGrey400,),
+                  Text( company ?? "",style: AppTextStyles.style13black400,),
                 ],
               ),
               const Gap(10),

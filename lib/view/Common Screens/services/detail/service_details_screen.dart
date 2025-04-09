@@ -36,17 +36,18 @@ class ServiceDetailsScreen extends StatelessWidget {
               children: [
                 const Gap(20),
                 const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     HeadingWidget(
-                      heading: 'Facility Booking | ',
+                      heading: 'Facility Booking',
                     ),
-                    HeadingWidget(
-                      heading: 'HB2024080725',
-                      style: AppTextStyles.style16black600,
-                    ),
-                    Spacer(),
                     StatusWidget(status: 'Approved'),
                   ],
+                ),
+                const Gap(3),
+                const HeadingWidget(
+                  heading: 'HB2024080725',
+                  style: AppTextStyles.style14Black600,
                 ),
                 const Gap(10),
                 Container(
@@ -180,8 +181,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                               },
                               contentBuilder: (context, setState) {
                                 return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Gap(5),
                                     SvgPicture.asset(

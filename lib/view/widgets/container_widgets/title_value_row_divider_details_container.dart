@@ -36,7 +36,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
               flex: 5,
               child: Text(
                 value ?? "",
-                style: AppTextStyles.style12darkGrey500,
+                style: AppTextStyles.style12DarkGrey500,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

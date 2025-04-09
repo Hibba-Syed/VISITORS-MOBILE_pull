@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
 class AppTextStyles {
-  static const TextStyle style14DarkGrey400 = TextStyle(
-    color: AppColors.darkGrey,
-    fontSize: 14.0,
+  static const TextStyle style13black400 = TextStyle(
+    color: AppColors.black,
+    fontSize: 13,
     fontWeight: FontWeight.w400,
   );
   static const TextStyle style14Primary600 = TextStyle(
@@ -33,10 +33,10 @@ class AppTextStyles {
     fontSize: 13,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle style15DarkGrey500 = TextStyle(
+  static const TextStyle style15DarkGrey600 = TextStyle(
     color: AppColors.darkGrey,
     fontSize: 15,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   );
   static const TextStyle style12Black600 = TextStyle(
     color: AppColors.black,
@@ -104,11 +104,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle style12darkGrey500 = TextStyle(
-    color: AppColors.darkGrey,
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-  );
   static const TextStyle style12DarkGrey500 = TextStyle(
     color: AppColors.darkGrey,
     fontSize: 12,
@@ -133,5 +128,10 @@ class AppTextStyles {
     color: AppColors.black,
     fontSize: 13,
     fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style12darkGrey400 = TextStyle(
+    color: AppColors.darkGrey,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
   );
 }

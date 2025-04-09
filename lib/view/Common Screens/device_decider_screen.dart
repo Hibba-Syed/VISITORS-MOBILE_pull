@@ -307,7 +307,7 @@ class DeviceDeciderScreen extends StatelessWidget {
     } else if (state.selectedIndex == AppConstants.checkInsIndex) {
       return 'Check-Ins';
     } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-      return 'E-Services';
+      return 'All E-Services Requests';
     } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return 'Work Order / RFPs';
     } else if (state.selectedIndex == AppConstants.messagesIndex) {

@@ -17,7 +17,7 @@ class SearchTextField extends StatelessWidget {
   const SearchTextField({
     super.key,
     this.initialValue,
-    this.hint = 'Search',
+    this.hint = 'Search by keyword',
     this.controller,
     this.onChanged,
     this.onFieldSubmitted,
@@ -47,15 +47,17 @@ class SearchTextField extends StatelessWidget {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 10.0),
+                    horizontal: 10, vertical: 10.0),
                 hintText: hint,
-                hintStyle: AppTextStyles.style15DarkGrey500,
+                hintStyle: AppTextStyles.style12darkGrey400,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-                suffixIcon: GestureDetector(
+               // suffixIcon:
+                prefixIcon:
+                GestureDetector(
                   onTap: onSearchPressed,
                   child: const Icon(
                     Icons.search,
-                    color: AppColors.charcoalGray,
+                    color: AppColors.primary,
                   ),
                 ),
                 alignLabelWithHint: false,

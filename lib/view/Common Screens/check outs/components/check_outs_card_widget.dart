@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
+import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
@@ -65,29 +66,15 @@ class CheckOutsCardWidget extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                           Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.center,
-                          children: [
-                            NetworkImageWidget(url: profileImageUrl,),
-                            Positioned(
-                              top: -10,
-                              right: -6,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.primary,
-                                    border: Border.all(
-                                        color: AppColors.white, width: 2)),
-                                child:  Text(
-                                  visitorCount?.toString() ?? '',
-                                  style: AppTextStyles.style12white400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      StackCountContainerWidget(
+                        imageHeight: 55,
+                        imageWidth: 55,
+                        count: visitorCount,
+                        countPadding: 4 ,
+                        countTopPositioned: -10,
+                        countRightPositioned: -6,
+                        imageUrl: profileImageUrl,
+                      ),
                       const Gap(3),
                       Text(
                         type ?? "",
@@ -112,42 +99,44 @@ class CheckOutsCardWidget extends StatelessWidget {
                         const Gap(5),
                         const Text('Check-In',style: AppTextStyles.style13Black600,),
                         const Gap(5),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              IconTextContainerWidget(
+                        Row(
+                          children: [
+                            Expanded(
+                              child: IconTextContainerWidget(
                                 image: AppImages.date,
                                 text: checkInDate ?? "",
                               ),
-                              const Gap(5),
-                              IconTitleValueContainerWidget(
+                            ),
+                            const Gap(5),
+                            Expanded(
+                              child: IconTitleValueContainerWidget(
                                 image: AppImages.gate,
                                 title:  'Gate',
                                 value: checkInGateValue ?? "",
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         const Gap(5),
                         const Text('Check-Out',style: AppTextStyles.style13Black600,),
                         const Gap(5),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              IconTextContainerWidget(
+                        Row(
+                          children: [
+                            Expanded(
+                              child: IconTextContainerWidget(
                                 image: AppImages.date,
                                 text: checkOutDate ?? "",
                               ),
-                              const Gap(5),
-                              IconTitleValueContainerWidget(
+                            ),
+                            const Gap(5),
+                            Expanded(
+                              child: IconTitleValueContainerWidget(
                                 image: AppImages.gate,
                                 title:  'Gate',
                                 value: checkOutGateValue ?? "",
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

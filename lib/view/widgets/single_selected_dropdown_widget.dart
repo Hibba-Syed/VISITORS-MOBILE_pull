@@ -22,6 +22,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
   final bool enabled;
   final String? Function(T?)? validator;
   final Color? fillColor;
+  final Color? outLineColor;
 
   const SingleSelectedDropdownWidget({
     super.key,
@@ -35,6 +36,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
     this.enabled = true,
     this.validator,
     this.fillColor,
+    this.outLineColor,
   });
 
   @override
@@ -90,8 +92,8 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: AppColors.gray,
+                borderSide:  BorderSide(
+                  color: outLineColor ?? AppColors.outLineGray,
                 ),
               ),
               disabledBorder: OutlineInputBorder(

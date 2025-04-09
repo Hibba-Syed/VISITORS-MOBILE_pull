@@ -34,7 +34,7 @@ class FilterContainerWidget extends StatelessWidget {
                 width: 27,
                 height: 27,
                 colorFilter: const ColorFilter.mode(
-                  AppColors.charcoalGray,
+                  AppColors.primary,
                   BlendMode.srcIn,
                 ),
               ),

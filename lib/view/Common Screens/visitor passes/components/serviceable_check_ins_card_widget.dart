@@ -4,6 +4,7 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
+import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
@@ -21,7 +22,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
   final String? typeImage;
   final String? reference;
   final String? purpose;
-  final String? count;
+  final int? count;
 
 
   final VoidCallback checkOutOnPressed;
@@ -76,29 +77,39 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                     Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.center,
-                          children: [
-                            NetworkImageWidget(url: profileImageUrl,),
-                            Positioned(
-                              top: -10,
-                              right: -6,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.blue,
-                                    border: Border.all(
-                                        color: AppColors.white, width: 2)),
-                                child:  Text(
-                                  count ?? '',
-                                  style: AppTextStyles.style12white400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      StackCountContainerWidget(
+                        imageHeight: 55,
+                        imageWidth: 55,
+                        count: count,
+                        countPadding: 6,
+                        countTopPositioned: -5,
+                        countRightPositioned: -6,
+                        backgroundColor: AppColors.blue,
+                        imageUrl: profileImageUrl,
+                      ),
+                     // Stack(
+                     //      clipBehavior: Clip.none,
+                     //      alignment: Alignment.center,
+                     //      children: [
+                     //        NetworkImageWidget(url: profileImageUrl,),
+                     //        Positioned(
+                     //          top: -10,
+                     //          right: -6,
+                     //          child: Container(
+                     //            padding: const EdgeInsets.all(4),
+                     //            decoration: BoxDecoration(
+                     //                shape: BoxShape.circle,
+                     //                color: AppColors.blue,
+                     //                border: Border.all(
+                     //                    color: AppColors.white, width: 2)),
+                     //            child:  Text(
+                     //              count,
+                     //              style: AppTextStyles.style12white400,
+                     //            ),
+                     //          ),
+                     //        ),
+                     //      ],
+                     //    ),
                       const Gap(3),
                       Text(
                         type ?? "",
@@ -140,7 +151,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
               Row(
                 children: [
                   const Text('Purpose: ',style: AppTextStyles.style14Black600,),
-                  Text( purpose ?? "",style: AppTextStyles.style14DarkGrey400,),
+                  Text( purpose ?? "",style: AppTextStyles.style13black400,),
                 ],
               ),
               const Gap(10),

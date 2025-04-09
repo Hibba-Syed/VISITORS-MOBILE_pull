@@ -20,7 +20,8 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
   final String? typeAssetImage;
   final VoidCallback checkInPressed;
   final VoidCallback detailsOnPressed;
-  const WorkOrderRFPCardWidget({super.key,
+  const WorkOrderRFPCardWidget({
+    super.key,
     this.title,
     this.status,
     this.vendorName,
@@ -59,8 +60,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   bottomLeft: Radius.circular(8),
                   bottomRight: Radius.circular(8),
                 ),
-                color: AppColors.white
-            ),
+                color: AppColors.white),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -71,7 +71,8 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                       title ?? "",
                       style: AppTextStyles.style14Black600,
                     ),
-                    StatusWidget(status: status ?? "",
+                    StatusWidget(
+                      status: status ?? "",
                     ),
                   ],
                 ),
@@ -79,7 +80,6 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                 IconTextContainerWidget(
                   image: AppImages.vendor,
                   text: vendorName ?? "",
-
                 ),
                 const Gap(5),
                 IconTextContainerWidget(
@@ -88,9 +88,10 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                 ),
                 const Gap(10),
                 CustomButton(
-                  buttonColor: AppColors.green,
+                    buttonColor: AppColors.green,
                     image: AppImages.checkInButton,
-                    text: 'Check-In', onPressed: checkInPressed ),
+                    text: 'Check-In',
+                    onPressed: checkInPressed),
               ],
             ),
           ),

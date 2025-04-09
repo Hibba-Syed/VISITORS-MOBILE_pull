@@ -51,12 +51,14 @@ class IconTitleValueContainerWidget extends StatelessWidget {
             "$title: ",
             style: AppTextStyles.style13Black600,
           ),
-          Text(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            value ?? "",
-            style:
-            AppTextStyles.style13Black400,
+          Flexible(
+            child: Text(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              value ?? "",
+              style:
+              AppTextStyles.style13Black400,
+            ),
           ),
         ],
       ),

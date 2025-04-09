@@ -50,6 +50,7 @@ class CheckInsScreen extends StatelessWidget {
                   height: 41,
                   imageHeight: 16,
                   borderRadius: 6,
+                  width: 150,
                   image: AppImages.logout,
                 onPressed: () {
                   showDialog(
@@ -145,6 +146,9 @@ class CheckInsScreen extends StatelessWidget {
   }
   _checkInFilterBottomSheet(context) {
     showModalBottomSheet(
+      constraints:  BoxConstraints(
+        minWidth: (MediaQuery.of(context).size.shortestSide>=600)? 600 : 370,
+      ),
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {

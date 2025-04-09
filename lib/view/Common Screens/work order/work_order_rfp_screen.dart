@@ -78,6 +78,9 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
   }
   _workOrderFilterBottomSheet(context) {
     showModalBottomSheet(
+      constraints:  BoxConstraints(
+        minWidth: (MediaQuery.of(context).size.shortestSide>=600)? 600 : 370,
+      ),
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {

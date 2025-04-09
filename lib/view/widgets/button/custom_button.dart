@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.image,
     this.height = 42,
-    this.fontSize = 17,
+    this.fontSize = 16,
     this.maxLines = 1,
     this.padding = const EdgeInsets.all(10),
     this.textColor,
@@ -57,6 +57,7 @@ class CustomButton extends StatelessWidget {
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (image != null)

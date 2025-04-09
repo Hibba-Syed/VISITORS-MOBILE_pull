@@ -44,9 +44,9 @@ class ServicesCardWidget extends StatelessWidget {
            mainAxisAlignment: MainAxisAlignment.spaceBetween,
            children: [
              OverlapContainerWidget(
-               text: unit,),
+               text: unit ?? "",),
              OverlapContainerWidget(
-               text: reference,),
+               text: reference ?? "",),
            ],
          ),
         InkWell(
@@ -78,30 +78,18 @@ class ServicesCardWidget extends StatelessWidget {
                 ),
                 const Gap(5),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: IconTextContainerWidget(
-                                  image: AppImages.services,
-                                  text: serviceType ?? "",
-                                ),
-                              ),
-                              const Gap(5),
-                              Expanded(
-                                child: IconTextContainerWidget(
-                                  image: AppImages.person,
-                                  text: name ?? "",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      child: IconTextContainerWidget(
+                        image: AppImages.services,
+                        text: serviceType ?? "",
+                      ),
+                    ),
+                    const Gap(5),
+                    Expanded(
+                      child: IconTextContainerWidget(
+                        image: AppImages.person,
+                        text: name ?? "",
                       ),
                     ),
                   ],

@@ -28,43 +28,40 @@ class ActionsContainerWidget extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Align(
-          alignment: Alignment.center,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-              SvgPicture.asset(
-                  iconPath ?? "",
-                  height: 30,
-                  width: 30,
-                  fit: BoxFit.fill,
-                ),
-                const Gap(5),
-                if (count != null && count! > 0)...[
-                  Text(
-                    count?.toString() ?? "",
-                    style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 15,
-                        color: forGroundColor,
-                        fontWeight: FontWeight.w600
-                    ),
-                    //AppTextStyles.style14white600,
-                  ),
-                ],
-                Text( title ?? "",
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            SvgPicture.asset(
+                iconPath ?? "",
+                height: 30,
+                width: 30,
+                fit: BoxFit.fill,
+              ),
+              const Gap(5),
+              if (count != null && count! > 0)...[
+                Text(
+                  count?.toString() ?? "",
                   style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 15,
                       color: forGroundColor,
                       fontWeight: FontWeight.w600
-
                   ),
-                  //AppTextStyles.style14white500
+                  //AppTextStyles.style14white600,
                 ),
+              ],
+              Text( title ?? "",
+                style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    color: forGroundColor,
+                    fontWeight: FontWeight.w600
 
-              ]),
-        ),
+                ),
+                //AppTextStyles.style14white500
+              ),
+
+            ]),
       ),
     );
   }

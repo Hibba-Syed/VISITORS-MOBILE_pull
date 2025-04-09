@@ -24,6 +24,7 @@ class _WorkOrderFilterBottomSheetState extends State<WorkOrderFilterBottomSheet>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        width: double.maxFinite,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
         decoration: BoxDecoration(
             color: AppColors.white,

@@ -25,6 +25,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
           children: [
             const Gap(10),
             SingleSelectedDropdownWidget<String>(
+               outLineColor: AppColors.gray,
                 hint: "Select Unit",
                 fillColor: AppColors.white,
                 selectedItem: selectedUnit,

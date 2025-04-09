@@ -9,6 +9,7 @@ import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
+import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
@@ -35,12 +36,12 @@ class CheckInDetailsScreen extends StatelessWidget {
                 const Gap(20),
                 const Align(
                   alignment: Alignment.center,
-                  child: NetworkImageWidget(
-                    height: 90,
-                    width: 90,
-                    url: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',),
+                  child: StackCountContainerWidget(
+                    count: 5,
+                    imageUrl: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                  ),
                 ),
-                const Gap(0),
+                const Gap(5),
                 const HeadingWidget(heading: 'Guest Details',),
                 const Gap(10),
                 Container(
@@ -68,7 +69,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                         value: '4',
                       ),
                       const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Current Visitor Count',
+                        title: 'Current Visitors Count',
                         value: '4',
                       ),
                       const TitleValueRowDividerDetailsContainerWidget(

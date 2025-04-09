@@ -44,75 +44,73 @@ class _MessageScreenState extends State<MessageScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.verticalPadding),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.separated(
-                    controller: _scrollController,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      return Row(
-                        mainAxisAlignment: message['isSender']
-                            ? MainAxisAlignment.start
-                            : MainAxisAlignment.end,
-                        children: [
-                          message['isSender']
-                              ? MessageAssigneeCardWidget(
-                                  message: message['text'],
-                                  date: message['date'],
-                                  userName: "Olivia",
-                                  profileImage:
-                                      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                                )
-                              : MessageSecurityCardWidget(
-                                  message: message['text'],
-                                  date: message['date'],
-                                ),
-                        ],
-                      );
-                    }, separatorBuilder: (BuildContext context, int index) {
-                      return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
-                },),
-              ),
-              if (file?.path.isNotEmpty ?? false)
-                Container(
-                    alignment: Alignment.centerLeft,
-                    height: 100,
-                    width: double.infinity,
-                    child: AttachmentCardWidget(
-                      filePath: file?.path ?? "",
-                      onDeletePressed: () {
-                        setState(() {
-                          file = null;
-                        });
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding,
+            vertical: AppConstants.verticalPadding),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    return Row(
+                      mainAxisAlignment: message['isSender']
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.end,
+                      children: [
+                        message['isSender']
+                            ? MessageAssigneeCardWidget(
+                                message: message['text'],
+                                date: message['date'],
+                                userName: "Olivia",
+                                profileImage:
+                                    "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                              )
+                            : MessageSecurityCardWidget(
+                                message: message['text'],
+                                date: message['date'],
+                              ),
+                      ],
+                    );
+                  }, separatorBuilder: (BuildContext context, int index) {
+                    return const Padding(padding: EdgeInsets.symmetric(vertical: 5));
+              },),
+            ),
+            if (file?.path.isNotEmpty ?? false)
+              Container(
+                  alignment: Alignment.centerLeft,
+                  height: 100,
+                  width: double.infinity,
+                  child: AttachmentCardWidget(
+                    filePath: file?.path ?? "",
+                    onDeletePressed: () {
+                      setState(() {
+                        file = null;
+                      });
 
-                      },
-                    )),
-            ],
-          ),
+                    },
+                  )),
+          ],
         ),
-        bottomNavigationBar: ChatBottomRowWidget(
-          messageController: messageController,
-          onAttach: () async {
-            await ImagePicker()
-                .pickImage(source: ImageSource.gallery)
-                .then((XFile? value) {
-              setState(() {
-                file = value;
-              });
+      ),
+      bottomNavigationBar: ChatBottomRowWidget(
+        messageController: messageController,
+        onAttach: () async {
+          await ImagePicker()
+              .pickImage(source: ImageSource.gallery)
+              .then((XFile? value) {
+            setState(() {
+              file = value;
             });
-          },
-          onSend: () {},
-        ),
+          });
+        },
+        onSend: () {},
       ),
     );
   }

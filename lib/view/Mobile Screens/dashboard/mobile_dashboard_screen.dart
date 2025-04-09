@@ -111,7 +111,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   children: [
                     HeadingWidget(
                       heading: 'Welcome',
-                      style: AppTextStyles.style15DarkGrey500,
+                      style: AppTextStyles.style15DarkGrey600,
                     ),
                     HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
                   ],
@@ -159,7 +159,7 @@ class MobileDashboardScreen extends StatelessWidget {
                       buttonColor: AppColors.red,
                         text: 'Check-Outs',
                         height: 41,
-                        width: 125,
+                        // width: 135,
                         borderRadius: 6,
                         image: AppImages.checkout,
                         onPressed: () {
@@ -172,7 +172,7 @@ class MobileDashboardScreen extends StatelessWidget {
                         buttonColor: AppColors.blue,
                         text: 'View All',
                         height: 41,
-                        width: 100,
+                        // width: 100,
                         borderRadius: 6,
                         image: AppImages.view,
                         onPressed: () {
@@ -218,11 +218,13 @@ class MobileDashboardScreen extends StatelessWidget {
             ),
             const Gap(5),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+               const  Row(
                   children: [
                     Text(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       'E-Services',
                       style: AppTextStyles.style16Primary600,
                     ),
@@ -231,18 +233,19 @@ class MobileDashboardScreen extends StatelessWidget {
                 Row(
                   children: [
                     VisitorPassesButton(
-                      count: 45,
+                      horizontalPadding: 6,
+                      count: 25,
                       onPressed: () {
                         Navigator.pushNamed(
                             context, AppRoutes.visitorPassesScreen);
                       },
                     ),
-                    const Gap(10),
+                    const Gap(8),
                     CustomButton(
                         buttonColor: AppColors.blue,
                         text: 'View All',
                         height: 41,
-                        width: 100,
+                        // width: 100,
                         borderRadius: 6,
                         image: AppImages.view,
                         onPressed: () {
@@ -292,18 +295,17 @@ class MobileDashboardScreen extends StatelessWidget {
                   'Work Orders / RFPs',
                   style: AppTextStyles.style16Primary600,
                 ),
-                Expanded(
-                  child: CustomButton(
-                      buttonColor: AppColors.blue,
-                      text: 'View All',
-                      height: 41,
-                      borderRadius: 6,
-                      image: AppImages.view,
-                      onPressed: () {
-                        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
-                            context, AppConstants.workOrderRfpIndex);
-                      }),
-                ),
+                CustomButton(
+                    buttonColor: AppColors.blue,
+                    text: 'View All',
+                    height: 41,
+                    // width: 100,
+                    borderRadius: 6,
+                    image: AppImages.view,
+                    onPressed: () {
+                      context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
+                          context, AppConstants.workOrderRfpIndex);
+                    }),
               ],
             ),
             const Gap(15),

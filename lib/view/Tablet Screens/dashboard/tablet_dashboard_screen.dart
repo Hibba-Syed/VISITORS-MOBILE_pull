@@ -104,7 +104,7 @@ class TabletDashboardScreen extends StatelessWidget {
           children: [
             const HeadingWidget(
               heading: 'Welcome',
-              style: AppTextStyles.style15DarkGrey500,
+              style: AppTextStyles.style15DarkGrey600,
             ),
             const HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
             const Gap(10),
@@ -229,45 +229,41 @@ class TabletDashboardScreen extends StatelessWidget {
             ),
             const Gap(10),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        'E-Services',
-                        style: AppTextStyles.style16Primary600,
-                      ),
-                    ],
-                  ),
+               const  Row(
+                  children: [
+                    Text(
+                      'E-Services',
+                      style: AppTextStyles.style16Primary600,
+                    ),
+                  ],
                 ),
-                const Gap(20),
-                Expanded(
-                  child: Row(
-                    children: [
-                      VisitorPassesButton(
-                        count: 45,
+                Row(
+                  children: [
+                    VisitorPassesButton(
+                      horizontalPadding: 18,
+                      count: 45,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.visitorPassesScreen);
+                      },
+                    ),
+                    const Gap(10),
+                    CustomButton(
+                        buttonColor: AppColors.blue,
+                        text: 'View All',
+                        height: 41,
+                        width: 185,
+                        borderRadius: 6,
+                        image: AppImages.view,
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, AppRoutes.visitorPassesScreen);
-                        },
-                      ),
-                      const Gap(10),
-                      Expanded(
-                        child: CustomButton(
-                            buttonColor: AppColors.blue,
-                            text: 'View All',
-                            height: 41,
-                            borderRadius: 6,
-                            image: AppImages.view,
-                            onPressed: () {
-                              context
-                                  .read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                  context, AppConstants.eServicesIndex);
-                            }),
-                      ),
-                    ],
-                  ),
+                          context
+                              .read<DeviceDeciderCubit>()
+                              .onChangeSelectedIndex(
+                              context, AppConstants.eServicesIndex);
+                        }),
+                  ],
                 ),
               ],
             ),
@@ -313,7 +309,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     buttonColor: AppColors.blue,
                     text: 'View All',
                     height: 41,
-                     width: 150,
+                     width: 185,
                     borderRadius: 6,
                     image: AppImages.view,
                     onPressed: () {

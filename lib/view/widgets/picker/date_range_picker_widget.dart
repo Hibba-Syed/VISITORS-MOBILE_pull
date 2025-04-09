@@ -63,7 +63,7 @@ class _CustomDateRangePickerWidgetState
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(7),
               border: Border.all(
-                color: AppColors.gray,
+                color: AppColors.outLineGray,
               )),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

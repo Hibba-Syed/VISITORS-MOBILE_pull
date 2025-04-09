@@ -36,15 +36,16 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
               children: [
                 const Gap(20),
                 const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    HeadingWidget(heading: 'Work Order | '),
-                    HeadingWidget(
-                      heading: 'JB001-22-00092',
-                      style: AppTextStyles.style16black600,
-                    ),
-                    Spacer(),
+                    HeadingWidget(heading: 'Work Order'),
                     StatusWidget(status: 'Active'),
                   ],
+                ),
+                const Gap(3),
+                const HeadingWidget(
+                  heading: 'JB001-22-00092',
+                  style: AppTextStyles.style14Black600,
                 ),
                 const Gap(10),
                 Container(
