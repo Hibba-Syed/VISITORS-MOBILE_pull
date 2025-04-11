@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
@@ -94,10 +95,14 @@ class DeviceDeciderScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
-                          Icons.exit_to_app,
-                          color: AppColors.primary,
-                          size: 50,
+                        SvgPicture.asset(
+                          AppImages.logout,
+                          width: 30,
+                          height: 30,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.primary,
+                            BlendMode.srcIn,
+                          ),
                         ),
                         const Gap(16.0),
                         const Text(
@@ -143,7 +148,6 @@ class DeviceDeciderScreen extends StatelessWidget {
                 leading: IconButton(
                   onPressed: () {
                     _scaffoldKey.currentState?.openDrawer();
-
                   },
                   icon: const Icon(
                     Icons.menu,
@@ -277,13 +281,6 @@ class DeviceDeciderScreen extends StatelessWidget {
                               );
                             },
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: 25, vertical: 50),
-                          //   child: Text(
-                          //       "© ${DateTime.now().year} ISKAAN TECH - v1.2.0",
-                          //       style: AppTextStyles.styleDrawerColor400),
-                          // ),
                         ],
                       ),
                     ),
