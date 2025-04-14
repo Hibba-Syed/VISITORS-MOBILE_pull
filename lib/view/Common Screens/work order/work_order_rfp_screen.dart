@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/date_time.dart';
@@ -20,58 +22,65 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                children: [
-                  const Flexible(
-                    child: SearchTextField()
-                  ),
-                  const Gap(6),
-                  FilterContainerWidget(
-                    onPressed: () {
-                      _workOrderFilterBottomSheet(context);
-                    },
-                  )
-                ],
-              ),
-            ),
-            const Gap(10),
-            Expanded(
-              child: ListView.separated(
-                shrinkWrap: true,
-                primary: false,
-                itemCount: 10,
-                itemBuilder: ( context,  index) {
-                  return WorkOrderRFPCardWidget(
-                      typeAssetImage: AppImages.hammer,
-                      typeText: 'Work Order',
-                      status: 'Active',
-                      title: '(2 Months) Services Contract',
-                      reference: 'JB001-24-00102',
-                      vendorName: 'Mohammed Faisal Al-Haddad',
-                      date: '2025-04-04T05:33:36.000000Z',
-                      checkInPressed: (){
-                        (MediaQuery.of(context).size.shortestSide>=600)?
-                        Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
-                        Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic) async {
+        if (didPop) return;
+        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    const Flexible(
+                      child: SearchTextField()
+                    ),
+                    const Gap(6),
+                    FilterContainerWidget(
+                      onPressed: () {
+                        _workOrderFilterBottomSheet(context);
                       },
-                    detailsOnPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
-                    },
-                  );
-                }, separatorBuilder: (BuildContext context, int index) {
-                return const Gap(10);
-              },
-              
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+              const Gap(10),
+              Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: 10,
+                  itemBuilder: ( context,  index) {
+                    return WorkOrderRFPCardWidget(
+                        typeAssetImage: AppImages.hammer,
+                        typeText: 'Work Order',
+                        status: 'Active',
+                        title: '(2 Months) Services Contract',
+                        reference: 'JB001-24-00102',
+                        vendorName: 'Mohammed Faisal Al-Haddad',
+                        date: '2025-04-04T05:33:36.000000Z',
+                        checkInPressed: (){
+                          (MediaQuery.of(context).size.shortestSide>=600)?
+                          Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
+                          Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+                        },
+                      detailsOnPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
+                      },
+                    );
+                  }, separatorBuilder: (BuildContext context, int index) {
+                  return const Gap(10);
+                },
+
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

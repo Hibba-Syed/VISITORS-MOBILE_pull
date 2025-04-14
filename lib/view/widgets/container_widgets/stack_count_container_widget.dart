@@ -24,7 +24,7 @@ class StackCountContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double countPadding = (count != null && count! % 2 == 0) ? 3.0 : 6.0;
+    final double countPadding = (count != null && count! % 2 == 0) ? 3.0 : 5.0;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -33,8 +33,8 @@ class StackCountContainerWidget extends StatelessWidget {
             width: imageWidth ?? 90,
             url: imageUrl ?? ""),
         Positioned(
-          top: countTopPositioned ?? -4,
-          right: countRightPositioned ?? -4,
+          top: countTopPositioned ?? -1,
+          right: countRightPositioned ?? -1,
           child: Container(
             padding:  EdgeInsets.all(countPadding),
             decoration: BoxDecoration(

@@ -94,260 +94,322 @@ class TabletDashboardScreen extends StatelessWidget {
         },
       ),
     ];
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-            vertical: AppConstants.verticalPadding,
-            horizontal: AppConstants.horizontalPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HeadingWidget(
-              heading: 'Welcome',
-              style: AppTextStyles.style15DarkGrey600,
-            ),
-            const HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
-            const Gap(10),
-            GridView.builder(
-              primary: false,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  mainAxisExtent: 100),
-              itemCount: actions.length,
-              itemBuilder: (BuildContext context, int index) {
-                ActionsItemModel actionsItem = actions[index];
-                return ActionsContainerWidget(
-                  title: actionsItem.title,
-                  count: actionsItem.count,
-                  backgroundColor: actionsItem.backgroundColor,
-                  forGroundColor: actionsItem.forGroundColor,
-                  iconPath: actionsItem.iconPath,
-                  actionOnTap: actionsItem.onTap,
-                );
-              },
-            ),
-            const Gap(10),
-            GridView.builder(
-              primary: false,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  mainAxisExtent: 100),
-              itemCount: tabletActions.length,
-              itemBuilder: (BuildContext context, int index) {
-                ActionsItemModel tabletActionsItem = tabletActions[index];
-                return ActionsContainerWidget(
-                  title: tabletActionsItem.title,
-                  backgroundColor: tabletActionsItem.backgroundColor,
-                  forGroundColor: tabletActionsItem.forGroundColor,
-                  iconPath: tabletActionsItem.iconPath,
-                  actionOnTap: tabletActionsItem.onTap,
-                );
-              },
-            ),
-            const Gap(10),
-            Row(
-              children: [
-                const Expanded(
-                  child: Row(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic) async {
+        if (didPop) return;
+        return
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                content: SizedBox(
+                  width: MediaQuery.of(context)
+                      .size
+                      .width,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.logout,
+                        color: AppColors.primary,
+                        size: 40,
+                      ),
+                      const Gap(16.0),
+                      const Text(
+                        'Are you sure you want to logout?',
+                        style: AppTextStyles
+                            .style16DarkGrey600,
+                      ),
+                      const Gap(20.0),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: CustomButton(
+                              text: 'Cancel',
+                              onPressed: () {
+                                Navigator.pop(
+                                    context);
+                              },
+                            ),
+                          ),
+                          const Gap(10.0),
+                          Flexible(
+                            child: CustomButton(
+                              text: 'Logout',
+                              invert: true,
+                              onPressed: () {
+                                Navigator.pop(
+                                    context);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+              vertical: AppConstants.verticalPadding,
+              horizontal: AppConstants.horizontalPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HeadingWidget(
+                heading: 'Welcome',
+                style: AppTextStyles.style15DarkGrey600,
+              ),
+              const HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
+              const Gap(10),
+              GridView.builder(
+                primary: false,
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 100),
+                itemCount: actions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  ActionsItemModel actionsItem = actions[index];
+                  return ActionsContainerWidget(
+                    title: actionsItem.title,
+                    count: actionsItem.count,
+                    backgroundColor: actionsItem.backgroundColor,
+                    forGroundColor: actionsItem.forGroundColor,
+                    iconPath: actionsItem.iconPath,
+                    actionOnTap: actionsItem.onTap,
+                  );
+                },
+              ),
+              const Gap(10),
+              GridView.builder(
+                primary: false,
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 100),
+                itemCount: tabletActions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  ActionsItemModel tabletActionsItem = tabletActions[index];
+                  return ActionsContainerWidget(
+                    title: tabletActionsItem.title,
+                    backgroundColor: tabletActionsItem.backgroundColor,
+                    forGroundColor: tabletActionsItem.forGroundColor,
+                    iconPath: tabletActionsItem.iconPath,
+                    actionOnTap: tabletActionsItem.onTap,
+                  );
+                },
+              ),
+              const Gap(10),
+              Row(
+                children: [
+                  const Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          'Check-Ins',
+                          style: AppTextStyles.style16Primary600,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Gap(20),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                              buttonColor: AppColors.red,
+                              text: 'Check-Outs',
+                              height: 41,
+                              borderRadius: 6,
+                              image: AppImages.checkout,
+                              onPressed: () {
+                                context.read<DeviceDeciderCubit>()
+                                    .onChangeSelectedIndex(
+                                    context, AppConstants.checkOutsIndex);
+                              }),
+                        ),
+                        const Gap(10),
+                        Expanded(
+                          child: CustomButton(
+                              buttonColor: AppColors.blue,
+                              text: 'View All',
+                              height: 41,
+                              borderRadius: 6,
+                              image: AppImages.view,
+                              onPressed: () {
+                                context
+                                    .read<DeviceDeciderCubit>()
+                                    .onChangeSelectedIndex(
+                                    context, AppConstants.checkInsIndex);
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(5),
+              ListView.separated(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return CheckInCardWidget(
+                    count: 12,
+                    name: 'John Henry',
+                    typeText: '1234',
+                    type: 'Guest',
+                    date: '',
+                    //DateTimeUtil.getFormattedDateTime(),
+                    phone: '234567890',
+                    gateValue: 'The W Residences Reception',
+                    checkOutOnPressed: (){
+                      _showCheckoutDialog(context);
+                    },
+                    detailsOnPressed: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.checkInDetailsScreen);
+                    },
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Gap(10);
+                },
+              ),
+              const Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                 const  Row(
                     children: [
                       Text(
-                        'Check-Ins',
+                        'E-Services',
                         style: AppTextStyles.style16Primary600,
                       ),
                     ],
                   ),
-                ),
-                const Gap(20),
-                Expanded(
-                  child: Row(
+                  Row(
                     children: [
-                      Expanded(
-                        child: CustomButton(
-                            buttonColor: AppColors.red,
-                            text: 'Check-Outs',
-                            height: 41,
-                            borderRadius: 6,
-                            image: AppImages.checkout,
-                            onPressed: () {
-                              context.read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                  context, AppConstants.checkOutsIndex);
-                            }),
+                      VisitorPassesButton(
+                        horizontalPadding: 18,
+                        count: 45,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.visitorPassesScreen);
+                        },
                       ),
                       const Gap(10),
-                      Expanded(
-                        child: CustomButton(
-                            buttonColor: AppColors.blue,
-                            text: 'View All',
-                            height: 41,
-                            borderRadius: 6,
-                            image: AppImages.view,
-                            onPressed: () {
-                              context
-                                  .read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                  context, AppConstants.checkInsIndex);
-                            }),
-                      ),
+                      CustomButton(
+                          buttonColor: AppColors.blue,
+                          text: 'View All',
+                          height: 41,
+                          width: 185,
+                          borderRadius: 6,
+                          image: AppImages.view,
+                          onPressed: () {
+                            context
+                                .read<DeviceDeciderCubit>()
+                                .onChangeSelectedIndex(
+                                context, AppConstants.eServicesIndex);
+                          }),
                     ],
                   ),
-                ),
-              ],
-            ),
-            const Gap(5),
-            ListView.separated(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return CheckInCardWidget(
-                  count: 12,
-                  name: 'John Henry',
-                  typeText: '1234',
-                  type: 'Guest',
-                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
-                  phone: '234567890',
-                  gateValue: 'The W Residences Reception',
-                  checkOutOnPressed: (){
-                    _showCheckoutDialog(context);
+                ],
+              ),
+              const Gap(10),
+              ListView.separated(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return ServicesCardWidget(
+                    unit: '1006',
+                    title: 'Facility Booking',
+                    reference: 'FO202401101791',
+                    serviceType: 'Fit Out NOC',
+                    name: 'Suhaan',
+                    status: 'Notified',
+                    checkInOnPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
+                    },
+                    serviceableOnPressed: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.serviceableCheckInsScreen);
+                    },
+                    detailsOnPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.servicesDetailsScreen);
                   },
-                  detailsOnPressed: () {
-                    Navigator.pushNamed(
-                        context, AppRoutes.checkInDetailsScreen);
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Gap(10);
-              },
-            ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-               const  Row(
-                  children: [
-                    Text(
-                      'E-Services',
-                      style: AppTextStyles.style16Primary600,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    VisitorPassesButton(
-                      horizontalPadding: 18,
-                      count: 45,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.visitorPassesScreen);
-                      },
-                    ),
-                    const Gap(10),
-                    CustomButton(
-                        buttonColor: AppColors.blue,
-                        text: 'View All',
-                        height: 41,
-                        width: 185,
-                        borderRadius: 6,
-                        image: AppImages.view,
-                        onPressed: () {
-                          context
-                              .read<DeviceDeciderCubit>()
-                              .onChangeSelectedIndex(
-                              context, AppConstants.eServicesIndex);
-                        }),
-                  ],
-                ),
-              ],
-            ),
-            const Gap(10),
-            ListView.separated(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return ServicesCardWidget(
-                  unit: '1006',
-                  title: 'Facility Booking',
-                  reference: 'FO202401101791',
-                  serviceType: 'Fit Out NOC',
-                  name: 'Suhaan',
-                  status: 'Notified',
-                  checkInOnPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
-                  },
-                  serviceableOnPressed: () {
-                    Navigator.pushNamed(
-                        context, AppRoutes.serviceableCheckInsScreen);
-                  },
-                  detailsOnPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.servicesDetailsScreen);
+                  );
                 },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Gap(10);
-              },
-            ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              const Text(
-                 'Work Orders / RFPs',
-                 style: AppTextStyles.style16Primary600,
-               ),
-                const Gap(20),
-                CustomButton(
-                    buttonColor: AppColors.blue,
-                    text: 'View All',
-                    height: 41,
-                     width: 185,
-                    borderRadius: 6,
-                    image: AppImages.view,
-                    onPressed: () {
-                      context
-                          .read<DeviceDeciderCubit>()
-                          .onChangeSelectedIndex(
-                          context, AppConstants.workOrderRfpIndex);
-                    }),
-              ],
-            ),
-            const Gap(10),
-            ListView.separated(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return  WorkOrderRFPCardWidget(
-                  typeText: 'Work Order',
-                  typeAssetImage: AppImages.hammer,
-                  title: '(2 Months) Services Contract',
-                  reference: 'JB001-24-00102',
-                  vendorName: 'Onlinist Vendor',
-                  date: '2025-04-04T05:33:36.000000Z',
-                  status: 'Active',
-                  checkInPressed: () {
-                    Navigator.pushNamed(
-                        context, AppRoutes.tabletGuestCheckInScreen);
-                  },
-                  detailsOnPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Gap(10);
-              },
-            ),
-          ],
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Gap(10);
+                },
+              ),
+              const Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                const Text(
+                   'Work Orders / RFPs',
+                   style: AppTextStyles.style16Primary600,
+                 ),
+                  const Gap(20),
+                  CustomButton(
+                      buttonColor: AppColors.blue,
+                      text: 'View All',
+                      height: 41,
+                       width: 185,
+                      borderRadius: 6,
+                      image: AppImages.view,
+                      onPressed: () {
+                        context
+                            .read<DeviceDeciderCubit>()
+                            .onChangeSelectedIndex(
+                            context, AppConstants.workOrderRfpIndex);
+                      }),
+                ],
+              ),
+              const Gap(10),
+              ListView.separated(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return  WorkOrderRFPCardWidget(
+                    typeText: 'Work Order',
+                    typeAssetImage: AppImages.hammer,
+                    title: '(2 Months) Services Contract',
+                    reference: 'JB001-24-00102',
+                    vendorName: 'Onlinist Vendor',
+                    date: '2025-04-04T05:33:36.000000Z',
+                    status: 'Active',
+                    checkInPressed: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.tabletGuestCheckInScreen);
+                    },
+                    detailsOnPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
+                    },
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Gap(10);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -370,7 +432,7 @@ class TabletDashboardScreen extends StatelessWidget {
               horizontalPadding: 0,
               visitorsCount: 2,
               logIsLast: true,
-              logDate: "2025-04-04T05:33:36.000000Z",
+              // logDate: '',
               controller: _visitorsNoController,
               logStatus: 'Check-In',
               logByValue: '',

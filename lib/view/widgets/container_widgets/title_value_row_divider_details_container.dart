@@ -23,7 +23,6 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               flex: 4,
@@ -36,7 +35,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
               flex: 5,
               child: Text(
                 value ?? "",
-                style: AppTextStyles.style12DarkGrey500,
+                style: AppTextStyles.style12DarkGrey600,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

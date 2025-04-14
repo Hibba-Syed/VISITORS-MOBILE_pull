@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' show Colors;
 
 class AppConstants {
   /// drawer indexes
-  //static const int menuIndex = 1;
   static const int dashboardIndex = 0;
   static const int checkInsIndex = 1;
   static const int eServicesIndex = 2;

@@ -21,7 +21,6 @@ class CheckInCardWidget extends StatelessWidget {
   final int? count;
   final String? typeText;
   final String? typeImage;
-  final String? reference;
   final VoidCallback checkOutOnPressed;
   final VoidCallback detailsOnPressed;
   const CheckInCardWidget(
@@ -34,7 +33,6 @@ class CheckInCardWidget extends StatelessWidget {
       this.date,
       this.gateValue,
         this.typeImage,
-        this.reference,
         this.count,
      required this.checkOutOnPressed,
      required this.detailsOnPressed,
@@ -82,7 +80,7 @@ class CheckInCardWidget extends StatelessWidget {
                         const Gap(3),
                         Text(
                           type ?? "",
-                          style: AppTextStyles.style12DarkGrey500,
+                          style: AppTextStyles.style12DarkGrey600,
                         ),
                       ],
                     ),

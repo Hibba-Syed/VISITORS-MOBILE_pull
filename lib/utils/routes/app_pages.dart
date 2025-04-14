@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
@@ -9,7 +10,9 @@ import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_chec
 import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
+import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
+import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
 
 import 'app_routes.dart';
@@ -25,6 +28,9 @@ class AppPages {
         providers: [
           BlocProvider(
             create: (context) => DeviceDeciderCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CheckInsCubit(),
           ),
         ],
         child: const SizedBox.shrink(),
@@ -81,6 +87,22 @@ class AppPages {
     PageEntity(
       route: AppRoutes.tabletGuestCheckInScreen,
       page: const TabletGuestCheckInScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.mobileDashboardScreen,
+      page: const MobileDashboardScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.tabletDashboardScreen,
+      page: const TabletDashboardScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,

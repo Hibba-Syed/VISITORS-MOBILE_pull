@@ -45,7 +45,7 @@ class GetInfoCardWidget extends StatelessWidget {
                   const Gap(5),
                   Text(
                     country ?? "",
-                    style: AppTextStyles.style12DarkGrey500,
+                    style: AppTextStyles.style12DarkGrey600,
                   ),
                 ],
               ),

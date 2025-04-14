@@ -95,7 +95,7 @@ class ActivityLogWidget extends StatelessWidget {
                 const Gap(5),
                 Text(
                   description ?? "",
-                  style: AppTextStyles.style12DarkGrey500,
+                  style: AppTextStyles.style12DarkGrey600,
                 ),
                 const Gap(10),
                 IconTextContainerWidget(

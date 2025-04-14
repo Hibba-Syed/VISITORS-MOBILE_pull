@@ -19,4 +19,13 @@ class DateTimeUtil {
     }
     return '--';
   }
+  // static String getFormattedDateTime(DateTime? inputDateTime) {
+  //   if (inputDateTime != null) {
+  //     String formattedDateString =
+  //     DateFormat("MMMM dd, yyyy hh:mm a").format(inputDateTime);
+  //     return formattedDateString;
+  //   }
+  //   return '--';
+  // }
+
 }

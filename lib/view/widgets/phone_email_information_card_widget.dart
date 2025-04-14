@@ -17,7 +17,7 @@ class PhoneEmailInformationCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 0),
       decoration:  BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10)
@@ -32,8 +32,8 @@ class PhoneEmailInformationCardWidget extends StatelessWidget {
             text: name ?? "",
           ),
          const Divider(
-            indent: 5,
-            endIndent: 5,
+            indent:10,
+            endIndent: 10,
             color: AppColors.gray,
             thickness: 1,
           ),
@@ -44,8 +44,8 @@ class PhoneEmailInformationCardWidget extends StatelessWidget {
             text: phone ?? "",
           ),
           const Divider(
-            indent: 5,
-            endIndent: 5,
+            indent: 10,
+            endIndent: 10,
             color: AppColors.gray,
             thickness: 1,
           ),

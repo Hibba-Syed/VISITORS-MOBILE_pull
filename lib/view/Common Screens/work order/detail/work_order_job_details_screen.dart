@@ -20,132 +20,130 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Job Details',
-          titleColor: AppColors.black,
-          iconColor: AppColors.black,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(20),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      appBar: const AppBarWidget(
+        title: 'Job Details',
+        titleColor: AppColors.black,
+        iconColor: AppColors.black,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(20),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  HeadingWidget(heading: 'Work Order'),
+                  StatusWidget(status: 'Active'),
+                ],
+              ),
+              const Gap(3),
+              const HeadingWidget(
+                heading: 'JB001-22-00092',
+                style: AppTextStyles.style14Black600,
+              ),
+              const Gap(10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Column(
                   children: [
-                    HeadingWidget(heading: 'Work Order'),
-                    StatusWidget(status: 'Active'),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Title',
+                      value: '(2 Months) Services Contract',
+                    ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Category',
+                      value: 'Services',
+                    ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Assets',
+                      value: 'Door',
+                    ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Start Date',
+                      value: 'Aug 7, 2024',
+                    ),
+                    TitleValueRowDividerDetailsContainerWidget(
+                      isLast: true,
+                      title: 'End Date',
+                      value: 'Aug 8, 2024',
+                    ),
                   ],
                 ),
-                const Gap(3),
-                const HeadingWidget(
-                  heading: 'JB001-22-00092',
-                  style: AppTextStyles.style14Black600,
-                ),
-                const Gap(10),
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Column(
-                    children: [
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Title',
-                        value: '(2 Months) Services Contract',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Category',
-                        value: 'Services',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Assets',
-                        value: 'Door',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Start Date',
-                        value: 'Aug 7, 2024',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        isLast: true,
-                        title: 'End Date',
-                        value: 'Aug 8, 2024',
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(20),
-                const HeadingWidget(heading: 'Vendor Details'),
-                const Gap(10),
-                const PhoneEmailInformationCardWidget(
-                  name: 'Onlinist Vendorr',
-                  phone: '23456789789',
-                  email: 'support@onlinist.com',
-                ),
-                const Gap(20),
-                const HeadingWidget(heading: 'Contact Person'),
-                const Gap(10),
-                const PhoneEmailInformationCardWidget(
-                  name: 'Hamid Aijaz',
-                  phone: '23456789789',
-                  email: 'Hamid@gmail.com',
-                ),
-              ],
-            ),
+              ),
+              const Gap(20),
+              const HeadingWidget(heading: 'Vendor Details'),
+              const Gap(10),
+              const PhoneEmailInformationCardWidget(
+                name: 'Onlinist Vendorr',
+                phone: '23456789789',
+                email: 'support@onlinist.com',
+              ),
+              const Gap(20),
+              const HeadingWidget(heading: 'Contact Person'),
+              const Gap(10),
+              const PhoneEmailInformationCardWidget(
+                name: 'Hamid Aijaz',
+                phone: '23456789789',
+                email: 'Hamid@gmail.com',
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.horizontalPadding),
-          child: CustomButton(
-              height: 40,
-              text: 'Add Log',
-              onPressed: () {
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      TextEditingController _noteController =
-                          TextEditingController();
-                      return CustomAlertDialogBox(
-                        isCancelButtonDisable: true,
-                        insetPadding:
-                            const EdgeInsets.symmetric(horizontal: 10),
-                        title: 'Add Log to JB001-24-00102',
-                        confirmButtonText: 'Add Log',
-                        onConfirm: () async {
-                          return false;
-                        },
-                        contentBuilder: (context, setState) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Gap(5),
-                              SvgPicture.asset(
-                                AppImages.question,
-                                height: 35,
-                                width: 35,
-                              ),
-                              const Gap(5),
-                              TextFieldWidget(
-                                controller: _noteController,
-                                label: 'Note *',
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    });
-              }),
-        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding,
+            vertical: AppConstants.horizontalPadding),
+        child: CustomButton(
+            height: 40,
+            text: 'Add Log',
+            onPressed: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) {
+                    TextEditingController _noteController =
+                        TextEditingController();
+                    return CustomAlertDialogBox(
+                      isCancelButtonDisable: true,
+                      insetPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      title: 'Add Log to JB001-24-00102',
+                      confirmButtonText: 'Add Log',
+                      onConfirm: () async {
+                        return false;
+                      },
+                      contentBuilder: (context, setState) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Gap(5),
+                            SvgPicture.asset(
+                              AppImages.question,
+                              height: 35,
+                              width: 35,
+                            ),
+                            const Gap(5),
+                            TextFieldWidget(
+                              controller: _noteController,
+                              label: 'Note *',
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  });
+            }),
       ),
     );
   }

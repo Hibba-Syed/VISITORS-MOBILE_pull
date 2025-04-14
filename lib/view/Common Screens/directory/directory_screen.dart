@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
+import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
@@ -17,41 +19,48 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
   String? selectedUnit ;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-            body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(10),
-            SingleSelectedDropdownWidget<String>(
-               outLineColor: AppColors.gray,
-                hint: "Select Unit",
-                fillColor: AppColors.white,
-                selectedItem: selectedUnit,
-                itemAsString: (type) => type ,
-                compareFn: (p0, p1) => p0 == p1,
-                items: ['1','2','3','4'],
-                onChanged: (value) {
-                  selectedUnit = value;
-                }),
-            const Gap(20),
-            const HeadingWidget(heading: 'RESIDENT INFORMATION',),
-            const Gap(10),
-            const PhoneEmailInformationCardWidget(
-              name: 'Fiza Rameez',
-              phone: '23456789789',
-              email: 'Fiza@gmail.com',
-            ),
-            const Gap(20),
-            const HeadingWidget(heading: 'OWNER INFORMATION',),
-            const Gap(10),
-            const PhoneEmailInformationCardWidget(
-              name: 'Hamid Aijaz',
-              phone: '23456789789',
-              email: 'Hamid@gmail.com',
-            ),
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic) async {
+        if (didPop) return;
+        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+      },
+      child: Scaffold(
+              body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(10),
+              SingleSelectedDropdownWidget<String>(
+                 outLineColor: AppColors.gray,
+                  hint: "Select Unit",
+                  fillColor: AppColors.white,
+                  selectedItem: selectedUnit,
+                  itemAsString: (type) => type ,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: ['1','2','3','4'],
+                  onChanged: (value) {
+                    selectedUnit = value;
+                  }),
+              const Gap(20),
+              const HeadingWidget(heading: 'RESIDENT INFORMATION',),
+              const Gap(10),
+              const PhoneEmailInformationCardWidget(
+                name: 'Fiza Rameez',
+                phone: '23456789789',
+                email: 'Fiza@gmail.com',
+              ),
+              const Gap(20),
+              const HeadingWidget(heading: 'OWNER INFORMATION',),
+              const Gap(10),
+              const PhoneEmailInformationCardWidget(
+                name: 'Hamid Aijaz',
+                phone: '23456789789',
+                email: 'Hamid@gmail.com',
+              ),
+            ],
+          ),
         ),
       ),
     );

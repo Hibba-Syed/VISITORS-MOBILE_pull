@@ -78,7 +78,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                       const Gap(3),
                       Text(
                         type ?? "",
-                        style: AppTextStyles.style12DarkGrey500,
+                        style: AppTextStyles.style12DarkGrey600,
                       ),
                     ],
                   ),

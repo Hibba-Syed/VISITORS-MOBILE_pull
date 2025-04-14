@@ -74,7 +74,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                 itemCount: 12,
                 itemBuilder: (context, index) {
                   return ServiceableCheckInsCardWidget(
-                    count: 11,
+                    count: 3,
                     reference: "VP001-25-00003",
                     typeText: "10007",
                     name: 'MUHAMMAD AHMED MOHAMMED ',

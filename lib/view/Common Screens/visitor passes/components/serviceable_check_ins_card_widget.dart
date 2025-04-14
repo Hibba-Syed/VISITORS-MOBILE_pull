@@ -81,7 +81,6 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                         imageHeight: 55,
                         imageWidth: 55,
                         count: count,
-                        countPadding: 6,
                         countTopPositioned: -5,
                         countRightPositioned: -6,
                         backgroundColor: AppColors.blue,
@@ -113,7 +112,7 @@ class ServiceableCheckInsCardWidget extends StatelessWidget {
                       const Gap(3),
                       Text(
                         type ?? "",
-                        style: AppTextStyles.style12DarkGrey500,
+                        style: AppTextStyles.style12DarkGrey600,
                       ),
                     ],
                   ),

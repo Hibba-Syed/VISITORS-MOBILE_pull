@@ -20,106 +20,104 @@ class CheckInDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
-      child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Check-In Details',
-          titleColor: AppColors.black,
-          iconColor: AppColors.black,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(20),
-                const Align(
-                  alignment: Alignment.center,
-                  child: StackCountContainerWidget(
-                    count: 5,
-                    imageUrl: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                  ),
+    return  Scaffold(
+      appBar: const AppBarWidget(
+        title: 'Check-In Details',
+        titleColor: AppColors.black,
+        iconColor: AppColors.black,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(20),
+              const Align(
+                alignment: Alignment.center,
+                child: StackCountContainerWidget(
+                  count: 5,
+                  imageUrl: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 ),
-                const Gap(5),
-                const HeadingWidget(heading: 'Guest Details',),
-                const Gap(10),
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child:  Column(
-                    children: [
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Name',
-                        value: 'Ahmed',
-                      ),
-                      const  TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Phone',
-                        value: '971435446476',
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Email',
-                        value: 'Ahmed@gmail.com',
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Unit',
-                        value: '4',
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Current Visitors Count',
-                        value: '4',
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Visit Purpose',
-                        value: 'Apartment Viewing/RE Agent',
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Entry Card Number',
-                        value: '456789',
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Nationality',
-                        value: 'United Arab Emirates',
-                      ),
-                       TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Check-In Time',
-                        value:  DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
-                      ),
-                      const TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Check-In Gate',
-                        value: 'gate 2',
-                      ),
-                      const ReadMoreWidget(title: 'Description', valueText: 'They abbreviated "dolorem" (meaning "pain") to "lorem," which carries no meaning in Latin. "Ipsum" translates to "itself," and the text frequently includes phrases such as "consectetur adipiscing elit" and "ut labore et dolore." These Latin fragments, derived from Cicero philosophical treatise, were rearranged to create the standard dummy text that has become a fundamental tool in design and typography across generations.'),
-                    ],
-                  ),
+              ),
+              const Gap(5),
+              const HeadingWidget(heading: 'Guest Details',),
+              const Gap(10),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                const Gap(20),
-                const Text('Check-In Log',style: AppTextStyles.style18primary600,),
-                const Gap(10),
-                ActivityLogWidget(
-                  isLast: true,
-                  status: 'Check-In',
-                  byValue: '',
-                  description: '6 visitor(s) checked-in from gate ‘The W Residences’',
-                  dateTime:  DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
+                child:  Column(
+                  children: [
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Name',
+                      value: 'Ahmed',
+                    ),
+                    const  TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Phone',
+                      value: '971435446476',
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Email',
+                      value: 'Ahmed@gmail.com',
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Unit',
+                      value: '4',
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Current Visitors Count',
+                      value: '4',
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Visit Purpose',
+                      value: 'Apartment Viewing/RE Agent',
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Entry Card Number',
+                      value: '456789',
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Nationality',
+                      value: 'United Arab Emirates',
+                    ),
+                     TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Check-In Time',
+                      value:  DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
+                    ),
+                    const TitleValueRowDividerDetailsContainerWidget(
+                      title: 'Check-In Gate',
+                      value: 'gate 2',
+                    ),
+                    const ReadMoreWidget(title: 'Description', valueText: 'They abbreviated "dolorem" (meaning "pain") to "lorem," which carries no meaning in Latin. "Ipsum" translates to "itself," and the text frequently includes phrases such as "consectetur adipiscing elit" and "ut labore et dolore." These Latin fragments, derived from Cicero philosophical treatise, were rearranged to create the standard dummy text that has become a fundamental tool in design and typography across generations.'),
+                  ],
                 ),
+              ),
+              const Gap(20),
+              const Text('Check-In Log',style: AppTextStyles.style18primary600,),
+              const Gap(10),
+              ActivityLogWidget(
+                isLast: true,
+                status: 'Check-In',
+                byValue: '',
+                description: '6 visitor(s) checked-in from gate ‘The W Residences’',
+                dateTime:  DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
+              ),
 
-              ],
-            ),
+            ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.horizontalPadding),
-          child:  CustomButton(
-            image:  AppImages.logout,
-              buttonColor:  AppColors.red,
-              text: 'Check Out', onPressed: (){
-            _showCheckoutDialog(context);
-          }),
-        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.horizontalPadding),
+        child:  CustomButton(
+          image:  AppImages.logout,
+            buttonColor:  AppColors.red,
+            text: 'Check Out', onPressed: (){
+          _showCheckoutDialog(context);
+        }),
       ),
     );
   }

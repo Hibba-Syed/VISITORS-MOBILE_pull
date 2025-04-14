@@ -37,8 +37,7 @@ class NetworkApiServices implements BaseApiServices {
       final response = await http.get(Uri.parse(url), headers: {
         'accept': "application/json",
         'Content-Type': "application/json",
-        'authorization': 'Bearer '
-            //${Globals().token ?? ""}
+        'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJvYW1zZXJ2aWNlcy5jb20iLCJhdWQiOiJodHRwczovL29hbXNlcnZpY2VzLmNvbSIsInN1YiI6NiwiZXhwIjoxNzQxMTgxMzc1LCJuYmYiOjE3NDExNTI1NzUsImlhdCI6MTc0MTE1MjU3NSwianRpIjoiTkFBS1NJIiwianRlIjoidmlzaXRvcl9jcmVkZW50aWFscyJ9.Aqptfo6eTX4K8Jum02thW5WHt3qlz_1iRY8cF6ml4Hc'
       }).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
         throw FetchDataException(
             "Connection timeout, please check your internet");

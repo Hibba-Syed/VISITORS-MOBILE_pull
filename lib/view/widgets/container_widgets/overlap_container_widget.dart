@@ -21,7 +21,7 @@ class OverlapContainerWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 15),
           decoration:  BoxDecoration(
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(6),

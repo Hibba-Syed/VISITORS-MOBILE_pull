@@ -7,6 +7,8 @@ class AppRoutes {
   static const String visitorPassesScreen = '/visitorPassesScreen';
   static const String serviceableCheckInsScreen = '/serviceableCheckInsScreen';
   static const String tabletGuestCheckInScreen = '/tabletGuestCheckInScreen';
+  static const String mobileDashboardScreen = '/mobileDashboardScreen';
+  static const String tabletDashboardScreen = '/tabletDashboardScreen';
 
 
 }
