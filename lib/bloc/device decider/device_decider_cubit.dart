@@ -32,15 +32,15 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
   //   }
   //   emit(state.copyWith(selectedIndex: index));
   // }
+
   void onChangeSelectedIndex(BuildContext context, int? index) {
     if (index != null) {
-      if (index == 1) {
-        emit(state.copyWith(selectedIndex: index, navigationHistory: [index]));
+      if (index == AppConstants.dashboardIndex) {
+        emit(state.copyWith(selectedIndex: index, navigationHistory: []));
       } else {
         List<int> updatedHistory = List.from(state.navigationHistory);
         updatedHistory.remove(index);
         updatedHistory.insert(0, index);
-
         emit(state.copyWith(selectedIndex: index, navigationHistory: updatedHistory));
       }
     }
@@ -49,34 +49,14 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
     if (state.navigationHistory.isNotEmpty) {
       List<int> updatedHistory = List.from(state.navigationHistory);
       updatedHistory.removeAt(0);
-      int? lastIndex = updatedHistory.isNotEmpty ? updatedHistory.first : null;
-      if (lastIndex != null) {
-        if (lastIndex == 1) {
-          emit(state.copyWith(selectedIndex: lastIndex, navigationHistory: [lastIndex]));
+      int? lastIndex = updatedHistory.isNotEmpty ? updatedHistory.first : AppConstants.dashboardIndex;
+     // if (lastIndex != null) {
+        if (lastIndex == AppConstants.dashboardIndex) {
+          emit(state.copyWith(selectedIndex: lastIndex, navigationHistory: []));
         } else {
           emit(state.copyWith(selectedIndex: lastIndex, navigationHistory: updatedHistory));
         }
-      }
+     // }
     }
   }
-
-//
-//   void onChangeSelectedIndex(BuildContext context, int? index) {
-//     if (index != null) {
-//       List<int> updatedHistory = List.from(state.navigationHistory);
-//       updatedHistory.remove(index);
-//       updatedHistory.insert(0, index);
-//       emit(state.copyWith(selectedIndex: index, navigationHistory: updatedHistory));
-//     }
-//   }
-//   void onBackButtonPressed() {
-//     if (state.navigationHistory.isNotEmpty) {
-//
-//       List<int> updatedHistory = List.from(state.navigationHistory);
-//       updatedHistory.removeAt(0);
-//       int? lastIndex = updatedHistory.isNotEmpty ? updatedHistory.first : null;
-//
-//       emit(state.copyWith(selectedIndex: lastIndex, navigationHistory: updatedHistory));
-//     }
-//   }
 }

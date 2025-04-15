@@ -99,7 +99,8 @@ class MobileDashboardScreen extends StatelessWidget {
         },
       ),
     ];
-    return PopScope(
+    return
+      PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
@@ -158,7 +159,8 @@ class MobileDashboardScreen extends StatelessWidget {
               },
             );
       },
-      child: Scaffold(
+      child:
+      Scaffold(
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
               vertical: AppConstants.verticalPadding,

@@ -79,157 +79,160 @@ class DeviceDeciderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DeviceDeciderCubit, DeviceDeciderState>(
       builder: (context, state) {
-        return Scaffold(
-          // onWillPop: () async {
-          //   context.read<DeviceDeciderCubit>().onBackButtonPressed();
-          //   return false;
-          key: _scaffoldKey,
-          appBar: AppBarWidget(
-            leading: IconButton(
-              onPressed: () {
-                _scaffoldKey.currentState?.openDrawer();
-              },
-              icon: const Icon(
-                Icons.menu,
-                color: AppColors.black,
+        return WillPopScope(
+          onWillPop: () async {
+            context.read<DeviceDeciderCubit>().onBackButtonPressed();
+            return false;
+          },
+          child: Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBarWidget(
+              leading: IconButton(
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+                icon: const Icon(
+                  Icons.menu,
+                  color: AppColors.black,
+                ),
               ),
+              title: _getTitle(state),
             ),
-            title: _getTitle(state),
-          ),
-          drawer: Drawer(
-            backgroundColor: AppColors.white,
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(
-                        AppImages.background,
+            drawer: Drawer(
+              backgroundColor: AppColors.white,
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage(
+                          AppImages.background,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AppImages.drawerLogo,
-                        width: 200,
-                        height: 80,
-                      ),
-                      const Gap(10.0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(6.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppImages.drawerLogo,
+                          width: 200,
+                          height: 80,
                         ),
-                        child: const Text(
-                          'VMS APPLICATION',
-                          style: AppTextStyles.style10White500,
+                        const Gap(10.0),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          child: const Text(
+                            'VMS APPLICATION',
+                            style: AppTextStyles.style10White500,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 16.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.builder(
-                        itemCount: (_drawerItems.length),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          DrawerItemModel item = _drawerItems[index];
-                          return DrawerListTile(
-                              title: item.title,
-                              iconPath: item.iconPath,
-                              onTap: () {
-                                if (item.index ==
-                                    AppConstants.logoutIndex) {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (ctx) {
-                                      return AlertDialog(
-                                        content: SizedBox(
-                                          width: MediaQuery.of(context)
-                                              .size
-                                              .width,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(
-                                                Icons.logout,
-                                                color: AppColors.primary,
-                                                size: 40,
-                                              ),
-                                              const Gap(16.0),
-                                              const Text(
-                                                'Are you sure you want to logout?',
-                                                style: AppTextStyles
-                                                    .style16DarkGrey600,
-                                              ),
-                                              const Gap(20.0),
-                                              Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: CustomButton(
-                                                      text: 'Cancel',
-                                                      onPressed: () {
-                                                        Navigator.pop(
-                                                            context);
-                                                      },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 16.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          itemCount: (_drawerItems.length),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            DrawerItemModel item = _drawerItems[index];
+                            return DrawerListTile(
+                                title: item.title,
+                                iconPath: item.iconPath,
+                                onTap: () {
+                                  if (item.index ==
+                                      AppConstants.logoutIndex) {
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (ctx) {
+                                        return AlertDialog(
+                                          content: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Icon(
+                                                  Icons.logout,
+                                                  color: AppColors.primary,
+                                                  size: 40,
+                                                ),
+                                                const Gap(16.0),
+                                                const Text(
+                                                  'Are you sure you want to logout?',
+                                                  style: AppTextStyles
+                                                      .style16DarkGrey600,
+                                                ),
+                                                const Gap(20.0),
+                                                Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: CustomButton(
+                                                        text: 'Cancel',
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
-                                                  const Gap(10.0),
-                                                  Flexible(
-                                                    child: CustomButton(
-                                                      text: 'Logout',
-                                                      invert: true,
-                                                      onPressed: () {
-                                                        Navigator.pop(
-                                                            context);
-                                                      },
+                                                    const Gap(10.0),
+                                                    Flexible(
+                                                      child: CustomButton(
+                                                        text: 'Logout',
+                                                        invert: true,
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  context
-                                      .read<DeviceDeciderCubit>()
-                                      .onChangeSelectedIndex(
-                                          context, item.index);
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                              isSelected:
-                                  item.index == state.selectedIndex
-                          );
-                        },
-                      ),
-                    ],
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    context
+                                        .read<DeviceDeciderCubit>()
+                                        .onChangeSelectedIndex(
+                                            context, item.index);
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                isSelected:
+                                    item.index == state.selectedIndex
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          body: ResponsiveLayoutWidget(
-            mobile: _getMobileScreen(state),
-            tablet: _getTabletScreen(state),
+            body: ResponsiveLayoutWidget(
+              mobile: _getMobileScreen(state),
+              tablet: _getTabletScreen(state),
+            ),
           ),
         );
       },

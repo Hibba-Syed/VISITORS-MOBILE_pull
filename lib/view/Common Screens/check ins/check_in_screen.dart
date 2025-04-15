@@ -74,7 +74,7 @@ class CheckInsScreen extends StatelessWidget {
                           builder: (context) {
                             return CustomAlertDialogBox(
                               insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              const EdgeInsets.symmetric(horizontal: 10),
                               isCancelButtonDisable: true,
                               confirmButtonColor: AppColors.red,
                               confirmButtonText: 'Checkout All',
@@ -93,77 +93,45 @@ class CheckInsScreen extends StatelessWidget {
                   ),
                   const Gap(10),
                   Expanded(
-                    child: state.isLoading == true
-                        ? const LoaderWidget()
-                        : state.checkInsRecord?.isNotEmpty ?? false
-                            ? RefreshIndicator(
-                                onRefresh: () async {
-                                  await context
-                                      .read<CheckInsCubit>()
-                                      .getCheckIns();
-                                },
-                                child: ListView.separated(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: state.checkInsRecord?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    VisitorsCheckInsRecord? checkInsRecord =
-                                        state.checkInsRecord?[index];
-                                    return CheckInCardWidget(
-                                      count: int.parse(
-                                          checkInsRecord?.visitorCount ?? ""),
-                                      typeImage: (checkInsRecord?.type
-                                                      ?.toLowerCase() ==
-                                                  "community visit" ||
-                                              checkInsRecord?.type
-                                                      ?.toLowerCase() ==
-                                                  "community service" ||
-                                              checkInsRecord?.type
-                                                      ?.toLowerCase() ==
-                                                  "unit service")
-                                          ? AppImages.community
-                                          : "",
-                                      typeText: checkInsRecord?.type
-                                                  ?.toLowerCase() ==
-                                              "unit visit"
-                                          ? checkInsRecord?.unit?.unitNumber ??
-                                              ""
-                                          : checkInsRecord?.type,
-                                      name: checkInsRecord?.name ?? "",
-                                      profileImageUrl:
-                                          checkInsRecord?.visitor?.imageUrl ??
-                                              "",
-                                      type: "Guest",
-                                      date: DateTimeUtil.getFormattedDateTime(
-                                          checkInsRecord?.createdAt
-                                              ?.toIso8601String()),
-                                      phone: checkInsRecord?.phone ?? "",
-                                      gateValue:
-                                          checkInsRecord?.checkinGate ?? "",
-                                      checkOutOnPressed: () {
-                                        _showCheckoutDialog(context);
-                                      },
-                                      detailsOnPressed: () {
-                                        Navigator.pushNamed(context,
-                                            AppRoutes.checkInDetailsScreen);
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const Gap(10);
-                                  },
-                                ),
-                              )
-                            : const EmptyWidget(text: 'No check-ins found'),
+                    child: ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: 12,
+                      itemBuilder: (context, index) {
+                        return CheckInCardWidget(
+                          count: 5,
+                          typeImage: AppImages.community,
+                          typeText: "Community Visit",
+                          name: 'MUHAMMAD AHMED MOHAMMED ',
+                          profileImageUrl:
+                          "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                          type: 'Guest',
+                          date: DateTimeUtil.getFormattedDateTime(
+                              '2025-04-04T05:33:36.000000Z'),
+                          phone: '34567890098',
+                          gateValue: "The W Residences Reception",
+                          checkOutOnPressed: () {
+                            _showCheckoutDialog(context);
+                          },
+                          detailsOnPressed: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.checkInDetailsScreen);
+                          },
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Gap(10);
+                      },
+                    ),
                   ),
                 ],
               ),
             );
-          },
+             }
+    ),
         ),
-      ),
+
     );
   }
 
