@@ -10,7 +10,6 @@ class AppConstants {
   static const int checkOutsIndex = 5;
   static const int directoryIndex = 6;
   static const int logoutIndex = 7;
-
   //App Padding
   static const double horizontalPadding = 10;
   static const double verticalPadding = 10;
