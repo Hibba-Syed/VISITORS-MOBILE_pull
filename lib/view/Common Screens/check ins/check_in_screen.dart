@@ -218,91 +218,9 @@ class CheckInsScreen extends StatelessWidget {
       },
     );
   }
-  // Expanded(
-  //   child: ListView.separated(
-  //     padding: const EdgeInsets.only(bottom: 10),
-  //     shrinkWrap: true,
-  //     primary: false,
-  //     itemCount: 12,
-  //     itemBuilder: (context, index) {
-  //       return CheckInCardWidget(
-  //         count: 5,
-  //         typeImage: AppImages.community,
-  //         typeText: "Community Visit",
-  //         name: 'MUHAMMAD AHMED MOHAMMED ',
-  //         profileImageUrl:
-  //         "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  //         type: 'Guest',
-  //         date: DateTimeUtil.getFormattedDateTime(
-  //             '2025-04-04T05:33:36.000000Z'),
-  //         phone: '34567890098',
-  //         gateValue: "The W Residences Reception",
-  //         checkOutOnPressed: () {
-  //           _showCheckoutDialog(context);
-  //         },
-  //         detailsOnPressed: () {
-  //           Navigator.pushNamed(
-  //               context, AppRoutes.checkInDetailsScreen);
-  //         },
-  //       );
-  //     },
-  //     separatorBuilder: (BuildContext context, int index) {
-  //       return const Gap(10);
-  //     },
-  //   ),
-  // ),
 }
 
-void _showCheckoutDialog(BuildContext context) {
-  final TextEditingController _visitorsNoController = TextEditingController();
 
-  showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (context) {
-      return CustomAlertDialogBox(
-        insetPadding: const EdgeInsets.symmetric(horizontal: 10),
-        hideBothButtons: true,
-        title: 'Checkout for Ahmed',
-        contentBuilder: (context, setState) {
-          return CheckOutContainerWidget(
-            checkOutAllOnPress: () {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) {
-                  return CustomAlertDialogBox(
-                    insetPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    isCancelButtonDisable: true,
-                    confirmButtonColor: AppColors.red,
-                    confirmButtonText: 'Checkout All',
-                    title: 'Checkout for All Check-Ins',
-                    contentBuilder: (context, setState) {
-                      return const Align(
-                        alignment: Alignment.center,
-                        child: AllCheckOutDesignWidget(),
-                      );
-                    },
-                  );
-                },
-              );
-            },
-            checkOutOnPress: () {},
-            logIsLast: true,
-            horizontalPadding: 0,
-            logDate: "2025-04-04T05:33:36.000000Z",
-            controller: _visitorsNoController,
-            logStatus: 'Check-In',
-            logByValue: '',
-            visitorsCount: 5,
-            logDescription:
-                '6 visitor(s) checked-in from gate ‘The W Residences',
-          );
-        },
-      );
-    },
-  );
-}
 
 _checkInFilterBottomSheet(context) {
   showModalBottomSheet(

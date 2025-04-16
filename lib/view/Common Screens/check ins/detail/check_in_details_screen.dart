@@ -99,6 +99,7 @@ class CheckInDetailsScreen extends StatelessWidget {
               const Text('Check-In Log',style: AppTextStyles.style18primary600,),
               const Gap(10),
               ActivityLogWidget(
+                horizontalPadding: 8,
                 isLast: true,
                 status: 'Check-In',
                 byValue: '',

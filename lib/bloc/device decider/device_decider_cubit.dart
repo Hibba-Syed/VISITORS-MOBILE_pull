@@ -57,8 +57,8 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
       if (state.selectedIndex != AppConstants.dashboardIndex) {
         history.add(state.selectedIndex);
       }
-      print('Selected NH: ${state.navigationHistory}');
-      print('Selected Index: ${state.selectedIndex}');
+      // print('Selected NH: ${state.navigationHistory}');
+      // print('Selected Index: ${state.selectedIndex}');
       emit(state.copyWith(
         selectedIndex: index,
         navigationHistory: history,

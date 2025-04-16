@@ -100,66 +100,6 @@ class MobileDashboardScreen extends StatelessWidget {
       ),
     ];
     return
-      PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool didPop, dynamic) async {
-        if (didPop) return;
-          return showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (ctx) {
-                return AlertDialog(
-                  content: SizedBox(
-                    width: MediaQuery.of(context)
-                        .size
-                        .width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.logout,
-                          color: AppColors.primary,
-                          size: 40,
-                        ),
-                        const Gap(16.0),
-                        const Text(
-                          'Are you sure you want to logout?',
-                          style: AppTextStyles
-                              .style16DarkGrey600,
-                        ),
-                        const Gap(20.0),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: CustomButton(
-                                text: 'Cancel',
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context);
-                                },
-                              ),
-                            ),
-                            const Gap(10.0),
-                            Flexible(
-                              child: CustomButton(
-                                text: 'Logout',
-                                invert: true,
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-      },
-      child:
       Scaffold(
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
@@ -400,8 +340,7 @@ class MobileDashboardScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   void _showCheckoutDialog(BuildContext context) {

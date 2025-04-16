@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
@@ -81,26 +82,72 @@ class DeviceDeciderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DeviceDeciderCubit, DeviceDeciderState>(
       builder: (context, state) {
-        // onWillPop: () async {
-        // print('PopScope triggered!: ',);
-        //   context.read<DeviceDeciderCubit>().onBackButtonPressed();
-        //   return false;
-        // },
-//////////
-//         canPop: false,
-//         onPopInvoked: (bool didPop) {
-//         debugPrint('PopScope triggered: $didPop');
-//         if (!didPop) {
-//         context.read<DeviceDeciderCubit>().onBackButtonPressed();
-//         }
-//         },
         return WillPopScope(
           onWillPop: () async {
-            print(
-              'PopScope triggered!: ',
-            );
-            context.read<DeviceDeciderCubit>().onBackButtonPressed();
-            return false;
+            print('PopScope triggered!');
+            if (state.selectedIndex == AppConstants.dashboardIndex) {
+              bool shouldExit = await showDialog<bool>(
+                barrierDismissible: false,
+                context: context,
+                builder: (ctx) {
+                  return  AlertDialog(
+                    content: SizedBox(
+                      width: MediaQuery.of(context)
+                          .size
+                          .width,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.logout,
+                            color: AppColors.primary,
+                            size: 40,
+                          ),
+                          const Gap(16.0),
+                          const Text(
+                            'Are you sure you want to logout?',
+                            style: AppTextStyles
+                                .style16DarkGrey600,
+                          ),
+                          const Gap(20.0),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: CustomButton(
+                                  text: 'Cancel',
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context);
+                                  },
+                                ),
+                              ),
+                              const Gap(10.0),
+                              Flexible(
+                                child: CustomButton(
+                                  text: 'Logout',
+                                  invert: true,
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ) ?? false;
+              if (shouldExit) {
+                Navigator.pop(context);
+              }
+              return false;
+            } else {
+              context.read<DeviceDeciderCubit>().onBackButtonPressed();
+              return false;
+            }
           },
           child: Scaffold(
             key: _scaffoldKey,
