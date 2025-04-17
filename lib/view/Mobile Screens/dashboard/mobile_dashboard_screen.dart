@@ -213,7 +213,7 @@ class MobileDashboardScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Check-Ins',
-                        style: AppTextStyles.style16Primary600,
+                        style: AppTextStyles.style19Primary600,
                       ),
                     ],
                   ),
@@ -289,7 +289,7 @@ class MobileDashboardScreen extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         'E-Services',
-                        style: AppTextStyles.style16Primary600,
+                        style: AppTextStyles.style19Primary600,
                       ),
                     ],
                   ),
@@ -356,7 +356,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 children: [
                   const Text(
                     'Work Orders / RFPs',
-                    style: AppTextStyles.style16Primary600,
+                    style: AppTextStyles.style19Primary600,
                   ),
                   CustomButton(
                       buttonColor: AppColors.blue,

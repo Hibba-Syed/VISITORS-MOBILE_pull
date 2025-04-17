@@ -218,7 +218,7 @@ class TabletDashboardScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Check-Ins',
-                          style: AppTextStyles.style16Primary600,
+                          style: AppTextStyles.style19Primary600,
                         ),
                       ],
                     ),
@@ -271,8 +271,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     name: 'John Henry',
                     typeText: '1234',
                     type: 'Guest',
-                    date: '',
-                    //DateTimeUtil.getFormattedDateTime(),
+                    date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                     phone: '234567890',
                     gateValue: 'The W Residences Reception',
                     checkOutOnPressed: (){
@@ -296,7 +295,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     children: [
                       Text(
                         'E-Services',
-                        style: AppTextStyles.style16Primary600,
+                        style: AppTextStyles.style19Primary600,
                       ),
                     ],
                   ),
@@ -319,8 +318,7 @@ class TabletDashboardScreen extends StatelessWidget {
                           borderRadius: 6,
                           image: AppImages.view,
                           onPressed: () {
-                            context
-                                .read<DeviceDeciderCubit>()
+                            context.read<DeviceDeciderCubit>()
                                 .onChangeSelectedIndex(
                                 context, AppConstants.eServicesIndex);
                           }),
@@ -363,7 +361,7 @@ class TabletDashboardScreen extends StatelessWidget {
                 children: [
                 const Text(
                    'Work Orders / RFPs',
-                   style: AppTextStyles.style16Primary600,
+                   style: AppTextStyles.style19Primary600,
                  ),
                   const Gap(20),
                   CustomButton(

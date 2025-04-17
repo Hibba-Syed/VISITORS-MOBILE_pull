@@ -279,7 +279,6 @@ class DeviceDeciderScreen extends StatelessWidget {
     else if (state.selectedIndex == AppConstants.directoryIndex) {
       return const DirectoryScreen();
     }
-
     return const SizedBox.shrink();
   }
 

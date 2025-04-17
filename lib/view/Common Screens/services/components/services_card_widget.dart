@@ -95,6 +95,7 @@ class ServicesCardWidget extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
+
                 CustomButton(
                  buttonColor: AppColors.green,
                     image: AppImages.checkInButton,

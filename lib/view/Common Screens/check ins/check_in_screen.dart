@@ -189,8 +189,7 @@ class CheckInsScreen extends StatelessWidget {
   _checkInFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
-        minWidth: (MediaQuery.of(context).size.shortestSide >= 600) ? 600 : 370,
-      ),
+        minWidth: (MediaQuery.of(context).size.shortestSide >= 600) ? 600 : 370),
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {

@@ -14,4 +14,5 @@ class AppConstants {
   //App Padding
   static const double horizontalPadding = 10;
   static const double verticalPadding = 10;
+
 }
