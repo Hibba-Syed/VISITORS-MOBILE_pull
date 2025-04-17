@@ -68,6 +68,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                 borderRadius: 6,
                 image: AppImages.scan,
                 onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.documentScannerScreen);
                 }),
             const Gap(20),
             Container(

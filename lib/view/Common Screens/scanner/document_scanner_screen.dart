@@ -1,78 +1,62 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
+import 'package:google_mlkit_document_scanner/google_mlkit_document_scanner.dart';
 
-class TextExtractionScreen extends StatefulWidget {
-  final String imagePath; // Path of scanned ID card
+import 'id_details_screen.dart';
 
-  const TextExtractionScreen({super.key, required this.imagePath});
+class DocumentScannerScreen extends StatefulWidget {
+
+  const DocumentScannerScreen({super.key});
 
   @override
-  State<TextExtractionScreen> createState() => _TextExtractionScreenState();
+  State<DocumentScannerScreen> createState() => _DocumentScannerScreenState();
 }
 
-class _TextExtractionScreenState extends State<TextExtractionScreen> {
-  String? _croppedProfilePath;
-  bool _isProcessing = false;
+class _DocumentScannerScreenState extends State<DocumentScannerScreen> {
+   final DocumentScanner documentScanner = DocumentScanner(
+    options: DocumentScannerOptions(
+     isGalleryImport: true,
+      mode: ScannerMode.full,
+      pageLimit: 1
+    ),
+  );
 
-  Future<void> _cropProfileFromId() async {
-    setState(() => _isProcessing = true);
+   bool _isScanning = false;
 
-    try {
-      // Crop the profile picture area from ID
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: widget.imagePath,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1.25), // ID photo ratio
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Crop Profile from ID',
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: true,
-          ),
-        ],
-      );
+   Future<void> scanDocument(BuildContext context) async {
+     setState(() => _isScanning = true);
+     try {
+       final result = await documentScanner.scanDocument();
 
-      if (croppedFile != null) {
-        // Save to app directory
-        final directory = await getApplicationDocumentsDirectory();
-        final fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final savedPath = path.join(directory.path, fileName);
-        await File(croppedFile.path).copy(savedPath);
+       if (result.images.isNotEmpty) {
+         Navigator.push(
+           context,
+           MaterialPageRoute(
+             builder: (context) => IDDetailsScreen(
+               cardImagePath: result.images.first,
+             ),
+           ),
+         );
+       }
+          } catch (e) {
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text('Scan failed: ${e.toString()}')),
+       );
+     }
+   }
 
-        setState(() => _croppedProfilePath = savedPath);
-      }
-    } finally {
-      setState(() => _isProcessing = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Extract Profile from ID')),
-      body: Column(
-        children: [
-          // Display scanned ID
-          Expanded(
-            child: Image.file(File(widget.imagePath)),
-          ),
-          // Crop button
-          ElevatedButton(
-            onPressed: _isProcessing ? null : _cropProfileFromId,
-            child: _isProcessing
-                ? const CircularProgressIndicator()
-                : const Text('Crop Profile Picture'),
-          ),
-          // Show cropped result
-          if (_croppedProfilePath != null)
-            SizedBox(
-              height: 150,
-              child: Image.file(File(_croppedProfilePath!)),
-            ),
-        ],
-      ),
-    );
-  }
+   @override
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(title: const Text('Document Scanner')),
+       body: Center(
+         child: _isScanning
+             ? const CircularProgressIndicator()
+             : ElevatedButton(
+           onPressed: () => scanDocument(context),
+           child: const Text('Scan Document'),
+         ),
+       ),
+     );
+   }
 }

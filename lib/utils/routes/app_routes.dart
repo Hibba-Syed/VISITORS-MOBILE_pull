@@ -9,6 +9,7 @@ class AppRoutes {
   static const String tabletGuestCheckInScreen = '/tabletGuestCheckInScreen';
   static const String mobileDashboardScreen = '/mobileDashboardScreen';
   static const String tabletDashboardScreen = '/tabletDashboardScreen';
+  static const String documentScannerScreen = '/documentScannerScreen';
 
 
 }

@@ -15,6 +15,7 @@ import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_c
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
 
+import '../../view/Common Screens/scanner/document_scanner_screen.dart';
 import 'app_routes.dart';
 
 
@@ -103,6 +104,14 @@ class AppPages {
     PageEntity(
       route: AppRoutes.tabletDashboardScreen,
       page: const TabletDashboardScreen(),
+      // bloc:
+      // BlocProvider(
+      //   create: (context) => ,
+      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.documentScannerScreen,
+      page: const DocumentScannerScreen(),
       // bloc:
       // BlocProvider(
       //   create: (context) => ,
