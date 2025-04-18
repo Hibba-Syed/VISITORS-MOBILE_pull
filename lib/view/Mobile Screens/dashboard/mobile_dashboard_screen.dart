@@ -283,16 +283,21 @@ class MobileDashboardScreen extends StatelessWidget {
               Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 const  Row(
-                    children: [
-                      Text(
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        'E-Services',
-                        style: AppTextStyles.style19Primary600,
-                      ),
-                    ],
-                  ),
+                 Flexible(
+                   child:  Row(
+                     mainAxisSize: MainAxisSize. min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            'E-Services',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.style19Primary600,
+                          ),
+                        ),
+                      ],
+                    ),
+                 ),
                   Row(
                     children: [
                       VisitorPassesButton(
@@ -303,12 +308,11 @@ class MobileDashboardScreen extends StatelessWidget {
                               context, AppRoutes.visitorPassesScreen);
                         },
                       ),
-                      const Gap(8),
+                      const Gap(6),
                       CustomButton(
                           buttonColor: AppColors.blue,
                           text: 'View All',
                           height: 41,
-                          // width: 100,
                           borderRadius: 6,
                           image: AppImages.view,
                           onPressed: () {
@@ -391,6 +395,9 @@ class MobileDashboardScreen extends StatelessWidget {
                       },
                     detailsOnPressed: () {
                       Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
+                    },
+                    jobCheckInOnPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.jobCheckInsScreen);
                     },);
                 },
                 separatorBuilder: (BuildContext context, int index) {

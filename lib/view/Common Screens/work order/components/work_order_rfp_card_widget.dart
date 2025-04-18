@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
@@ -20,6 +21,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
   final String? typeAssetImage;
   final VoidCallback checkInPressed;
   final VoidCallback detailsOnPressed;
+  final VoidCallback jobCheckInOnPressed;
   const WorkOrderRFPCardWidget({
     super.key,
     this.title,
@@ -31,6 +33,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
     required this.checkInPressed,
     required this.detailsOnPressed,
     this.typeAssetImage,
+    required this.jobCheckInOnPressed,
   });
 
   @override
@@ -87,11 +90,40 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   text: DateTimeUtil.getFormattedDateTime(date),
                 ),
                 const Gap(10),
-                CustomButton(
-                    buttonColor: AppColors.green,
-                    image: AppImages.checkInButton,
-                    text: 'Check-In',
-                    onPressed: checkInPressed),
+                AppConstants.isTablet(context) ?
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                              buttonColor: AppColors.green,
+                              image: AppImages.checkInButton,
+                              text: 'Check-In',
+                              onPressed: checkInPressed),
+                        ),
+                        const Gap(8),
+                        Expanded(
+                          child: CustomButton(
+                              buttonColor: AppColors.cyanBlue,
+                              image: AppImages.serviceable,
+                              text: 'Job Check - Ins', onPressed: jobCheckInOnPressed
+                          ),
+                        ),
+                      ],
+                    ): Column(
+                  children: [
+                    CustomButton(
+                        buttonColor: AppColors.green,
+                        image: AppImages.checkInButton,
+                        text: 'Check-In',
+                        onPressed: checkInPressed),
+                    const Gap(8),
+                    CustomButton(
+                        buttonColor: AppColors.cyanBlue,
+                        image: AppImages.serviceable,
+                        text: 'Job Check - Ins', onPressed: jobCheckInOnPressed),
+                  ],
+                ),
+
               ],
             ),
           ),

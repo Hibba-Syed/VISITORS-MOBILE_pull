@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/all_check_out_design_widget.dart';
+import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
-import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-
-class ServiceableCheckInsScreen extends StatelessWidget {
-  const ServiceableCheckInsScreen({super.key});
+class JobCheckInsScreen extends StatelessWidget {
+  const JobCheckInsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(
-        title: 'Serviceable Check-Ins',
+        title: 'Job Check-Ins',
         titleColor: AppColors.black,
         iconColor: AppColors.black,
       ),
@@ -78,7 +76,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                     typeText: "10007",
                     name: 'MUHAMMAD AHMED MOHAMMED ',
                     profileImageUrl:
-                        "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                    "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                     type: 'Visitor Pass',
                     date: DateTimeUtil.getFormattedDateTime(
                         '2025-04-04T05:33:36.000000Z'),

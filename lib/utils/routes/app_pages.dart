@@ -9,6 +9,7 @@ import 'package:visitors/view/Common%20Screens/services/detail/service_details_s
 import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_check_ins_screen.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/job_check_ins_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
@@ -47,66 +48,38 @@ class AppPages {
     PageEntity(
       route: AppRoutes.servicesDetailsScreen,
       page: const ServiceDetailsScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.mobileGuestCheckInScreen,
       page: const MobileGuestCheckInScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.checkInDetailsScreen,
       page: const CheckInDetailsScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.visitorPassesScreen,
       page: const VisitorPassesScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.serviceableCheckInsScreen,
       page: const ServiceableCheckInsScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.tabletGuestCheckInScreen,
       page: const TabletGuestCheckInScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.mobileDashboardScreen,
       page: const MobileDashboardScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.tabletDashboardScreen,
       page: const TabletDashboardScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
+    ),
+    PageEntity(
+      route: AppRoutes.jobCheckInsScreen,
+      page: const JobCheckInsScreen(),
     ),
   ];
 

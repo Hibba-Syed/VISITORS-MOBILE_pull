@@ -37,7 +37,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
   String? _selectedItemPurpose;
   String? _selectedItemUnit;
   String? _selectedItemNationality;
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -112,246 +112,280 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                 ],
               ),
               const Gap(20),
-              Row(
+            Form(
+              key: _formKey,
+              child: Column(
                 children: [
-                  Expanded(
-                    child:
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Type*",
-                          style: AppTextStyles.style12Black600,
-                        ),
-                        const Gap(8),
-                        SingleSelectedDropdownWidget<String>(
-                            hint: "Select Type",
-                            fillColor: AppColors.white,
-                            selectedItem: _selectedItemType,
-                            compareFn: (p0, p1) => p0 == p1,
-                            items: const [
-                              'Unit Visit',
-                              'Community Visit',
-                            ],
-                            onChanged: (value) {
-                              _selectedItemType = value;
-                            }),
-                      ],
-                    ),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFieldWidget(
-                      controller: _visitorCountController,
-                      label: 'Visitor Count*',
-                      hint: 'Enter count',
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(5),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      const  Text(
-                        "Purpose*",
-                        style: AppTextStyles.style12Black600,
-                      ),
-                      const Gap(8),
-                      SingleSelectedDropdownWidget<String>(
-                          hint: "Select Purpose",
-                          fillColor: AppColors.white,
-                          selectedItem: _selectedItemPurpose,
-                          compareFn: (p0, p1) => p0 == p1,
-                          items: const [
-                            'purpose',
-                            'purpose',
-                          ],
-                          onChanged: (value) {
-                            _selectedItemPurpose = value;
-                          }),
-                    ],
-                  ),
-                ),
-                const Gap(10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Unit Number*",
-                        style: AppTextStyles.style12Black600,
-                      ),
-                      const Gap(8),
-                      SingleSelectedDropdownWidget<String>(
-                          hint: "Select Unit",
-                          fillColor: AppColors.white,
-                          selectedItem: _selectedItemUnit,
-                          // itemAsString: (type) => type ?? "--",
-                          compareFn: (p0, p1) => p0 == p1,
-                          items: const ['233', '2', '4567'],
-                          onChanged: (value) {
-                            _selectedItemUnit = value;
-                          }),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-              const Gap(5),
-               Row(
-                 children: [
-                   Expanded(
-                     child: TextFieldWidget(
-                       enabledBorder: InputBorder.none,
-                      controller: _nameController,
-                       label: 'Name*',
-                       hint: 'Enter Name',
-                       keyboardType: TextInputType.text,
-                       validator: (value) {
-                         if (value == null || value.isEmpty) {
-                           return 'required';
-                         }
-                         return null;
-                       },
-                     ),
-                   ),
-                   const Gap(10),
-                   Expanded(
-                     child: TextFieldWidget(
-                       controller: _emailController,
-                       label: 'Email*',
-                       hint: 'Enter Email',
-
-                       validator: (value) {
-                         if (value == null || value.isEmpty) {
-                           return 'required';
-                         }
-                         return null;
-                       },
-                     ),
-                   ),
-                 ],
-               ),
-              const Gap(5),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const  Text(
-                          "Nationality*",
-                          style: AppTextStyles.style12Black600,
-                        ),
-                        const Gap(8),
-                        SingleSelectedDropdownWidget<String>(
-                            hint: "Select Nationality",
-                            fillColor: AppColors.white,
-                            selectedItem: _selectedItemNationality,
-                            compareFn: (p0, p1) => p0 == p1,
-                            items: const [
-                              'pakistan',
-                              'Australia',
-                            ],
-                            onChanged: (value) {
-                              _selectedItemNationality = value;
-                            }),
-                      ],
-                    ),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFieldWidget(
-                      controller: _cardNumberController,
-                      label: 'Entry Card Number*',
-                      hint: 'Enter card number',
-
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-
-                ],
-              ),
-              const Gap(5),
-              TextFieldWidget(
-                label:  "Phone Number*",
-                hint:  "Enter phone number",
-                controller: _phoneNumberController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Required max length 13 digits';
-                  }
-                  if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
-                    return 'Please enter a valid mobile number';
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(13),
-                ],
-                suffix: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5),
-                      ),
-                      border: Border.all(color: AppColors.primary)),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return CustomAlertDialogBox(
-                              hideBothButtons: true,
-                              insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Select Visitor',
-                              contentBuilder: (context, setState) {
-                                return const SelectVisitorNumberWidget();
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Type*",
+                              style: AppTextStyles.style12Black600,
+                            ),
+                            const Gap(8),
+                            SingleSelectedDropdownWidget<String>(
+                                hint: "Select Type",
+                                fillColor: AppColors.white,
+                                selectedItem: _selectedItemType,
+                                compareFn: (p0, p1) => p0 == p1,
+                                items: const [
+                                  'Unit Visit',
+                                  'Community Visit',
+                                ],
+                                onChanged: (value) {
+                                  _selectedItemType = value;
+                                },
+                              validator:  (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
                               },
-                            );
-                          });
-                    },
-                    child: const Text("Get Info",
-                        style: TextStyle(color: AppColors.primary)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: TextFieldWidget(
+                          controller: _visitorCountController,
+                          label: 'Visitor Count*',
+                          hint: 'Enter count',
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              const Gap(5),
-              TextFieldWidget(
-                controller: _descriptionController,
-                label: 'Description*',
-                hint: 'Enter description',
+                  const Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const  Text(
+                              "Purpose*",
+                              style: AppTextStyles.style12Black600,
+                            ),
+                            const Gap(8),
+                            SingleSelectedDropdownWidget<String>(
+                                hint: "Select Purpose",
+                                fillColor: AppColors.white,
+                                selectedItem: _selectedItemPurpose,
+                                compareFn: (p0, p1) => p0 == p1,
+                                items: const [
+                                  'purpose',
+                                  'purpose',
+                                ],
+                                onChanged: (value) {
+                                  _selectedItemPurpose = value;
+                                },
+                              validator:  (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Unit Number*",
+                              style: AppTextStyles.style12Black600,
+                            ),
+                            const Gap(8),
+                            SingleSelectedDropdownWidget<String>(
+                                hint: "Select Unit",
+                                fillColor: AppColors.white,
+                                selectedItem: _selectedItemUnit,
+                                // itemAsString: (type) => type ?? "--",
+                                compareFn: (p0, p1) => p0 == p1,
+                                items: const ['233', '2', '4567'],
+                                onChanged: (value) {
+                                  _selectedItemUnit = value;
+                                },
+                              validator:  (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFieldWidget(
+                          enabledBorder: InputBorder.none,
+                          controller: _nameController,
+                          label: 'Name*',
+                          hint: 'Enter Name',
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: TextFieldWidget(
+                          controller: _emailController,
+                          label: 'Email*',
+                          hint: 'Enter Email',
 
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'required';
-                  }
-                  return null;
-                },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const  Text(
+                              "Nationality*",
+                              style: AppTextStyles.style12Black600,
+                            ),
+                            const Gap(8),
+                            SingleSelectedDropdownWidget<String>(
+                                hint: "Select Nationality",
+                                fillColor: AppColors.white,
+                                selectedItem: _selectedItemNationality,
+                                compareFn: (p0, p1) => p0 == p1,
+                                items: const [
+                                  'pakistan',
+                                  'Australia',
+                                ],
+                                onChanged: (value) {
+                                  _selectedItemNationality = value;
+                                },
+                              validator:  (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: TextFieldWidget(
+                          controller: _cardNumberController,
+                          label: 'Entry Card Number*',
+                          hint: 'Enter card number',
+
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  const Gap(5),
+                  TextFieldWidget(
+                    label:  "Phone Number*",
+                    hint:  "Enter phone number",
+                    controller: _phoneNumberController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Required max length 13 digits';
+                      }
+                      if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
+                        return 'Please enter a valid mobile number';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(13),
+                    ],
+                    suffix: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(5),
+                            bottomRight: Radius.circular(5),
+                          ),
+                          border: Border.all(color: AppColors.primary)),
+                      child: TextButton(
+                        style: ButtonStyle(
+                          overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return CustomAlertDialogBox(
+                                  hideBothButtons: true,
+                                  insetPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                                  title: 'Select Visitor',
+                                  contentBuilder: (context, setState) {
+                                    return const SelectVisitorNumberWidget();
+                                  },
+                                );
+                              });
+                        },
+                        child: const Text("Get Info",
+                            style: TextStyle(color: AppColors.primary)),
+                      ),
+                    ),
+                  ),
+                  const Gap(5),
+                  TextFieldWidget(
+                    controller: _descriptionController,
+                    label: 'Description*',
+                    hint: 'Enter description',
+
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
+            ),
 
             ],
           ),
@@ -363,7 +397,13 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
           child: CustomButton(
             image: AppImages.checkInButton,
               buttonColor: AppColors.green,
-              text: 'Check-In', onPressed: (){}),
+              text: 'Check-In', onPressed: (){
+            if (_formKey.currentState!.validate()) {
+              print("Form is valid. Proceeding with check-in...");
+            } else {
+              print("Form validation failed.");
+            }
+          }),
         ),
       ),
     );
