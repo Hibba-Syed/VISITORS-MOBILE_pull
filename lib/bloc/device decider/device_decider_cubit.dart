@@ -1,26 +1,8 @@
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart'
-    show
-        AlertDialog,
-        BuildContext,
-        Column,
-        Flexible,
-        Icon,
-        Icons,
-        MainAxisSize,
-        MediaQuery,
-        Navigator,
-        Row,
-        SizedBox,
-        Text,
-        showDialog;
-import 'package:gap/gap.dart';
-import 'package:meta/meta.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 
-import '../../resource/constants/app_colors.dart';
-import '../../resource/styles/styles.dart';
-import '../../view/widgets/button/custom_button.dart';
 
 part 'device_decider_state.dart';
 
