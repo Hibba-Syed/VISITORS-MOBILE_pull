@@ -4,7 +4,6 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/model/check_ins/visitors_check_ins_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -17,8 +16,6 @@ import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-import 'package:visitors/view/widgets/empty_widget.dart';
-import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 
 class CheckInsScreen extends StatelessWidget {

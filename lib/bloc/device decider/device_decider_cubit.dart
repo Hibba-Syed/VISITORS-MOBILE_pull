@@ -1,12 +1,7 @@
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart' show AlertDialog, BuildContext, Column, Flexible, Icon, Icons, MainAxisSize, MediaQuery, Navigator, Row, SizedBox, Text, showDialog;
-import 'package:gap/gap.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 
-import '../../resource/constants/app_colors.dart';
-import '../../resource/styles/styles.dart';
-import '../../view/widgets/button/custom_button.dart';
 
 part 'device_decider_state.dart';
 
@@ -32,31 +27,40 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
   //   }
   //   emit(state.copyWith(selectedIndex: index));
   // }
-
-  void onChangeSelectedIndex(BuildContext context, int? index) {
-    if (index != null) {
-      if (index == AppConstants.dashboardIndex) {
-        emit(state.copyWith(selectedIndex: index, navigationHistory: []));
-      } else {
-        List<int> updatedHistory = List.from(state.navigationHistory);
-        updatedHistory.remove(index);
-        updatedHistory.insert(0, index);
-        emit(state.copyWith(selectedIndex: index, navigationHistory: updatedHistory));
+  void onChangeSelectedIndex(BuildContext context, int index) {
+    if (index == AppConstants.dashboardIndex) {
+      emit(state.copyWith(
+        selectedIndex: index,
+        navigationHistory: [],
+      ));
+    } else {
+      final history = List<int>.from(state.navigationHistory);
+      if (state.selectedIndex != AppConstants.dashboardIndex) {
+        history.add(state.selectedIndex);
       }
+      // print('Selected NH: ${state.navigationHistory}');
+      // print('Selected Index: ${state.selectedIndex}');
+      emit(state.copyWith(
+        selectedIndex: index,
+        navigationHistory: history,
+      ));
     }
   }
+
   void onBackButtonPressed() {
-    if (state.navigationHistory.isNotEmpty) {
-      List<int> updatedHistory = List.from(state.navigationHistory);
-      updatedHistory.removeAt(0);
-      int? lastIndex = updatedHistory.isNotEmpty ? updatedHistory.first : AppConstants.dashboardIndex;
-     // if (lastIndex != null) {
-        if (lastIndex == AppConstants.dashboardIndex) {
-          emit(state.copyWith(selectedIndex: lastIndex, navigationHistory: []));
-        } else {
-          emit(state.copyWith(selectedIndex: lastIndex, navigationHistory: updatedHistory));
-        }
-     // }
+    print('Back pressed History: ${state.navigationHistory}');
+    final history = List<int>.from(state.navigationHistory);
+    if (history.isNotEmpty) {
+      final previousIndex = history.removeLast();
+      emit(state.copyWith(
+        selectedIndex: previousIndex,
+        navigationHistory: history,
+      ));
+    } else if (state.selectedIndex != AppConstants.dashboardIndex) {
+      emit(state.copyWith(
+        selectedIndex: AppConstants.dashboardIndex,
+        navigationHistory: [],
+      ));
     }
   }
 }

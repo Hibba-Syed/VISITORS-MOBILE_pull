@@ -60,11 +60,11 @@ class VisitorPassesScreen extends StatelessWidget {
                     reference: 'VP001-25-00003',
                     company:"Ellington Residential Developments",
                     checkInOnPressed: (){
-                      (MediaQuery.of(context).size.shortestSide>=600)?
+                      AppConstants.isTablet(context)?
                       Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
                       Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                     },
-                    serviceableOnPressed: (){
+                    visitorPassOnPressed: (){
                       Navigator.pushNamed(context, AppRoutes.serviceableCheckInsScreen);
                     },
 
@@ -83,7 +83,7 @@ class VisitorPassesScreen extends StatelessWidget {
   _visitorPassesFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
-        minWidth: (MediaQuery.of(context).size.shortestSide>= 600) ? 600 :370,
+        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,

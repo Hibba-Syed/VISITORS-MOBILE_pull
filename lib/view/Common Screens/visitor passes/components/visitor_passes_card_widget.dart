@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
@@ -21,7 +22,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
   final String? email;
   final String? profileImageUrl;
   final VoidCallback checkInOnPressed;
-  final VoidCallback serviceableOnPressed;
+  final VoidCallback visitorPassOnPressed;
 
   const VisitorPassesCardWidget(
       {super.key,
@@ -34,7 +35,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
         this.company,
         this.profileImageUrl,
         required this.checkInOnPressed,
-        required this.serviceableOnPressed,
+        required this.visitorPassOnPressed,
       });
 
   @override
@@ -113,15 +114,37 @@ class VisitorPassesCardWidget extends StatelessWidget {
                 ],
               ),
               const Gap(10),
-              CustomButton(
-                  buttonColor: AppColors.green,
-                  image: AppImages.checkInButton,
-                  text: 'Check-In', onPressed: checkInOnPressed ),
-              const Gap(8),
-              CustomButton(
-                  buttonColor: AppColors.cyanBlue,
-                  image: AppImages.serviceable,
-                  text: 'Serviceable Check - Ins', onPressed: serviceableOnPressed ),
+              AppConstants.isTablet(context) ?
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.green,
+                            image: AppImages.checkInButton,
+                            text: 'Check-In', onPressed: checkInOnPressed ),
+                      ),
+                      const Gap(10),
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.cyanBlue,
+                            image: AppImages.serviceable,
+                            text: 'Visitor Pass Check - Ins', onPressed: visitorPassOnPressed ),
+                      ),
+                    ],
+                  ):
+              Column(
+                children: [
+                  CustomButton(
+                      buttonColor: AppColors.green,
+                      image: AppImages.checkInButton,
+                      text: 'Check-In', onPressed: checkInOnPressed ),
+                  const Gap(8),
+                  CustomButton(
+                      buttonColor: AppColors.cyanBlue,
+                      image: AppImages.serviceable,
+                      text: 'Visitor Pass Check - Ins', onPressed: visitorPassOnPressed ),
+                ],
+              )
             ],
           ),
         ),

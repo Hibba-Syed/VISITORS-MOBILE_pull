@@ -95,7 +95,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
   _checkOutFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints:  BoxConstraints(
-        minWidth: (MediaQuery.of(context).size.shortestSide>=600)? 600 : 370,
+        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,

@@ -65,7 +65,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         vendorName: 'Mohammed Faisal Al-Haddad',
                         date: '2025-04-04T05:33:36.000000Z',
                         checkInPressed: (){
-                          (MediaQuery.of(context).size.shortestSide>=600)?
+                          AppConstants.isTablet(context)?
                           Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
                           Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                         },
@@ -88,7 +88,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
   _workOrderFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints:  BoxConstraints(
-        minWidth: (MediaQuery.of(context).size.shortestSide>=600)? 600 : 370,
+        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,
