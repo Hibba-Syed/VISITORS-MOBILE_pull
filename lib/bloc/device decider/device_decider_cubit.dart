@@ -49,7 +49,7 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
   }
 
   void onBackButtonPressed() {
-    print('Back pressed History: ${state.navigationHistory}');
+   // print('Back pressed History: ${state.navigationHistory}');
     final history = List<int>.from(state.navigationHistory);
     if (history.isNotEmpty) {
       final previousIndex = history.removeLast();

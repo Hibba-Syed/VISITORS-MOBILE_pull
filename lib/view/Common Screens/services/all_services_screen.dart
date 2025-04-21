@@ -58,7 +58,7 @@ class AllServicesScreen extends StatelessWidget {
                       name: 'Suhaan',
                       countValue: '10',
                       checkInOnPressed: (){
-                        (MediaQuery.of(context).size.shortestSide>=600)?
+                        AppConstants.isTablet(context)?
                         Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen):
                         Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                       },
@@ -86,7 +86,7 @@ class AllServicesScreen extends StatelessWidget {
   _servicesFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints:  BoxConstraints(
-        minWidth: (MediaQuery.of(context).size.shortestSide>=600)? 600 : 370,
+        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,

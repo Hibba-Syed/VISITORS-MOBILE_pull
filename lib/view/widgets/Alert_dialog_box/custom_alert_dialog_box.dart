@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../loader/loader_widget.dart';
 
@@ -140,9 +141,11 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                           alignment: Alignment.topRight,
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).pop(),
-                            child: const Icon(
+                            child:
+                             Icon(
                               Icons.close,
                               color: Colors.grey,
+                               size: AppConstants.isTablet(context) ? 30 : 20,
                             ),
                           ),
                         ),

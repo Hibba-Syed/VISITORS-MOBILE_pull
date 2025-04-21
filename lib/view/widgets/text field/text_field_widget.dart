@@ -104,7 +104,8 @@ class TextFieldWidget extends StatelessWidget {
             alignLabelWithHint: false,
             fillColor: fillColor ?? AppColors.white,
             filled: true,
-            focusedBorder: OutlineInputBorder(
+            focusedBorder:
+            OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
               borderSide: const BorderSide(
                 width: 0.0,
@@ -117,7 +118,11 @@ class TextFieldWidget extends StatelessWidget {
               borderSide:  BorderSide(color: outLineColor ?? AppColors.outLineGray, width: 1),
             ),
             //enabledBorder,
-            errorBorder: errorBorder,
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide:  BorderSide(color:  AppColors.red, width: 1),
+            ),
+            //errorBorder,
             focusedErrorBorder: focusedErrorBorder,
           ),
         )

@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-VisitorCheckInsModel visitorCheckInsModelFromJson(String str) => VisitorCheckInsModel.fromJson(json.decode(str));
+VisitorCheckInsResponseModel visitorCheckInsModelFromJson(String str) => VisitorCheckInsResponseModel.fromJson(json.decode(str));
 
-String visitorCheckInsModelToJson(VisitorCheckInsModel data) => json.encode(data.toJson());
+String visitorCheckInsModelToJson(VisitorCheckInsResponseModel data) => json.encode(data.toJson());
 
-class VisitorCheckInsModel {
+class VisitorCheckInsResponseModel {
   String? status;
   List<VisitorsCheckInsRecord>? record;
   int? code;
@@ -16,7 +16,7 @@ class VisitorCheckInsModel {
   bool? requestStatus;
   String? message;
 
-  VisitorCheckInsModel({
+  VisitorCheckInsResponseModel({
     this.status,
     this.record,
     this.code,
@@ -25,7 +25,7 @@ class VisitorCheckInsModel {
     this.message,
   });
 
-  factory VisitorCheckInsModel.fromJson(Map<String, dynamic> json) => VisitorCheckInsModel(
+  factory VisitorCheckInsResponseModel.fromJson(Map<String, dynamic> json) => VisitorCheckInsResponseModel(
     status: json["status"],
     record: json["record"] == null ? [] : List<VisitorsCheckInsRecord>.from(json["record"]!.map((x) => VisitorsCheckInsRecord.fromJson(x))),
     code: json["code"],

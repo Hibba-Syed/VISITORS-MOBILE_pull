@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
@@ -8,10 +7,8 @@ import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart'
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
 import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart'
-    show AllServicesScreen;
-import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart'
-    show WorkOrderRfpScreen;
+import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart' show AllServicesScreen;
+import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 
 import '../../resource/constants/app_colors.dart';
@@ -75,16 +72,17 @@ class DeviceDeciderScreen extends StatelessWidget {
       index: AppConstants.logoutIndex,
       title: 'Logout',
       iconPath: AppImages.logouts,
-      onTap: () async {},
+      onTap: ()  {
+      },
     ),
   ];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DeviceDeciderCubit, DeviceDeciderState>(
       builder: (context, state) {
-        return WillPopScope(
+       return WillPopScope(
           onWillPop: () async {
-            print('PopScope triggered!');
+          //  print('PopScope triggered!');
             if (state.selectedIndex == AppConstants.dashboardIndex) {
               bool shouldExit = await showDialog<bool>(
                 barrierDismissible: false,
@@ -261,8 +259,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                         text: 'Logout',
                                                         invert: true,
                                                         onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
+                                                           Navigator.pop(context);
                                                         },
                                                       ),
                                                     ),
@@ -278,11 +275,12 @@ class DeviceDeciderScreen extends StatelessWidget {
                                     context
                                         .read<DeviceDeciderCubit>()
                                         .onChangeSelectedIndex(
-                                            context, item.index);
+                                        context, item.index);
                                     Navigator.of(context).pop();
                                   }
                                 },
                                 isSelected: item.index == state.selectedIndex);
+
                           },
                         ),
                       ],
@@ -322,39 +320,49 @@ class DeviceDeciderScreen extends StatelessWidget {
 
   Widget _getMobileScreen(DeviceDeciderState state) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return const MobileDashboardScreen();
-    } else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      return  const MobileDashboardScreen();
+    }
+    else if (state.selectedIndex == AppConstants.checkInsIndex) {
       return const CheckInsScreen();
-    } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+    }
+    else if (state.selectedIndex == AppConstants.eServicesIndex) {
       return const AllServicesScreen();
-    } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+    }
+    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
-    } else if (state.selectedIndex == AppConstants.messagesIndex) {
+    }
+    else if (state.selectedIndex == AppConstants.messagesIndex) {
       return const MessageScreen();
-    } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-      return const CheckOutsScreen();
-    } else if (state.selectedIndex == AppConstants.directoryIndex) {
+    }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      return const CheckOutsScreen() ;
+    }
+    else if (state.selectedIndex == AppConstants.directoryIndex) {
       return const DirectoryScreen();
     }
-
     return const SizedBox.shrink();
   }
 
   Widget _getTabletScreen(DeviceDeciderState state) {
     // print('_getTabletScreen${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return const TabletDashboardScreen();
-    } else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      return  const TabletDashboardScreen();
+    }
+    else if (state.selectedIndex == AppConstants.checkInsIndex) {
       return const CheckInsScreen();
-    } else if (state.selectedIndex == AppConstants.eServicesIndex) {
+     }
+    else if (state.selectedIndex == AppConstants.eServicesIndex) {
       return const AllServicesScreen();
-    } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+    }
+    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
-    } else if (state.selectedIndex == AppConstants.messagesIndex) {
+    }
+    else if (state.selectedIndex == AppConstants.messagesIndex) {
       return const MessageScreen();
-    } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-      return const CheckOutsScreen();
-    } else if (state.selectedIndex == AppConstants.directoryIndex) {
+    }
+    else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      return const CheckOutsScreen() ;
+    }
+    else if (state.selectedIndex == AppConstants.directoryIndex) {
       return const DirectoryScreen();
     }
     return const SizedBox.shrink();

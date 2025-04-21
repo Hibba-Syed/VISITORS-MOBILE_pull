@@ -165,7 +165,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 const Gap(20),
                 const Text(
                   'Activity Log',
-                  style: AppTextStyles.style18primary600,
+                  style: AppTextStyles.style20primary600,
                 ),
                 const Gap(10),
                 ActivityLogWidget(

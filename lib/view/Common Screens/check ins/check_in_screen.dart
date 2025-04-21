@@ -4,7 +4,6 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/model/check_ins/visitors_check_ins_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -17,7 +16,10 @@ import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
+<<<<<<< HEAD
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
+=======
+>>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 
 import '../../widgets/empty_widget.dart';
@@ -218,6 +220,7 @@ class CheckInsScreen extends StatelessWidget {
       },
     );
   }
+<<<<<<< HEAD
 }
 
 
@@ -233,4 +236,18 @@ _checkInFilterBottomSheet(context) {
       return const CheckInFilterBottomSheet();
     },
   );
+=======
+
+  _checkInFilterBottomSheet(context) {
+    showModalBottomSheet(
+      constraints: BoxConstraints(
+        minWidth: AppConstants.isTablet(context) ? AppConstants.tabletScreen : AppConstants.mobileScreen),
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        return const CheckInFilterBottomSheet();
+      },
+    );
+  }
+>>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
 }
