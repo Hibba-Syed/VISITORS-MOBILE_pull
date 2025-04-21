@@ -72,8 +72,7 @@ class DeviceDeciderScreen extends StatelessWidget {
       index: AppConstants.logoutIndex,
       title: 'Logout',
       iconPath: AppImages.logouts,
-      onTap: () async {
-
+      onTap: ()  {
       },
     ),
   ];
@@ -281,6 +280,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                   }
                                 },
                                 isSelected: item.index == state.selectedIndex);
+
                           },
                         ),
                       ],

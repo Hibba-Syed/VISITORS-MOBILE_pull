@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:gap/gap.dart' show Gap;
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart' show CustomButton;
@@ -254,15 +251,8 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                       Expanded(
                         child: TextFieldWidget(
                           controller: _emailController,
-                          label: 'Email*',
+                          label: 'Email',
                           hint: 'Enter Email',
-
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                     ],
@@ -275,7 +265,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const  Text(
-                              "Nationality*",
+                              "Nationality",
                               style: AppTextStyles.style12Black600,
                             ),
                             const Gap(8),
@@ -291,12 +281,6 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                 onChanged: (value) {
                                   _selectedItemNationality = value;
                                 },
-                              validator:  (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'required';
-                                }
-                                return null;
-                              },
                             ),
                           ],
                         ),
@@ -305,15 +289,8 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                       Expanded(
                         child: TextFieldWidget(
                           controller: _cardNumberController,
-                          label: 'Entry Card Number*',
+                          label: 'Entry Card Number',
                           hint: 'Enter card number',
-
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
                         ),
                       ),
 
@@ -360,8 +337,8 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                   const EdgeInsets.symmetric(horizontal: 10),
                                   title: 'Select Visitor',
                                   contentBuilder: (context, setState) {
-                                    return const SelectVisitorNumberWidget();
-                                  },
+                                    return const SelectVisitorNumberWidget(count: 3,);
+                                  }
                                 );
                               });
                         },
@@ -373,15 +350,8 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                   const Gap(5),
                   TextFieldWidget(
                     controller: _descriptionController,
-                    label: 'Description*',
+                    label: 'Description',
                     hint: 'Enter description',
-
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
                   ),
                 ],
               ),
@@ -399,9 +369,9 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
               buttonColor: AppColors.green,
               text: 'Check-In', onPressed: (){
             if (_formKey.currentState!.validate()) {
-              print("Form is valid. Proceeding with check-in...");
+             // print("Form is valid. Proceeding with check-in...");
             } else {
-              print("Form validation failed.");
+             // print("Form validation failed.");
             }
           }),
         ),
@@ -411,8 +381,10 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
 }
 
 class SelectVisitorNumberWidget extends StatelessWidget {
+  final int count;
   const SelectVisitorNumberWidget({
     super.key,
+    required this.count
   });
 
   @override
@@ -420,8 +392,8 @@ class SelectVisitorNumberWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          '3',
+         Text(
+           count.toString(),
           style: AppTextStyles.style36Blue500,
         ),
         const Text(

@@ -29,7 +29,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const Gap(20),
+            const Gap(10),
             Align(
               alignment: Alignment.bottomRight,
               child:
@@ -39,6 +39,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                   height: 41,
                   imageHeight: 18,
                   borderRadius: 6,
+                  width: 150,
                   image: AppImages.logout,
                   onPressed: () {
                     showDialog(

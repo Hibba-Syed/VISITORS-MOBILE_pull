@@ -266,19 +266,18 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                  TextFieldWidget(
                    outLineColor: AppColors.gray,
                    controller: _emailController,
-                   label: 'Email*',
+                   label: 'Email',
                    hint: 'Enter Email',
-
-                   validator: (value) {
-                     if (value == null || value.isEmpty) {
-                       return 'required';
-                     }
-                     return null;
-                   },
+                   // validator: (value) {
+                   //   if (value == null || value.isEmpty) {
+                   //     return 'required';
+                   //   }
+                   //   return null;
+                   // },
                  ),
                  const Gap(5),
                  const  Text(
-                   "Nationality*",
+                   "Nationality",
                    style: AppTextStyles.style12Black600,
                  ),
                  const Gap(8),
@@ -295,40 +294,20 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                      onChanged: (value) {
                        _selectedItemNationality = value;
                      },
-                   validator:  (value) {
-                     if (value == null || value.isEmpty) {
-                       return 'required';
-                     }
-                     return null;
-                   },
                      ),
                  const Gap(5),
                  TextFieldWidget(
                    outLineColor: AppColors.gray,
                    controller: _cardNumberController,
-                   label: 'Entry Card Number*',
+                   label: 'Entry Card Number',
                    hint: 'Enter card number',
-
-                   validator: (value) {
-                     if (value == null || value.isEmpty) {
-                       return 'required';
-                     }
-                     return null;
-                   },
                  ),
                  const Gap(5),
                  TextFieldWidget(
                    outLineColor: AppColors.gray,
                    controller: _descriptionController,
-                   label: 'Description*',
+                   label: 'Description',
                    hint: 'Enter description',
-
-                   validator: (value) {
-                     if (value == null || value.isEmpty) {
-                       return 'required';
-                     }
-                     return null;
-                   },
                  ),
                ],
              ),

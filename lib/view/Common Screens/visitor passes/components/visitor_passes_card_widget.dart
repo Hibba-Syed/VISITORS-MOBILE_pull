@@ -137,7 +137,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                   CustomButton(
                       buttonColor: AppColors.green,
                       image: AppImages.checkInButton,
-                      text: 'Check-In', onPressed: checkInOnPressed ),
+                      text: 'Check-In', onPressed: checkInOnPressed),
                   const Gap(8),
                   CustomButton(
                       buttonColor: AppColors.cyanBlue,
