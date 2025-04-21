@@ -1,9 +1,9 @@
 
-import 'package:visitors/model/check_ins/visitors_check_ins_response_model.dart';
+import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 
 abstract class CheckInRepo {
 
-  Future<VisitorCheckInsResponseModel?> getCheckIns({
+  Future<CheckInsResponseModel?> getCheckIns({
     int? page,
     int? limit,
   });

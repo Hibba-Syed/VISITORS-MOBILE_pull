@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:intl/intl.dart';
 
 class IDDetailsScreen extends StatefulWidget {
@@ -53,8 +53,11 @@ class _IDDetailsScreenState extends State<IDDetailsScreen> {
     for (final line in lines) {
       if (line.contains('Name:')) {
         _nameController.text = line.replaceAll('Name:', '').trim();
-      } else if (line.contains('ID Number:')) {
-        _idController.text = line.replaceAll('ID Number:', '').trim();
+      }
+      else if (line.contains('ID Number:') || line.contains('رقم الهوية:')) {
+        _idController.text = line.replaceAll(RegExp(r'ID Number:|رقم الهوية:'), '').trim();
+      // else if (line.contains('ID Number: ')) {
+      //   _idController.text = line.replaceAll('ID Number:', '').trim();
       } else if (line.contains('Nationality:')) {
         _nationalityController.text = line.replaceAll('Nationality:', '').trim();
       }

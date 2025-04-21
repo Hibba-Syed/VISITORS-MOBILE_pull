@@ -61,7 +61,7 @@ class VisitorPassesScreen extends StatelessWidget {
                     company:"Ellington Residential Developments",
                     checkInOnPressed: (){
                       AppConstants.isTablet(context)?
-                      Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
+                      Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen):
                       Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                     },
                     visitorPassOnPressed: (){
@@ -92,5 +92,4 @@ class VisitorPassesScreen extends StatelessWidget {
       },
     );
   }
-
 }

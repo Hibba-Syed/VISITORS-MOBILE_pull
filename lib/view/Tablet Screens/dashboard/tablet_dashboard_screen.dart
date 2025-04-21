@@ -155,22 +155,8 @@ class TabletDashboardScreen extends StatelessWidget {
             const Gap(10),
             Row(
               children: [
-                const Expanded(
-                  child: Row(
-<<<<<<< HEAD
-                    children: [
-                      Text(
-                        'Check-Ins',
-                        style: AppTextStyles.style16Primary600,
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(20),
                 Expanded(
                   child: Row(
-                    children: [
-=======
                     children: [
                       Text(
                         'Check-Ins',
@@ -183,7 +169,17 @@ class TabletDashboardScreen extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
->>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
+                      Text(
+                        'Check-Ins',
+                        style: AppTextStyles.style19Primary600,
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(20),
+                Expanded(
+                  child: Row(
+                    children: [
                       Expanded(
                         child: CustomButton(
                             buttonColor: AppColors.red,
@@ -228,12 +224,8 @@ class TabletDashboardScreen extends StatelessWidget {
                   name: 'John Henry',
                   typeText: '1234',
                   type: 'Guest',
-<<<<<<< HEAD
                   date: DateTimeUtil.getFormattedDateTime(
                       '2025-04-04T05:33:36.000000Z'),
-=======
-                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
->>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
                   phone: '234567890',
                   gateValue: 'The W Residences Reception',
                   checkOutOnPressed: (){
@@ -257,11 +249,7 @@ class TabletDashboardScreen extends StatelessWidget {
                   children: [
                     Text(
                       'E-Services',
-<<<<<<< HEAD
-                      style: AppTextStyles.style16Primary600,
-=======
                       style: AppTextStyles.style19Primary600,
->>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
                     ),
                   ],
                 ),
@@ -284,12 +272,7 @@ class TabletDashboardScreen extends StatelessWidget {
                         borderRadius: 6,
                         image: AppImages.view,
                         onPressed: () {
-<<<<<<< HEAD
-                          context
-                              .read<DeviceDeciderCubit>()
-=======
                           context.read<DeviceDeciderCubit>()
->>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
                               .onChangeSelectedIndex(
                               context, AppConstants.eServicesIndex);
                         }),
@@ -332,11 +315,7 @@ class TabletDashboardScreen extends StatelessWidget {
               children: [
               const Text(
                  'Work Orders / RFPs',
-<<<<<<< HEAD
-                 style: AppTextStyles.style16Primary600,
-=======
                  style: AppTextStyles.style19Primary600,
->>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
                ),
                 const Gap(20),
                 CustomButton(
@@ -375,12 +354,10 @@ class TabletDashboardScreen extends StatelessWidget {
                   detailsOnPressed: () {
                     Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
                   },
-<<<<<<< HEAD
-=======
+
                   jobCheckInOnPressed: () {
                     Navigator.pushNamed(context, AppRoutes.jobCheckInsScreen);
                   },
->>>>>>> f3c3cb6895a6375f5e27e85416398012466ebd9f
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

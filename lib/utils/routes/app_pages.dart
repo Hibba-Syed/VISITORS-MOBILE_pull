@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/eid_card_scanner.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/detail/service_details_screen.dart';
@@ -82,13 +83,13 @@ class AppPages {
       route: AppRoutes.jobCheckInsScreen,
       page: const JobCheckInsScreen(),
     ),
+    // PageEntity(
+    //   route: AppRoutes.emiratesIDScanner,
+    //   page: const EmiratesIDScanner(),
+    // ),
     PageEntity(
       route: AppRoutes.documentScannerScreen,
       page: const DocumentScannerScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
   ];
 

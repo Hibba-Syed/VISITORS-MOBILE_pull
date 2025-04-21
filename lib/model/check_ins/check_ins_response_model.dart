@@ -4,19 +4,19 @@
 
 import 'dart:convert';
 
-VisitorCheckInsResponseModel visitorCheckInsModelFromJson(String str) => VisitorCheckInsResponseModel.fromJson(json.decode(str));
+CheckInsResponseModel visitorCheckInsModelFromJson(String str) => CheckInsResponseModel.fromJson(json.decode(str));
 
-String visitorCheckInsModelToJson(VisitorCheckInsResponseModel data) => json.encode(data.toJson());
+String visitorCheckInsModelToJson(CheckInsResponseModel data) => json.encode(data.toJson());
 
-class VisitorCheckInsResponseModel {
+class CheckInsResponseModel {
   String? status;
-  List<VisitorsCheckInsRecord>? record;
+  List<CheckInsRecord>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
   String? message;
 
-  VisitorCheckInsResponseModel({
+  CheckInsResponseModel({
     this.status,
     this.record,
     this.code,
@@ -25,9 +25,9 @@ class VisitorCheckInsResponseModel {
     this.message,
   });
 
-  factory VisitorCheckInsResponseModel.fromJson(Map<String, dynamic> json) => VisitorCheckInsResponseModel(
+  factory CheckInsResponseModel.fromJson(Map<String, dynamic> json) => CheckInsResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<VisitorsCheckInsRecord>.from(json["record"]!.map((x) => VisitorsCheckInsRecord.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckInsRecord>.from(json["record"]!.map((x) => CheckInsRecord.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],
@@ -88,7 +88,7 @@ class Meta {
   };
 }
 
-class VisitorsCheckInsRecord {
+class CheckInsRecord {
   int? id;
   int? associationId;
   int? unitId;
@@ -116,7 +116,7 @@ class VisitorsCheckInsRecord {
   Serviceable? serviceable;
   Vendor? vendor;
 
-  VisitorsCheckInsRecord({
+  CheckInsRecord({
     this.id,
     this.associationId,
     this.unitId,
@@ -145,7 +145,7 @@ class VisitorsCheckInsRecord {
     this.vendor,
   });
 
-  factory VisitorsCheckInsRecord.fromJson(Map<String, dynamic> json) => VisitorsCheckInsRecord(
+  factory CheckInsRecord.fromJson(Map<String, dynamic> json) => CheckInsRecord(
     id: json["id"],
     associationId: json["association_id"],
     unitId: json["unit_id"],

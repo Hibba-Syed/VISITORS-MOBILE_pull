@@ -1,4 +1,5 @@
 // import 'dart:io';
+// import 'package:google_ml_kit/google_ml_kit.dart' show InputImage, RecognizedText, TextRecognitionScript, TextRecognizer;
 // import 'package:intl/intl.dart';
 //
 // class EIDScanner {
