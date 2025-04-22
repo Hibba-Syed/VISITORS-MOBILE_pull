@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
@@ -71,7 +72,7 @@ class DeviceDeciderScreen extends StatelessWidget {
     DrawerItemModel(
       index: AppConstants.logoutIndex,
       title: 'Logout',
-      iconPath: AppImages.logouts,
+      iconPath: AppImages.logout,
       onTap: ()  {
       },
     ),
@@ -96,10 +97,14 @@ class DeviceDeciderScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
-                            Icons.logout,
-                            color: AppColors.primary,
-                            size: 40,
+                          SvgPicture.asset(
+                            AppImages.logout,
+                            height: 35,
+                            width: 35,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.primary,
+                              BlendMode.srcIn,
+                            ),
                           ),
                           const Gap(16.0),
                           const Text(
@@ -179,7 +184,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.asset(
-                          AppImages.drawerLogo,
+                          AppImages.appLogo,
                           width: 200,
                           height: 80,
                         ),
@@ -230,10 +235,14 @@ class DeviceDeciderScreen extends StatelessWidget {
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                const Icon(
-                                                  Icons.logout,
-                                                  color: AppColors.primary,
-                                                  size: 40,
+                                                SvgPicture.asset(
+                                                  AppImages.logout,
+                                                  height: 35,
+                                                  width: 35,
+                                                  colorFilter: const ColorFilter.mode(
+                                                    AppColors.primary,
+                                                    BlendMode.srcIn,
+                                                  ),
                                                 ),
                                                 const Gap(16.0),
                                                 const Text(

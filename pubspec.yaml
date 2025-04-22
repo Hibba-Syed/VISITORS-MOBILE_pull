@@ -58,6 +58,7 @@ dependencies:
   cached_network_image: ^3.4.1
   device_preview: ^1.1.0
   fluttertoast: ^8.2.12
+  local_auth: ^2.3.0
 
 
 dev_dependencies:
