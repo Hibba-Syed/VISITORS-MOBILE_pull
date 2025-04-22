@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       )),
       alignment: Alignment.center,
       child: SingleChildScrollView(
-        padding:  EdgeInsets.symmetric(horizontal: 25),
+        padding:  EdgeInsets.symmetric(horizontal: 20),
         child: Form(
           key: _formKey,
           child: Column(
