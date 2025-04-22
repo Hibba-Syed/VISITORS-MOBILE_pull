@@ -54,8 +54,8 @@ class _IDDetailsScreenState extends State<IDDetailsScreen> {
       if (line.contains('Name:')) {
         _nameController.text = line.replaceAll('Name:', '').trim();
       }
-      else if (line.contains('ID Number:') || line.contains('رقم الهوية:')) {
-        _idController.text = line.replaceAll(RegExp(r'ID Number:|رقم الهوية:'), '').trim();
+      else if (line.contains('ID Number') || line.contains('رقم الهوية')) {
+        _idController.text = line.replaceAll(RegExp(r'ID Number/رقم الهوية'), '').trim();
       // else if (line.contains('ID Number: ')) {
       //   _idController.text = line.replaceAll('ID Number:', '').trim();
       } else if (line.contains('Nationality:')) {

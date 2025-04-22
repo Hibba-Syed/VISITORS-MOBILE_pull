@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:timeline_tile/timeline_tile.dart'
     show IndicatorStyle, LineStyle, TimelineAlign, TimelineTile;
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';

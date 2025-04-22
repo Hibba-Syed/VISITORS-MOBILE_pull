@@ -1,5 +1,5 @@
 class AppRoutes {
-  static const String dashboard = '/dashboard';
+  static const String deviceDeciderScreen = '/deviceDeciderScreen';
   static const String workOrderJobDetailsScreen = '/workOrderJobDetailsScreen';
   static const String servicesDetailsScreen = '/servicesDetailsScreen';
   static const String mobileGuestCheckInScreen = '/mobileGuestCheckInScreen';
@@ -12,6 +12,9 @@ class AppRoutes {
   static const String documentScannerScreen = '/documentScannerScreen';
   static const String jobCheckInsScreen = '/jobCheckInsScreen';
   static const String emiratesIDScanner = '/emiratesIDScanner';
+  static const String loginScreen = '/loginScreen';
+  static const String biometricAuth = '/biometricAuth';
+
 
 
 }

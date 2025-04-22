@@ -59,7 +59,7 @@ dependencies:
   device_preview: ^1.1.0
   fluttertoast: ^8.2.12
   google_mlkit_document_scanner:
-#  image_cropper: ^9.1.0
+  local_auth: ^2.3.0
 
 
 

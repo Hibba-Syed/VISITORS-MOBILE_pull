@@ -67,7 +67,7 @@ class CheckInsScreen extends StatelessWidget {
                       imageHeight: 16,
                       borderRadius: 6,
                       width: 150,
-                      image: AppImages.logout,
+                      image: AppImages.logoutCard,
                       onPressed: () {
                         showDialog(
                           barrierDismissible: false,

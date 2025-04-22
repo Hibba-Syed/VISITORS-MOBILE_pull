@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../../../resource/constants/app_colors.dart';
-import '../../../resource/styles/styles.dart';
 
 class IconTextContainerWidget extends StatelessWidget {
   final String? text;

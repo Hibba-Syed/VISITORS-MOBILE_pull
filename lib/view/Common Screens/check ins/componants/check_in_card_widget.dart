@@ -148,7 +148,7 @@ class CheckInCardWidget extends StatelessWidget {
                 ): SizedBox.shrink(),
                 const Gap(10),
                 CustomButton(
-                    image: AppImages.logout,
+                    image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
                     text: 'Check Out',
                     onPressed: checkOutOnPressed

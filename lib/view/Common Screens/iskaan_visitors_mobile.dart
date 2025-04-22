@@ -50,7 +50,6 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
               ),
             ),
             onGenerateRoute: AppPages.generateRouteSettings,
-            home:  DeviceDeciderScreen(),
             debugShowCheckedModeBanner: false,
           ),
         )

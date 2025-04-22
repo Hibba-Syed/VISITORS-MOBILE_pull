@@ -37,7 +37,7 @@ class JobCheckInsScreen extends StatelessWidget {
                   height: 41,
                   imageHeight: 18,
                   borderRadius: 6,
-                  image: AppImages.logout,
+                  image: AppImages.logoutCard,
                   onPressed: () {
                     showDialog(
                       barrierDismissible: false,

@@ -4,7 +4,8 @@ class AppImages {
   static const String baseJsonPath = 'assets/json/';
 
   ///images
-  static const String drawerLogo = "${basePngPath}drawer_logo.png";
+  static const String appLogo = "${basePngPath}app_logo.png";
+  static const String drawerBackground = "${basePngPath}drawer_background.png";
   static const String background = "${basePngPath}background.png";
 
   ///icons
@@ -20,12 +21,12 @@ class AppImages {
   static const String date = "${baseSvgPath}date.svg";
   static const String gate = "${baseSvgPath}gate.svg";
   static const String count = "${baseSvgPath}count.svg";
-  static const String logout = "${baseSvgPath}logout.svg";
+   static const String logoutCard = "${baseSvgPath}logout.svg";
   static const String gates = "${baseSvgPath}gates.svg";
   static const String hammer = "${baseSvgPath}hammer.svg";
   static const String vendor = "${baseSvgPath}vendor.svg";
   static const String directory = "${baseSvgPath}directory.svg";
-  static const String logouts = "${baseSvgPath}logouts.svg";
+  static const String logout = "${baseSvgPath}logouts.svg";
   static const String dashboard = "${baseSvgPath}dashboard.svg";
   static const String menuCheckout = "${baseSvgPath}menu_checkout.svg";
   static const String menuCheckin = "${baseSvgPath}menu_checkin.svg";
@@ -47,5 +48,10 @@ class AppImages {
   static const String community = "${baseSvgPath}community.svg";
   static const String question = "${baseSvgPath}question.svg";
   static const String export = "${baseSvgPath}export.svg";
+  static const String loginCommunity = "${baseSvgPath}login_community.svg";
+  static const String loginProfile = "${baseSvgPath}login_profile.svg";
+  static const String loginGate = "${baseSvgPath}login_gate.svg";
+  static const String loginLock = "${baseSvgPath}login_lock.svg";
+  static const String forgot = "${baseSvgPath}forgot.svg";
 
 }

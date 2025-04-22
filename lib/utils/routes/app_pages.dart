@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/eid_card_scanner.dart';
+import 'package:visitors/view/Common%20Screens/auth/biometric_auth_screen.dart';
+import 'package:visitors/view/Common%20Screens/auth/login_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/detail/service_details_screen.dart';
@@ -25,7 +27,15 @@ import 'app_routes.dart';
 class AppPages {
   static List<PageEntity> routes = [
     PageEntity(
-      route: AppRoutes.dashboard,
+      route: AppRoutes.loginScreen,
+      page: const LoginScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.biometricAuth,
+      page: const BiometricAuthScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.deviceDeciderScreen,
       page:  DeviceDeciderScreen(),
       bloc: MultiBlocProvider(
         providers: [
@@ -40,12 +50,11 @@ class AppPages {
       ),
     ),
     PageEntity(
+      route: AppRoutes.deviceDeciderScreen,
+      page:  DeviceDeciderScreen(),
+    ),PageEntity(
       route: AppRoutes.workOrderJobDetailsScreen,
       page: const WorkOrderJobDetailsScreen(),
-      // bloc:
-      // BlocProvider(
-      //   create: (context) => ,
-      // ),
     ),
     PageEntity(
       route: AppRoutes.servicesDetailsScreen,
@@ -112,7 +121,7 @@ class AppPages {
       }
     }
     return MaterialPageRoute(
-        builder: (context) =>  DeviceDeciderScreen(), settings: settings);
+        builder: (context) =>  LoginScreen(), settings: settings);
   }
 }
 
