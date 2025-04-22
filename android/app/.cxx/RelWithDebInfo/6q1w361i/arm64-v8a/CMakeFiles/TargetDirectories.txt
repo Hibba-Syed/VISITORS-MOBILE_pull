@@ -1,2 +1,0 @@
-D:/VISITORS-MOBILES/android/app/.cxx/RelWithDebInfo/6q1w361i/arm64-v8a/CMakeFiles/edit_cache.dir
-D:/VISITORS-MOBILES/android/app/.cxx/RelWithDebInfo/6q1w361i/arm64-v8a/CMakeFiles/rebuild_cache.dir
