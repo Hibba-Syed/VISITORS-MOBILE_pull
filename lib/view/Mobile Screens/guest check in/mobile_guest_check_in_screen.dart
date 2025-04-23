@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:gap/gap.dart' show Gap;
+import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart' show CustomButton;
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
+import 'dart:io';
+import 'package:google_ml_kit/google_ml_kit.dart' show Face, FaceDetector, FaceDetectorOptions, InputImage, RecognizedText, TextRecognitionScript, TextRecognizer;
+import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img; // For image processing
+import 'package:path/path.dart' as path;
 
 
 class MobileGuestCheckInScreen extends StatefulWidget {
@@ -36,9 +39,251 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
   String? _selectedItemPurpose;
   String? _selectedItemUnit;
   String? _selectedItemNationality;
+  final List<String> _nationalityItems = ['pakistan', 'Australia', 'United Arab Emirates'];
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  File? _imageFile;
+  String _extractedText = '';
+  String? _extractedIdNumber;
+  String? _issueDate;
+  String? _expiryDate;
+  List<File?>? _personImageFiles; // To store the extracted person image
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 670,
+        //539,
+        maxHeight:
+        //340
+      665
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+
+      await _performOCR(_imageFile!);
+    }
+  }
+
+  Future<void> _performOCR(File imageFile) async {
+    final inputImage = InputImage.fromFile(imageFile);
+    TextRecognizer textDetector =
+    TextRecognizer(script: TextRecognitionScript.latin);
+    FaceDetector faceDetector = FaceDetector(
+      options: FaceDetectorOptions(),
+    );
+
+    final RecognizedText recognizedText =
+    await textDetector.processImage(inputImage);
+    String text = recognizedText.text;
+
+    final List<Face> faces = await faceDetector.processImage(inputImage);
+    ///
+    final parsedData = _parseExtractedText(text);
+
+    setState(() {
+      _extractedText = text;
+      _personImageFiles = _extractPersonImage(imageFile, faces);
+
+      // Auto-fill form fields
+      _nameController.text = parsedData['Name'] ?? '';
+      _selectedItemNationality = parsedData['Nationality'];
+      _extractedIdNumber = parsedData['ID Number'];
+      _issueDate= parsedData['Issue Date'];
+      _expiryDate= parsedData['Expiry Date'];
+
+      String? nationality = parsedData['Nationality'] ?? parsedData['nationality'];
+
+      if (nationality != null && _nationalityItems.isNotEmpty) {
+        final normalized = nationality.trim().toLowerCase();
+
+        final match = _nationalityItems.firstWhere(
+              (item) => item.toLowerCase() == normalized,
+          orElse: () => '',
+        );
+
+        if (match.isNotEmpty) {
+          setState(() {
+            _selectedItemNationality = match;
+          });
+        }
+      }
+
+    });
+
+    ///
+    // setState(() {
+    //   _extractedText = text;
+    //   _personImageFiles = _extractPersonImage(imageFile, faces);
+    // });
+    // Dispose the detector when done
+    textDetector.close();
+  }
+
+  // Method to extract the person image from the document
+  List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
+    if (faces.isNotEmpty) {
+      print('bounding box length:: ${faces.length}');
+      // Assuming the person's image is generally on the top left
+      // final firstBlock = recognizedText.blocks.last;
+      // final boundingBox = firstBlock.boundingBox;
+
+      // Get bounding box coordinates
+      List<File?>? images = [];
+      for (int i = 0; i < faces.length; i++) {
+        final face = faces[i];
+        final boundingBox = face.boundingBox;
+        images.add(_cropImage(originalImage, boundingBox, index: i));
+      }
+      for (var element in images) {
+        print(element?.path);
+      }
+      return images;
+    }
+    return null; // Return null if no image is extracted
+  }
+
+  // Crop image based on bounding box
+  File? _cropImage(
+      File originalImage,
+      Rect boundingBox, {
+        required int index,
+      }) {
+    // Load the original image
+    final img.Image originalImg =
+    img.decodeImage(originalImage.readAsBytesSync())!;
+
+    // Calculate the cropping dimensions
+    final int left = boundingBox.left.toInt();
+    final int top = boundingBox.top.toInt();
+    final int width = (boundingBox.right - boundingBox.left).toInt();
+    final int height = (boundingBox.bottom - boundingBox.top).toInt();
+
+    print('left:: $left');
+    print('top:: $top');
+    print('width:: $width');
+    print('height:: $height');
+    // Crop the image
+    final img.Image croppedImg = img.copyCrop(originalImg,
+        x: left, y: top, width: width, height: height);
+
+    // Save the cropped image to a new file
+    final String fileName =
+        '${path.basenameWithoutExtension(originalImage.path)}_cropped_$index.jpg';
+    final String dir = path.dirname(originalImage.path);
+    final File croppedFile = File('$dir/$fileName')
+      ..writeAsBytesSync(img.encodeJpg(croppedImg));
+
+    return croppedFile; // Return the cropped image file
+  }
+///
+
+
+  // Map<String, String> _parseExtractedText(String text) {
+  //   Map<String, String> parsedData = {};
+  //   List<String> lines = text.split('\n');
+  //
+  //   for (var line in lines) {
+  //     if (line.toLowerCase().contains('name')) {
+  //       parsedData['Name'] = line.split(':').last.trim();
+  //     }
+  //     else if (line.toLowerCase().contains('id number'))
+  //     {
+  //       parsedData['ID Number'] = line.split('/ ').last.trim();
+  //     }
+  //     else if (line.toLowerCase().contains('nationality')) {
+  //       parsedData['Nationality'] = line.split(':').last.trim();
+  //     }
+  //     else if (line.toLowerCase().contains('country of stay')) {
+  //       parsedData['Country of Stay'] = line.split(':').last.trim();
+  //     }
+  //     else if (line.toLowerCase().contains('date of issue')) {
+  //       parsedData['Issue Date'] = line.split(':').last.trim();
+  //     }
+  //     else if (line.toLowerCase().contains('date of expiry')) {
+  //       parsedData['Date of Expiry'] = line.split(':').last.trim();
+  //     }
+  //
+  //   }
+  //   print('Parsed Data: $parsedData');
+  //   return parsedData;
+  // }
+  Map<String, String> _parseExtractedText(String text) {
+    Map<String, String> parsedData = {};
+    List<String> lines = text.split('\n');
+
+    for (int i = 0; i < lines.length; i++) {
+      String line = lines[i].trim();
+      String lineLower = line.toLowerCase();
+
+
+      // 1. EXTRACT ID NUMBER (Handles Arabic "رقم الهوية" with ID on next line)
+      if (lineLower.contains('رقم الهوية') || lineLower.contains('id number')) {
+        if (i + 1 < lines.length) { // Check if next line exists
+          parsedData['ID Number'] = lines[i + 1].trim(); // Get the next line
+        } else if (line.contains(':')) {
+          parsedData['ID Number'] = line.split(':').last.trim();
+        }
+      }
+
+      // 2. EXTRACT NAME (Arabic + English)
+      else if (lineLower.contains('الاسم') || lineLower.contains('name')) {
+        if (line.contains(':')) {
+          parsedData['Name'] = line.split(':').last.trim();
+        } else {
+          // Handle cases like "الإسم: احمد محمد" or "Name: Ahmed"
+          parsedData['Name'] = line.replaceAll(RegExp('الاسم|name|:', caseSensitive: false), '').trim();
+        }
+      }
+
+      // 3. EXTRACT NATIONALITY (Arabic + English)
+      else if (lineLower.contains('الجنسية') || lineLower.contains('nationality')) {
+        parsedData['Nationality'] = line.split(':').last.trim();
+      }
+
+      // 4. EXTRACT ISSUE DATE (Arabic + English)
+      else if (lineLower.contains('تاريخ الإصدار') || lineLower.contains('date of issue')) {
+        parsedData['Issue Date'] = line.split(':').last.trim();
+      }
+
+      // 5. EXTRACT EXPIRY DATE (Arabic + English)
+      else if (lineLower.contains('تاريخ الانتهاء') || lineLower.contains('date of expiry')) {
+        parsedData['Expiry Date'] = line.split(':').last.trim();
+      }
+    }
+
+    // Format dates to "dd MMM yyyy" (e.g., "23 Apr 2025")
+    if (parsedData['Issue Date'] != null) {
+      parsedData['Issue Date'] = _formatDate(parsedData['Issue Date']!);
+    }
+    if (parsedData['Expiry Date'] != null) {
+      parsedData['Expiry Date'] = _formatDate(parsedData['Expiry Date']!);
+    }
+
+    print('Parsed UAE ID Data: $parsedData');
+    return parsedData;
+  }
+
+  String _formatDate(String rawDate) {
+    try {
+      if (rawDate.contains('-')) {
+        DateTime date = DateTime.parse(rawDate); // Parses "YYYY-MM-DD"
+        return DateFormat('dd MMM yyyy').format(date);
+      }
+    } catch (e) {
+      print('Date parsing error: $e');
+    }
+    return rawDate; // Return original if parsing fails
+  }
+  ///
+
   @override
   Widget build(BuildContext context) {
+    Map<String, String> extractedData = _parseExtractedText(_extractedText);
     return Scaffold(
       appBar: const AppBarWidget(
         title: 'Guest Check-In',
@@ -52,11 +297,25 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Align(
+            Align(
               alignment: Alignment.center,
-              child: NetworkImageWidget(url: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                height: 90,
-                width: 90,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: 67,
+                  height: 67,
+                  color: AppColors.darkGrey.withAlpha(25),
+                  child: _personImageFiles?.isNotEmpty ?? false
+                      ? Column(
+                    children: _personImageFiles!.map((element) {
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Image.file(element!),
+                      );
+                    }).toList(),
+                  )
+                      : const SizedBox(),
+                ),
               ),
             ),
             const Gap(20),
@@ -67,7 +326,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                 borderRadius: 6,
                 image: AppImages.scan,
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.oCRScreen);
+                  _pickImage();
                 }),
             const Gap(20),
             Container(
@@ -76,19 +335,19 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Column(
+              child:  Column(
                 children: [
                   TitleValueRowDividerDetailsContainerWidget(
                     title: 'ID Number',
-                    value: '5678967',
+                    value: _extractedIdNumber ?? "",
                   ),
                   TitleValueRowDividerDetailsContainerWidget(
                     title: 'Issue Date',
-                    value: '--',
+                    value: _issueDate ?? "",
                   ),
                   TitleValueRowDividerDetailsContainerWidget(
                     title: 'Expiry Date',
-                    value: '--',
+                    value: _expiryDate ?? "",
                   ),
                   TitleValueRowDividerDetailsContainerWidget(
                     title: 'Passport Number',
@@ -254,7 +513,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                                  const EdgeInsets.symmetric(horizontal: 10),
                                  title: 'Select Visitor',
                                  contentBuilder: (context, setState) {
-                                   return const SelectVisitorNumberWidget();
+                                   return const SelectVisitorNumberWidget(count: 3,);
                                  },
                                );
                              });
@@ -289,10 +548,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                      fillColor: AppColors.white,
                      selectedItem: _selectedItemNationality,
                      compareFn: (p0, p1) => p0 == p1,
-                     items: const [
-                       'pakistan',
-                       'Australia',
-                     ],
+                     items: _nationalityItems,
                      onChanged: (value) {
                        _selectedItemNationality = value;
                      },
@@ -338,8 +594,10 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
 }
 
 class SelectVisitorNumberWidget extends StatelessWidget {
+  final int? count;
   const SelectVisitorNumberWidget({
     super.key,
+    required this.count
   });
 
   @override
@@ -347,8 +605,8 @@ class SelectVisitorNumberWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          '3',
+         Text(
+          count.toString(),
           style: AppTextStyles.style36Blue500,
         ),
         const Text(
