@@ -19,6 +19,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img; // For image processing
 import 'package:path/path.dart' as path;
 
+import '../../widgets/picker/custom_date_time_picker.dart';
+import '../../widgets/picker/date_range_picker_widget.dart';
+
 
 class MobileGuestCheckInScreen extends StatefulWidget {
   const MobileGuestCheckInScreen({super.key});
@@ -39,9 +42,11 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
   String? _selectedItemPurpose;
   String? _selectedItemUnit;
   String? _selectedItemNationality;
-  final List<String> _nationalityItems = ['pakistan', 'Australia', 'United Arab Emirates'];
+  String? selectedIssueDate;
+  final List<String> _nationalityItems = ['pakistan', 'Australia', 'United Arab Emirates','India'];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  /// starting point of ml kit code
   File? _imageFile;
   String _extractedText = '';
   String? _extractedIdNumber;
@@ -230,7 +235,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
         }
       }
 
-      // 2. EXTRACT NAME (Arabic + English)
+      // 2. EXTRACT NAME (Arabic + English) name case 1
       else if (lineLower.contains('الاسم') || lineLower.contains('name')) {
         if (line.contains(':')) {
           parsedData['Name'] = line.split(':').last.trim();
@@ -239,29 +244,63 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
           parsedData['Name'] = line.replaceAll(RegExp('الاسم|name|:', caseSensitive: false), '').trim();
         }
       }
+      //  Handle cases 2 like  Names
+      //                       Ahmed
+      else if (lineLower.contains('الاسم') || lineLower.contains('names') ) {
+        if (i + 1 < lines.length) {
+          parsedData['Names'] = lines[i + 1].trim();
+        }
+        else if (line.contains(':')) {
+          parsedData['Names'] = line.split(':').last.trim();
+        }
+      }
+      else if (lineLower.contains('الاسم') || lineLower.contains('name') ) {
+        String cleanedLine = line.replaceAll(RegExp('الاسم|name', caseSensitive: false), '').trim();
+        // Split by any whitespace (handles cases like "Name              hibba")
+        List<String> parts = cleanedLine.split(RegExp(r'\s+'));
+        // The name should be the last part after splitting
+        parsedData['Name'] = parts.last.trim();
+
+      }
 
       // 3. EXTRACT NATIONALITY (Arabic + English)
       else if (lineLower.contains('الجنسية') || lineLower.contains('nationality')) {
         parsedData['Nationality'] = line.split(':').last.trim();
       }
+      //NATIONALITY in next line
+      else if (lineLower.contains('الجنسية') || lineLower.contains('nationality')) {
+        if (i + 1 < lines.length) {
+          parsedData['Nationality'] = lines[i + 1].trim();
+        } else if (line.contains(':')) {
+          parsedData['Nationality'] = line.split(':').last.trim();
+        }
+      }
 
       // 4. EXTRACT ISSUE DATE (Arabic + English)
       else if (lineLower.contains('تاريخ الإصدار') || lineLower.contains('date of issue')) {
-        parsedData['Issue Date'] = line.split(':').last.trim();
+        if (i + 1 < lines.length) {
+          parsedData['Date of Issue'] = lines[i + 1].trim();
+        } else if (line.contains(':')) {
+          parsedData['Date of Issue'] = line.split(':').last.trim();
+        }
       }
 
       // 5. EXTRACT EXPIRY DATE (Arabic + English)
       else if (lineLower.contains('تاريخ الانتهاء') || lineLower.contains('date of expiry')) {
-        parsedData['Expiry Date'] = line.split(':').last.trim();
+        if (i + 1 < lines.length) {
+          parsedData['Date of Expiry'] = lines[i + 1].trim();
+        } else if (line.contains(':')) {
+          parsedData['Date of Expiry'] = line.split(':').last.trim();
+        }
       }
     }
 
     // Format dates to "dd MMM yyyy" (e.g., "23 Apr 2025")
-    if (parsedData['Issue Date'] != null) {
-      parsedData['Issue Date'] = _formatDate(parsedData['Issue Date']!);
+    if (parsedData['Date of Issue'] != null) {
+      parsedData['Date of Issue'] = _formatDate(parsedData['Date of Issue']!);
     }
-    if (parsedData['Expiry Date'] != null) {
-      parsedData['Expiry Date'] = _formatDate(parsedData['Expiry Date']!);
+    if (parsedData['Date of Expiry'] != null) {
+      parsedData['Date of Expiry'] = _formatDate(parsedData['Date of Expiry']!);
     }
 
     print('Parsed UAE ID Data: $parsedData');
@@ -302,19 +341,18 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
-                  width: 67,
-                  height: 67,
+                  width: 68,
+                  height: 68,
                   color: AppColors.darkGrey.withAlpha(25),
-                  child: _personImageFiles?.isNotEmpty ?? false
-                      ? Column(
-                    children: _personImageFiles!.map((element) {
+                  child: Column(
+                    children: _personImageFiles?.map((element) {
                       return Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(7),
                         child: Image.file(element!),
                       );
-                    }).toList(),
-                  )
-                      : const SizedBox(),
+                    }).toList() ??
+                        [],
+                  ),
                 ),
               ),
             ),
@@ -326,47 +364,113 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                 borderRadius: 6,
                 image: AppImages.scan,
                 onPressed: () {
-                  _pickImage();
+                  showDialog(
+                      context: context,
+                      builder: (context){
+                        return CustomAlertDialogBox(
+                          insetPadding: EdgeInsets.all(10),
+                          hideBothButtons: true,
+                          title: 'Select Type',
+                          contentBuilder: (context, setState){
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Passport',style: AppTextStyles.style16DarkGrey600),
+                                Divider(color: AppColors.gray),
+                                Gap(5),
+                                Text('Emirates Id',style: AppTextStyles.style16DarkGrey600),
+                                Gap(5),
+                                Divider(color: AppColors.gray),
+                                Text('Driving license ',style: AppTextStyles.style16DarkGrey600),
+
+                              ],
+                            );
+                          },
+
+                        );
+                      }
+                  );
+                  // _pickImage();
                 }),
             const Gap(20),
-            Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child:  Column(
-                children: [
-                  TitleValueRowDividerDetailsContainerWidget(
-                    title: 'ID Number',
-                    value: _extractedIdNumber ?? "",
-                  ),
-                  TitleValueRowDividerDetailsContainerWidget(
-                    title: 'Issue Date',
-                    value: _issueDate ?? "",
-                  ),
-                  TitleValueRowDividerDetailsContainerWidget(
-                    title: 'Expiry Date',
-                    value: _expiryDate ?? "",
-                  ),
-                  TitleValueRowDividerDetailsContainerWidget(
-                    title: 'Passport Number',
-                    value: '234567890',
-                  ),
-                  TitleValueRowDividerDetailsContainerWidget(
-                    isLast: true,
-                    title: 'Passport Expiry',
-                    value: 'Aug 7, 2025',
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: const EdgeInsets.all(15),
+            //   decoration: BoxDecoration(
+            //     color: AppColors.white,
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child:  Column(
+            //     children: [
+            //       TitleValueRowDividerDetailsContainerWidget(
+            //         title: 'ID Number',
+            //         value: _extractedIdNumber ?? "",
+            //       ),
+            //       TitleValueRowDividerDetailsContainerWidget(
+            //         title: 'Issue Date',
+            //         value: _issueDate ?? "",
+            //       ),
+            //       TitleValueRowDividerDetailsContainerWidget(
+            //         title: 'Expiry Date',
+            //         value: _expiryDate ?? "",
+            //       ),
+            //       TitleValueRowDividerDetailsContainerWidget(
+            //         title: 'Passport Number',
+            //         value: '234567890',
+            //       ),
+            //       TitleValueRowDividerDetailsContainerWidget(
+            //         isLast: true,
+            //         title: 'Passport Expiry',
+            //         value: 'Aug 7, 2025',
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Form(
              key: _formKey,
              child: Column(
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  const Gap(20),
+                 TextFieldWidget(
+                   outLineColor: AppColors.gray,
+                   enabledBorder: InputBorder.none,
+                   controller: _nameController,
+                   label: 'ID Number',
+                   hint: 'Enter ID Number',
+                   keyboardType: TextInputType.text,
+                   validator: (value) {
+                     if (value == null || value.isEmpty) {
+                       return 'required';
+                     }
+                     return null;
+                   },
+                 ),
+                 const Gap(5),
+                 TextFieldWidget(
+                   outLineColor: AppColors.gray,
+                   enabledBorder: InputBorder.none,
+                   controller: _nameController,
+                   label: 'Passport Number',
+                   hint: 'Passport Number',
+                   keyboardType: TextInputType.text,
+                   validator: (value) {
+                     if (value == null || value.isEmpty) {
+                       return 'required';
+                     }
+                     return null;
+                   },
+                 ),
+                 const Gap(5),
+                 CustomDateTimePickerWidget(
+                   hintText: 'Date of Issue',
+                   onlyDatePicker: true,
+                   selectedDateTime: selectedIssueDate,
+                   onChangeDateTime: (value) {
+                     selectedIssueDate = value;
+                     //print('Selected Date: $value');
+                   },
+                 ),
+                 const Gap(8),
                  const Text(
                    "Type*",
                    style: AppTextStyles.style12Black600,

@@ -20,7 +20,6 @@ import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
 
 import '../../firebase_ml_vision_view.dart';
-import '../../view/Common Screens/scanner/document_scanner_screen.dart';
 import 'app_routes.dart';
 
 

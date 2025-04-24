@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
@@ -188,9 +187,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: "Sign In",
                 onPressed: () async {
                   Navigator.pushNamed(context, AppRoutes.deviceDeciderScreen);
-                  // if (_formKey.currentState?.validate() ?? false) {
-                  //
-                  // }
+                  if (_formKey.currentState?.validate() ?? false) {
+
+                  }
                 },
               ),
               Gap(10),
