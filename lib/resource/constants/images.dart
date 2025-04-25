@@ -6,7 +6,7 @@ class AppImages {
   ///images
   static const String appLogo = "${basePngPath}app_logo.png";
   static const String drawerBackground = "${basePngPath}drawer_background.png";
-  static const String background = "${basePngPath}drawer_background.png";
+  static const String background = "${basePngPath}background.png";
 
   ///icons
   static const String menuEservices = "${baseSvgPath}menu_services.svg";

@@ -175,7 +175,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.fill,
                         image: AssetImage(
-                          AppImages.background,
+                          AppImages.drawerBackground,
                         ),
                       ),
                     ),

@@ -23,6 +23,7 @@ class CheckInCardWidget extends StatelessWidget {
   final int? count;
   final String? typeText;
   final String? typeImage;
+  final Color? typeBackgroundColor;
   final VoidCallback checkOutOnPressed;
   final VoidCallback? detailsOnPressed;
   final bool isServiceable;
@@ -39,6 +40,7 @@ class CheckInCardWidget extends StatelessWidget {
     this.count,
     this.reference,
     this.purpose,
+    this.typeBackgroundColor,
     required this.checkOutOnPressed,
     this.detailsOnPressed,
     this.isServiceable = false,
@@ -62,7 +64,10 @@ class CheckInCardWidget extends StatelessWidget {
                     text: reference,
                     image: typeImage,
                   )
-                : SizedBox.shrink(),
+                : OverlapContainerWidget(
+                   backgroundColor: typeBackgroundColor,
+                    text: type,
+            ),
           ],
         ),
         InkWell(
@@ -95,11 +100,11 @@ class CheckInCardWidget extends StatelessWidget {
                           backgroundColor: AppColors.primary,
                           imageUrl: profileImageUrl,
                         ),
-                        const Gap(3),
-                        Text(
-                          type ?? "",
-                          style: AppTextStyles.style12DarkGrey600,
-                        ),
+                        // const Gap(3),
+                        // Text(
+                        //   type ?? "",
+                        //   style: AppTextStyles.style12DarkGrey600,
+                        // ),
                       ],
                     ),
                     const Gap(10),
@@ -109,6 +114,8 @@ class CheckInCardWidget extends StatelessWidget {
                         children: [
                           Text(
                             name ?? "",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.style14Black600,
                           ),
                           const Gap(6),
@@ -116,17 +123,17 @@ class CheckInCardWidget extends StatelessWidget {
                             image: AppImages.date,
                             text: date ?? "",
                           ),
-                          const Gap(5),
-                          IconTextContainerWidget(
-                            image: AppImages.phone,
-                            text: phone ?? "",
-                          ),
-                          const Gap(5),
-                          IconTitleValueContainerWidget(
-                            image: AppImages.gate,
-                            title: 'Gate',
-                            value: gateValue ?? "",
-                          ),
+                         // const Gap(5),
+                          // IconTextContainerWidget(
+                          //   image: AppImages.phone,
+                          //   text: phone ?? "",
+                          // ),
+                          // const Gap(5),
+                          // IconTitleValueContainerWidget(
+                          //   image: AppImages.gate,
+                          //   title: 'Gate',
+                          //   value: gateValue ?? "",
+                          // ),
                         ],
                       ),
                     ),
@@ -146,9 +153,9 @@ class CheckInCardWidget extends StatelessWidget {
                     ),
                   ],
                 ): SizedBox.shrink(),
-                const Gap(10),
+                const Gap(5),
                 CustomButton(
-                    image: AppImages.logout,
+                    image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
                     text: 'Check Out',
                     onPressed: checkOutOnPressed

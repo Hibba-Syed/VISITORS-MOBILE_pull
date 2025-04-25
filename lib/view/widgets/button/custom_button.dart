@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? height;
   final EdgeInsets padding;
-  final FontWeight fontWeight;
+  final FontWeight? fontWeight;
   final double fontSize;
   const CustomButton({
     super.key,
@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     required this.onPressed,
     this.invert = false,
-    this.fontWeight = FontWeight.bold,
+    this.fontWeight,
     this.borderRadius,
     this.imageHeight,
   });
@@ -59,6 +59,7 @@ class CustomButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (image != null)
               SvgPicture.asset(
@@ -82,7 +83,7 @@ class CustomButton extends StatelessWidget {
                     : TextStyle(
                         color: AppColors.white,
                         fontSize: fontSize,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: fontWeight ?? FontWeight.w600,
                       ),
                 textAlign: textAlign,
                 maxLines: maxLines,
