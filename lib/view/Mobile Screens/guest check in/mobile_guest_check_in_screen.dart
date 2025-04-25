@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -10,7 +9,6 @@ import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/components/get
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart'
     show CustomButton;
-import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
@@ -30,7 +28,6 @@ import 'package:path/path.dart' as path;
 
 import '../../widgets/container_widgets/type_container_widget.dart';
 import '../../widgets/picker/custom_date_time_picker.dart';
-import '../../widgets/picker/date_range_picker_widget.dart';
 
 class MobileGuestCheckInScreen extends StatefulWidget {
   const MobileGuestCheckInScreen({super.key});
@@ -48,8 +45,10 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _cardNumberController = TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
-  final TextEditingController _passportExpiryController = TextEditingController();
-  final TextEditingController _passportNumberController = TextEditingController();
+  final TextEditingController _passportExpiryController =
+      TextEditingController();
+  final TextEditingController _passportNumberController =
+      TextEditingController();
   String? _selectedItemType;
   String? _selectedItemPurpose;
   String? _selectedItemUnit;
@@ -74,11 +73,8 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
-        maxWidth: 670,
-        //539,
-        maxHeight:
-            //340
-            665);
+        maxWidth: 539,
+        maxHeight: 340);
 
     if (pickedFile != null) {
       setState(() {
@@ -114,7 +110,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
       _nameController.text = parsedData['Name'] ?? '';
       _selectedItemNationality = parsedData['Nationality'];
       _idNumberController.text = parsedData['ID Number'] ?? '';
-      _selectedIssueDate = parsedData['Issuing Date'] ?? '';
+        _selectedIssueDate = parsedData['Issuing Date'] ?? '';
       _selectedExpiryDate = parsedData['Expiry Date'] ?? '';
       _passportExpiryController.text = parsedData[''] ?? '';
       _passportNumberController.text = parsedData[''] ?? '';
@@ -151,11 +147,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
   List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
     if (faces.isNotEmpty) {
       print('bounding box length:: ${faces.length}');
-      // Assuming the person's image is generally on the top left
-      // final firstBlock = recognizedText.blocks.last;
-      // final boundingBox = firstBlock.boundingBox;
 
-      // Get bounding box coordinates
       List<File?>? images = [];
       for (int i = 0; i < faces.length; i++) {
         final face = faces[i];
@@ -235,6 +227,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
   //   print('Parsed Data: $parsedData');
   //   return parsedData;
   // }
+  ///
   Map<String, String> _parseExtractedText(String text) {
     Map<String, String> parsedData = {};
     List<String> lines = text.split('\n');
@@ -243,104 +236,59 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
       String line = lines[i].trim();
       String lineLower = line.toLowerCase();
 
-      // 1. EXTRACT ID NUMBER (Handles Arabic "رقم الهوية" with ID on next line)
+      // ID Number
       if (lineLower.contains('رقم الهوية') || lineLower.contains('id number')) {
-        if (i + 1 < lines.length) {
-          // Check if next line exists
-          parsedData['ID Number'] = lines[i + 1].trim(); // Get the next line
-        } else if (line.contains(':')) {
-          parsedData['ID Number'] = line.split(':').last.trim();
-        }
+        parsedData['ID Number'] = _extractValue(line, lines, i);
       }
-
-      // 2. EXTRACT NAME (Arabic + English) name case 1
+      // Name (special case)
       else if (lineLower.contains('الاسم') || lineLower.contains('name')) {
         if (line.contains(':')) {
           parsedData['Name'] = line.split(':').last.trim();
-        } else {
-          // Handle cases like "الإسم: احمد محمد" or "Name: Ahmed"
-          parsedData['Name'] = line
-              .replaceAll(RegExp('الاسم|name|:', caseSensitive: false), '')
-              .trim();
         }
       }
-      //  Handle cases 2 like  Names
-      //                       Ahmed
-      else if (lineLower.contains('الاسم') || lineLower.contains('names')) {
-        if (i + 1 < lines.length) {
-          parsedData['Names'] = lines[i + 1].trim();
-        } else if (line.contains(':')) {
-          parsedData['Names'] = line.split(':').last.trim();
-        }
-      } else if (lineLower.contains('الاسم') || lineLower.contains('name')) {
-        String cleanedLine = line
-            .replaceAll(RegExp('الاسم|name', caseSensitive: false), '')
-            .trim();
-        // Split by any whitespace (handles cases like "Name              hibba")
-        List<String> parts = cleanedLine.split(RegExp(r'\s+'));
-        // The name should be the last part after splitting
-        parsedData['Name'] = parts.last.trim();
-      }
-
-      // 3. EXTRACT NATIONALITY (Arabic + English)
+      // Nationality
       else if (lineLower.contains('الجنسية') ||
           lineLower.contains('nationality')) {
-        parsedData['Nationality'] = line.split(':').last.trim();
+        parsedData['Nationality'] = _extractValue(line, lines, i);
       }
-      //NATIONALITY in next line
-      else if (lineLower.contains('الجنسية') ||
-          lineLower.contains('nationality')) {
-        if (i + 1 < lines.length) {
-          parsedData['Nationality'] = lines[i + 1].trim();
-        } else if (line.contains(':')) {
-          parsedData['Nationality'] = line.split(':').last.trim();
-        }
-      }
-
-      // 4. EXTRACT ISSUE DATE (Arabic + English)
-      else if (lineLower.contains('تاريخ الإصدار') ||
-          lineLower.contains('date of issue')) {
+      // // Issuing Date
+      // else if (lineLower.contains('تاريخ الاصدار') || lineLower.contains('issuing date')) {
+      //   parsedData['Issuing Date'] = _extractValue(line, lines, i);
+      // }
+      // // Expiry Date
+      // else if (lineLower.contains('تاريخ الانتهاء') || lineLower.contains('expiry date')) {
+      //   parsedData['Expiry Date'] = _extractValue(line, lines, i);
+      // }
+      // Issuing Date (ONLY next line)
+      else if (lineLower.contains('تاريخ الاصدار/') ||
+          lineLower.contains('issuing date')) {
         if (i + 1 < lines.length) {
           parsedData['Issuing Date'] = lines[i + 1].trim();
-        } else if (line.contains(':')) {
-          parsedData['Expiry Date'] = line.split(':').last.trim();
         }
       }
-
-      // 5. EXTRACT EXPIRY DATE (Arabic + English)
-      else if (lineLower.contains('تاريخ الانتهاء') ||
-          lineLower.contains('date of expiry')) {
+      // Expiry Date (ONLY next line)
+      else if (lineLower.contains('تاريخ الانتهاء/') ||
+          lineLower.contains('expiry date')) {
         if (i + 1 < lines.length) {
-          parsedData['Date of Expiry'] = lines[i + 1].trim();
-        } else if (line.contains(':')) {
-          parsedData['Date of Expiry'] = line.split(':').last.trim();
+          parsedData['Expiry Date'] = lines[i + 1].trim();
         }
       }
     }
 
-    // Format dates to "dd MMM yyyy" (e.g., "23 Apr 2025")
-    // if (parsedData['Issuing Date'] != null) {
-    //   parsedData['Issuing Date'] = _formatDate(parsedData['Issuing Date']!);
-    // }
-    // if (parsedData['Expiry Date'] != null) {
-    //   parsedData['Expiry Date'] = _formatDate(parsedData['Expiry Date']!);
-    // }
-
-    print('Parsed UAE ID Data: $parsedData');
+    print(
+        'Parsed UAE ID Data: ${parsedData['Expiry Date']}${parsedData['Issuing Date']}${parsedData['Nationality']}');
     return parsedData;
   }
 
-  // String _formatDate(String rawDate) {
-  //   try {
-  //     if (rawDate.contains('-')) {
-  //       DateTime date = DateTime.parse(rawDate); // Parses "YYYY-MM-DD"
-  //       return DateFormat('dd MMM yyyy').format(date);
-  //     }
-  //   } catch (e) {
-  //     print('Date parsing error: $e');
-  //   }
-  //   return rawDate; // Return original if parsing fails
-  // }
+
+  String _extractValue(String line, List<String> lines, int currentIndex) {
+    if (line.contains(':')) {
+      return line.split(':').last.trim();
+    } else if (currentIndex + 1 < lines.length) {
+      return lines[currentIndex + 1].trim();
+    }
+    return '';
+  }
 
   ///
 
@@ -371,7 +319,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                   child: Column(
                     children: _personImageFiles?.map((element) {
                           return Padding(
-                            padding: const EdgeInsets.all(7),
+                            padding: const EdgeInsets.all(2),
                             child: Image.file(element!),
                           );
                         }).toList() ??

@@ -71,7 +71,7 @@ class MobileDashboardScreen extends StatelessWidget {
         count: 2,
         iconPath: AppImages.rfps,
         backgroundColor: AppColors.white,
-        forGroundColor: AppColors.blue,
+        forGroundColor: AppColors.primary,
         onTap: () {
           context
               .read<DeviceDeciderCubit>()
@@ -90,7 +90,7 @@ class MobileDashboardScreen extends StatelessWidget {
       ActionsItemModel(
         title: 'Message',
         iconPath: AppImages.message,
-        backgroundColor: AppColors.blue,
+        backgroundColor: AppColors.primary,
         forGroundColor: AppColors.white,
         onTap: () {
           context
@@ -172,7 +172,7 @@ class MobileDashboardScreen extends StatelessWidget {
                           }),
                       const Gap(10),
                       CustomButton(
-                          buttonColor: AppColors.blue,
+                          buttonColor: AppColors.primary,
                           text: 'View All',
                           height: 41.5,
                           borderRadius: 6,
@@ -250,7 +250,7 @@ class MobileDashboardScreen extends StatelessWidget {
                       ),
                       const Gap(6),
                       CustomButton(
-                          buttonColor: AppColors.blue,
+                          buttonColor: AppColors.primary,
                           text: 'View All',
                           height: 41,
                           borderRadius: 6,
@@ -303,7 +303,7 @@ class MobileDashboardScreen extends StatelessWidget {
                     style: AppTextStyles.style19Primary600,
                   ),
                   CustomButton(
-                      buttonColor: AppColors.blue,
+                      buttonColor: AppColors.primary,
                       text: 'View All',
                       height: 41,
                       // width: 100,

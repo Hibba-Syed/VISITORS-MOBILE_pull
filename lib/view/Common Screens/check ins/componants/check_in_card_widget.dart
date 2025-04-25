@@ -92,7 +92,7 @@ class CheckInCardWidget extends StatelessWidget {
                           countPadding: 6,
                           countTopPositioned: -5,
                           countRightPositioned: -6,
-                          backgroundColor: AppColors.blue,
+                          backgroundColor: AppColors.primary,
                           imageUrl: profileImageUrl,
                         ),
                         const Gap(3),
