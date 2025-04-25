@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _communityIdController = TextEditingController();
   final TextEditingController _loginIdController = TextEditingController();
   final TextEditingController _gateIdController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -187,10 +186,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: "Sign In",
                 onPressed: () async {
                   Navigator.pushNamed(context, AppRoutes.deviceDeciderScreen);
-                  if (_formKey.currentState?.validate() ?? false) {
-
-                  }
-                },
+                //   if (_formKey.currentState!.validate()) {
+                //     print("Form is valid. Proceeding with check-in...");
+                //   } else {
+                //     print("Form validation failed.");
+                //   }
+                 },
               ),
               Gap(10),
               Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:visitors/resource/constants/app_colors.dart';
 
 class CustomDateTimePickerWidget extends StatefulWidget {
   final String? hintText;
@@ -125,7 +126,7 @@ class _CustomDateTimePickerWidgetState
           color: widget.fillColor,
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: Colors.grey.shade300,
+            color: AppColors.gray,
           ),
         ),
         child: Row(
@@ -136,7 +137,7 @@ class _CustomDateTimePickerWidgetState
               style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
             const Icon(
-              Icons.access_time_outlined,
+              Icons.calendar_month_sharp,
               color: Colors.grey,
               size: 19,
             ),
