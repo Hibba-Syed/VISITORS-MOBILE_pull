@@ -27,7 +27,7 @@ class OverlapContainerWidget extends StatelessWidget {
                 topRight: Radius.circular(6),
                 topLeft: Radius.circular(6),
               ),
-              color: backgroundColor ?? AppColors.blue),
+              color: backgroundColor ?? AppColors.primary),
           child: Row(
             children: [
           if (image != null && image!.isNotEmpty) ...[

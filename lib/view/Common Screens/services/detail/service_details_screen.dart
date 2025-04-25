@@ -227,7 +227,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                               cancelButtonColor: AppColors.green,
                               cancelButtonText: 'Complete',
                               confirmButtonText: 'Scan ID',
-                              confirmButtonColor: AppColors.blue,
+                              confirmButtonColor: AppColors.primary,
                               onConfirm: () async {
                                 return false;
                               },

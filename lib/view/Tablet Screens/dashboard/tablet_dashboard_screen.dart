@@ -66,7 +66,7 @@ class TabletDashboardScreen extends StatelessWidget {
         count: 2,
         iconPath: AppImages.rfps,
         backgroundColor: AppColors.white,
-        forGroundColor: AppColors.blue,
+        forGroundColor: AppColors.primary,
         onTap: () {
           context
               .read<DeviceDeciderCubit>()
@@ -87,7 +87,7 @@ class TabletDashboardScreen extends StatelessWidget {
       ActionsItemModel(
         title: 'Message',
         iconPath: AppImages.message,
-        backgroundColor: AppColors.blue,
+        backgroundColor: AppColors.primary,
         forGroundColor: AppColors.white,
         onTap: () {
           context
@@ -185,7 +185,7 @@ class TabletDashboardScreen extends StatelessWidget {
                       const Gap(10),
                       Expanded(
                         child: CustomButton(
-                            buttonColor: AppColors.blue,
+                            buttonColor: AppColors.primary,
                             text: 'View All',
                             height: 41,
                             borderRadius: 6,
@@ -253,7 +253,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     ),
                     const Gap(10),
                     CustomButton(
-                        buttonColor: AppColors.blue,
+                        buttonColor: AppColors.primary,
                         text: 'View All',
                         height: 41,
                         width: 185,
@@ -307,7 +307,7 @@ class TabletDashboardScreen extends StatelessWidget {
                ),
                 const Gap(20),
                 CustomButton(
-                    buttonColor: AppColors.blue,
+                    buttonColor: AppColors.primary,
                     text: 'View All',
                     height: 41,
                      width: 185,

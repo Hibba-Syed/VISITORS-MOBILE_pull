@@ -115,7 +115,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static const TextStyle style36Blue500 = TextStyle(
-    color: AppColors.blue,
+    color: AppColors.primary,
     fontSize: 36,
     fontWeight: FontWeight.w500,
   );

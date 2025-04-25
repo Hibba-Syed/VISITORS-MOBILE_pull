@@ -12,7 +12,7 @@ class AppUtils{
       return AppColors.primary;
     }
     if (status?.toLowerCase() == "notified") {
-      return AppColors.blue;
+      return AppColors.primary;
     }
 
     return AppColors.red;
