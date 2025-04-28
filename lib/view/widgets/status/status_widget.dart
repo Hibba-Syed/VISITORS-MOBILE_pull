@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../../utils/text_utils.dart';
 
@@ -38,7 +39,7 @@ class StatusWidget extends StatelessWidget {
               style:  TextStyle(
                 color: AppUtils.getStatusColor(status),
                 fontWeight:  FontWeight.w500,
-                fontSize: 12,
+                fontSize: AppConstants.isMobile(context) ?  12 : 14,
               ),
             ),
           ),

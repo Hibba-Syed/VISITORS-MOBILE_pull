@@ -58,7 +58,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                     onPressed: () {
                     }),
               ),
-              const Gap(5),
+              const Gap(10),
               Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.only(bottom: 10),
@@ -67,12 +67,13 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                   itemCount: 12,
                   itemBuilder: (context, index) {
                     return CheckOutsCardWidget(
+                      typeBackgroundColor: AppColors.yellow,
                       visitorCount: 10,
                         typeText: "45678",
                         name: 'MUHAMMAD AHMED MOHAMMED ',
                         profileImageUrl:
                         "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                        type: 'Guest',
+                        type: 'Visitor Pass',
                         checkInDate: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                         checkOutDate: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                         phone: '34567890098',

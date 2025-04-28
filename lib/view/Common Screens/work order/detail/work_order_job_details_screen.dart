@@ -42,9 +42,9 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                 ],
               ),
               const Gap(3),
-              const HeadingWidget(
+               HeadingWidget(
                 heading: 'JB001-22-00092',
-                style: AppTextStyles.style14Black600,
+                style:  AppConstants.isMobile(context) ?  AppTextStyles.style14Black600 :  AppTextStyles.style15Black600,
               ),
               const Gap(10),
               Container(
@@ -104,7 +104,7 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
             horizontal: AppConstants.horizontalPadding,
             vertical: AppConstants.horizontalPadding),
         child: CustomButton(
-            height: 40,
+            height:  AppConstants.isTablet(context) ? 55 : 42,
             text: 'Add Log',
             onPressed: () {
               showDialog(

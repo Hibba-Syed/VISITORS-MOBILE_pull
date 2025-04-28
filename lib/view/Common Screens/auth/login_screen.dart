@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
@@ -65,10 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 AppImages.appLogo,
                 width: MediaQuery.of(context).size.height * 0.15,
               ),
-              Gap(5),
               Text(
                 'Visitor Management System',
-                style: AppTextStyles.style20black600,
+                style: AppConstants.isMobile(context) ? AppTextStyles.style20black600 : AppTextStyles.style25black600,
               ),
               Gap(20.0),
               TextFieldWidget(
@@ -149,10 +149,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           return CustomAlertDialogBox(
                               hideBothButtons: true,
                               title: 'Forgot Password',
-                              insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppConstants.isTablet( context) ?
+                              EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                               contentBuilder: (context, setState) {
                                 return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Gap(10),
@@ -168,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Gap(20),
                                     Text(
                                       'Please contact admin to get ISKAAN Visitor Management System credentials',
-                                      style: AppTextStyles.style16black600,
+                                      style: AppConstants.isMobile(context) ? AppTextStyles.style16black600 :  AppTextStyles.style18black600,
                                     ),
                                   ],
                                 );
@@ -177,12 +178,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     "Forgot password?",
-                    style: AppTextStyles.style14Primary600,
+                    style:  AppConstants.isMobile(context) ? AppTextStyles.style14Primary600 : AppTextStyles.style16Primary600,
                   ),
                 ),
               ),
               Gap(15),
               CustomButton(
+                height: AppConstants.isTablet(context)  ? 60 : 42,
+                fontSize: AppConstants.isTablet(context)  ? 20 : 15,
                 text: "Sign In",
                 onPressed: () async {
                   Navigator.pushNamed(context, AppRoutes.deviceDeciderScreen);
@@ -214,6 +217,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Gap(10),
               CustomButton(
+                height: AppConstants.isTablet(context)  ? 60 : 42,
+                fontSize: AppConstants.isTablet(context)  ? 20 : 15,
                 text: "Biometric Login",
                 invert: true,
                 onPressed: () async {

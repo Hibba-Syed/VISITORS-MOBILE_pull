@@ -161,7 +161,8 @@ class ServiceDetailsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
-                    height: 40,
+                    height:  AppConstants.isTablet(context) ? 55 : 42,
+                    fontSize: AppConstants.isTablet(context)  ? 20 : 15,
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -172,8 +173,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                                 TextEditingController();
                             return CustomAlertDialogBox(
                               isCancelButtonDisable: true,
-                              insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppConstants.isTablet( context) ?
+                                   EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to JB001-24-00102',
                               confirmButtonText: 'Add Log',
                               onConfirm: () async {
@@ -188,6 +189,10 @@ class ServiceDetailsScreen extends StatelessWidget {
                                       AppImages.question,
                                       height: 35,
                                       width: 35,
+                                      colorFilter: const ColorFilter.mode(
+                                        AppColors.primary,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
@@ -205,7 +210,8 @@ class ServiceDetailsScreen extends StatelessWidget {
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.green,
-                    height: 40,
+                    height: AppConstants.isTablet(context) ? 55 : 42,
+                    fontSize: AppConstants.isTablet(context)  ? 20 : 15,
                     text: 'Complete',
                     onPressed: () {
                       showDialog(
@@ -220,7 +226,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                                 TextEditingController();
                             return CustomAlertDialogBox(
                               insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              AppConstants.isTablet( context) ?
+                              EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Complete HB2024080725',
                               disableCancelButtonBorder: true,
                               cancelButtonTextColor: AppColors.white,

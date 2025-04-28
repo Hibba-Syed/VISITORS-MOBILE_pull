@@ -4,6 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 
+import '../../../resource/constants/app_constants.dart';
+
 class TextFieldWidget extends StatelessWidget {
   final String? initialValue;
   final String? label;
@@ -97,7 +99,7 @@ class TextFieldWidget extends StatelessWidget {
             contentPadding: contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: hint,
-            hintStyle: AppTextStyles.style13black400,
+            hintStyle:  AppConstants.isMobile(context) ? AppTextStyles.style13black400 : AppTextStyles.style15black400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: prefix,
             suffixIcon: suffix,

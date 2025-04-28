@@ -74,28 +74,28 @@ class TabletDashboardScreen extends StatelessWidget {
         },
       ),
     ];
-    final List<ActionsItemModel> tabletActions = [
-      ActionsItemModel(
-        title: 'Guest Check-In',
-        iconPath: AppImages.guestCheckIn,
-        backgroundColor: AppColors.green,
-        forGroundColor: AppColors.white,
-        onTap: () {
-          Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
-        },
-      ),
-      ActionsItemModel(
-        title: 'Message',
-        iconPath: AppImages.message,
-        backgroundColor: AppColors.primary,
-        forGroundColor: AppColors.white,
-        onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
-        },
-      ),
-    ];
+    // final List<ActionsItemModel> tabletActions = [
+    //   ActionsItemModel(
+    //     title: 'Guest Check-In',
+    //     iconPath: AppImages.guestCheckIn,
+    //     backgroundColor: AppColors.green,
+    //     forGroundColor: AppColors.white,
+    //     onTap: () {
+    //       Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
+    //     },
+    //   ),
+    //   ActionsItemModel(
+    //     title: 'Message',
+    //     iconPath: AppImages.message,
+    //     backgroundColor: AppColors.primary,
+    //     forGroundColor: AppColors.white,
+    //     onTap: () {
+    //       context
+    //           .read<DeviceDeciderCubit>()
+    //           .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+    //     },
+    //   ),
+    // ];
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
@@ -132,25 +132,17 @@ class TabletDashboardScreen extends StatelessWidget {
               },
             ),
             const Gap(10),
-            GridView.builder(
-              primary: false,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  mainAxisExtent: 100),
-              itemCount: tabletActions.length,
-              itemBuilder: (BuildContext context, int index) {
-                ActionsItemModel tabletActionsItem = tabletActions[index];
-                return ActionsContainerWidget(
-                  title: tabletActionsItem.title,
-                  backgroundColor: tabletActionsItem.backgroundColor,
-                  forGroundColor: tabletActionsItem.forGroundColor,
-                  iconPath: tabletActionsItem.iconPath,
-                  actionOnTap: tabletActionsItem.onTap,
-                );
-              },
+            CustomButton(
+                imageHeight: 25,
+                fontSize: 20,
+                height: 80,
+                text: 'Guest Check-In',
+                buttonColor: AppColors.green,
+                textColor: AppColors.white,
+                image: AppImages.guestCheckIn,
+                onPressed: (){
+                  Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
+                }
             ),
             const Gap(10),
             Row(
@@ -173,8 +165,9 @@ class TabletDashboardScreen extends StatelessWidget {
                         child: CustomButton(
                             buttonColor: AppColors.red,
                             text: 'Check-Outs',
-                            height: 41,
+                            height: 50,
                             borderRadius: 6,
+                            imageHeight: AppConstants.isMobile( context) ? 23:18,
                             image: AppImages.checkout,
                             onPressed: () {
                               context.read<DeviceDeciderCubit>()
@@ -187,7 +180,7 @@ class TabletDashboardScreen extends StatelessWidget {
                         child: CustomButton(
                             buttonColor: AppColors.primary,
                             text: 'View All',
-                            height: 41,
+                            height: 50,
                             borderRadius: 6,
                             image: AppImages.view,
                             onPressed: () {
@@ -202,7 +195,7 @@ class TabletDashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Gap(5),
+            const Gap(10),
             ListView.separated(
               shrinkWrap: true,
               primary: false,
@@ -244,7 +237,8 @@ class TabletDashboardScreen extends StatelessWidget {
                 Row(
                   children: [
                     VisitorPassesButton(
-                      horizontalPadding: 18,
+                      horizontalPadding: 35,
+                      verticalPadding: 14,
                       count: 45,
                       onPressed: () {
                         Navigator.pushNamed(
@@ -255,7 +249,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     CustomButton(
                         buttonColor: AppColors.primary,
                         text: 'View All',
-                        height: 41,
+                        height: 50,
                         width: 185,
                         borderRadius: 6,
                         image: AppImages.view,
@@ -309,7 +303,7 @@ class TabletDashboardScreen extends StatelessWidget {
                 CustomButton(
                     buttonColor: AppColors.primary,
                     text: 'View All',
-                    height: 41,
+                    height: 50,
                      width: 185,
                     borderRadius: 6,
                     image: AppImages.view,

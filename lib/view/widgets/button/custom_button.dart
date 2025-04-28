@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.image,
     this.height = 42,
-    this.fontSize = 16,
+    this.fontSize = 15,
     this.maxLines = 1,
     this.padding = const EdgeInsets.all(10),
     this.textColor,
@@ -57,9 +57,8 @@ class CustomButton extends StatelessWidget {
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+           mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (image != null)
               SvgPicture.asset(
@@ -70,15 +69,16 @@ class CustomButton extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-            if (image != null) const Gap(5),
+            if (image != null) const Gap(15),
+            // AutoSizeText(''),
             Flexible(
-              child: AutoSizeText(
+              child: Text(
                 text,
                 style: invert
                     ? TextStyle(
                         color: textColor ?? AppColors.primary,
                         fontSize: fontSize,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       )
                     : TextStyle(
                         color: AppColors.white,

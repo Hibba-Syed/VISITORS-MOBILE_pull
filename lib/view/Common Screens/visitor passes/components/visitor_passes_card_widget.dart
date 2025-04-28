@@ -140,6 +140,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                       text: 'Check-In', onPressed: checkInOnPressed),
                   const Gap(8),
                   CustomButton(
+                      imageHeight: 14,
                       buttonColor: AppColors.cyanBlue,
                       image: AppImages.serviceable,
                       text: 'Visitor Pass Check - Ins', onPressed: visitorPassOnPressed ),

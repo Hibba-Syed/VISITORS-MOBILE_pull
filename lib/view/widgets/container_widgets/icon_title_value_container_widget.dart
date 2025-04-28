@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../../../resource/constants/app_colors.dart';
+import '../../../resource/constants/app_constants.dart';
 import '../../../resource/styles/styles.dart';
 
 class IconTitleValueContainerWidget extends StatelessWidget {
@@ -49,15 +50,15 @@ class IconTitleValueContainerWidget extends StatelessWidget {
           const Gap(5),
           Text(
             "$title: ",
-            style: AppTextStyles.style13Black600,
+            style: AppConstants.isMobile(context) ? AppTextStyles.style13Black600 : AppTextStyles.style15Black600,
           ),
           Flexible(
             child: Text(
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               value ?? "",
-              style:
-              AppTextStyles.style13Black400,
+              style: AppConstants.isMobile(context) ?AppTextStyles.style13Black400 :AppTextStyles.style15Black500,
+
             ),
           ),
         ],

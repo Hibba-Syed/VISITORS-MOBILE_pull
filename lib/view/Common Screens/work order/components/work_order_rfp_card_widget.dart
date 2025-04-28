@@ -72,7 +72,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       title ?? "",
-                      style: AppTextStyles.style14Black600,
+                      style: AppConstants.isMobile(context) ?  AppTextStyles.style14Black600 : AppTextStyles.style16black600,
                     ),
                     StatusWidget(
                       status: status ?? "",
@@ -90,11 +90,13 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   text: DateTimeUtil.getFormattedDateTime(date),
                 ),
                 const Gap(10),
-                AppConstants.isTablet(context) ?
                     Row(
                       children: [
                         Expanded(
                           child: CustomButton(
+                              height: AppConstants.isTablet(context) ? 55 : 42,
+                              fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                              imageHeight: AppConstants.isTablet(context) ?25 :18,
                               buttonColor: AppColors.green,
                               image: AppImages.checkInButton,
                               text: 'Check-In',
@@ -103,26 +105,16 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                         const Gap(8),
                         Expanded(
                           child: CustomButton(
+                              height:  AppConstants.isTablet(context)  ? 55 : 42,
+                              fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                              imageHeight: AppConstants.isTablet(context) ?25 :18,
                               buttonColor: AppColors.cyanBlue,
                               image: AppImages.serviceable,
                               text: 'Job Check - Ins', onPressed: jobCheckInOnPressed
                           ),
                         ),
                       ],
-                    ): Column(
-                  children: [
-                    CustomButton(
-                        buttonColor: AppColors.green,
-                        image: AppImages.checkInButton,
-                        text: 'Check-In',
-                        onPressed: checkInPressed),
-                    const Gap(8),
-                    CustomButton(
-                        buttonColor: AppColors.cyanBlue,
-                        image: AppImages.serviceable,
-                        text: 'Job Check - Ins', onPressed: jobCheckInOnPressed),
-                  ],
-                ),
+                    )
 
               ],
             ),

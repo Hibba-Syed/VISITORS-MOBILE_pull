@@ -155,7 +155,9 @@ class MobileDashboardScreen extends StatelessWidget {
                 buttonColor: AppColors.green,
                 textColor: AppColors.white,
                 image: AppImages.guestCheckIn,
-                onPressed: (){}
+                onPressed: (){
+                  Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+                }
             ),
               const Gap(10),
               Row(
@@ -182,7 +184,8 @@ class MobileDashboardScreen extends StatelessWidget {
                           onPressed: () {
                             context.read<DeviceDeciderCubit>()
                                     .onChangeSelectedIndex(
-                                        context, AppConstants.checkOutsIndex);
+                                        context, AppConstants.checkOutsIndex
+                            );
                           }),
                       const Gap(10),
                       CustomButton(
@@ -370,7 +373,10 @@ class MobileDashboardScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.primary,
           shape: const CircleBorder(),
-            onPressed: (){},
+            onPressed: (){
+              context.read<DeviceDeciderCubit>()
+                      .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+            },
           child: Icon(CupertinoIcons.chat_bubble_2,color: AppColors.white,),
         ),
       );

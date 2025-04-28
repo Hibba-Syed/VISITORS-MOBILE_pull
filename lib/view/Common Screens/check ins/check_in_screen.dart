@@ -59,10 +59,10 @@ class CheckInsScreen extends StatelessWidget {
                     child: CustomButton(
                       buttonColor: AppColors.red,
                       text: 'Check-Outs All',
-                      height: 41,
-                      imageHeight: 16,
+                      height:  AppConstants.isTablet(context)  ? 50 : 42,
+                      width: AppConstants.isTablet(context) ? 200 : 150,
+                      imageHeight: AppConstants.isTablet( context) ? 25 : 18,
                       borderRadius: 6,
-                      width: 150,
                       image: AppImages.logout,
                       onPressed: () {
                         showDialog(

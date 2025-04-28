@@ -5,6 +5,7 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/date_time.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/all_check_out_design_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
@@ -36,10 +37,10 @@ class ServiceableCheckInsScreen extends StatelessWidget {
               CustomButton(
                   buttonColor: AppColors.red,
                   text: 'Check-Out All',
-                  height: 41,
-                  imageHeight: 18,
+                  height:  AppConstants.isTablet(context)  ? 50 : 42,
+                  width: AppConstants.isTablet(context) ? 200 : 150,
+                  imageHeight: AppConstants.isTablet( context) ? 25 : 18,
                   borderRadius: 6,
-                  width: 150,
                   image: AppImages.logout,
                   onPressed: () {
                     showDialog(
@@ -88,6 +89,9 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                     purpose: 'Apartment Viewing / RE Agent',
                     checkOutOnPressed: () {
                       _showCheckoutDialog(context);
+                    },
+                    detailsOnPressed: (){
+                      Navigator.pushNamed(context, AppRoutes.checkInDetailsScreen);
                     },
                   );
                 },

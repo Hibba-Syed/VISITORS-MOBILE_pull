@@ -7,6 +7,8 @@ import 'package:visitors/view/widgets/button/small_button.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 
+import '../../../../resource/constants/app_constants.dart';
+
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
@@ -73,16 +75,17 @@ class GetInfoCardWidget extends StatelessWidget {
                         isCancelButtonDisable: true,
                         confirmButtonText: 'Delete',
                         confirmButtonColor: AppColors.red,
-                        insetPadding:
-                            const EdgeInsets.symmetric(horizontal: 20),
+                        insetPadding: AppConstants.isTablet( context) ?
+                      EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                         title: 'Delete Visitor Record',
                         contentBuilder: (context, setState) {
-                          return const Column(
+                          return  Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 CupertinoIcons.delete,
-                                size: 25,
+                                size:  AppConstants.isTablet( context) ? 40 : 25,
                                 color: AppColors.red,
                               ),
                               Gap(10),

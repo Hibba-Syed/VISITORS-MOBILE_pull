@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+
+import '../../../resource/constants/app_constants.dart';
 class VisitorPassesButton extends StatelessWidget {
   final int? count;
   final double? horizontalPadding;
@@ -23,7 +25,7 @@ class VisitorPassesButton extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            width: 36,
+            // width: 36,
               padding: EdgeInsets.symmetric(horizontal:  8,vertical: verticalPadding ?? 10),
               decoration: const BoxDecoration(
                  borderRadius: BorderRadius.only(
@@ -32,8 +34,8 @@ class VisitorPassesButton extends StatelessWidget {
                  ),
                 color:AppColors.lightYellow,
               ),
-              child: Text(count?.toString() ?? "",style:const TextStyle(
-                  fontSize: 14,
+              child: Text(count?.toString() ?? "",style: TextStyle(
+                  fontSize: AppConstants.isTablet(context)  ? 17 : 14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.white
               ),
@@ -48,9 +50,9 @@ class VisitorPassesButton extends StatelessWidget {
               ),
               color: AppColors.yellow,
             ),
-            child: const Text("Visitor Passes",
+            child:  Text("Visitor Passes",
               style: TextStyle(
-                fontSize: 14,
+                fontSize:  AppConstants.isTablet(context)  ? 17 : 14,
                   fontWeight: FontWeight.w500,
                  color: AppColors.white
               ),
