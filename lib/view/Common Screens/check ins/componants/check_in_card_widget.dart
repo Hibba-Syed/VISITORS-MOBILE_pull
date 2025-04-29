@@ -112,7 +112,10 @@ class CheckInCardWidget extends StatelessWidget {
                             name ?? "",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: AppConstants.isMobile(context) ? AppTextStyles.style14Black600 : AppTextStyles.style15Black600,
+                            style: AppConstants.isTablet(context) ?
+                            AppTextStyles.style15Black600
+                                :
+                            AppTextStyles.style14Black600
                           ),
                           const Gap(6),
                           IconTextContainerWidget(

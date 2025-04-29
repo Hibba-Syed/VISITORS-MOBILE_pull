@@ -177,45 +177,46 @@ class DeviceDeciderScreen extends StatelessWidget {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    DrawerHeader(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage(
-                            AppImages.drawerBackground,
+                    SizedBox(
+                      height:  AppConstants.isTablet(context) ? 300 : 210,
+                      child: DrawerHeader(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                              AppImages.drawerBackground,
+                            ),
                           ),
                         ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            AppImages.appLogo,
-                            width: 200,
-                            height: 80,
-                          ),
-                          const Gap(10.0),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(6.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AppImages.appLogo,
+                              width: AppConstants.isTablet(context) ? 300 : 200,
+                              height: AppConstants.isTablet(context) ? 120 : 80,
                             ),
-                            child: const Text(
-                              'VMS APPLICATION',
-                              style: AppTextStyles.style10White500,
+                            const Gap(10),
+                            Container(
+                              padding:  EdgeInsets.symmetric(
+                                  horizontal: AppConstants.isTablet(context) ? 15 : 8.0, vertical: AppConstants.isTablet(context) ? 8:4.0
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              child:  Text(
+                                'VMS APPLICATION',
+                                style: AppConstants.isTablet(context) ? AppTextStyles.style15white600 : AppTextStyles.style13white500,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 16.0,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -297,9 +298,8 @@ class DeviceDeciderScreen extends StatelessWidget {
                                     }
                                   },
                                   isSelected: item.index == state.selectedIndex);
-
                             }, separatorBuilder: (BuildContext context, int index) {
-                              return AppConstants.isTablet(context)  ? Gap(15) : Gap(0);
+                              return AppConstants.isTablet(context) ?  Gap(20) : Gap(0);
                           },
                           ),
                         ],

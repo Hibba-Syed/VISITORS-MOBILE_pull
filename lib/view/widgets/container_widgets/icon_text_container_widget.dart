@@ -59,7 +59,7 @@ class IconTextContainerWidget extends StatelessWidget {
                 Icon(
                   icon,
                   color: iconColor ?? AppColors.primary,
-                  size: AppConstants.isMobile(context) ? 17 : 20,
+                  size: AppConstants.isTablet(context) ? 20 : 17,
                 ),
                 const Gap(3),
               ],
@@ -74,7 +74,7 @@ class IconTextContainerWidget extends StatelessWidget {
                 style: TextStyle(
                   color: textColor ?? AppColors.black,
                   fontWeight:  FontWeight.w500,
-                  fontSize: AppConstants.isMobile(context)  ? 13 :  15,
+                  fontSize: AppConstants.isTablet(context)  ? 15 :  13,
                    //AppTextStyles.style10Black400
                 ),
               ),

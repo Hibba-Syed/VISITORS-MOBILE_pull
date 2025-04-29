@@ -50,14 +50,14 @@ class IconTitleValueContainerWidget extends StatelessWidget {
           const Gap(5),
           Text(
             "$title: ",
-            style: AppConstants.isMobile(context) ? AppTextStyles.style13Black600 : AppTextStyles.style15Black600,
+            style: AppConstants.isTablet(context) ?  AppTextStyles.style15Black600 : AppTextStyles.style13Black600,
           ),
           Flexible(
             child: Text(
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               value ?? "",
-              style: AppConstants.isMobile(context) ?AppTextStyles.style13Black400 :AppTextStyles.style15Black500,
+              style: AppConstants.isTablet(context) ?AppTextStyles.style15Black500 : AppTextStyles.style13Black400,
 
             ),
           ),

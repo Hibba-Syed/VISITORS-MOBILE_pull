@@ -96,7 +96,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                       children: [
                         Text(
                           name ?? "",
-                          style: AppConstants.isMobile(context) ? AppTextStyles.style14Black600 : AppTextStyles.style16black600,
+                          style: AppConstants.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style14Black600,
                         ),
                         const Gap(6),
                         IconTextContainerWidget(
@@ -104,7 +104,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                           text: phone ?? "",
                         ),
                         const Gap(5),
-                         Text('Check-In',style: AppConstants.isMobile(context) ? AppTextStyles.style13Black600 :AppTextStyles.style14Black600,),
+                         Text('Check-In',style: AppConstants.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600 ),
                         const Gap(5),
                         Row(
                           children: [
@@ -125,7 +125,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                           ],
                         ),
                         const Gap(5),
-                         Text('Check-Out',style: AppConstants.isMobile(context) ? AppTextStyles.style13Black600 :AppTextStyles.style14Black600,),
+                         Text('Check-Out',style: AppConstants.isTablet(context) ?AppTextStyles.style15Black600 :  AppTextStyles.style14Black600,),
                         const Gap(5),
                         Row(
                           children: [

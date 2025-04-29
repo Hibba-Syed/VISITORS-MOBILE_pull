@@ -45,7 +45,7 @@ class OverlapContainerWidget extends StatelessWidget {
           ],
               Text(
                 text ?? "",
-                style:  AppConstants.isMobile(context) ? AppTextStyles.style13white500 : AppTextStyles.style15white500,
+                style:  AppConstants.isTablet(context) ?  AppTextStyles.style15white500 :AppTextStyles.style13white500,
               ),
             ],
           ),

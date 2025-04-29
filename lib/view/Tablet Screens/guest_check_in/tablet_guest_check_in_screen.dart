@@ -88,18 +88,59 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                           context: context,
                           builder: (context) {
                             return CustomAlertDialogBox(
-                              insetPadding: AppConstants.isTablet(context) ? EdgeInsets.all(60) : EdgeInsets.all(10),
+                              insetPadding: AppConstants.isTablet(context) ? EdgeInsets.all(90) : EdgeInsets.all(10),
                               hideBothButtons: true,
                               title: 'Select Type',
                               contentBuilder: (context, setState) {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Select any ID type for Scan',style: AppTextStyles.style14Black600,),
-                                    Gap(15),
+                                    Text('Select any ID type for Scan',style:  AppConstants.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style14Black600),
+                                    Gap(20),
+                                    AppConstants.isTablet(context) ?
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 85,vertical: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TypeContainerWidget(
+                                            text: 'Passport',
+                                            textSize: 16,
+                                            iconSize: 30,
+                                            padding: 10,
+                                            heightContainer: 110,
+                                            widthContainer: 110,
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TypeContainerWidget(
+                                            text: 'Emirates Id',
+                                            textSize: 16,
+                                            iconSize: 30,
+                                            padding: 10,
+                                            heightContainer: 110,
+                                            widthContainer: 110,
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TypeContainerWidget(
+                                            text: 'Driving license',
+                                            textSize: 16,
+                                            iconSize: 30,
+                                            padding: 10,
+                                            heightContainer: 110,
+                                            widthContainer: 110,
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ) :
                                     Row(
-                                      mainAxisAlignment:AppConstants.isTablet(context) ? MainAxisAlignment.start :
-                                      MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         TypeContainerWidget(
                                           text: 'Passport',
@@ -107,14 +148,12 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        const Gap(20),
                                         TypeContainerWidget(
                                           text: 'Emirates Id',
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        const Gap(20),
                                         TypeContainerWidget(
                                           text: 'Driving license',
                                           onTap: () {
@@ -122,7 +161,8 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                           },
                                         ),
                                       ],
-                                    ),
+                                    )
+
                                   ],
                                 );
                               },
@@ -234,12 +274,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                             label: 'Passport Number',
                             hint: 'Passport Number',
                             keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'required';
-                              }
-                              return null;
-                            },
+
                           ),
                         ),
                         const Gap(10),
@@ -251,12 +286,6 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                             label: 'Passport Expiry',
                             hint: 'Passport Expiry',
                             keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'required';
-                              }
-                              return null;
-                            },
                           ),
                         ),
                       ],
@@ -402,12 +431,6 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                 onChanged: (value) {
                                   _selectedItemNationality = value;
                                 },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'required';
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           ),
@@ -418,12 +441,6 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                             controller: _emailController,
                             label: 'Email',
                             hint: 'Enter Email',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'required';
-                              }
-                              return null;
-                            },
                           ),
                         ),
                       ],
@@ -433,12 +450,6 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                       controller: _cardNumberController,
                       label: 'Entry Card Number',
                       hint: 'Enter card number',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'required';
-                        }
-                        return null;
-                      },
                     ),
                     const Gap(5),
                     TextFieldWidget(
@@ -496,12 +507,6 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                       controller: _descriptionController,
                       label: 'Description',
                       hint: 'Enter description',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'required';
-                        }
-                        return null;
-                      },
                     ),
                   ],
                 ),
@@ -516,6 +521,8 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
               vertical: AppConstants.verticalPadding),
           child: CustomButton(
               height: AppConstants.isTablet(context) ? 55 : 42,
+            fontSize: AppConstants.isTablet(context) ? 20: 15,
+            imageHeight: AppConstants.isTablet(context) ? 25 : 18,
             image: AppImages.checkInButton,
               buttonColor: AppColors.green,
               text: 'Check-In', onPressed: (){
@@ -548,9 +555,9 @@ class SelectVisitorNumberWidget extends StatelessWidget {
            count.toString(),
           style: AppTextStyles.style36Blue500,
         ),
-        const Text(
+         Text(
           'Visitor records found for this number',
-          style: AppTextStyles.style14Black600,
+          style:  AppConstants.isMobile(context) ? AppTextStyles.style14Black600 :AppTextStyles.style15Black600,
         ),
         const Divider(
           color: AppColors.lightGrey,

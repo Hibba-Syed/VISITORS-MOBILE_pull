@@ -50,25 +50,30 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
-        image: AssetImage(
-          AppImages.background,
-        ), fit: BoxFit.fill
-      )),
+              image: AssetImage(
+                AppImages.background,
+              ),
+              fit: BoxFit.fill)),
       alignment: Alignment.center,
       child: SingleChildScrollView(
-        padding:  EdgeInsets.symmetric(horizontal: 25),
+        padding: EdgeInsets.symmetric(horizontal: 25),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                AppImages.appLogo,
-                width: MediaQuery.of(context).size.height * 0.15,
+              SizedBox(
+                child: Image.asset(
+                  AppImages.appLogo,
+                  width: MediaQuery.of(context).size.width * 0.15,
+
+                ),
               ),
               Text(
                 'Visitor Management System',
-                style: AppConstants.isMobile(context) ? AppTextStyles.style20black600 : AppTextStyles.style25black600,
+                style: AppConstants.isMobile(context)
+                    ? AppTextStyles.style20black600
+                    : AppTextStyles.style25black600,
               ),
               Gap(20.0),
               TextFieldWidget(
@@ -149,43 +154,53 @@ class _LoginScreenState extends State<LoginScreen> {
                           return CustomAlertDialogBox(
                               hideBothButtons: true,
                               title: 'Forgot Password',
-                              insetPadding: AppConstants.isTablet( context) ?
-                              EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppConstants.isTablet(context)
+                                  ? EdgeInsets.symmetric(horizontal: 35)
+                                  : EdgeInsets.symmetric(horizontal: 10),
                               contentBuilder: (context, setState) {
-                                return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Gap(10),
-                                    SvgPicture.asset(
-                                      AppImages.forgot,
-                                      height: 45,
-                                      width: 45,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    children: [
+                                      Gap(10),
+                                      SvgPicture.asset(
+                                        AppImages.forgot,
+                                        height: 45,
+                                        width: 45,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.primary,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
-                                    ),
-                                    Gap(20),
-                                    Text(
-                                      'Please contact admin to get ISKAAN Visitor Management System credentials',
-                                      style: AppConstants.isMobile(context) ? AppTextStyles.style16black600 :  AppTextStyles.style18black600,
-                                    ),
-                                  ],
+                                      Gap(20),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Text(
+                                          'Please contact admin to get ISKAAN Visitor Management System credentials!',
+                                          style: AppConstants.isTablet(context)
+                                              ? AppTextStyles.style18black600
+                                              : AppTextStyles.style15Black600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               });
                         });
                   },
                   child: Text(
                     "Forgot password?",
-                    style:  AppConstants.isMobile(context) ? AppTextStyles.style14Primary600 : AppTextStyles.style16Primary600,
+                    style: AppConstants.isMobile(context)
+                        ? AppTextStyles.style14Primary600
+                        : AppTextStyles.style16Primary600,
                   ),
                 ),
               ),
               Gap(15),
               CustomButton(
-                height: AppConstants.isTablet(context)  ? 60 : 42,
-                fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                height: AppConstants.isTablet(context) ? 60 : 42,
+                fontSize: AppConstants.isTablet(context) ? 20 : 15,
                 text: "Sign In",
                 onPressed: () async {
                   Navigator.pushNamed(context, AppRoutes.deviceDeciderScreen);
@@ -217,8 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Gap(10),
               CustomButton(
-                height: AppConstants.isTablet(context)  ? 60 : 42,
-                fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                height: AppConstants.isTablet(context) ? 60 : 42,
+                fontSize: AppConstants.isTablet(context) ? 20 : 15,
                 text: "Biometric Login",
                 invert: true,
                 onPressed: () async {

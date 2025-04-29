@@ -113,7 +113,7 @@ class CheckInDetailsScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.horizontalPadding),
         child:  CustomButton(
-           fontSize:  AppConstants.isTablet(context)  ? 20 : 15,
+           fontSize:  AppConstants.isTablet(context) ? 20 : 15,
           height: AppConstants.isTablet(context)  ? 55 : 42,
           imageHeight: AppConstants.isTablet(context) ?25 :18,
           image:  AppImages.logoutCard,

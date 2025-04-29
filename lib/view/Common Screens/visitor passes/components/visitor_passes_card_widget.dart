@@ -114,11 +114,13 @@ class VisitorPassesCardWidget extends StatelessWidget {
                 ],
               ),
               const Gap(10),
-              AppConstants.isTablet(context) ?
                   Row(
                     children: [
                       Expanded(
                         child: CustomButton(
+                            height: AppConstants.isTablet(context) ? 55 : 42,
+                            fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                            imageHeight: AppConstants.isTablet(context) ?25 :18,
                             buttonColor: AppColors.green,
                             image: AppImages.checkInButton,
                             text: 'Check-In', onPressed: checkInOnPressed ),
@@ -126,26 +128,15 @@ class VisitorPassesCardWidget extends StatelessWidget {
                       const Gap(10),
                       Expanded(
                         child: CustomButton(
+                            height: AppConstants.isTablet(context) ? 55 : 42,
+                            fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                            imageHeight: AppConstants.isTablet(context) ?25 :18,
                             buttonColor: AppColors.cyanBlue,
                             image: AppImages.serviceable,
                             text: 'Visitor Pass Check - Ins', onPressed: visitorPassOnPressed ),
                       ),
                     ],
-                  ):
-              Column(
-                children: [
-                  CustomButton(
-                      buttonColor: AppColors.green,
-                      image: AppImages.checkInButton,
-                      text: 'Check-In', onPressed: checkInOnPressed),
-                  const Gap(8),
-                  CustomButton(
-                      imageHeight: 14,
-                      buttonColor: AppColors.cyanBlue,
-                      image: AppImages.serviceable,
-                      text: 'Visitor Pass Check - Ins', onPressed: visitorPassOnPressed ),
-                ],
-              )
+                  )
             ],
           ),
         ),

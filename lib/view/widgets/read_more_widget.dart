@@ -26,7 +26,7 @@ class ReadMoreWidget extends StatelessWidget {
           "$title ",
           style: TextStyle(
               color: fontColor ?? AppColors.black,
-              fontSize: AppConstants.isMobile(context) ?  13 : 15,
+              fontSize: AppConstants.isTablet(context) ?  15 : 13,
               fontWeight: fontWeight ?? FontWeight.w600),
         ),
         const Gap(8),
@@ -46,7 +46,7 @@ class ReadMoreWidget extends StatelessWidget {
             color: AppColors.primary,
           ),
           style:  TextStyle(
-            fontSize:  AppConstants.isMobile(context) ? 13 : 15,
+            fontSize:  AppConstants.isTablet(context) ? 15 : 13,
             color: AppColors.darkGrey,
           ),
         ),

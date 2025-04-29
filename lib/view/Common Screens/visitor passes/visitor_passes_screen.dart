@@ -67,7 +67,6 @@ class VisitorPassesScreen extends StatelessWidget {
                     visitorPassOnPressed: (){
                       Navigator.pushNamed(context, AppRoutes.serviceableCheckInsScreen);
                     },
-
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

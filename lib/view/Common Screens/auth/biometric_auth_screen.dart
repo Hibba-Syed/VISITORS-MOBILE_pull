@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
+import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
 
 class BiometricAuthScreen extends StatefulWidget {
@@ -33,7 +35,11 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
   }
 
   void _navigateToNextScreen() {
-
+    // context.read<AuthCubit>().login(
+    //   context,
+    //   email: spUtil.email!,
+    //   password: spUtil.password!,
+    // );
   }
 
   @override
@@ -49,7 +55,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                 context: context,
                 builder: (ctx) {
                   return AlertDialog(
-                    insetPadding: EdgeInsets.all(15),
+                    insetPadding: EdgeInsets.all(20),
                     content: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Column(
@@ -87,6 +93,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                                   invert: true,
                                   onPressed: () {
                                     Navigator.pop(context);
+                                    Navigator.pushNamed(context, AppRoutes.loginScreen);
                                   },
                                 ),
                               ),

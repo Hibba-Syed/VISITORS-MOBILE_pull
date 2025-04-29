@@ -40,14 +40,14 @@ class GetInfoCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     name ?? "",
-                    style: AppTextStyles.style14Black600,
+                    style: AppConstants.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const Gap(5),
                   Text(
                     country ?? "",
-                    style: AppTextStyles.style12DarkGrey600,
+                    style: AppConstants.isTablet(context) ?  AppTextStyles.style13DarkGrey600 : AppTextStyles.style12DarkGrey600,
                   ),
                 ],
               ),
@@ -58,12 +58,16 @@ class GetInfoCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SmallButton(
+              width: AppConstants.isTablet(context) ? 60 : 40,
+              height: AppConstants.isTablet(context) ? 60 : 40,
               icon: Icons.check,
               backgroundColor: AppColors.green,
               onPressed: () {},
             ),
             const Gap(10),
             SmallButton(
+              width: AppConstants.isTablet(context) ? 60 : 40,
+              height: AppConstants.isTablet(context) ? 60 : 40,
               icon: CupertinoIcons.delete,
               backgroundColor: AppColors.red,
               onPressed: () {
@@ -75,24 +79,30 @@ class GetInfoCardWidget extends StatelessWidget {
                         isCancelButtonDisable: true,
                         confirmButtonText: 'Delete',
                         confirmButtonColor: AppColors.red,
-                        insetPadding: AppConstants.isTablet( context) ?
-                      EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
+                        insetPadding:
+                        AppConstants.isTablet( context) ?
+                      EdgeInsets.symmetric(horizontal: 40) :
+                        EdgeInsets.all(20),
                         title: 'Delete Visitor Record',
                         contentBuilder: (context, setState) {
-                          return  Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                CupertinoIcons.delete,
-                                size:  AppConstants.isTablet( context) ? 40 : 25,
-                                color: AppColors.red,
-                              ),
-                              Gap(10),
-                              Text(
-                                  'Are you sure you want to delete this visitor record  forever?',
-                                  style: AppTextStyles.style14Red600),
-                            ],
+                          return  Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.delete,
+                                  color: AppColors.red,
+                                  size: AppConstants.isTablet(context) ? 42 : 22,
+                                ),
+                                Gap(15),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                      'Are you sure you want to delete this visitor record  forever?',
+                                      style: AppTextStyles.style15Red600),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );

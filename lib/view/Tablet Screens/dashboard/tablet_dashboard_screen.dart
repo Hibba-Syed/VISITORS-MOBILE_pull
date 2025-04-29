@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -74,28 +75,6 @@ class TabletDashboardScreen extends StatelessWidget {
         },
       ),
     ];
-    // final List<ActionsItemModel> tabletActions = [
-    //   ActionsItemModel(
-    //     title: 'Guest Check-In',
-    //     iconPath: AppImages.guestCheckIn,
-    //     backgroundColor: AppColors.green,
-    //     forGroundColor: AppColors.white,
-    //     onTap: () {
-    //       Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
-    //     },
-    //   ),
-    //   ActionsItemModel(
-    //     title: 'Message',
-    //     iconPath: AppImages.message,
-    //     backgroundColor: AppColors.primary,
-    //     forGroundColor: AppColors.white,
-    //     onTap: () {
-    //       context
-    //           .read<DeviceDeciderCubit>()
-    //           .onChangeSelectedIndex(context, AppConstants.messagesIndex);
-    //     },
-    //   ),
-    // ];
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
@@ -104,9 +83,9 @@ class TabletDashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const HeadingWidget(
+             HeadingWidget(
               heading: 'Welcome',
-              style: AppTextStyles.style15DarkGrey600,
+              style: AppConstants.isTablet(context) ? AppTextStyles.style16DarkGrey600 :  AppTextStyles.style15DarkGrey600,
             ),
             const HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
             const Gap(10),
@@ -133,7 +112,7 @@ class TabletDashboardScreen extends StatelessWidget {
             ),
             const Gap(10),
             CustomButton(
-                imageHeight: 25,
+                imageHeight: 30,
                 fontSize: 20,
                 height: 80,
                 text: 'Guest Check-In',
@@ -167,7 +146,7 @@ class TabletDashboardScreen extends StatelessWidget {
                             text: 'Check-Outs',
                             height: 50,
                             borderRadius: 6,
-                            imageHeight: AppConstants.isMobile( context) ? 23:18,
+                            imageHeight: 22,
                             image: AppImages.checkout,
                             onPressed: () {
                               context.read<DeviceDeciderCubit>()
@@ -182,6 +161,7 @@ class TabletDashboardScreen extends StatelessWidget {
                             text: 'View All',
                             height: 50,
                             borderRadius: 6,
+                            imageHeight: 22,
                             image: AppImages.view,
                             onPressed: () {
                               context
@@ -252,6 +232,7 @@ class TabletDashboardScreen extends StatelessWidget {
                         height: 50,
                         width: 185,
                         borderRadius: 6,
+                        imageHeight: 22,
                         image: AppImages.view,
                         onPressed: () {
                           context.read<DeviceDeciderCubit>()
@@ -305,6 +286,7 @@ class TabletDashboardScreen extends StatelessWidget {
                     text: 'View All',
                     height: 50,
                      width: 185,
+                    imageHeight: 22,
                     borderRadius: 6,
                     image: AppImages.view,
                     onPressed: () {
@@ -347,6 +329,15 @@ class TabletDashboardScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primary,
+        shape: const CircleBorder(),
+        onPressed: (){
+          context.read<DeviceDeciderCubit>()
+              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+        },
+        child: Icon(CupertinoIcons.chat_bubble_2,color: AppColors.white,),
       ),
     );
   }

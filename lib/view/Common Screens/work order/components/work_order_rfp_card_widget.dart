@@ -72,7 +72,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       title ?? "",
-                      style: AppConstants.isMobile(context) ?  AppTextStyles.style14Black600 : AppTextStyles.style16black600,
+                      style: AppConstants.isTablet(context) ? AppTextStyles.style16black600 : AppTextStyles.style15Black600,
                     ),
                     StatusWidget(
                       status: status ?? "",

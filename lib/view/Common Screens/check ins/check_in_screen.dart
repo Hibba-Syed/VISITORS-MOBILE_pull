@@ -60,7 +60,7 @@ class CheckInsScreen extends StatelessWidget {
                       buttonColor: AppColors.red,
                       text: 'Check-Outs All',
                       height:  AppConstants.isTablet(context)  ? 50 : 42,
-                      width: AppConstants.isTablet(context) ? 200 : 150,
+                      width: AppConstants.isTablet(context) ? 200 : 170,
                       imageHeight: AppConstants.isTablet( context) ? 25 : 18,
                       borderRadius: 6,
                       image: AppImages.logout,

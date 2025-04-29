@@ -44,7 +44,7 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
               const Gap(3),
                HeadingWidget(
                 heading: 'JB001-22-00092',
-                style:  AppConstants.isMobile(context) ?  AppTextStyles.style14Black600 :  AppTextStyles.style15Black600,
+                style:  AppConstants.isTablet(context) ?  AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
               ),
               const Gap(10),
               Container(
@@ -132,6 +132,10 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                               AppImages.question,
                               height: 35,
                               width: 35,
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.primary,
+                                BlendMode.srcIn,
+                              ),
                             ),
                             const Gap(5),
                             TextFieldWidget(

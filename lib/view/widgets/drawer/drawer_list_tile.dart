@@ -32,8 +32,8 @@ class DrawerListTile extends StatelessWidget {
         padding: const EdgeInsets.all(3.0),
         child: SvgPicture.asset(
           iconPath,
-          width: 22,
-          height: 22,
+          width: AppConstants.isTablet(context)  ? 35 : 22,
+          height: AppConstants.isTablet(context)  ? 35 : 22,
           colorFilter: ColorFilter.mode(
             isSelected ? AppColors.primary : AppColors.darkGrey,
             BlendMode.srcIn,
@@ -44,7 +44,8 @@ class DrawerListTile extends StatelessWidget {
         title,
         style: TextStyle(
           color: isSelected ? AppColors.primary : AppColors.darkGrey,
-          fontSize:  MediaQuery.of(context).size.width < 600 ? 16 : 22,
+          fontSize:  AppConstants.isTablet(context)  ? 25 : 16,
+          //MediaQuery.of(context).size.width < 600 ? 16 : 25,
           fontWeight: FontWeight.w400,
         ),
       ),

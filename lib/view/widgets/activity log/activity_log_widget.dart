@@ -56,16 +56,16 @@ class ActivityLogWidget extends StatelessWidget {
           drawGap: true,
           indicator:
           Container(
-            height: AppConstants.isMobile(context) ?25 : 30,
-            width: AppConstants.isMobile(context) ?25 : 30,
+            height: AppConstants.isTablet(context) ?30 : 25,
+            width: AppConstants.isTablet(context) ?30 : 25,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
             child:  Center(
               child: SvgPicture.asset(
                 AppImages.log,
-                height: AppConstants.isMobile(context) ?25 : 30,
-                width: AppConstants.isMobile(context) ?25 : 30,
+                height: AppConstants.isTablet(context) ?30 : 25,
+                width: AppConstants.isTablet(context) ?30 : 25,
                 fit: BoxFit.fill,
                 colorFilter: const ColorFilter.mode(
                   AppColors.primary,
@@ -90,18 +90,18 @@ class ActivityLogWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(status ?? "",
-                        style: AppConstants.isMobile(context) ? AppTextStyles.style14Black600 : AppTextStyles.style16black600
+                        style: AppConstants.isTablet(context) ? AppTextStyles.style16black600 :  AppTextStyles.style14Black600
                     ),
                     Flexible(
                       child: Text(byValue ?? "",
-                          style: AppConstants.isMobile(context) ? AppTextStyles.style14Primary600 : AppTextStyles.style16Primary600),
+                          style: AppConstants.isTablet(context) ? AppTextStyles.style16Primary600 :  AppTextStyles.style14Primary600),
                     ),
                   ],
                 ),
                 const Gap(5),
                 Text(
                   description ?? "",
-                  style: AppConstants.isMobile(context) ?  AppTextStyles.style12DarkGrey600 : AppTextStyles.style14DarkGrey600,
+                  style: AppConstants.isTablet(context) ?  AppTextStyles.style14DarkGrey600 :  AppTextStyles.style12DarkGrey600,
                 ),
                 const Gap(10),
                 IconTextContainerWidget(

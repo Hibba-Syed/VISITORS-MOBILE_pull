@@ -70,7 +70,7 @@ class ServicesCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       title ?? "",
-                      style: AppConstants.isMobile(context) ?AppTextStyles.style14Black600 : AppTextStyles.style15Black600,
+                      style: AppConstants.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
                     ),
                     StatusWidget(
                       status: status ?? "",

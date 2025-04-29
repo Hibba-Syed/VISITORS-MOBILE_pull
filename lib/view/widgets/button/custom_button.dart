@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../../../resource/constants/app_colors.dart';
 
@@ -57,8 +58,8 @@ class CustomButton extends StatelessWidget {
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
         child: Row(
-           mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (image != null)
               SvgPicture.asset(
@@ -69,7 +70,7 @@ class CustomButton extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-            if (image != null) const Gap(15),
+            if (image != null) AppConstants.isTablet(context) ? Gap(15) : Gap(10),
             // AutoSizeText(''),
             Flexible(
               child: Text(
