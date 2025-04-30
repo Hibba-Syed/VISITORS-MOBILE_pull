@@ -62,18 +62,17 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                child: Image.asset(
-                  AppImages.appLogo,
-                  width: MediaQuery.of(context).size.width * 0.15,
+              Image.asset(
+                AppImages.appLogo,
+                width: MediaQuery.of(context).size.width * 0.19,
 
-                ),
               ),
+              Gap(15),
               Text(
                 'Visitor Management System',
-                style: AppConstants.isMobile(context)
-                    ? AppTextStyles.style20black600
-                    : AppTextStyles.style25black600,
+                style: AppConstants.isTablet(context)
+                    ? AppTextStyles.style25black600
+                    : AppTextStyles.style20black600,
               ),
               Gap(20.0),
               TextFieldWidget(

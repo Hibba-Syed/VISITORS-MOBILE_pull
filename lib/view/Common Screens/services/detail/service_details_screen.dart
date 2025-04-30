@@ -6,6 +6,7 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/view/Common%20Screens/services/components/services_documents_card_widget.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
@@ -20,6 +21,7 @@ class ServiceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> documents = ['Vendor License','Worker ID','NOC from Landlord','Scope of Work'];
     return SafeArea(
       child: Scaffold(
         appBar: const AppBarWidget(
@@ -84,6 +86,32 @@ class ServiceDetailsScreen extends StatelessWidget {
                         value: '03:00 PM',
                       ),
                     ],
+                  ),
+                ),
+                const Gap(20),
+                const HeadingWidget(
+                  heading: 'Documents',
+                ),
+                const Gap(10),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 7,vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: documents.length,
+                    itemBuilder: (context,index){
+                      String document = documents[index];
+                      return ServicesDocumentsCardWidget(
+                          name: document
+                      );
+                    },
+                    separatorBuilder: (context,index){
+                      return Divider(color: AppColors.gray,);
+                    },
                   ),
                 ),
                 const Gap(20),
