@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-import 'package:visitors/view/widgets/text%20field/password_text_field.dart';
-
 import '../../../resource/styles/styles.dart';
 import '../../widgets/button/custom_button.dart';
+import '../../widgets/text field/password_text_field.dart';
 import '../../widgets/text field/text_field_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _communityIdController = TextEditingController();
   final TextEditingController _loginIdController = TextEditingController();
   final TextEditingController _gateIdController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -49,26 +50,30 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
-        image: AssetImage(
-          AppImages.background,
-        ), fit: BoxFit.fill
-      )),
+              image: AssetImage(
+                AppImages.background,
+              ),
+              fit: BoxFit.fill)),
       alignment: Alignment.center,
       child: SingleChildScrollView(
-        padding:  EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 25),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                AppImages.appLogo,
-                width: MediaQuery.of(context).size.height * 0.15,
+              SizedBox(
+                child: Image.asset(
+                  AppImages.appLogo,
+                  width: MediaQuery.of(context).size.width * 0.15,
+
+                ),
               ),
-              Gap(5),
               Text(
                 'Visitor Management System',
-                style: AppTextStyles.style20black600,
+                style: AppConstants.isMobile(context)
+                    ? AppTextStyles.style20black600
+                    : AppTextStyles.style25black600,
               ),
               Gap(20.0),
               TextFieldWidget(
@@ -149,49 +154,60 @@ class _LoginScreenState extends State<LoginScreen> {
                           return CustomAlertDialogBox(
                               hideBothButtons: true,
                               title: 'Forgot Password',
-                              insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppConstants.isTablet(context)
+                                  ? EdgeInsets.symmetric(horizontal: 35)
+                                  : EdgeInsets.symmetric(horizontal: 10),
                               contentBuilder: (context, setState) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Gap(10),
-                                    SvgPicture.asset(
-                                      AppImages.forgot,
-                                      height: 45,
-                                      width: 45,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    children: [
+                                      Gap(10),
+                                      SvgPicture.asset(
+                                        AppImages.forgot,
+                                        height: 45,
+                                        width: 45,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.primary,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
-                                    ),
-                                    Gap(20),
-                                    Text(
-                                      'Please contact admin to get ISKAAN Visitor Management System credentials',
-                                      style: AppTextStyles.style16black600,
-                                    ),
-                                  ],
+                                      Gap(20),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Text(
+                                          'Please contact admin to get ISKAAN Visitor Management System credentials!',
+                                          style: AppConstants.isTablet(context)
+                                              ? AppTextStyles.style18black600
+                                              : AppTextStyles.style15Black600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               });
                         });
                   },
                   child: Text(
                     "Forgot password?",
-                    style: AppTextStyles.style14Primary600,
+                    style: AppConstants.isMobile(context)
+                        ? AppTextStyles.style14Primary600
+                        : AppTextStyles.style16Primary600,
                   ),
                 ),
               ),
               Gap(15),
               CustomButton(
+                height: AppConstants.isTablet(context) ? 60 : 42,
+                fontSize: AppConstants.isTablet(context) ? 20 : 15,
                 text: "Sign In",
                 onPressed: () async {
                   Navigator.pushNamed(context, AppRoutes.deviceDeciderScreen);
-                //   if (_formKey.currentState!.validate()) {
-                //     print("Form is valid. Proceeding with check-in...");
-                //   } else {
-                //     print("Form validation failed.");
-                //   }
-                 },
+                  // if (_formKey.currentState?.validate() ?? false) {
+                  //
+                  // }
+                },
               ),
               Gap(10),
               Row(
@@ -216,6 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Gap(10),
               CustomButton(
+                height: AppConstants.isTablet(context) ? 60 : 42,
+                fontSize: AppConstants.isTablet(context) ? 20 : 15,
                 text: "Biometric Login",
                 invert: true,
                 onPressed: () async {

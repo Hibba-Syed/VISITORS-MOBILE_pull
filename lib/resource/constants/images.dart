@@ -21,7 +21,7 @@ class AppImages {
   static const String date = "${baseSvgPath}date.svg";
   static const String gate = "${baseSvgPath}gate.svg";
   static const String count = "${baseSvgPath}count.svg";
-   static const String logoutCard = "${baseSvgPath}logout.svg";
+  static const String logoutCard = "${baseSvgPath}logout.svg";
   static const String gates = "${baseSvgPath}gates.svg";
   static const String hammer = "${baseSvgPath}hammer.svg";
   static const String vendor = "${baseSvgPath}vendor.svg";

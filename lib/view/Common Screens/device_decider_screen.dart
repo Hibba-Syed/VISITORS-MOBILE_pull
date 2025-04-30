@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
@@ -166,136 +167,146 @@ class DeviceDeciderScreen extends StatelessWidget {
               ),
               title: _getTitle(state),
             ),
-            drawer: Drawer(
-              backgroundColor: AppColors.white,
-              child: ListView(
-                children: [
-                  DrawerHeader(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: AssetImage(
-                          AppImages.drawerBackground,
+            drawer: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Drawer(
+                backgroundColor: AppColors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    SizedBox(
+                      height:  AppConstants.isTablet(context) ? 300 : 210,
+                      child: DrawerHeader(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                              AppImages.drawerBackground,
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AppImages.appLogo,
+                              width: AppConstants.isTablet(context) ? 300 : 200,
+                              height: AppConstants.isTablet(context) ? 120 : 80,
+                            ),
+                            const Gap(10),
+                            Container(
+                              padding:  EdgeInsets.symmetric(
+                                  horizontal: AppConstants.isTablet(context) ? 15 : 8.0, vertical: AppConstants.isTablet(context) ? 8:4.0
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              child:  Text(
+                                'VMS APPLICATION',
+                                style: AppConstants.isTablet(context) ? AppTextStyles.style15white600 : AppTextStyles.style13white500,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          AppImages.appLogo,
-                          width: 200,
-                          height: 80,
-                        ),
-                        const Gap(10.0),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 4.0),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          child: const Text(
-                            'VMS APPLICATION',
-                            style: AppTextStyles.style10White500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                      vertical: 16.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          itemCount: (_drawerItems.length),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            DrawerItemModel item = _drawerItems[index];
-                            return DrawerListTile(
-                                title: item.title,
-                                iconPath: item.iconPath,
-                                onTap: () {
-                                  if (item.index == AppConstants.logoutIndex) {
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (ctx) {
-                                        return AlertDialog(
-                                          content: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                SvgPicture.asset(
-                                                  AppImages.logout,
-                                                  height: 35,
-                                                  width: 35,
-                                                  colorFilter: const ColorFilter.mode(
-                                                    AppColors.primary,
-                                                    BlendMode.srcIn,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.separated(
+                            itemCount: (_drawerItems.length),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              DrawerItemModel item = _drawerItems[index];
+                              return DrawerListTile(
+                                  title: item.title,
+                                  iconPath: item.iconPath,
+                                  onTap: () {
+                                    if (item.index == AppConstants.logoutIndex) {
+                                      showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (ctx) {
+                                          return AlertDialog(
+                                            content: SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    AppImages.logout,
+                                                    height: 35,
+                                                    width: 35,
+                                                    colorFilter: const ColorFilter.mode(
+                                                      AppColors.primary,
+                                                      BlendMode.srcIn,
+                                                    ),
                                                   ),
-                                                ),
-                                                const Gap(16.0),
-                                                const Text(
-                                                  'Are you sure you want to logout?',
-                                                  style: AppTextStyles
-                                                      .style16DarkGrey600,
-                                                ),
-                                                const Gap(20.0),
-                                                Row(
-                                                  children: [
-                                                    Flexible(
-                                                      child: CustomButton(
-                                                        text: 'Cancel',
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
+                                                  const Gap(16.0),
+                                                  const Text(
+                                                    'Are you sure you want to logout?',
+                                                    style: AppTextStyles
+                                                        .style16DarkGrey600,
+                                                  ),
+                                                  const Gap(20.0),
+                                                  Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: CustomButton(
+                                                          text: 'Cancel',
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const Gap(10.0),
-                                                    Flexible(
-                                                      child: CustomButton(
-                                                        text: 'Logout',
-                                                        invert: true,
-                                                        onPressed: () {
-                                                           Navigator.pop(context);
-                                                        },
+                                                      const Gap(10.0),
+                                                      Flexible(
+                                                        child: CustomButton(
+                                                          text: 'Logout',
+                                                          invert: true,
+                                                          onPressed: (){
+                                                            Navigator.pop(context);
+                                                            Navigator.pushNamed(context, AppRoutes.loginScreen);
+                                                          },
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    context
-                                        .read<DeviceDeciderCubit>()
-                                        .onChangeSelectedIndex(
-                                        context, item.index);
-                                    Navigator.of(context).pop();
-                                  }
-                                },
-                                isSelected: item.index == state.selectedIndex);
-
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      context
+                                          .read<DeviceDeciderCubit>()
+                                          .onChangeSelectedIndex(
+                                          context, item.index);
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  isSelected: item.index == state.selectedIndex);
+                            }, separatorBuilder: (BuildContext context, int index) {
+                              return AppConstants.isTablet(context) ?  Gap(20) : Gap(0);
                           },
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             body: ResponsiveLayoutWidget(

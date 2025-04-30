@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../../../resource/constants/app_colors.dart';
 
@@ -20,7 +21,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? height;
   final EdgeInsets padding;
-  final FontWeight fontWeight;
+  final FontWeight? fontWeight;
   final double fontSize;
   const CustomButton({
     super.key,
@@ -30,13 +31,13 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.image,
     this.height = 42,
-    this.fontSize = 16,
+    this.fontSize = 15,
     this.maxLines = 1,
     this.padding = const EdgeInsets.all(10),
     this.textColor,
     required this.onPressed,
     this.invert = false,
-    this.fontWeight = FontWeight.bold,
+    this.fontWeight,
     this.borderRadius,
     this.imageHeight,
   });
@@ -57,7 +58,7 @@ class CustomButton extends StatelessWidget {
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (image != null)
@@ -69,20 +70,21 @@ class CustomButton extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-            if (image != null) const Gap(5),
+            if (image != null) AppConstants.isTablet(context) ? Gap(15) : Gap(10),
+            // AutoSizeText(''),
             Flexible(
-              child: AutoSizeText(
+              child: Text(
                 text,
                 style: invert
                     ? TextStyle(
                         color: textColor ?? AppColors.primary,
                         fontSize: fontSize,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       )
                     : TextStyle(
                         color: AppColors.white,
                         fontSize: fontSize,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: fontWeight ?? FontWeight.w600,
                       ),
                 textAlign: textAlign,
                 maxLines: maxLines,

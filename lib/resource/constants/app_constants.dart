@@ -22,7 +22,7 @@ class AppConstants {
     return MediaQuery.of(context).size.shortestSide >= 600;
   }
   static bool isMobile(BuildContext context) {
-    return MediaQuery.of(context).size.shortestSide <= 370;
+    return MediaQuery.of(context).size.shortestSide <= 360;
   }
 
 }

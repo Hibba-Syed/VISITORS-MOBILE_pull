@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../../../resource/constants/app_colors.dart';
 
@@ -22,7 +23,7 @@ class DrawerListTile extends StatelessWidget {
       onTap: onTap,
       tileColor: Colors.transparent,
       shape: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.zero,
           borderSide: const BorderSide(
             color: Colors.transparent,
           )),
@@ -31,8 +32,8 @@ class DrawerListTile extends StatelessWidget {
         padding: const EdgeInsets.all(3.0),
         child: SvgPicture.asset(
           iconPath,
-          width: 22,
-          height: 22,
+          width: AppConstants.isTablet(context)  ? 35 : 22,
+          height: AppConstants.isTablet(context)  ? 35 : 22,
           colorFilter: ColorFilter.mode(
             isSelected ? AppColors.primary : AppColors.darkGrey,
             BlendMode.srcIn,
@@ -43,7 +44,8 @@ class DrawerListTile extends StatelessWidget {
         title,
         style: TextStyle(
           color: isSelected ? AppColors.primary : AppColors.darkGrey,
-          fontSize: 16.0,
+          fontSize:  AppConstants.isTablet(context)  ? 25 : 16,
+          //MediaQuery.of(context).size.width < 600 ? 16 : 25,
           fontWeight: FontWeight.w400,
         ),
       ),

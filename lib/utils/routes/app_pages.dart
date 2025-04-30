@@ -13,13 +13,10 @@ import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_chec
 import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/job_check_ins_screen.dart';
-import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
-
-import '../../firebase_ml_vision_view.dart';
 import 'app_routes.dart';
 
 
@@ -50,9 +47,6 @@ class AppPages {
       ),
     ),
     PageEntity(
-      route: AppRoutes.deviceDeciderScreen,
-      page:  DeviceDeciderScreen(),
-    ),PageEntity(
       route: AppRoutes.workOrderJobDetailsScreen,
       page: const WorkOrderJobDetailsScreen(),
     ),
@@ -92,14 +86,10 @@ class AppPages {
       route: AppRoutes.jobCheckInsScreen,
       page: const JobCheckInsScreen(),
     ),
-    PageEntity(
-      route: AppRoutes.emiratesIDScanner,
-      page: const EmiratesIDScanner(),
-    ),
-    PageEntity(
-      route: AppRoutes.oCRScreen,
-      page:  OCRScreen(),
-    ),
+    // PageEntity(
+    //   route: AppRoutes.emiratesIDScanner,
+    //   page: const EmiratesIDScanner(),
+    // ),
     // PageEntity(
     //   route: AppRoutes.documentScannerScreen,
     //   page: const DocumentScannerScreen(),

@@ -99,7 +99,6 @@ class CheckInDetailsScreen extends StatelessWidget {
               const Text('Check-In Log',style: AppTextStyles.style20primary600,),
               const Gap(10),
               ActivityLogWidget(
-                horizontalPadding: 8,
                 isLast: true,
                 status: 'Check-In',
                 byValue: '',
@@ -114,6 +113,9 @@ class CheckInDetailsScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.horizontalPadding),
         child:  CustomButton(
+           fontSize:  AppConstants.isTablet(context) ? 20 : 15,
+          height: AppConstants.isTablet(context)  ? 55 : 42,
+          imageHeight: AppConstants.isTablet(context) ?25 :18,
           image:  AppImages.logoutCard,
             buttonColor:  AppColors.red,
             text: 'Check Out', onPressed: (){

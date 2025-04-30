@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
 
 class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
@@ -28,14 +29,14 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
               flex: 4,
               child: Text(
                 title,
-                style: AppTextStyles.style12Black600,
+                style:  AppConstants.isTablet(context) ? AppTextStyles.style15Black600 :AppTextStyles.style13Black600,
               ),
             ),
             Expanded(
               flex: 5,
               child: Text(
                 value ?? "",
-                style: AppTextStyles.style12DarkGrey600,
+                style: AppConstants.isTablet(context) ? AppTextStyles.style15DarkGrey600 :AppTextStyles.style13DarkGrey600,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
@@ -78,26 +80,26 @@ class MobileDashboardScreen extends StatelessWidget {
               .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
         },
       ),
-      ActionsItemModel(
-        title: 'Guest Check-In',
-        iconPath: AppImages.guestCheckIn,
-        backgroundColor: AppColors.green,
-        forGroundColor: AppColors.white,
-        onTap: () {
-          Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
-        },
-      ),
-      ActionsItemModel(
-        title: 'Message',
-        iconPath: AppImages.message,
-        backgroundColor: AppColors.primary,
-        forGroundColor: AppColors.white,
-        onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
-        },
-      ),
+      // ActionsItemModel(
+      //   title: 'Guest Check-In',
+      //   iconPath: AppImages.guestCheckIn,
+      //   backgroundColor: AppColors.green,
+      //   forGroundColor: AppColors.white,
+      //   onTap: () {
+      //     Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+      //   },
+      // ),
+      // ActionsItemModel(
+      //   title: 'Message',
+      //   iconPath: AppImages.message,
+      //   backgroundColor: AppColors.primary,
+      //   forGroundColor: AppColors.white,
+      //   onTap: () {
+      //     context
+      //         .read<DeviceDeciderCubit>()
+      //         .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+      //   },
+      // ),
     ];
     return
       Scaffold(
@@ -145,7 +147,19 @@ class MobileDashboardScreen extends StatelessWidget {
                   );
                 },
               ),
-              const Gap(5),
+            CustomButton(
+              imageHeight: 25,
+              fontSize: 17,
+              height: 70,
+                text: 'Guest Check-In',
+                buttonColor: AppColors.green,
+                textColor: AppColors.white,
+                image: AppImages.guestCheckIn,
+                onPressed: (){
+                  Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
+                }
+            ),
+              const Gap(10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -161,19 +175,24 @@ class MobileDashboardScreen extends StatelessWidget {
                     children: [
                       CustomButton(
                         buttonColor: AppColors.red,
+                          fontWeight: FontWeight.w500,
                           text: 'Check-Outs',
+                          fontSize: 14,
                           height: 41,
                           borderRadius: 6,
                           image: AppImages.checkout,
                           onPressed: () {
                             context.read<DeviceDeciderCubit>()
                                     .onChangeSelectedIndex(
-                                        context, AppConstants.checkOutsIndex);
+                                        context, AppConstants.checkOutsIndex
+                            );
                           }),
                       const Gap(10),
                       CustomButton(
                           buttonColor: AppColors.primary,
                           text: 'View All',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                           height: 41.5,
                           borderRadius: 6,
                           image: AppImages.view,
@@ -196,9 +215,10 @@ class MobileDashboardScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return CheckInCardWidget(
+                    typeBackgroundColor: AppColors.green,
                     count: 5,
                     typeText: 'Rose-1024',
-                    name: 'MUHAMMAD AHMED MOHAMMED ',
+                    name: 'MUHAMMAD SHAHZAD MOHAMMED GAMAL HUSSAIN ',
                     profileImageUrl:
                         "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                     type: 'Guest',
@@ -252,6 +272,8 @@ class MobileDashboardScreen extends StatelessWidget {
                       CustomButton(
                           buttonColor: AppColors.primary,
                           text: 'View All',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                           height: 41,
                           borderRadius: 6,
                           image: AppImages.view,
@@ -304,9 +326,10 @@ class MobileDashboardScreen extends StatelessWidget {
                   ),
                   CustomButton(
                       buttonColor: AppColors.primary,
+                      fontSize: 14,
                       text: 'View All',
                       height: 41,
-                      // width: 100,
+                      fontWeight: FontWeight.w500,
                       borderRadius: 6,
                       image: AppImages.view,
                       onPressed: () {
@@ -346,6 +369,15 @@ class MobileDashboardScreen extends StatelessWidget {
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          shape: const CircleBorder(),
+            onPressed: (){
+              context.read<DeviceDeciderCubit>()
+                      .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+            },
+          child: Icon(CupertinoIcons.chat_bubble_2,color: AppColors.white,),
         ),
       );
   }

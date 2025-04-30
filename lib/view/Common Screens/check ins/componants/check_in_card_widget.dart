@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart'
@@ -23,6 +24,7 @@ class CheckInCardWidget extends StatelessWidget {
   final int? count;
   final String? typeText;
   final String? typeImage;
+  final Color? typeBackgroundColor;
   final VoidCallback checkOutOnPressed;
   final VoidCallback? detailsOnPressed;
   final bool isServiceable;
@@ -39,6 +41,7 @@ class CheckInCardWidget extends StatelessWidget {
     this.count,
     this.reference,
     this.purpose,
+    this.typeBackgroundColor,
     required this.checkOutOnPressed,
     this.detailsOnPressed,
     this.isServiceable = false,
@@ -62,7 +65,10 @@ class CheckInCardWidget extends StatelessWidget {
                     text: reference,
                     image: typeImage,
                   )
-                : SizedBox.shrink(),
+                : OverlapContainerWidget(
+                   backgroundColor: typeBackgroundColor,
+                    text: type,
+            ),
           ],
         ),
         InkWell(
@@ -95,11 +101,6 @@ class CheckInCardWidget extends StatelessWidget {
                           backgroundColor: AppColors.primary,
                           imageUrl: profileImageUrl,
                         ),
-                        const Gap(3),
-                        Text(
-                          type ?? "",
-                          style: AppTextStyles.style12DarkGrey600,
-                        ),
                       ],
                     ),
                     const Gap(10),
@@ -109,23 +110,17 @@ class CheckInCardWidget extends StatelessWidget {
                         children: [
                           Text(
                             name ?? "",
-                            style: AppTextStyles.style14Black600,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppConstants.isTablet(context) ?
+                            AppTextStyles.style15Black600
+                                :
+                            AppTextStyles.style14Black600
                           ),
                           const Gap(6),
                           IconTextContainerWidget(
                             image: AppImages.date,
                             text: date ?? "",
-                          ),
-                          const Gap(5),
-                          IconTextContainerWidget(
-                            image: AppImages.phone,
-                            text: phone ?? "",
-                          ),
-                          const Gap(5),
-                          IconTitleValueContainerWidget(
-                            image: AppImages.gate,
-                            title: 'Gate',
-                            value: gateValue ?? "",
                           ),
                         ],
                       ),
@@ -146,8 +141,11 @@ class CheckInCardWidget extends StatelessWidget {
                     ),
                   ],
                 ): SizedBox.shrink(),
-                const Gap(10),
+                const Gap(5),
                 CustomButton(
+                    height:  AppConstants.isTablet(context)  ? 55 : 42,
+                    fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                    imageHeight: AppConstants.isTablet(context) ?25 :18,
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
                     text: 'Check Out',

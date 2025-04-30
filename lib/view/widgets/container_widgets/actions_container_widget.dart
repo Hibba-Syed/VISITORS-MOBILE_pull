@@ -8,6 +8,7 @@ class ActionsContainerWidget extends StatelessWidget {
   final Color? backgroundColor;
   final Color? forGroundColor;
   final VoidCallback? actionOnTap;
+  final double? width;
   const ActionsContainerWidget({super.key,
     this.title,
     this.count,
@@ -15,6 +16,7 @@ class ActionsContainerWidget extends StatelessWidget {
     this.backgroundColor,
     this.forGroundColor,
     this.actionOnTap,
+    this.width,
   });
 
   @override
@@ -23,6 +25,7 @@ class ActionsContainerWidget extends StatelessWidget {
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: actionOnTap,
       child: Container(
+        width:width ,
         padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 8),
         decoration: BoxDecoration(
           color: backgroundColor,

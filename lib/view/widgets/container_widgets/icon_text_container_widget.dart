@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../../../resource/constants/app_colors.dart';
 
@@ -57,7 +58,7 @@ class IconTextContainerWidget extends StatelessWidget {
                 Icon(
                   icon,
                   color: iconColor ?? AppColors.primary,
-                  size: 17,
+                  size: AppConstants.isTablet(context) ? 20 : 17,
                 ),
                 const Gap(3),
               ],
@@ -71,8 +72,8 @@ class IconTextContainerWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: textColor ?? AppColors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13,
+                  fontWeight:  FontWeight.w500,
+                  fontSize: AppConstants.isTablet(context)  ? 15 :  13,
                    //AppTextStyles.style10Black400
                 ),
               ),

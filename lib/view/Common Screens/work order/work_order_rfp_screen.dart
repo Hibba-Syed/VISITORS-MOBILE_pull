@@ -71,7 +71,10 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         },
                       detailsOnPressed: () {
                         Navigator.pushNamed(context, AppRoutes.workOrderJobDetailsScreen);
-                      }, jobCheckInOnPressed: () {  },
+                      },
+                      jobCheckInOnPressed: () {
+                       Navigator.pushNamed(context, AppRoutes.jobCheckInsScreen);
+                    },
                     );
                   }, separatorBuilder: (BuildContext context, int index) {
                   return const Gap(10);

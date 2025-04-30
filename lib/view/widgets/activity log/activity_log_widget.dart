@@ -55,17 +55,22 @@ class ActivityLogWidget extends StatelessWidget {
           drawGap: true,
           indicator:
           Container(
-            height: 23,
-            width: 23,
+            height: AppConstants.isTablet(context) ?30 : 25,
+            width: AppConstants.isTablet(context) ?30 : 25,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
             child:  Center(
               child: SvgPicture.asset(
                 AppImages.log,
-                height: 25,
-                width: 25,
+                height: AppConstants.isTablet(context) ?30 : 25,
+                width: AppConstants.isTablet(context) ?30 : 25,
                 fit: BoxFit.fill,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.primary,
+                  BlendMode.srcIn,
+                ),
+
               ),
             ),
           ),
@@ -84,17 +89,18 @@ class ActivityLogWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(status ?? "",
-                        style: AppTextStyles.style14Black600),
+                        style: AppConstants.isTablet(context) ? AppTextStyles.style16black600 :  AppTextStyles.style14Black600
+                    ),
                     Flexible(
                       child: Text(byValue ?? "",
-                          style: AppTextStyles.style14Primary600),
+                          style: AppConstants.isTablet(context) ? AppTextStyles.style16Primary600 :  AppTextStyles.style14Primary600),
                     ),
                   ],
                 ),
                 const Gap(5),
                 Text(
                   description ?? "",
-                  style: AppTextStyles.style12DarkGrey600,
+                  style: AppConstants.isTablet(context) ?  AppTextStyles.style14DarkGrey600 :  AppTextStyles.style12DarkGrey600,
                 ),
                 const Gap(10),
                 IconTextContainerWidget(

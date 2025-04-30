@@ -9,13 +9,9 @@ class AppRoutes {
   static const String tabletGuestCheckInScreen = '/tabletGuestCheckInScreen';
   static const String mobileDashboardScreen = '/mobileDashboardScreen';
   static const String tabletDashboardScreen = '/tabletDashboardScreen';
-  static const String documentScannerScreen = '/documentScannerScreen';
-  static const String jobCheckInsScreen = '/jobCheckInsScreen';
+  static const String jobCheckInsScreen = '/JobCheckInsScreen';
   static const String loginScreen = '/loginScreen';
   static const String biometricAuth = '/biometricAuth';
-  static const String emiratesIDScanner = '/emiratesIDScanner';
-  static const String oCRScreen = '/oCRScreen';
-
 
 
 }

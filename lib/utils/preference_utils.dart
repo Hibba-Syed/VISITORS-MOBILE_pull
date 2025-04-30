@@ -132,6 +132,25 @@ class PreferenceUtil {
       putString(Strings.keyToken, token);
     }
   }
+  String? get email {
+    return getString(Strings.keyEmail);
+  }
+
+  set email(String? email) {
+    if (email != null) {
+      putString(Strings.keyEmail, email);
+    }
+  }
+
+  String? get password {
+    return getString(Strings.keyPassword);
+  }
+
+  set password(String? password) {
+    if (password != null) {
+      putString(Strings.keyPassword, password);
+    }
+  }
 
 }
 
