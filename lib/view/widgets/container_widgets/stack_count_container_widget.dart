@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
-
-import '../../../resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 class StackCountContainerWidget extends StatelessWidget {
   final String? imageUrl;
   final double?  imageHeight;
@@ -46,7 +45,7 @@ class StackCountContainerWidget extends StatelessWidget {
                     color: AppColors.white, width: 2)),
             child:  Text(
               count?.toString() ?? "",
-              style:  AppConstants.isMobile(context) ? AppTextStyles.style12white400 : AppTextStyles.style13white400,
+              style:  AppUtils.isMobile(context) ? AppTextStyles.style12white400 : AppTextStyles.style13white400,
             ),
           ),
         ),

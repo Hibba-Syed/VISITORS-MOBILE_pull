@@ -4,12 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
-import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_filter_bottom_sheet.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 class WorkOrderRfpScreen extends StatefulWidget {
   const WorkOrderRfpScreen({super.key});
 
@@ -65,7 +66,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         vendorName: 'Mohammed Faisal Al-Haddad',
                         date: '2025-04-04T05:33:36.000000Z',
                         checkInPressed: (){
-                          AppConstants.isTablet(context)?
+                          AppUtils.isTablet(context)?
                           Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
                           Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                         },
@@ -91,7 +92,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
   _workOrderFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints:  BoxConstraints(
-        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,

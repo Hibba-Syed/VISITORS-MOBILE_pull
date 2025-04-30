@@ -6,8 +6,7 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/small_button.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
-
-import '../../../../resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
@@ -40,14 +39,14 @@ class GetInfoCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     name ?? "",
-                    style: AppConstants.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
+                    style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const Gap(5),
                   Text(
                     country ?? "",
-                    style: AppConstants.isTablet(context) ?  AppTextStyles.style13DarkGrey600 : AppTextStyles.style12DarkGrey600,
+                    style: AppUtils.isTablet(context) ?  AppTextStyles.style13DarkGrey600 : AppTextStyles.style12DarkGrey600,
                   ),
                 ],
               ),
@@ -58,16 +57,16 @@ class GetInfoCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SmallButton(
-              width: AppConstants.isTablet(context) ? 60 : 40,
-              height: AppConstants.isTablet(context) ? 60 : 40,
+              width: AppUtils.isTablet(context) ? 60 : 40,
+              height: AppUtils.isTablet(context) ? 60 : 40,
               icon: Icons.check,
               backgroundColor: AppColors.green,
               onPressed: () {},
             ),
             const Gap(10),
             SmallButton(
-              width: AppConstants.isTablet(context) ? 60 : 40,
-              height: AppConstants.isTablet(context) ? 60 : 40,
+              width: AppUtils.isTablet(context) ? 60 : 40,
+              height: AppUtils.isTablet(context) ? 60 : 40,
               icon: CupertinoIcons.delete,
               backgroundColor: AppColors.red,
               onPressed: () {
@@ -80,7 +79,7 @@ class GetInfoCardWidget extends StatelessWidget {
                         confirmButtonText: 'Delete',
                         confirmButtonColor: AppColors.red,
                         insetPadding:
-                        AppConstants.isTablet( context) ?
+                        AppUtils.isTablet( context) ?
                       EdgeInsets.symmetric(horizontal: 40) :
                         EdgeInsets.all(20),
                         title: 'Delete Visitor Record',
@@ -92,7 +91,7 @@ class GetInfoCardWidget extends StatelessWidget {
                                 Icon(
                                   CupertinoIcons.delete,
                                   color: AppColors.red,
-                                  size: AppConstants.isTablet(context) ? 42 : 22,
+                                  size: AppUtils.isTablet(context) ? 42 : 22,
                                 ),
                                 Gap(15),
                                 Padding(

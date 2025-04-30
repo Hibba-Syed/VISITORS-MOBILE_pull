@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:readmore/readmore.dart' show ReadMoreText, TrimMode;
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 class ReadMoreWidget extends StatelessWidget {
   final String title;
@@ -26,7 +26,7 @@ class ReadMoreWidget extends StatelessWidget {
           "$title ",
           style: TextStyle(
               color: fontColor ?? AppColors.black,
-              fontSize: AppConstants.isTablet(context) ?  15 : 13,
+              fontSize: AppUtils.isTablet(context) ?  15 : 13,
               fontWeight: fontWeight ?? FontWeight.w600),
         ),
         const Gap(8),
@@ -46,7 +46,7 @@ class ReadMoreWidget extends StatelessWidget {
             color: AppColors.primary,
           ),
           style:  TextStyle(
-            fontSize:  AppConstants.isTablet(context) ? 15 : 13,
+            fontSize:  AppUtils.isTablet(context) ? 15 : 13,
             color: AppColors.darkGrey,
           ),
         ),

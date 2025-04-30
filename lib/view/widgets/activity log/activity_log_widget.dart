@@ -6,8 +6,8 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
+import 'package:visitors/utils/app_utils.dart';
 
-import '../../../resource/constants/app_constants.dart';
 
 class ActivityLogWidget extends StatelessWidget {
   final String? status;
@@ -55,16 +55,16 @@ class ActivityLogWidget extends StatelessWidget {
               ),
               drawGap: true,
               indicator: Container(
-                height: AppConstants.isTablet(context) ? 30 : 25,
-                width: AppConstants.isTablet(context) ? 30 : 25,
+                height: AppUtils.isTablet(context) ? 30 : 25,
+                width: AppUtils.isTablet(context) ? 30 : 25,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: SvgPicture.asset(
                     AppImages.log,
-                    height: AppConstants.isTablet(context) ? 30 : 25,
-                    width: AppConstants.isTablet(context) ? 30 : 25,
+                    height: AppUtils.isTablet(context) ? 30 : 25,
+                    width: AppUtils.isTablet(context) ? 30 : 25,
                     fit: BoxFit.fill,
                     colorFilter: const ColorFilter.mode(
                       AppColors.primary,
@@ -88,12 +88,12 @@ class ActivityLogWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(status ?? "",
-                            style: AppConstants.isTablet(context)
+                            style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style16black600
                                 : AppTextStyles.style14Black600),
                         Flexible(
                           child: Text(byValue ?? "",
-                              style: AppConstants.isTablet(context)
+                              style: AppUtils.isTablet(context)
                                   ? AppTextStyles.style16Primary600
                                   : AppTextStyles.style14Primary600),
                         ),
@@ -102,7 +102,7 @@ class ActivityLogWidget extends StatelessWidget {
                     const Gap(5),
                     Text(
                       description ?? "",
-                      style: AppConstants.isTablet(context)
+                      style: AppUtils.isTablet(context)
                           ? AppTextStyles.style14DarkGrey600
                           : AppTextStyles.style12DarkGrey600,
                     ),

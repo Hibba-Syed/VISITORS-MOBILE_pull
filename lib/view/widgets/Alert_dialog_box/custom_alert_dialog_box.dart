@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
-
+import 'package:visitors/utils/app_utils.dart';
 import '../loader/loader_widget.dart';
 
 class CustomAlertDialogBox extends StatefulWidget {
@@ -145,7 +144,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                              Icon(
                               Icons.close,
                               color: Colors.grey,
-                               size: AppConstants.isTablet(context) ? 30 : 20,
+                               size: AppUtils.isTablet(context) ? 30 : 20,
                             ),
                           ),
                         ),

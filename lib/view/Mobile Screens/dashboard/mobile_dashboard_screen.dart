@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
@@ -383,7 +381,7 @@ class MobileDashboardScreen extends StatelessWidget {
   }
 
   void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController _visitorsNoController = TextEditingController();
+    final TextEditingController visitorsNoController = TextEditingController();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -396,7 +394,7 @@ class MobileDashboardScreen extends StatelessWidget {
             return CheckOutContainerWidget(
               checkOutAllOnPress: () {},
               checkOutOnPress: () {},
-              controller: _visitorsNoController,
+              controller: visitorsNoController,
               logIsLast: true,
               visitorsCount: 4,
               horizontalPadding: 0,

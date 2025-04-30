@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
-
+import 'package:visitors/utils/app_utils.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
@@ -85,7 +84,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: widget.hint,
-            hintStyle: AppConstants.isTablet(context) ? AppTextStyles.style15black400 : AppTextStyles.style14darkGray400,
+            hintStyle: AppUtils.isTablet(context) ? AppTextStyles.style15black400 : AppTextStyles.style14darkGray400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             focusedBorder:
             OutlineInputBorder(

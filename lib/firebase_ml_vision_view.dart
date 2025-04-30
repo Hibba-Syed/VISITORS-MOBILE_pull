@@ -6,6 +6,8 @@ import 'package:image/image.dart' as img; // For image processing
 import 'package:path/path.dart' as path;
 
 class OCRScreen extends StatefulWidget {
+  const OCRScreen({super.key});
+
   @override
   _OCRScreenState createState() => _OCRScreenState();
 }
@@ -181,7 +183,7 @@ class _OCRScreenState extends State<OCRScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Text('${entry.key}: ${entry.value}'),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

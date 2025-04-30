@@ -9,6 +9,8 @@ import 'package:visitors/view/Common%20Screens/services/components/services_filt
 import '../../../resource/constants/app_constants.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 class AllServicesScreen extends StatelessWidget {
   const AllServicesScreen({super.key});
 
@@ -58,7 +60,7 @@ class AllServicesScreen extends StatelessWidget {
                       name: 'Suhaan',
                       countValue: '10',
                       checkInOnPressed: (){
-                        AppConstants.isTablet(context)?
+                        AppUtils.isTablet(context)?
                         Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen):
                         Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                       },
@@ -86,7 +88,7 @@ class AllServicesScreen extends StatelessWidget {
   _servicesFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints:  BoxConstraints(
-        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,

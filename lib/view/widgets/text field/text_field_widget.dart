@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
-
-import '../../../resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String? initialValue;
@@ -74,7 +73,9 @@ class TextFieldWidget extends StatelessWidget {
         if (label?.isNotEmpty ?? false)
           Text(
             label!,
-            style:  AppConstants.isTablet( context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600 ,
+            style: AppUtils.isTablet(context)
+                ? AppTextStyles.style15Black600
+                : AppTextStyles.style14Black600,
           ),
         if (label?.isNotEmpty ?? false) const Gap(8.0),
         TextFormField(
@@ -99,15 +100,16 @@ class TextFieldWidget extends StatelessWidget {
             contentPadding: contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: hint,
-            hintStyle:  AppConstants.isTablet(context) ? AppTextStyles.style15black400 : AppTextStyles.style14darkGray400,
+            hintStyle: AppUtils.isTablet(context)
+                ? AppTextStyles.style15black400
+                : AppTextStyles.style14darkGray400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: prefix,
             suffixIcon: suffix,
             alignLabelWithHint: false,
             fillColor: fillColor ?? AppColors.white,
             filled: true,
-            focusedBorder:
-            OutlineInputBorder(
+            focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
               borderSide: const BorderSide(
                 width: 0.0,
@@ -117,12 +119,13 @@ class TextFieldWidget extends StatelessWidget {
             //focusedBorder,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide:  BorderSide(color: outLineColor ?? AppColors.outLineGray, width: 1),
+              borderSide: BorderSide(
+                  color: outLineColor ?? AppColors.outLineGray, width: 1),
             ),
             //enabledBorder,
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide:  BorderSide(color:  AppColors.red, width: 1),
+              borderSide: BorderSide(color: AppColors.red, width: 1),
             ),
             //errorBorder,
             focusedErrorBorder: focusedErrorBorder,

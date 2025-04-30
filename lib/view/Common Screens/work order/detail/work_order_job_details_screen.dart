@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
@@ -14,6 +13,8 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class WorkOrderJobDetailsScreen extends StatelessWidget {
   const WorkOrderJobDetailsScreen({super.key});
@@ -44,7 +45,7 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
               const Gap(3),
                HeadingWidget(
                 heading: 'JB001-22-00092',
-                style:  AppConstants.isTablet(context) ?  AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
+                style:  AppUtils.isTablet(context) ?  AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
               ),
               const Gap(10),
               Container(
@@ -104,14 +105,14 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
             horizontal: AppConstants.horizontalPadding,
             vertical: AppConstants.horizontalPadding),
         child: CustomButton(
-            height:  AppConstants.isTablet(context) ? 55 : 42,
+            height:  AppUtils.isTablet(context) ? 55 : 42,
             text: 'Add Log',
             onPressed: () {
               showDialog(
                   barrierDismissible: false,
                   context: context,
                   builder: (context) {
-                    TextEditingController _noteController =
+                    TextEditingController noteController =
                         TextEditingController();
                     return CustomAlertDialogBox(
                       isCancelButtonDisable: true,
@@ -139,7 +140,7 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                             ),
                             const Gap(5),
                             TextFieldWidget(
-                              controller: _noteController,
+                              controller: noteController,
                               label: 'Note *',
                             ),
                           ],

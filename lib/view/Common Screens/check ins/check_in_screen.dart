@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -17,6 +16,8 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class CheckInsScreen extends StatelessWidget {
   const CheckInsScreen({super.key});
@@ -59,9 +60,9 @@ class CheckInsScreen extends StatelessWidget {
                     child: CustomButton(
                       buttonColor: AppColors.red,
                       text: 'Check-Outs All',
-                      height:  AppConstants.isTablet(context)  ? 50 : 42,
-                      width: AppConstants.isTablet(context) ? 200 : 170,
-                      imageHeight: AppConstants.isTablet( context) ? 25 : 18,
+                      height:  AppUtils.isTablet(context)  ? 50 : 42,
+                      width: AppUtils.isTablet(context) ? 200 : 170,
+                      imageHeight: AppUtils.isTablet( context) ? 25 : 18,
                       borderRadius: 6,
                       image: AppImages.logout,
                       onPressed: () {
@@ -186,7 +187,7 @@ class CheckInsScreen extends StatelessWidget {
   _checkInFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
-        minWidth: AppConstants.isTablet(context) ? AppConstants.tabletScreen : AppConstants.mobileScreen),
+        minWidth: AppUtils.isTablet(context) ? AppConstants.tabletScreen : AppConstants.mobileScreen),
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {

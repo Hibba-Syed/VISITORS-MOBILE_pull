@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -12,6 +11,8 @@ import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class ServiceableCheckInsScreen extends StatelessWidget {
   const ServiceableCheckInsScreen({super.key});
@@ -37,9 +38,9 @@ class ServiceableCheckInsScreen extends StatelessWidget {
               CustomButton(
                   buttonColor: AppColors.red,
                   text: 'Check-Out All',
-                  height:  AppConstants.isTablet(context)  ? 50 : 42,
-                  width: AppConstants.isTablet(context) ? 200 : 150,
-                  imageHeight: AppConstants.isTablet( context) ? 25 : 18,
+                  height:  AppUtils.isTablet(context)  ? 50 : 42,
+                  width: AppUtils.isTablet(context) ? 200 : 150,
+                  imageHeight: AppUtils.isTablet( context) ? 25 : 18,
                   borderRadius: 6,
                   image: AppImages.logout,
                   onPressed: () {
@@ -107,7 +108,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
   }
 
   void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController _visitorsNoController = TextEditingController();
+    final TextEditingController visitorsNoController = TextEditingController();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -120,7 +121,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
             return CheckOutContainerWidget(
               checkOutAllOnPress: () {},
               checkOutOnPress: () {},
-              controller: _visitorsNoController,
+              controller: visitorsNoController,
               logIsLast: true,
               visitorsCount: 2,
               horizontalPadding: 0,

@@ -1,10 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../resource/constants/app_colors.dart';
-import '../../../resource/styles/styles.dart';
 class TypeContainerWidget extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
@@ -27,7 +25,7 @@ class TypeContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
       onTap: onTap,
       child: DottedBorder(
         strokeWidth: 1,
