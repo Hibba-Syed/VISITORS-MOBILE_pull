@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart' show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
-import 'package:visitors/view/widgets/network_image_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class CheckOutsCardWidget extends StatelessWidget {
   final String? profileImageUrl;
@@ -96,7 +96,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                       children: [
                         Text(
                           name ?? "",
-                          style: AppConstants.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style14Black600,
+                          style: AppUtils.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style14Black600,
                         ),
                         const Gap(6),
                         IconTextContainerWidget(
@@ -104,7 +104,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                           text: phone ?? "",
                         ),
                         const Gap(5),
-                         Text('Check-In',style: AppConstants.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600 ),
+                         Text('Check-In',style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600 ),
                         const Gap(5),
                         Row(
                           children: [
@@ -125,7 +125,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                           ],
                         ),
                         const Gap(5),
-                         Text('Check-Out',style: AppConstants.isTablet(context) ?AppTextStyles.style15Black600 :  AppTextStyles.style14Black600,),
+                         Text('Check-Out',style: AppUtils.isTablet(context) ?AppTextStyles.style15Black600 :  AppTextStyles.style14Black600,),
                         const Gap(5),
                         Row(
                           children: [

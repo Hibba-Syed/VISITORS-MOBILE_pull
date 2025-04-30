@@ -15,10 +15,11 @@ import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.d
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class ServiceDetailsScreen extends StatelessWidget {
   const ServiceDetailsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     List<String> documents = ['Vendor License','Worker ID','NOC from Landlord','Scope of Work'];
@@ -53,7 +54,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 ),
                 const Gap(10),
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -101,17 +102,17 @@ class ServiceDetailsScreen extends StatelessWidget {
                   ),
                   child: ListView.separated(
                     shrinkWrap: true,
-                    primary: false,
-                    itemCount: documents.length,
-                    itemBuilder: (context,index){
-                      String document = documents[index];
-                      return ServicesDocumentsCardWidget(
+                      primary: false,
+                      itemCount: documents.length,
+                      itemBuilder: (context,index){
+                     String document = documents[index];
+                        return ServicesDocumentsCardWidget(
                           name: document
-                      );
-                    },
-                    separatorBuilder: (context,index){
-                      return Divider(color: AppColors.gray,);
-                    },
+                        );
+                      },
+                      separatorBuilder: (context,index){
+                        return Divider(color: AppColors.gray,);
+                      },
                   ),
                 ),
                 const Gap(20),
@@ -120,7 +121,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 ),
                 const Gap(10),
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -170,6 +171,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 ),
                 const Gap(10),
                 ActivityLogWidget(
+                  horizontalPadding: 8,
                   isLast: true,
                   status: 'Request Received By ',
                   byValue: 'System',
@@ -189,19 +191,19 @@ class ServiceDetailsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
-                    height:  AppConstants.isTablet(context) ? 55 : 42,
-                    fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                    height:  AppUtils.isTablet(context) ? 55 : 42,
+                    fontSize: AppUtils.isTablet(context)  ? 20 : 15,
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
-                            TextEditingController _noteController =
+                            TextEditingController noteController0 =
                                 TextEditingController();
                             return CustomAlertDialogBox(
                               isCancelButtonDisable: true,
-                              insetPadding: AppConstants.isTablet( context) ?
+                              insetPadding: AppUtils.isTablet( context) ?
                                    EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to JB001-24-00102',
                               confirmButtonText: 'Add Log',
@@ -224,7 +226,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      controller: _noteController,
+                                      controller: noteController0,
                                       label: 'Note*',
                                     ),
                                   ],
@@ -238,8 +240,8 @@ class ServiceDetailsScreen extends StatelessWidget {
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.green,
-                    height: AppConstants.isTablet(context) ? 55 : 42,
-                    fontSize: AppConstants.isTablet(context)  ? 20 : 15,
+                    height: AppUtils.isTablet(context) ? 55 : 42,
+                    fontSize: AppUtils.isTablet(context)  ? 20 : 15,
                     text: 'Complete',
                     onPressed: () {
                       showDialog(
@@ -254,7 +256,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                                 TextEditingController();
                             return CustomAlertDialogBox(
                               insetPadding:
-                              AppConstants.isTablet( context) ?
+                              AppUtils.isTablet( context) ?
                               EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Complete HB2024080725',
                               disableCancelButtonBorder: true,

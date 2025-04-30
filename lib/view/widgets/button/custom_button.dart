@@ -1,10 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
-
+import 'package:visitors/utils/app_utils.dart';
 import '../../../resource/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -70,7 +68,7 @@ class CustomButton extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-            if (image != null) AppConstants.isTablet(context) ? Gap(15) : Gap(10),
+            if (image != null) AppUtils.isTablet(context) ? Gap(15) : Gap(10),
             // AutoSizeText(''),
             Flexible(
               child: Text(

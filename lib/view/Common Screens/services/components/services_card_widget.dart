@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 
 class ServicesCardWidget extends StatelessWidget {
@@ -70,7 +70,7 @@ class ServicesCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       title ?? "",
-                      style: AppConstants.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
+                      style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
                     ),
                     StatusWidget(
                       status: status ?? "",
@@ -100,9 +100,9 @@ class ServicesCardWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomButton(
-                          height: AppConstants.isTablet(context) ? 55 : 42,
-                          fontSize: AppConstants.isTablet(context)  ? 20 : 15,
-                          imageHeight: AppConstants.isTablet(context) ?25 :18,
+                          height: AppUtils.isTablet(context) ? 55 : 42,
+                          fontSize: AppUtils.isTablet(context)  ? 20 : 15,
+                          imageHeight: AppUtils.isTablet(context) ?25 :18,
                           buttonColor: AppColors.green,
                           image: AppImages.checkInButton,
                           text: 'Check-In', onPressed: checkInOnPressed),
@@ -110,9 +110,9 @@ class ServicesCardWidget extends StatelessWidget {
                     const Gap(8),
                     Expanded(
                       child: CustomButton(
-                        height: AppConstants.isTablet(context) ? 55 : 42,
-                          fontSize: AppConstants.isTablet(context)  ? 20 : 15,
-                          imageHeight: AppConstants.isTablet(context) ?25 :18,
+                        height: AppUtils.isTablet(context) ? 55 : 42,
+                          fontSize: AppUtils.isTablet(context)  ? 20 : 15,
+                          imageHeight: AppUtils.isTablet(context) ?25 :18,
                           buttonColor: AppColors.cyanBlue,
                           image: AppImages.serviceable,
                           text: 'Serviceable Check Ins', onPressed: serviceableOnPressed),

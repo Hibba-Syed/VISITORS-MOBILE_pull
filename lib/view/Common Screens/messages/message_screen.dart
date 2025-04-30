@@ -1,11 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/Common%20Screens/messages/components/attachment_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/messages/components/chat_bottom_row_widget.dart';
 import 'package:visitors/view/Common%20Screens/messages/components/message_card_widget.dart';
@@ -80,7 +78,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                   profileImage:
                                       "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                                 )
-                              : MessageSecurityCardWidget(
+                              :
+                          MessageSecurityCardWidget(
                                   message: message['text'],
                                   date: message['date'],
                                 ),

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,7 +11,7 @@ import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart' show AllServicesScreen;
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
-
+import 'package:visitors/utils/app_utils.dart';
 import '../../resource/constants/app_colors.dart';
 import '../../resource/constants/app_constants.dart';
 import '../../resource/constants/images.dart';
@@ -21,7 +20,7 @@ import '../Mobile Screens/dashboard/mobile_dashboard_screen.dart';
 import '../widgets/app_bar/appbar_widget.dart';
 import '../widgets/button/custom_button.dart';
 import '../widgets/drawer/drawer_list_tile.dart';
-import '../widgets/responsive_layout_Widget.dart';
+import '../widgets/responsive_layout_widget.dart';
 import 'Components/drawer_item_model.dart';
 
 class DeviceDeciderScreen extends StatelessWidget {
@@ -178,7 +177,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     SizedBox(
-                      height:  AppConstants.isTablet(context) ? 300 : 210,
+                      height:  AppUtils.isTablet(context) ? 300 : 210,
                       child: DrawerHeader(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -194,13 +193,13 @@ class DeviceDeciderScreen extends StatelessWidget {
                           children: [
                             Image.asset(
                               AppImages.appLogo,
-                              width: AppConstants.isTablet(context) ? 300 : 200,
-                              height: AppConstants.isTablet(context) ? 120 : 80,
+                              width: AppUtils.isTablet(context) ? 300 : 200,
+                              height: AppUtils.isTablet(context) ? 120 : 80,
                             ),
                             const Gap(10),
                             Container(
                               padding:  EdgeInsets.symmetric(
-                                  horizontal: AppConstants.isTablet(context) ? 15 : 8.0, vertical: AppConstants.isTablet(context) ? 8:4.0
+                                  horizontal: AppUtils.isTablet(context) ? 15 : 8.0, vertical: AppUtils.isTablet(context) ? 8:4.0
                               ),
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
@@ -208,7 +207,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                               ),
                               child:  Text(
                                 'VMS APPLICATION',
-                                style: AppConstants.isTablet(context) ? AppTextStyles.style15white600 : AppTextStyles.style13white500,
+                                style: AppUtils.isTablet(context) ? AppTextStyles.style15white600 : AppTextStyles.style13white500,
                               ),
                             ),
                           ],
@@ -299,7 +298,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                   },
                                   isSelected: item.index == state.selectedIndex);
                             }, separatorBuilder: (BuildContext context, int index) {
-                              return AppConstants.isTablet(context) ?  Gap(20) : Gap(0);
+                              return AppUtils.isTablet(context) ?  Gap(20) : Gap(0);
                           },
                           ),
                         ],

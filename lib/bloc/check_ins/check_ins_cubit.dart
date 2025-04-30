@@ -1,7 +1,6 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart' show Fluttertoast;
-import 'package:meta/meta.dart';
-import 'package:visitors/model/check_ins/visitors_check_ins_response_model.dart';
+import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 
@@ -12,7 +11,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
   Future<void> getCheckIns() async {
     emit(state.copyWith(isLoading: true,page: 1));
-    VisitorCheckInsResponseModel? response = await _checkInRepo
+    CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
     ).onError(
           (error, stackTrace) {

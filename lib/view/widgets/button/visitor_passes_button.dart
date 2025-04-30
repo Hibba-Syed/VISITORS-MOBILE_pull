@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/styles/styles.dart';
-
-import '../../../resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 class VisitorPassesButton extends StatelessWidget {
   final int? count;
   final double? horizontalPadding;
@@ -35,7 +32,7 @@ class VisitorPassesButton extends StatelessWidget {
                 color:AppColors.lightYellow,
               ),
               child: Text(count?.toString() ?? "",style: TextStyle(
-                  fontSize: AppConstants.isTablet(context)  ? 17 : 14,
+                  fontSize: AppUtils.isTablet(context)  ? 17 : 14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.white
               ),
@@ -52,7 +49,7 @@ class VisitorPassesButton extends StatelessWidget {
             ),
             child:  Text("Visitor Passes",
               style: TextStyle(
-                fontSize:  AppConstants.isTablet(context)  ? 17 : 14,
+                fontSize:  AppUtils.isTablet(context)  ? 17 : 14,
                   fontWeight: FontWeight.w500,
                  color: AppColors.white
               ),

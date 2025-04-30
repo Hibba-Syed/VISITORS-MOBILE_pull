@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -27,7 +28,7 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
   //   }
   //   emit(state.copyWith(selectedIndex: index));
   // }
-  void onChangeSelectedIndex(BuildContext context, int index) {
+  void onChangeSelectedIndex(BuildContext context,int index) {
     if (index == AppConstants.dashboardIndex) {
       emit(state.copyWith(
         selectedIndex: index,
@@ -48,7 +49,7 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
   }
 
   void onBackButtonPressed() {
-    print('Back pressed History: ${state.navigationHistory}');
+   // print('Back pressed History: ${state.navigationHistory}');
     final history = List<int>.from(state.navigationHistory);
     if (history.isNotEmpty) {
       final previousIndex = history.removeLast();
@@ -62,5 +63,8 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
         navigationHistory: [],
       ));
     }
+        }
   }
-}
+
+
+

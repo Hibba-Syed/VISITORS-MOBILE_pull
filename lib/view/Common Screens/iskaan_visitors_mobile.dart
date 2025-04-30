@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/routes/app_pages.dart';
-import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
 class IskaanVisitorsMobile extends StatefulWidget {
   const IskaanVisitorsMobile({super.key});
 

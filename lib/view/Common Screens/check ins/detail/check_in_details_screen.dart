@@ -13,8 +13,9 @@ import 'package:visitors/view/widgets/container_widgets/stack_count_container_wi
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
-import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/read_more_widget.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 class CheckInDetailsScreen extends StatelessWidget {
   const CheckInDetailsScreen({super.key});
 
@@ -113,9 +114,9 @@ class CheckInDetailsScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding,vertical: AppConstants.horizontalPadding),
         child:  CustomButton(
-           fontSize:  AppConstants.isTablet(context) ? 20 : 15,
-          height: AppConstants.isTablet(context)  ? 55 : 42,
-          imageHeight: AppConstants.isTablet(context) ?25 :18,
+           fontSize:  AppUtils.isTablet(context) ? 20 : 15,
+          height: AppUtils.isTablet(context)  ? 55 : 42,
+          imageHeight: AppUtils.isTablet(context) ?25 :18,
           image:  AppImages.logoutCard,
             buttonColor:  AppColors.red,
             text: 'Check Out', onPressed: (){
@@ -125,7 +126,7 @@ class CheckInDetailsScreen extends StatelessWidget {
     );
   }
   void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController _visitorsNoController = TextEditingController();
+    final TextEditingController visitorsNoController = TextEditingController();
 
     showDialog(
       barrierDismissible: false,
@@ -143,7 +144,7 @@ class CheckInDetailsScreen extends StatelessWidget {
               checkOutOnPress: () {  },
               logIsLast: true,
               logDate: "2025-04-04T05:33:36.000000Z",
-              controller: _visitorsNoController,
+              controller: visitorsNoController,
               logStatus: 'Check-In',
               logByValue: '',
               logDescription: '6 visitor(s) checked-in from gate ‘The W Residences',

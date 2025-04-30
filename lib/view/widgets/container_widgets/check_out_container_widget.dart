@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/date_time.dart';

@@ -19,6 +19,8 @@ import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class TabletDashboardScreen extends StatelessWidget {
   const TabletDashboardScreen({super.key});
@@ -85,7 +87,7 @@ class TabletDashboardScreen extends StatelessWidget {
           children: [
              HeadingWidget(
               heading: 'Welcome',
-              style: AppConstants.isTablet(context) ? AppTextStyles.style16DarkGrey600 :  AppTextStyles.style15DarkGrey600,
+              style: AppUtils.isTablet(context) ? AppTextStyles.style16DarkGrey600 :  AppTextStyles.style15DarkGrey600,
             ),
             const HeadingWidget(heading: 'Apricot Tower (Gate 2)'),
             const Gap(10),
@@ -342,7 +344,7 @@ class TabletDashboardScreen extends StatelessWidget {
     );
   }
   void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController _visitorsNoController = TextEditingController();
+    final TextEditingController visitorsNoController = TextEditingController();
 
     showDialog(
       barrierDismissible: false,
@@ -360,7 +362,7 @@ class TabletDashboardScreen extends StatelessWidget {
               visitorsCount: 2,
               logIsLast: true,
               logDate: '2025-04-04T05:33:36.000000Z',
-              controller: _visitorsNoController,
+              controller: visitorsNoController,
               logStatus: 'Check-In',
               logByValue: '',
               logDescription: '6 visitor(s) checked-in from gate ‘The W Residences',

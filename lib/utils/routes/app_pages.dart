@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/eid_card_scanner.dart';
 import 'package:visitors/view/Common%20Screens/auth/biometric_auth_screen.dart';
 import 'package:visitors/view/Common%20Screens/auth/login_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';

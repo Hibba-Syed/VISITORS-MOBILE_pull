@@ -8,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:visitors/main.dart';
 import 'package:visitors/view/Common%20Screens/iskaan_visitors_mobile.dart' show IskaanVisitorsMobile;
 
 void main() {

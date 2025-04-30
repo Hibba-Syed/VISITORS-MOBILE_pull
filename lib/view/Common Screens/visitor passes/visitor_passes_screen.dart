@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/utils/routes/app_routes.dart';
-import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart' show ServicesCardWidget;
 import 'package:visitors/view/Common%20Screens/visitor%20passes/components/visitor_passes_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/components/visitor_passes_filter_bottom_sheet.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
@@ -11,6 +9,8 @@ import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 class VisitorPassesScreen extends StatelessWidget {
   const VisitorPassesScreen({super.key});
 
@@ -60,8 +60,8 @@ class VisitorPassesScreen extends StatelessWidget {
                     reference: 'VP001-25-00003',
                     company:"Ellington Residential Developments",
                     checkInOnPressed: (){
-                      AppConstants.isTablet(context)?
-                      Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen) :
+                      AppUtils.isTablet(context)?
+                      Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen):
                       Navigator.pushNamed(context, AppRoutes.mobileGuestCheckInScreen);
                     },
                     visitorPassOnPressed: (){
@@ -82,7 +82,7 @@ class VisitorPassesScreen extends StatelessWidget {
   _visitorPassesFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
-        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,
@@ -91,5 +91,4 @@ class VisitorPassesScreen extends StatelessWidget {
       },
     );
   }
-
 }

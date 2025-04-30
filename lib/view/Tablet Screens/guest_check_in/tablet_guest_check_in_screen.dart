@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -9,13 +8,14 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart' show CustomButton;
-import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/container_widgets/type_container_widget.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/picker/custom_date_time_picker.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 
 class TabletGuestCheckInScreen extends StatefulWidget {
@@ -88,16 +88,16 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                           context: context,
                           builder: (context) {
                             return CustomAlertDialogBox(
-                              insetPadding: AppConstants.isTablet(context) ? EdgeInsets.all(90) : EdgeInsets.all(10),
+                              insetPadding: AppUtils.isTablet(context) ? EdgeInsets.all(90) : EdgeInsets.all(10),
                               hideBothButtons: true,
                               title: 'Select Type',
                               contentBuilder: (context, setState) {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Select any ID type for Scan',style:  AppConstants.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style14Black600),
+                                    Text('Select any ID type for Scan',style:  AppUtils.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style14Black600),
                                     Gap(20),
-                                    AppConstants.isTablet(context) ?
+                                    AppUtils.isTablet(context) ?
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 85,vertical: 20),
                                       child: Row(
@@ -479,7 +479,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                         child: TextButton(
                           style: ButtonStyle(
                             overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                            WidgetStateProperty.all(Colors.transparent),
                           ),
                           onPressed: () {
                             showDialog(
@@ -488,7 +488,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                 builder: (context) {
                                   return CustomAlertDialogBox(
                                       hideBothButtons: true,
-                                      insetPadding: AppConstants.isTablet( context) ?
+                                      insetPadding: AppUtils.isTablet( context) ?
                                       EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
                                       title: 'Select Visitor',
                                       contentBuilder: (context, setState) {
@@ -520,9 +520,9 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.verticalPadding),
           child: CustomButton(
-              height: AppConstants.isTablet(context) ? 55 : 42,
-            fontSize: AppConstants.isTablet(context) ? 20: 15,
-            imageHeight: AppConstants.isTablet(context) ? 25 : 18,
+              height: AppUtils.isTablet(context) ? 55 : 42,
+            fontSize: AppUtils.isTablet(context) ? 20: 15,
+            imageHeight: AppUtils.isTablet(context) ? 25 : 18,
             image: AppImages.checkInButton,
               buttonColor: AppColors.green,
               text: 'Check-In', onPressed: (){
@@ -557,7 +557,7 @@ class SelectVisitorNumberWidget extends StatelessWidget {
         ),
          Text(
           'Visitor records found for this number',
-          style:  AppConstants.isMobile(context) ? AppTextStyles.style14Black600 :AppTextStyles.style15Black600,
+          style:  AppUtils.isMobile(context) ? AppTextStyles.style14Black600 :AppTextStyles.style15Black600,
         ),
         const Divider(
           color: AppColors.lightGrey,

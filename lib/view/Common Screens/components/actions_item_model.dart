@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../resource/constants/images.dart';
 
 class ActionsItemModel {
   final String title;

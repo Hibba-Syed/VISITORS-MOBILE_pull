@@ -1,6 +1,5 @@
 import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:flutter/material.dart';
-import 'package:visitors/view/Common%20Screens/device_decider_screen.dart' show DeviceDeciderScreen;
 import 'package:visitors/view/Common%20Screens/iskaan_visitors_mobile.dart' show IskaanVisitorsMobile;
 
 void main() async {

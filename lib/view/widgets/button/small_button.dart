@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
-
-import '../../../resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 class SmallButton extends StatelessWidget {
   final IconData icon;
   final Color backgroundColor;
@@ -33,7 +32,7 @@ class SmallButton extends StatelessWidget {
         child:  Icon(
           icon,
           color: AppColors.white,
-          size:  AppConstants.isTablet( context) ? 30 : 25,
+          size:  AppUtils.isTablet( context) ? 30 : 25,
         ),
       ),
     );

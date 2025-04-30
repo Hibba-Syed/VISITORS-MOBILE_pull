@@ -4,7 +4,7 @@ class CheckInsState {
   final bool isLoading;
   final bool loadMore;
   final int page;
-  List<VisitorsCheckInsRecord>? checkInsRecord;
+  List<CheckInsRecord>? checkInsRecord;
    CheckInsState({
     this.isLoading = false,
     this.loadMore = false,
@@ -15,7 +15,7 @@ class CheckInsState {
     bool? isLoading,
     bool? loadMore,
     int? page,
-    List<VisitorsCheckInsRecord>? checkInsRecord,
+    List<CheckInsRecord>? checkInsRecord,
   }) {
     return CheckInsState(
       isLoading: isLoading ?? this.isLoading,

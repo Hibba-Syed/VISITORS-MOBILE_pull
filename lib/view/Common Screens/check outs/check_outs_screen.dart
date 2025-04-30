@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -11,6 +10,8 @@ import 'package:visitors/view/Common%20Screens/check%20outs/components/check_out
 import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 
 class CheckOutsScreen extends StatefulWidget {
   const CheckOutsScreen({super.key});
@@ -96,7 +97,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
   _checkOutFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints:  BoxConstraints(
-        minWidth:  AppConstants.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
       ),
       context: context,
       barrierColor: Colors.transparent,

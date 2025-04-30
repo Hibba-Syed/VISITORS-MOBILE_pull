@@ -13,7 +13,7 @@ class AllCheckOutDesignWidget extends StatelessWidget {
     return Column(
       children: [
         SvgPicture.asset(
-          AppImages.logout,
+          AppImages.logoutCard,
           height: 30,
           width: 30,
           colorFilter: const ColorFilter.mode(

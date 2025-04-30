@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
+
 class OverlapContainerWidget extends StatelessWidget {
   final String? text;
   final Color? backgroundColor;
@@ -45,7 +46,7 @@ class OverlapContainerWidget extends StatelessWidget {
           ],
               Text(
                 text ?? "",
-                style:  AppConstants.isTablet(context) ?  AppTextStyles.style15white500 :AppTextStyles.style13white500,
+                style:  AppUtils.isTablet(context) ?  AppTextStyles.style15white500 :AppTextStyles.style13white500,
               ),
             ],
           ),

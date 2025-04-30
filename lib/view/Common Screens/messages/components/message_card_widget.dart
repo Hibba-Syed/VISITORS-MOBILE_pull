@@ -20,7 +20,9 @@ class MessageAssigneeCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 80,
+        maxWidth:
+         //(MediaQuery.of(context).size.shortestSide>=600)? 85 : -80,
+       MediaQuery.of(context).size.width - 85,
       ),
       child: Card(
         elevation: 0,
@@ -109,7 +111,9 @@ class MessageSecurityCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 80,
+        maxWidth:
+         //(MediaQuery.of(context).size.shortestSide>=600)? 85 : -80,
+        MediaQuery.of(context).size.width - 85,
       ),
       child: Card(
         elevation: 0,

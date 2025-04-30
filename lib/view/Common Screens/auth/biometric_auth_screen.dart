@@ -8,7 +8,6 @@ import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
-import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
 
 class BiometricAuthScreen extends StatefulWidget {

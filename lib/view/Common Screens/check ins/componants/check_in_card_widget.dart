@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
-import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart'
-    show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
 
@@ -112,7 +110,7 @@ class CheckInCardWidget extends StatelessWidget {
                             name ?? "",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: AppConstants.isTablet(context) ?
+                            style: AppUtils.isTablet(context) ?
                             AppTextStyles.style15Black600
                                 :
                             AppTextStyles.style14Black600
@@ -143,9 +141,9 @@ class CheckInCardWidget extends StatelessWidget {
                 ): SizedBox.shrink(),
                 const Gap(5),
                 CustomButton(
-                    height:  AppConstants.isTablet(context)  ? 55 : 42,
-                    fontSize: AppConstants.isTablet(context)  ? 20 : 15,
-                    imageHeight: AppConstants.isTablet(context) ?25 :18,
+                    height:  AppUtils.isTablet(context)  ? 55 : 42,
+                    fontSize: AppUtils.isTablet(context)  ? 20 : 15,
+                    imageHeight: AppUtils.isTablet(context) ?25 :18,
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
                     text: 'Check Out',

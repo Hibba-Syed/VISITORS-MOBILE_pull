@@ -60,6 +60,8 @@ dependencies:
   fluttertoast: ^8.2.12
   local_auth: ^2.3.0
   dotted_border: ^2.1.0
+  google_ml_kit: ^0.20.0
+  path: ^1.9.1
 
 
 dev_dependencies:
@@ -88,7 +90,6 @@ flutter:
   assets:
       - assets/png/
       - assets/svg/
-      - assets/json/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
