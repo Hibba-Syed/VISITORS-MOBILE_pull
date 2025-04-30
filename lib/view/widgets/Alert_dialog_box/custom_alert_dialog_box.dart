@@ -193,7 +193,8 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                             horizontal: widget
                                                 .horizontalPadding ??
                                                 24,
-                                            vertical: 12),
+                                            vertical:  12
+                                        ),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                           BorderRadius.circular(8),
