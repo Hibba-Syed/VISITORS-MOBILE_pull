@@ -131,7 +131,8 @@ class SearchTextField extends StatelessWidget {
   }
 
   double getHeight(BuildContext context) {
-    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    //double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    double textScaleFactor = MediaQuery.of(context).devicePixelRatio;
     if (textScaleFactor == 1.1) {
       return 49.0;
     } else if (textScaleFactor == 1.3) {

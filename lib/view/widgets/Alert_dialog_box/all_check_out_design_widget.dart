@@ -5,6 +5,7 @@ import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 
 import '../../../resource/constants/app_colors.dart' show AppColors;
+import '../../../utils/app_utils.dart';
 class AllCheckOutDesignWidget extends StatelessWidget {
   const AllCheckOutDesignWidget({super.key});
 
@@ -22,12 +23,12 @@ class AllCheckOutDesignWidget extends StatelessWidget {
           ),
         ),
         const Gap(15),
-        const  Text(
-          'Are you sure you want to checkout currently listed checkins?',style: AppTextStyles.style12black500,
+        Text(
+          'Are you sure you want to checkout currently listed checkins?',style: AppUtils.isTablet(context) ?  AppTextStyles.style16Black500 : AppTextStyles.style14Black500 ,
         ),
         const Gap(5),
-        const  Text(
-          'Selected filters will be applied',style: AppTextStyles.style12Black600,
+          Text(
+          'Selected filters will be applied',style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
         ),
         const Gap(15),
       ],

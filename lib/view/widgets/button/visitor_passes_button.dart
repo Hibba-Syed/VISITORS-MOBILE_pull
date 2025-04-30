@@ -22,8 +22,7 @@ class VisitorPassesButton extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            // width: 36,
-              padding: EdgeInsets.symmetric(horizontal:  8,vertical: verticalPadding ?? 10),
+              padding: EdgeInsets.symmetric(horizontal:  12,vertical: verticalPadding ?? 10),
               decoration: const BoxDecoration(
                  borderRadius: BorderRadius.only(
                    topLeft: Radius.circular(5),

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/routes/app_pages.dart';
+
+import '../../utils/routes/app_routes.dart';
 class IskaanVisitorsMobile extends StatefulWidget {
   const IskaanVisitorsMobile({super.key});
 
@@ -49,6 +51,7 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
               ),
             ),
             onGenerateRoute: AppPages.generateRouteSettings,
+            initialRoute: AppRoutes.splash,
             debugShowCheckedModeBanner: false,
           ),
         )

@@ -80,7 +80,7 @@ class GetInfoCardWidget extends StatelessWidget {
                         confirmButtonColor: AppColors.red,
                         insetPadding:
                         AppUtils.isTablet( context) ?
-                      EdgeInsets.symmetric(horizontal: 40) :
+                      EdgeInsets.symmetric(horizontal: 50) :
                         EdgeInsets.all(20),
                         title: 'Delete Visitor Record',
                         contentBuilder: (context, setState) {

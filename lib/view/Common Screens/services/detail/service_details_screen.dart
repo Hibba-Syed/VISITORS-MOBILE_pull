@@ -291,7 +291,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                                     const Gap(5),
                                     TextFieldWidget(
                                       label: 'ID Number',
-                                      controller: nameController,
+                                      controller: idController,
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(

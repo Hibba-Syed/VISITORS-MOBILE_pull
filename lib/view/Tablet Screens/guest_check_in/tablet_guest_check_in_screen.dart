@@ -424,10 +424,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                 fillColor: AppColors.white,
                                 selectedItem: _selectedItemNationality,
                                 compareFn: (p0, p1) => p0 == p1,
-                                items: const [
-                                  'pakistan',
-                                  'Australia',
-                                ],
+                                items: _nationalityItems,
                                 onChanged: (value) {
                                   _selectedItemNationality = value;
                                 },

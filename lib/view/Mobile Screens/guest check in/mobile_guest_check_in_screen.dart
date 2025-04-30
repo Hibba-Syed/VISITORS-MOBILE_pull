@@ -5,6 +5,7 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart'
     show CustomButton;
@@ -287,11 +288,9 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
     return '';
   }
 
-  ///
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> extractedData = _parseExtractedText(_extractedText);
     return Scaffold(
       appBar: const AppBarWidget(
         title: 'Guest Check-In',
@@ -621,8 +620,8 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                               builder: (context) {
                                 return CustomAlertDialogBox(
                                   hideBothButtons: true,
-                                  insetPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                  insetPadding: AppUtils.isTablet(context) ? EdgeInsets.symmetric(horizontal: 30):
+                                EdgeInsets.symmetric(horizontal: 10),
                                   title: 'Select Visitor',
                                   contentBuilder: (context, setState) {
                                     return const SelectVisitorNumberWidget(

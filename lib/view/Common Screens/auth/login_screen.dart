@@ -69,11 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 ),
               ),
+              Gap(10),
               Text(
                 'Visitor Management System',
-                style: AppUtils.isMobile(context)
-                    ? AppTextStyles.style20black600
-                    : AppTextStyles.style25black600,
+                style: AppUtils.isTablet(context)
+                    ? AppTextStyles.style25black600 : AppTextStyles.style20black600,
               ),
               Gap(20.0),
               TextFieldWidget(

@@ -16,12 +16,17 @@ import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
+import '../../view/Common Screens/splash_screen.dart';
 import 'app_routes.dart';
 
 
 
 class AppPages {
   static List<PageEntity> routes = [
+    PageEntity(
+      route: AppRoutes.splash,
+      page: const SplashScreen(),
+    ),
     PageEntity(
       route: AppRoutes.loginScreen,
       page: const LoginScreen(),

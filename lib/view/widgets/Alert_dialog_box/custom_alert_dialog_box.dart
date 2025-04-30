@@ -63,7 +63,9 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
       bool success = await widget.onConfirm!();
       setState(() => isLoading = false);
       if (success && (widget.canPopOnConfirm ?? true)) {
-        Navigator.of(context).pop(true);
+        if (mounted) {
+          Navigator.of(context).pop(true);
+        }
       }
     } else {
       Navigator.of(context).pop(true);
@@ -75,7 +77,11 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
       setState(() => isCancelLoading = true);
       bool? success = await widget.onCancel!();
       setState(() => isCancelLoading = false);
-      if (success ?? true) Navigator.of(context).pop();
+      if (success ?? true) {
+        if (mounted) {
+          Navigator.of(context).pop(true);
+        }
+      }
     } else {
       Navigator.of(context).pop();
     }
