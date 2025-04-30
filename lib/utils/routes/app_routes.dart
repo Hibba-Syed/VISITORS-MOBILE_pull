@@ -1,4 +1,5 @@
 class AppRoutes {
+  static const String splash = '/';
   static const String deviceDeciderScreen = '/deviceDeciderScreen';
   static const String workOrderJobDetailsScreen = '/workOrderJobDetailsScreen';
   static const String servicesDetailsScreen = '/servicesDetailsScreen';

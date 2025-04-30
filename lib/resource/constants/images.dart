@@ -7,6 +7,8 @@ class AppImages {
   static const String appLogo = "${basePngPath}app_logo.png";
   static const String drawerBackground = "${basePngPath}drawer_background.png";
   static const String background = "${basePngPath}background.png";
+  static const String splashBg = "${basePngPath}splash_bg.png";
+  static const String vmImage = "${basePngPath}vm_image.png";
 
   ///icons
   static const String menuEservices = "${baseSvgPath}menu_services.svg";

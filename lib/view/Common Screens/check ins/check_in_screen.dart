@@ -72,7 +72,7 @@ class CheckInsScreen extends StatelessWidget {
                           builder: (context) {
                             return CustomAlertDialogBox(
                               insetPadding:
-                              const EdgeInsets.symmetric(horizontal: 10),
+                              AppUtils.isTablet(context) ?  EdgeInsets.symmetric(horizontal: 30) : EdgeInsets.symmetric(horizontal: 10),
                               isCancelButtonDisable: true,
                               confirmButtonColor: AppColors.red,
                               confirmButtonText: 'Checkout All',
@@ -134,7 +134,7 @@ class CheckInsScreen extends StatelessWidget {
   }
 
   void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController _visitorsNoController = TextEditingController();
+    final TextEditingController visitorsNoController = TextEditingController();
 
     showDialog(
       barrierDismissible: false,
@@ -171,7 +171,7 @@ class CheckInsScreen extends StatelessWidget {
               logIsLast: true,
               horizontalPadding: 0,
               logDate: "2025-04-04T05:33:36.000000Z",
-              controller: _visitorsNoController,
+              controller: visitorsNoController,
               logStatus: 'Check-In',
               logByValue: '',
               visitorsCount: 5,
