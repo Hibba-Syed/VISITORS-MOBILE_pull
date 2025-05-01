@@ -4,7 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../resource/constants/images.dart';
+import '../../resource/globals.dart';
 import '../../utils/routes/app_routes.dart';
+import '../../utils/validation_util.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,11 +21,16 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(
-      4.seconds,
+      3.seconds,
       () {
         if (!mounted) return;
+        if (Globals().token != null && Globals().token!.isNotEmpty) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, AppRoutes.loadingScreen, (route) => false);
+        } else {
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.loginScreen, (route) => false);
+         }
       },
     );
   }

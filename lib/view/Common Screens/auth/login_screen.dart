@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
+import '../../../bloc/auth/auth_cubit.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../utils/app_utils.dart';
 import '../../widgets/button/custom_button.dart';
@@ -23,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _communityIdController = TextEditingController();
   final TextEditingController _loginIdController = TextEditingController();
-  final TextEditingController _gateIdController = TextEditingController();
+  final TextEditingController _gateController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
 
@@ -40,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _communityIdController.dispose();
     _passwordController.dispose();
-    _gateIdController.dispose();
+    _gateController.dispose();
     _loginIdController.dispose();
   }
 
@@ -96,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Gap(15),
               TextFieldWidget(
-                controller: _communityIdController,
+                controller: _gateController,
                 hint: 'Enter Gate Name / Number',
                 validator: (value) {
                   if (value?.trim().isEmpty ?? true) {
@@ -203,10 +205,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontSize: AppUtils.isTablet(context) ? 20 : 15,
                 text: "Sign In",
                 onPressed: () async {
-                  Navigator.pushNamed(context, AppRoutes.deviceDeciderScreen);
-                  // if (_formKey.currentState?.validate() ?? false) {
-                  //
-                  // }
+                  if (_formKey.currentState?.validate() ?? false) {
+                    context.read<AuthCubit>().login(context,
+                        password: _passwordController.text,
+                        communityId: _communityIdController.text,
+                        gate: _gateController.text,
+                        loginId: _loginIdController.text
+                    );
+                  }
                 },
               ),
               Gap(10),

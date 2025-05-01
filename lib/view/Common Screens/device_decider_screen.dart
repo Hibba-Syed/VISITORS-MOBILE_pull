@@ -12,6 +12,7 @@ import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/utils/app_utils.dart';
+import '../../bloc/auth/auth_cubit.dart';
 import '../../resource/constants/app_colors.dart';
 import '../../resource/constants/app_constants.dart';
 import '../../resource/constants/images.dart';
@@ -130,8 +131,8 @@ class DeviceDeciderScreen extends StatelessWidget {
                                   text: 'Logout',
                                   invert: true,
                                   onPressed: () {
-                                    Navigator.pop(
-                                        context);
+                                    Navigator.pop(context);
+                                    context.read<AuthCubit>().logout(context);
                                   },
                                 ),
                               ),
@@ -276,7 +277,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                           invert: true,
                                                           onPressed: (){
                                                             Navigator.pop(context);
-                                                            Navigator.pushNamed(context, AppRoutes.loginScreen);
+                                                            context.read<AuthCubit>().logout(context);
                                                           },
                                                         ),
                                                       ),

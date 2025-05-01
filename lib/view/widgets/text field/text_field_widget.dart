@@ -128,9 +128,14 @@ class TextFieldWidget extends StatelessWidget {
               borderSide: BorderSide(color: AppColors.red, width: 1),
             ),
             //errorBorder,
-            focusedErrorBorder: focusedErrorBorder,
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(
+                  color: outLineColor ?? AppColors.outLineGray, width: 1),
+              //focusedErrorBorder,
+            ),
           ),
-        )
+        ),
       ],
     );
   }
