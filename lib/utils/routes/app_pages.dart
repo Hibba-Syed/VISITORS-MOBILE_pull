@@ -44,7 +44,6 @@ class AppPages {
     PageEntity(
       route: AppRoutes.loadingScreen,
       page: const LoadingScreen(),
-
     ),
     PageEntity(
       route: AppRoutes.deviceDeciderScreen,

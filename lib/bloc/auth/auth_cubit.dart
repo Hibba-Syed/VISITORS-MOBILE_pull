@@ -47,10 +47,10 @@ class AuthCubit extends Cubit<AuthState> {
       spUtil.gate = gate;
       spUtil.password = password;
       spUtil.loginId = loginId;
-      if (context.mounted) {
+     // if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
             AppRoutes.loadingScreen, (route) => false);
-     }
+    // }
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong, please try again later');
