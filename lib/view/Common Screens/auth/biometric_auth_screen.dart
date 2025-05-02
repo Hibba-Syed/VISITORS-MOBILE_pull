@@ -14,7 +14,8 @@ import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
 
 class BiometricAuthScreen extends StatefulWidget {
-  const BiometricAuthScreen({super.key, });
+  final Map<dynamic, dynamic>? notificationData;
+  const BiometricAuthScreen({super.key, this.notificationData});
 
   @override
   State<BiometricAuthScreen> createState() => _BiometricAuthScreenState();
@@ -32,6 +33,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
   Future<void> _authenticateUser() async {
     bool isAuthenticated = await _localAuthService.authenticate();
     if (isAuthenticated) {
+      print('isAuthenticated^^^$isAuthenticated');
       _navigateToNextScreen();
     }
   }
@@ -39,10 +41,10 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
   void _navigateToNextScreen() {
     context.read<AuthCubit>().login(
       context,
-      password: spUtil.password!,
-      communityId: spUtil.communityId!,
-      gate: spUtil.gate!,
-      loginId: spUtil.loginId!,
+      password: spUtil.password,
+      communityId: spUtil.communityId,
+      gate: spUtil.gate,
+      loginId: spUtil.loginId,
     );
   }
 

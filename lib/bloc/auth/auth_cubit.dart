@@ -17,10 +17,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(
     BuildContext context, {
-    required String communityId,
-    required String gate,
-    required String loginId,
-    required String password,
+    required String? communityId,
+    required String? gate,
+    required String? loginId,
+    required String? password,
   }) async {
     emit(state.copyWith(isLoading: true));
     LoginResponseModel? loginResponse = await _authRepo.login(
@@ -44,12 +44,13 @@ class AuthCubit extends Cubit<AuthState> {
     if (loginResponse != null) {
       spUtil.token = loginResponse.accessToken;
       spUtil.communityId = communityId;
-      spUtil.password = password;
       spUtil.gate = gate;
+      spUtil.password = password;
+      spUtil.loginId = loginId;
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
             AppRoutes.loadingScreen, (route) => false);
-      }
+     }
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong, please try again later');

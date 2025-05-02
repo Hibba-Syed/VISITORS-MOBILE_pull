@@ -24,9 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
       3.seconds,
       () {
         if (!mounted) return;
-        if (Globals().token != null && Globals().token!.isNotEmpty) {
+        if (Globals().token?.isNotEmpty??false) {
+          print('token^^^${Globals().token}');
           Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.loadingScreen, (route) => false);
+              context, AppRoutes.biometricAuth, (route) => false);
         } else {
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.loginScreen, (route) => false);

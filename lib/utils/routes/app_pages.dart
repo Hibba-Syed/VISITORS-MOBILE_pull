@@ -31,10 +31,6 @@ class AppPages {
       page: const SplashScreen(),
     ),
     PageEntity(
-      route: AppRoutes.loadingScreen,
-      page: const LoadingScreen(),
-
-    ), PageEntity(
       route: AppRoutes.loginScreen,
       page: const LoginScreen(),
       bloc: BlocProvider(
@@ -44,6 +40,11 @@ class AppPages {
     PageEntity(
       route: AppRoutes.biometricAuth,
       page: const BiometricAuthScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.loadingScreen,
+      page: const LoadingScreen(),
+
     ),
     PageEntity(
       route: AppRoutes.deviceDeciderScreen,

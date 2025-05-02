@@ -7,8 +7,11 @@ import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import '../../../bloc/auth/auth_cubit.dart';
+import '../../../resource/globals.dart';
 import '../../../resource/styles/styles.dart';
+import '../../../service/LocalAuth/local_auth_service.dart';
 import '../../../utils/app_utils.dart';
+import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
 import '../../widgets/text field/password_text_field.dart';
 import '../../widgets/text field/text_field_widget.dart';
@@ -28,6 +31,20 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _gateController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+  bool _hasBiometricSupport = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkBiometricSupport();
+  }
+
+  _checkBiometricSupport() async {
+    _hasBiometricSupport = await LocalAuthService().hasBiometricSupport();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +85,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Image.asset(
                   AppImages.appLogo,
                   width: MediaQuery.of(context).size.width * 0.15,
-
                 ),
               ),
               Gap(10),
               Text(
                 'Visitor Management System',
                 style: AppUtils.isTablet(context)
-                    ? AppTextStyles.style25black600 : AppTextStyles.style20black600,
+                    ? AppTextStyles.style25black600
+                    : AppTextStyles.style20black600,
               ),
               Gap(20.0),
               TextFieldWidget(
@@ -207,46 +224,52 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
                     context.read<AuthCubit>().login(context,
-                        password: _passwordController.text,
                         communityId: _communityIdController.text,
                         gate: _gateController.text,
-                        loginId: _loginIdController.text
+                        loginId: _loginIdController.text,
+                         password: _passwordController.text,
                     );
                   }
                 },
               ),
-              Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.primary,
+              if ((spUtil.communityId?.isNotEmpty ?? false) &&
+                  (spUtil.gate?.isNotEmpty ?? false) &&
+                  (spUtil.loginId?.isNotEmpty ?? false) &&
+                  (spUtil.password?.isNotEmpty ?? false) &&
+                  _hasBiometricSupport) ...[
+                Gap(10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.primary,
+                      ),
                     ),
-                  ),
-                  Gap(5),
-                  Text(
-                    'OR',
-                    style: AppTextStyles.style14Primary600,
-                  ),
-                  Gap(5),
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.primary,
+                    Gap(5),
+                    Text(
+                      'OR',
+                      style: AppTextStyles.style14Primary600,
                     ),
-                  ),
-                ],
-              ),
-              Gap(10),
-              CustomButton(
-                height: AppUtils.isTablet(context) ? 60 : 42,
-                fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                text: "Biometric Login",
-                invert: true,
-                onPressed: () async {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, AppRoutes.biometricAuth, (route) => false);
-                },
-              ),
+                    Gap(5),
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+                Gap(10),
+                CustomButton(
+                  height: AppUtils.isTablet(context) ? 60 : 42,
+                  fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                  text: "Biometric Login",
+                  invert: true,
+                  onPressed: () async {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, AppRoutes.biometricAuth, (route) => false);
+                  },
+                ),
+              ],
             ],
           ),
         ),

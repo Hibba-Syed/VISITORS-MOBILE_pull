@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,7 @@ import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.d
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
+import '../../../model/check_ins/check_ins_response_model.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
@@ -83,7 +86,7 @@ class MobileDashboardScreen extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
-          if(state.isLoading){
+          if (state.isLoading) {
             return LoaderWidget();
           }
           return SingleChildScrollView(
@@ -92,7 +95,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 horizontal: AppConstants.horizontalPadding),
             child: Column(
               children: [
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
@@ -102,8 +105,9 @@ class MobileDashboardScreen extends StatelessWidget {
                           heading: 'Welcome',
                           style: AppTextStyles.style15DarkGrey600,
                         ),
-                        HeadingWidget(heading: "${state.profileRecord?.association?.name ?? ''} ( ${state.profileRecord?.gate ?? ''} )"
-                        ),
+                        HeadingWidget(
+                            heading:
+                                "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
                       ],
                     ),
                   ],
@@ -181,48 +185,65 @@ class MobileDashboardScreen extends StatelessWidget {
                             borderRadius: 6,
                             image: AppImages.view,
                             onPressed: () {
-                              context.read<CheckInsCubit>().getCheckIns();
-                              context
-                                  .read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                      context, AppConstants.checkInsIndex);
+                              // context.read<CheckInsCubit>().getCheckIns();
+                              // context
+                              //     .read<DeviceDeciderCubit>()
+                              //     .onChangeSelectedIndex(
+                              //         context, AppConstants.checkInsIndex);
+                              Navigator.pushNamed(context, AppRoutes.biometricAuth);
                             }),
                       ],
                     ),
                   ],
                 ),
                 const Gap(10),
-                ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return CheckInCardWidget(
-                      typeBackgroundColor: AppColors.green,
-                      count: 5,
-                      typeText: 'Rose-1024',
-                      name: 'MUHAMMAD SHAHZAD MOHAMMED GAMAL HUSSAIN ',
-                      profileImageUrl:
-                          "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                      type: 'Guest',
-                      date: DateTimeUtil.getFormattedDateTime(
-                          '2025-04-04T05:33:36.000000Z'),
-                      phone: '34567890098',
-                      gateValue: "The W Residences Reception",
-                      checkOutOnPressed: () {
-                        _showCheckoutDialog(context);
-                      },
-                      detailsOnPressed: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.checkInDetailsScreen);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Gap(10);
-                  },
-                ),
+                // ListView.separated(
+                //   padding: const EdgeInsets.only(bottom: 10),
+                //   shrinkWrap: true,
+                //   primary: false,
+                //   itemCount: state.checkInsRecord?.length ?? 0,
+                //   //(state.checkInsRecord?.length ?? 0) > 3 ? 3 : (state.checkInsRecord?.length ?? 0),
+                //   itemBuilder: (context, index) {
+                //     CheckInsRecord? checkInsRecord =
+                //         state.checkInsRecord?[index];
+                //     print('check ins length${state.checkInsRecord?.length}');
+                //     return CheckInCardWidget(
+                //       typeBackgroundColor: AppColors.green,
+                //       count: int.tryParse(
+                //               checkInsRecord?.visitorCount.toString() ?? '0') ??
+                //           0,
+                //       typeImage: (checkInsRecord?.type?.toLowerCase() ==
+                //                   'community visit' ||
+                //               checkInsRecord?.type?.toLowerCase() ==
+                //                   'community service')
+                //           ? AppImages.community
+                //           : "",
+                //       typeText: (checkInsRecord?.type?.toLowerCase() ==
+                //                   'unit visit' ||
+                //               checkInsRecord?.type?.toLowerCase() ==
+                //                   'unit service')
+                //           ? checkInsRecord?.unit?.unitNumber
+                //           : checkInsRecord?.type ?? "",
+                //       name: checkInsRecord?.name ?? "",
+                //       profileImageUrl: checkInsRecord?.visitor?.imageUrl ?? "",
+                //       type: "Guest",
+                //       date: DateTimeUtil.getFormattedDatesTime(
+                //           checkInsRecord?.visitor?.createdAt),
+                //       phone: checkInsRecord?.phone ?? "",
+                //       gateValue: checkInsRecord?.checkinGate ?? "",
+                //       checkOutOnPressed: () {
+                //         _showCheckoutDialog(context);
+                //       },
+                //       detailsOnPressed: () {
+                //         Navigator.pushNamed(
+                //             context, AppRoutes.checkInDetailsScreen);
+                //       },
+                //     );
+                //   },
+                //   separatorBuilder: (BuildContext context, int index) {
+                //     return const Gap(10);
+                //   },
+                // ),
                 const Gap(5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
