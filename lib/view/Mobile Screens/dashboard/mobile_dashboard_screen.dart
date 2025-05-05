@@ -1,12 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
@@ -17,13 +13,14 @@ import 'package:visitors/view/widgets/button/visitor_passes_button.dart';
 import 'package:visitors/view/widgets/container_widgets/actions_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
-import 'package:visitors/view/widgets/loader/loader_widget.dart';
+import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../model/check_ins/check_ins_response_model.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
+import '../../../utils/date_time.dart';
 import '../../widgets/container_widgets/check_out_container_widget.dart';
 
 class MobileDashboardScreen extends StatelessWidget {
@@ -86,9 +83,6 @@ class MobileDashboardScreen extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
-          if (state.isLoading) {
-            return LoaderWidget();
-          }
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
                 vertical: AppConstants.verticalPadding,
@@ -186,64 +180,59 @@ class MobileDashboardScreen extends StatelessWidget {
                             image: AppImages.view,
                             onPressed: () {
                               // context.read<CheckInsCubit>().getCheckIns();
-                              // context
-                              //     .read<DeviceDeciderCubit>()
-                              //     .onChangeSelectedIndex(
-                              //         context, AppConstants.checkInsIndex);
-                              Navigator.pushNamed(context, AppRoutes.biometricAuth);
+                              context
+                                  .read<DeviceDeciderCubit>()
+                                  .onChangeSelectedIndex(
+                                      context, AppConstants.checkInsIndex);
                             }),
                       ],
                     ),
                   ],
                 ),
                 const Gap(10),
-                // ListView.separated(
-                //   padding: const EdgeInsets.only(bottom: 10),
-                //   shrinkWrap: true,
-                //   primary: false,
-                //   itemCount: state.checkInsRecord?.length ?? 0,
-                //   //(state.checkInsRecord?.length ?? 0) > 3 ? 3 : (state.checkInsRecord?.length ?? 0),
-                //   itemBuilder: (context, index) {
-                //     CheckInsRecord? checkInsRecord =
-                //         state.checkInsRecord?[index];
-                //     print('check ins length${state.checkInsRecord?.length}');
-                //     return CheckInCardWidget(
-                //       typeBackgroundColor: AppColors.green,
-                //       count: int.tryParse(
-                //               checkInsRecord?.visitorCount.toString() ?? '0') ??
-                //           0,
-                //       typeImage: (checkInsRecord?.type?.toLowerCase() ==
-                //                   'community visit' ||
-                //               checkInsRecord?.type?.toLowerCase() ==
-                //                   'community service')
-                //           ? AppImages.community
-                //           : "",
-                //       typeText: (checkInsRecord?.type?.toLowerCase() ==
-                //                   'unit visit' ||
-                //               checkInsRecord?.type?.toLowerCase() ==
-                //                   'unit service')
-                //           ? checkInsRecord?.unit?.unitNumber
-                //           : checkInsRecord?.type ?? "",
-                //       name: checkInsRecord?.name ?? "",
-                //       profileImageUrl: checkInsRecord?.visitor?.imageUrl ?? "",
-                //       type: "Guest",
-                //       date: DateTimeUtil.getFormattedDatesTime(
-                //           checkInsRecord?.visitor?.createdAt),
-                //       phone: checkInsRecord?.phone ?? "",
-                //       gateValue: checkInsRecord?.checkinGate ?? "",
-                //       checkOutOnPressed: () {
-                //         _showCheckoutDialog(context);
-                //       },
-                //       detailsOnPressed: () {
-                //         Navigator.pushNamed(
-                //             context, AppRoutes.checkInDetailsScreen);
-                //       },
-                //     );
-                //   },
-                //   separatorBuilder: (BuildContext context, int index) {
-                //     return const Gap(10);
-                //   },
-                // ),
+                ListView.separated(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: (state.checkInsModel?.length ?? 0) > 3 ? 3 : (state.checkInsModel?.length ?? 3),
+                  itemBuilder: (context, index) {
+                    CheckInsModel? checkInsRecord =
+                        state.checkInsModel?[index];
+                    return CheckInCardWidget(
+                      count: checkInsRecord?.visitorCount ?? "",
+                      typeImage: (checkInsRecord?.type?.toLowerCase() ==
+                                  'community visit' ||
+                              checkInsRecord?.type?.toLowerCase() ==
+                                  'community service')
+                          ? AppImages.community
+                          : "",
+                      typeText: (checkInsRecord?.type?.toLowerCase() ==
+                                  'unit visit' ||
+                              checkInsRecord?.type?.toLowerCase() ==
+                                  'unit service')
+                          ? checkInsRecord?.unit?.unitNumber
+                          : checkInsRecord?.type ?? "",
+                      name: checkInsRecord?.name ?? "",
+                      profileImageUrl:
+                          checkInsRecord?.visitor?.imageUrl ?? "",
+                      type: "Guest",
+                      date: DateTimeUtil.getFormattedDatesTime(checkInsRecord?.visitor?.createdAt),
+                      phone: checkInsRecord?.phone ?? "",
+                      gateValue: checkInsRecord?.checkinGate ?? "",
+                      checkOutOnPressed: () {
+                        _showCheckoutDialog(context);
+                      },
+                      detailsOnPressed: () {
+                        context.read<CheckInsDetailsCubit>().getCheckInDetails(id: checkInsRecord?.id);
+                        Navigator.pushNamed(
+                            context, AppRoutes.checkInDetailsScreen,arguments: state.checkInsModel?[index]);
+                      },
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Gap(10);
+                  },
+                ),
                 const Gap(5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

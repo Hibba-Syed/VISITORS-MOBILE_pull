@@ -10,7 +10,6 @@ import 'package:visitors/view/Common%20Screens/check%20outs/components/check_out
 import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
-import 'package:visitors/utils/app_utils.dart';
 
 
 class CheckOutsScreen extends StatefulWidget {
@@ -69,7 +68,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                   itemBuilder: (context, index) {
                     return CheckOutsCardWidget(
                       typeBackgroundColor: AppColors.yellow,
-                      visitorCount: 10,
+                      visitorCount: '10',
                         typeText: "45678",
                         name: 'MUHAMMAD AHMED MOHAMMED ',
                         profileImageUrl:
@@ -96,8 +95,8 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
 
   _checkOutFilterBottomSheet(context) {
     showModalBottomSheet(
-      constraints:  BoxConstraints(
-        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+      constraints: BoxConstraints(
+        minWidth: MediaQuery.of(context).size.width,
       ),
       context: context,
       barrierColor: Colors.transparent,

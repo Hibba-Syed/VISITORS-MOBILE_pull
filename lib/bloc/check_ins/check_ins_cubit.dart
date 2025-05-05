@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart' show Fluttertoast;
 import 'package:visitors/model/check_ins/check_ins_response_model.dart';
@@ -9,10 +10,13 @@ part 'check_ins_state.dart';
 class CheckInsCubit extends Cubit<CheckInsState> {
   CheckInsCubit() : super( CheckInsState());
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
-  Future<void> getCheckIns() async {
+  Future<void> getCheckIns(
+      {String? keyword}
+      ) async {
     emit(state.copyWith(isLoading: true,page: 1));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
+      keyword: keyword,
     ).onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -31,12 +35,15 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     }
   }
 
-  Future<void> getMoreCheckIns() async {
+  Future<void> getMoreCheckIns(
+      {required String keyword}
+      ) async {
     int page = state.page + 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
       page: state.page,
+      keyword:keyword
     )
         .onError(
           (error, stackTrace) {
@@ -50,8 +57,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(loadMore: false));
     if (response != null) {
       if (response.record?.isNotEmpty ?? false) {
-        List<CheckInsRecord> checkIns = state.checkInsRecord ?? [];
-        checkIns.addAll(response.record as Iterable<CheckInsRecord>);
+        List<CheckInsModel> checkIns = state.checkInsRecord ?? [];
+        checkIns.addAll(response.record as Iterable<CheckInsModel>);
         emit(state.copyWith(checkInsRecord: checkIns));
       } else {
         Fluttertoast.showToast(msg: 'No more check-ins');
@@ -62,4 +69,33 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching check-ins');
     }
   }
+  Future<void> checkOutAll(
+      BuildContext context) async {
+    emit(state.copyWith(isCheckOutAllLoading: true));
+    await _checkInRepo.checkOutAll(
+
+    ).onError(
+          (error, stackTrace) {
+        emit(state.copyWith(isCheckOutAllLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    ).then(
+          (response) {
+        emit(state.copyWith(isCheckOutAllLoading: false));
+        if (response != null) {
+          Fluttertoast.showToast(msg: 'Check out all successfully');
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        } else {
+          Fluttertoast.showToast(
+              msg: 'Something went wrong, please try again later');
+        }
+      },
+    );
+  }
+
 }

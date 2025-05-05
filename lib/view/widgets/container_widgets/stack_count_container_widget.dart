@@ -11,7 +11,8 @@ class StackCountContainerWidget extends StatelessWidget {
   final double?  countRightPositioned;
   final double?  countPadding;
   final Color?   backgroundColor;
-  final int? count;
+  final Color?   imageBackgroundColor;
+  final String? count;
   const StackCountContainerWidget({super.key,
     this.imageHeight,
     this.imageUrl,
@@ -21,18 +22,23 @@ class StackCountContainerWidget extends StatelessWidget {
     this.countRightPositioned,
     this.countPadding,
     this.backgroundColor,
+    this.imageBackgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final double countPadding = (count != null && count! % 2 == 0) ? 3.0 : 5.0;
+    final int? parsedCount = int.tryParse(count ?? "");
+    final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 3.0 : 5.0;
     return Stack(
       clipBehavior: Clip.none,
       children: [
          NetworkImageWidget(
             height: imageHeight ?? 90,
             width: imageWidth ?? 90,
-            url: imageUrl ?? ""),
+            url: imageUrl ?? "",
+           imageBackgroundColor:  imageBackgroundColor ?? AppColors.gray,
+
+         ),
         Positioned(
           top: countTopPositioned ?? -1,
           right: countRightPositioned ?? -1,

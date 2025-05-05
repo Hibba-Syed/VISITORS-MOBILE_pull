@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:visitors/model/user_model.dart';
 
+import '../unit_model.dart';
+
 EServicesDetailsResponseModel eServicesDetailsResponseModelFromJson(String str) => EServicesDetailsResponseModel.fromJson(json.decode(str));
 
 String eServicesDetailsResponseModelToJson(EServicesDetailsResponseModel data) => json.encode(data.toJson());
@@ -567,38 +569,3 @@ class StatusHistory {
 }
 
 
-class Unit {
-  int? id;
-  String? unitNumber;
-  dynamic residentId;
-  bool? isLegalNoticeActive;
-  bool? isRdcActive;
-  String? titleDeedUrl;
-
-  Unit({
-    this.id,
-    this.unitNumber,
-    this.residentId,
-    this.isLegalNoticeActive,
-    this.isRdcActive,
-    this.titleDeedUrl,
-  });
-
-  factory Unit.fromJson(Map<String, dynamic> json) => Unit(
-    id: json["id"],
-    unitNumber: json["unit_number"],
-    residentId: json["resident_id"],
-    isLegalNoticeActive: json["is_legal_notice_active"],
-    isRdcActive: json["is_rdc_active"],
-    titleDeedUrl: json["title_deed_url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "unit_number": unitNumber,
-    "resident_id": residentId,
-    "is_legal_notice_active": isLegalNoticeActive,
-    "is_rdc_active": isRdcActive,
-    "title_deed_url": titleDeedUrl,
-  };
-}

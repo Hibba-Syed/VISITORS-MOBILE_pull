@@ -6,7 +6,6 @@ import 'package:visitors/utils/app_utils.dart';
 import '../../resource/constants/images.dart';
 import '../../resource/globals.dart';
 import '../../utils/routes/app_routes.dart';
-import '../../utils/validation_util.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

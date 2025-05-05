@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-import '../check_ins/check_ins_response_model.dart';
+import '../e_services/e_services_response_model.dart';
+import '../visitor_model.dart';
 
 CheckOutsResponseModel checkOutsResponseModelFromJson(String str) => CheckOutsResponseModel.fromJson(json.decode(str));
 

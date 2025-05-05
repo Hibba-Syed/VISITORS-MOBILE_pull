@@ -7,7 +7,6 @@ import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import '../../../bloc/auth/auth_cubit.dart';
-import '../../../resource/globals.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
 import '../../../utils/app_utils.dart';

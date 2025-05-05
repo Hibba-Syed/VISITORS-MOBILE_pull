@@ -184,7 +184,7 @@ class TabletDashboardScreen extends StatelessWidget {
               itemCount: 3,
               itemBuilder: (context, index) {
                 return CheckInCardWidget(
-                  count: 12,
+                  count: '4',
                   name: 'John Henry',
                   typeText: '1234',
                   type: 'Guest',

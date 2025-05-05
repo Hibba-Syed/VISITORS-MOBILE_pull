@@ -82,7 +82,7 @@ class VisitorPassesScreen extends StatelessWidget {
   _visitorPassesFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
-        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+        minWidth: MediaQuery.of(context).size.width,
       ),
       context: context,
       barrierColor: Colors.transparent,

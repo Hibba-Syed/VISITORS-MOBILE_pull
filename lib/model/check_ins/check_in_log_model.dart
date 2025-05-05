@@ -1,22 +1,22 @@
 // To parse this JSON data, do
 //
-//     final checkInsDetailsResponseModel = checkInsDetailsResponseModelFromJson(jsonString);
+//     final checkInLogModel = checkInLogModelFromJson(jsonString);
 
 import 'dart:convert';
 
-CheckInsDetailsResponseModel checkInsDetailsResponseModelFromJson(String str) => CheckInsDetailsResponseModel.fromJson(json.decode(str));
+CheckInLogModel checkInLogModelFromJson(String str) => CheckInLogModel.fromJson(json.decode(str));
 
-String checkInsDetailsResponseModelToJson(CheckInsDetailsResponseModel data) => json.encode(data.toJson());
+String checkInLogModelToJson(CheckInLogModel data) => json.encode(data.toJson());
 
-class CheckInsDetailsResponseModel {
+class CheckInLogModel {
   String? status;
-  List<Record>? record;
+  List<CheckInLogRecord>? record;
   int? code;
   dynamic meta;
   bool? requestStatus;
   String? message;
 
-  CheckInsDetailsResponseModel({
+  CheckInLogModel({
     this.status,
     this.record,
     this.code,
@@ -25,9 +25,9 @@ class CheckInsDetailsResponseModel {
     this.message,
   });
 
-  factory CheckInsDetailsResponseModel.fromJson(Map<String, dynamic> json) => CheckInsDetailsResponseModel(
+  factory CheckInLogModel.fromJson(Map<String, dynamic> json) => CheckInLogModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<Record>.from(json["record"]!.map((x) => Record.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckInLogRecord>.from(json["record"]!.map((x) => CheckInLogRecord.fromJson(x))),
     code: json["code"],
     meta: json["meta"],
     requestStatus: json["request_status"],
@@ -44,7 +44,7 @@ class CheckInsDetailsResponseModel {
   };
 }
 
-class Record {
+class CheckInLogRecord {
   int? id;
   int? visitorCheckinId;
   String? status;
@@ -52,7 +52,7 @@ class Record {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Record({
+  CheckInLogRecord({
     this.id,
     this.visitorCheckinId,
     this.status,
@@ -61,7 +61,7 @@ class Record {
     this.updatedAt,
   });
 
-  factory Record.fromJson(Map<String, dynamic> json) => Record(
+  factory CheckInLogRecord.fromJson(Map<String, dynamic> json) => CheckInLogRecord(
     id: json["id"],
     visitorCheckinId: json["visitor_checkin_id"],
     status: json["status"],

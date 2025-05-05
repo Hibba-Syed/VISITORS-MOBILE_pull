@@ -13,6 +13,7 @@ class NetworkImageWidget extends StatefulWidget {
   final BoxBorder? border;
   final BorderRadiusGeometry? borderRadius;
   final Widget? placeHolder;
+  final Color? imageBackgroundColor;
 
   const NetworkImageWidget(
       {super.key,
@@ -23,7 +24,9 @@ class NetworkImageWidget extends StatefulWidget {
       this.shape = BoxShape.circle,
       this.border,
       this.borderRadius,
-      this.placeHolder});
+      this.placeHolder,
+        this.imageBackgroundColor
+      });
 
   @override
   State<NetworkImageWidget> createState() => _NetworkImageWidgetState();
@@ -40,7 +43,7 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> {
       height: widget.height,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.gray,
+        color: widget.imageBackgroundColor ?? AppColors.gray,
         shape: widget.shape,
       ),
       child: widget.placeHolder ??

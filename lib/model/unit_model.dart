@@ -4,6 +4,8 @@ class Unit {
   bool? isLegalNoticeActive;
   bool? isRdcActive;
   String? titleDeedUrl;
+  dynamic residentId;
+
 
   Unit({
     this.id,
@@ -11,6 +13,8 @@ class Unit {
     this.isLegalNoticeActive,
     this.isRdcActive,
     this.titleDeedUrl,
+    this.residentId,
+
   });
 
   factory Unit.fromJson(Map<String, dynamic> json) => Unit(
@@ -19,6 +23,7 @@ class Unit {
     isLegalNoticeActive: json["is_legal_notice_active"],
     isRdcActive: json["is_rdc_active"],
     titleDeedUrl: json["title_deed_url"],
+    residentId: json["resident_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -27,5 +32,6 @@ class Unit {
     "is_legal_notice_active": isLegalNoticeActive,
     "is_rdc_active": isRdcActive,
     "title_deed_url": titleDeedUrl,
+    "resident_id": residentId,
   };
 }

@@ -37,27 +37,24 @@ class DashboardCubit extends Cubit<DashboardState> {
       Fluttertoast.showToast(msg: 'Something went wrong');
     }
   }
-
   Future<void> getCheckIns() async {
-    emit(state.copyWith(isLoading: true,page: 1));
+    emit(state.copyWith(isCheckInLoading: true));
     CheckInsResponseModel? response = await _checkInRepo
-        .getCheckIns(
-    ).onError(
+        .getCheckIns().onError(
           (error, stackTrace) {
-        emit(state.copyWith(isLoading: false));
+        emit(state.copyWith(isCheckInLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
         );
         throw error!;
       },
     );
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(isCheckInLoading: false));
     if (response != null) {
       emit(state.copyWith(checkInsRecord: response.record));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching visitors check-ins');
-      print('checkins${response?.record}');
     }
   }
 }

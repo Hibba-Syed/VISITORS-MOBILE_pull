@@ -14,7 +14,7 @@ import 'package:visitors/utils/app_utils.dart';
 class CheckOutsCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final int? visitorCount;
+  final String? visitorCount;
   final String? checkInGateValue;
   final String? checkOutGateValue;
   final Color? typeBackgroundColor;

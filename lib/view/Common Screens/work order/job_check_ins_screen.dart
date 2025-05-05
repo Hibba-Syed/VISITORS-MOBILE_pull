@@ -74,7 +74,7 @@ class JobCheckInsScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return CheckInCardWidget(
                     isServiceable: true,
-                    count: 3,
+                    count: '3',
                     reference: "VP001-25-00003",
                     typeText: "10007",
                     name: 'MUHAMMAD AHMED MOHAMMED ',

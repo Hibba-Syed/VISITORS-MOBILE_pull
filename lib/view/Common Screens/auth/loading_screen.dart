@@ -22,6 +22,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future getData() async{
      await  context.read<DashboardCubit>().getProfile(context);
      await context.read<CheckInsCubit>().getCheckIns();
+     await context.read<DashboardCubit>().getCheckIns();
+
     // if (!mounted) return;
       Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.deviceDeciderScreen, (route) => false);

@@ -87,8 +87,8 @@ class AllServicesScreen extends StatelessWidget {
   }
   _servicesFilterBottomSheet(context) {
     showModalBottomSheet(
-      constraints:  BoxConstraints(
-        minWidth:  AppUtils.isTablet(context)?  AppConstants.tabletScreen : AppConstants.mobileScreen,
+      constraints: BoxConstraints(
+        minWidth: MediaQuery.of(context).size.width,
       ),
       context: context,
       barrierColor: Colors.transparent,

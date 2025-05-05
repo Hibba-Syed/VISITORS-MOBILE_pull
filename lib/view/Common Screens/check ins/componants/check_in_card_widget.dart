@@ -19,7 +19,7 @@ class CheckInCardWidget extends StatelessWidget {
   final String? purpose;
   final String? phone;
   final String? date;
-  final int? count;
+  final String? count;
   final String? typeText;
   final String? typeImage;
   final Color? typeBackgroundColor;
@@ -92,7 +92,7 @@ class CheckInCardWidget extends StatelessWidget {
                         StackCountContainerWidget(
                           imageHeight: 55,
                           imageWidth: 55,
-                          count: count ?? 0,
+                          count: count ?? "",
                           countPadding: 6,
                           countTopPositioned: -5,
                           countRightPositioned: -6,
