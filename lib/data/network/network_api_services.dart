@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../resource/globals.dart';
 import '../app_exceptions.dart';
 import 'base_api_services.dart';
 
@@ -37,7 +38,7 @@ class NetworkApiServices implements BaseApiServices {
       final response = await http.get(Uri.parse(url), headers: {
         'accept': "application/json",
         'Content-Type': "application/json",
-        'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJvYW1zZXJ2aWNlcy5jb20iLCJhdWQiOiJodHRwczovL29hbXNlcnZpY2VzLmNvbSIsInN1YiI6NiwiZXhwIjoxNzQxMTgxMzc1LCJuYmYiOjE3NDExNTI1NzUsImlhdCI6MTc0MTE1MjU3NSwianRpIjoiTkFBS1NJIiwianRlIjoidmlzaXRvcl9jcmVkZW50aWFscyJ9.Aqptfo6eTX4K8Jum02thW5WHt3qlz_1iRY8cF6ml4Hc'
+        'authorization': 'Bearer ${Globals().token ?? ""}'
       }).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
         throw FetchDataException(
             "Connection timeout, please check your internet");

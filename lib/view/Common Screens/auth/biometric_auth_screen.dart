@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 
+import '../../../bloc/auth/auth_cubit.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
+import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
 
 class BiometricAuthScreen extends StatefulWidget {
-  const BiometricAuthScreen({super.key, });
+  final Map<dynamic, dynamic>? notificationData;
+  const BiometricAuthScreen({super.key, this.notificationData});
 
   @override
   State<BiometricAuthScreen> createState() => _BiometricAuthScreenState();
@@ -28,17 +32,20 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
 
   Future<void> _authenticateUser() async {
     bool isAuthenticated = await _localAuthService.authenticate();
+    print('isAuthenticated^^^$isAuthenticated');
     if (isAuthenticated) {
       _navigateToNextScreen();
     }
   }
 
   void _navigateToNextScreen() {
-    // context.read<AuthCubit>().login(
-    //   context,
-    //   email: spUtil.email!,
-    //   password: spUtil.password!,
-    // );
+    context.read<AuthCubit>().login(
+      context,
+      password: spUtil.password,
+      communityId: spUtil.communityId,
+      gate: spUtil.gate,
+      loginId: spUtil.loginId,
+    );
   }
 
   @override
@@ -92,7 +99,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                                   invert: true,
                                   onPressed: () {
                                     Navigator.pop(context);
-                                    Navigator.pushNamed(context, AppRoutes.loginScreen);
+                                    context.read<AuthCubit>().logout(context);
                                   },
                                 ),
                               ),

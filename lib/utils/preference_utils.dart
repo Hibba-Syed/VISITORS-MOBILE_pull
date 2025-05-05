@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/profile/profile_response_model.dart';
 import '../resource/constants/strings.dart';
 
 
@@ -111,17 +113,17 @@ class PreferenceUtil {
     return _spf!.clear();
   }
 
-  // ProfileRecord? get profileRecord {
-  //   var profileJson = getString(Strings.keyProfile);
-  //   if (profileJson != null) {
-  //     return ProfileRecord.fromJson(jsonDecode(profileJson));
-  //   }
-  //   return null;
-  // }
-  //
-  // set profileRecord(ProfileRecord? profileRecord) {
-  //   putString(Strings.keyProfile, jsonEncode(profileRecord?.toJson()));
-  // }
+  ProfileRecord? get profileRecord {
+    var profileJson = getString(Strings.keyProfile);
+    if (profileJson != null) {
+      return ProfileRecord.fromJson(jsonDecode(profileJson));
+    }
+    return null;
+  }
+
+  set profileRecord(ProfileRecord? profileRecord) {
+    putString(Strings.keyProfile, jsonEncode(profileRecord?.toJson()));
+  }
 
   String? get token {
     return getString(Strings.keyToken);
@@ -132,13 +134,32 @@ class PreferenceUtil {
       putString(Strings.keyToken, token);
     }
   }
-  String? get email {
-    return getString(Strings.keyEmail);
+  String? get communityId {
+    return getString(Strings.keyCommunityId);
   }
 
-  set email(String? email) {
-    if (email != null) {
-      putString(Strings.keyEmail, email);
+  set communityId(String? communityId) {
+    if (communityId != null) {
+      putString(Strings.keyCommunityId, communityId);
+    }
+  }
+  String? get gate {
+    return getString(Strings.keyGate);
+  }
+
+  set gate(String? gate) {
+    if (gate != null) {
+      putString(Strings.keyGate, gate);
+    }
+  }
+
+ String? get loginId {
+    return getString(Strings.keyLoginId);
+  }
+
+  set loginId(String? loginId) {
+    if (loginId != null) {
+      putString(Strings.keyLoginId, loginId);
     }
   }
 

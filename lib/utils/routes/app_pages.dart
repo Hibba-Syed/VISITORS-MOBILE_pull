@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/view/Common%20Screens/auth/biometric_auth_screen.dart';
 import 'package:visitors/view/Common%20Screens/auth/login_screen.dart';
@@ -16,6 +17,8 @@ import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen
 import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
+import '../../bloc/auth/auth_cubit.dart';
+import '../../view/Common Screens/auth/loading_screen.dart';
 import '../../view/Common Screens/splash_screen.dart';
 import 'app_routes.dart';
 
@@ -30,10 +33,17 @@ class AppPages {
     PageEntity(
       route: AppRoutes.loginScreen,
       page: const LoginScreen(),
+      bloc: BlocProvider(
+        create: (context) => AuthCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.biometricAuth,
       page: const BiometricAuthScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.loadingScreen,
+      page: const LoadingScreen(),
     ),
     PageEntity(
       route: AppRoutes.deviceDeciderScreen,
@@ -42,6 +52,9 @@ class AppPages {
         providers: [
           BlocProvider(
             create: (context) => DeviceDeciderCubit(),
+          ),
+          BlocProvider(
+            create: (context) => DashboardCubit(),
           ),
           BlocProvider(
             create: (context) => CheckInsCubit(),

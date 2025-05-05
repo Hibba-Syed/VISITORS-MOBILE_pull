@@ -92,7 +92,7 @@ class CheckInCardWidget extends StatelessWidget {
                         StackCountContainerWidget(
                           imageHeight: 55,
                           imageWidth: 55,
-                          count: count,
+                          count: count ?? 0,
                           countPadding: 6,
                           countTopPositioned: -5,
                           countRightPositioned: -6,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -15,13 +16,32 @@ import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/check_out_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../widgets/empty_widget.dart';
 
-class CheckInsScreen extends StatelessWidget {
+
+class CheckInsScreen extends StatefulWidget {
   const CheckInsScreen({super.key});
 
+  @override
+  State<CheckInsScreen> createState() => _CheckInsScreenState();
+}
+
+class _CheckInsScreenState extends State<CheckInsScreen> {
+  final ScrollController _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        context.read<CheckInsCubit>().getMoreCheckIns();
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -91,38 +111,53 @@ class CheckInsScreen extends StatelessWidget {
                   ),
                   const Gap(10),
                   Expanded(
-                    child: ListView.separated(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: 12,
-                      itemBuilder: (context, index) {
-                        return CheckInCardWidget(
-                          count: 5,
-                          typeImage: AppImages.community,
-                          typeText: "Community Visit",
-                          name: 'MUHAMMAD AHMED MOHAMMED ',
-                          profileImageUrl:
-                          "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                          type: 'Guest',
-                          date: DateTimeUtil.getFormattedDateTime(
-                              '2025-04-04T05:33:36.000000Z'),
-                          phone: '34567890098',
-                          gateValue: "The W Residences Reception",
-                          checkOutOnPressed: () {
-                            _showCheckoutDialog(context);
-                          },
-                          detailsOnPressed: () {
-                            Navigator.pushNamed(
-                                context, AppRoutes.checkInDetailsScreen);
-                          },
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Gap(10);
-                      },
-                    ),
+                    child: state.isLoading ? LoaderWidget() :
+                        state.checkInsRecord?.isNotEmpty ?? false
+                            ?
+                             RefreshIndicator(
+                             onRefresh: ()async{
+                               context.read<CheckInsCubit>().getCheckIns();
+                            },
+                      child: ListView.separated(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        controller: _scrollController,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: state.checkInsRecord?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          CheckInsRecord? checkInsRecord = state.checkInsRecord?[index];
+                          return CheckInCardWidget(
+                            count:  int.tryParse(checkInsRecord?.visitorCount.toString() ?? '0') ?? 0,
+                            typeImage: (checkInsRecord?.type?.toLowerCase() == 'community visit' || checkInsRecord?.type?.toLowerCase() == 'community service' )?
+                            AppImages.community : "",
+                            typeText: (checkInsRecord?.type?.toLowerCase() == 'unit visit' || checkInsRecord?.type?.toLowerCase() == 'unit service') ?
+                                checkInsRecord?.unit?.unitNumber
+                            : checkInsRecord?.type ?? "",
+                            name: checkInsRecord?.name ?? "",
+                            profileImageUrl: checkInsRecord?.visitor?.imageUrl ?? "",
+                            type:  "Guest",
+                            date: DateTimeUtil.getFormattedDatesTime(checkInsRecord?.visitor?.createdAt),
+                            phone: checkInsRecord?.phone ?? "",
+                            gateValue: checkInsRecord?.checkinGate ?? "",
+                            checkOutOnPressed: () {
+                              _showCheckoutDialog(context);
+                            },
+                            detailsOnPressed: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.checkInDetailsScreen);
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Gap(10);
+                        },
+                      ),
+                    ) :  const EmptyWidget(
+                          text: 'No data available',
+                        ),
                   ),
+                  if (state.loadMore) const LoaderWidget(),
                 ],
               ),
             );

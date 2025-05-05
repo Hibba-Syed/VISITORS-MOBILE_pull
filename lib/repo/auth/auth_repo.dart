@@ -1,11 +1,10 @@
 
+import 'package:visitors/model/auth/login_response_model.dart';
+
+import '../../model/auth/logout_response_model.dart';
+
 abstract class AuthRepo {
-  // Future<LoginResponseModel?> login(Map<String, dynamic> data);
-  // Future<UpdatePasswordResponseModel?> updatePassword(
-  //     {required Map<String, dynamic> data});
-  // Future<VerifyEmailNotificationResponseModel?> sendVerifyEmailNotification();
-  // Future<ForgotPasswordResponseModel?> forgotPassword({
-  //   required String email,
-  // });
-  // Future<LogoutResponseModel?> logout();
+  Future<LoginResponseModel?> login(Map<String, dynamic> data);
+  Future<LogoutResponseModel?> logout();
+
 }
