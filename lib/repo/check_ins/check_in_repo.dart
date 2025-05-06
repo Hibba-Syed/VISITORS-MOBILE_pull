@@ -10,6 +10,11 @@ abstract class CheckInRepo {
     int? page,
     int? limit,
     String? keyword,
+    int? unitId,
+    String? dateRange,
+    String? serviceableType,
+    int? vendorId,
+
   });
   Future<CheckInLogModel?> getCheckInLogs({required int? id});
   Future<CheckOutAllModel?> checkOutAll();

@@ -86,8 +86,7 @@ class NetworkApiServices implements BaseApiServices {
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
-          'authorization': 'Bearer '
-          // ${Globals().token}
+          'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
       )
@@ -113,8 +112,7 @@ class NetworkApiServices implements BaseApiServices {
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
-          'authorization': 'Bearer '
-          //${Globals().token}
+          'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
       )
@@ -141,8 +139,7 @@ class NetworkApiServices implements BaseApiServices {
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
-          'authorization': 'Bearer '
-          //${Globals().token}
+          'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
       ).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
@@ -218,8 +215,8 @@ class NetworkApiServices implements BaseApiServices {
       Map<String, String> headers = {
         "content-type": "multipart/form-data",
         'Accept': 'application/json',
-        "Authorization": "Bearer "
-//${Globals().token}
+        "Authorization": 'Bearer ${Globals().token}'
+
       };
       request.headers.addAll(headers);
       var streamedResponse = await request
@@ -255,8 +252,7 @@ class NetworkApiServices implements BaseApiServices {
       Map<String, String> headers = {
         "content-type": "multipart/form-data",
         'Accept': 'application/json',
-        "Authorization": "Bearer "
-        //${Globals().token}
+        "Authorization": 'Bearer ${Globals().token}'
       };
       request.headers.addAll(headers);
       var streamedResponse = await request

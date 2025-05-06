@@ -38,7 +38,7 @@ class AppImages {
   static const String message = "${baseSvgPath}message.svg";
   static const String services = "${baseSvgPath}services.svg";
   static const String person = "${baseSvgPath}person.svg";
-  static const String filter = "${baseSvgPath}filter.svg";
+  static const String filter = "${baseSvgPath}vendor.svg";
   static const String link = "${baseSvgPath}link.svg";
   static const String search = "${baseSvgPath}search.svg";
   static const String phone = "${baseSvgPath}phone.svg";

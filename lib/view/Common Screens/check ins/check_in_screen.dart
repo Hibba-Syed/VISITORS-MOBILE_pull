@@ -21,6 +21,9 @@ import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
+import '../../../model/unit/unit_model.dart';
+import '../../../model/unit/units_response_model.dart';
+import '../../../model/vendor/vendor_response_model.dart';
 import '../../widgets/empty_widget.dart';
 
 class CheckInsScreen extends StatefulWidget {
@@ -33,13 +36,26 @@ class CheckInsScreen extends StatefulWidget {
 class _CheckInsScreenState extends State<CheckInsScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+  String? selectedDateRange;
+  String? selectedRang;
+  String? selectedType;
+  UnitModel? selectedUnit;
+  VendorsRecord? selectedVendor;
   @override
   void initState() {
     super.initState();
+    context.read<CheckInsCubit>().getUnits();
+    context.read<CheckInsCubit>().getVendors();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<CheckInsCubit>().getMoreCheckIns(keyword: _searchController.text);
+        context.read<CheckInsCubit>().getMoreCheckIns(
+              keyword: _searchController.text,
+              unitId: selectedUnit?.id,
+              vendorId: selectedVendor?.id,
+              dateRange: selectedRang,
+              serviceableType: selectedType,
+            );
       }
     });
   }
@@ -66,23 +82,72 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
-                       Flexible(
-                          child: SearchTextField(
+                      Flexible(
+                        child: SearchTextField(
                             controller: _searchController,
-                           onClearPressed: ()async {
-                             _searchController.clear();
-                             await context.read<CheckInsCubit>().getCheckIns(keyword: '');
-                           },
-                         onFieldSubmitted: (value){
-                          context.read<CheckInsCubit>().getCheckIns(keyword: value);
-                         }
-
-                          ),
+                            onClearPressed: () async {
+                              _searchController.clear();
+                              await context
+                                  .read<CheckInsCubit>()
+                                  .getCheckIns(keyword: '');
+                            },
+                            onFieldSubmitted: (value) {
+                              context
+                                  .read<CheckInsCubit>()
+                                  .getCheckIns(keyword: value);
+                            }),
                       ),
                       const Gap(6),
                       FilterContainerWidget(
+                        isFilterApplied: (selectedType != null) ||
+                                (selectedVendor != null) ||
+                                (selectedUnit != null) ||
+                                (selectedRang != null)
+                            ? true
+                            : false,
                         onPressed: () {
-                          _checkInFilterBottomSheet(context);
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            constraints: BoxConstraints(
+                              minWidth: MediaQuery.of(context).size.width,
+                            ),
+                            context: context,
+                            barrierColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return CheckInFilterBottomSheet(
+                                keywordFilter: _searchController.text,
+                                selectedDateRange: selectedDateRange,
+                                selectedRang: selectedRang,
+                                selectedType: selectedType,
+                                selectedUnit: selectedUnit,
+                                selectedVendor: selectedVendor,
+                                onChangeDateRange: (value) {
+                                  selectedDateRange = value;
+                                  setState(() {});
+                                },
+                                onChangeRang: (value) {
+                                  selectedRang = value;
+                                  setState(() {});
+                                },
+                                onChangeType: (value) {
+                                  selectedType = value;
+                                  print('type:::$value');
+                                  print('selected type:::$value');
+                                  setState(() {});
+                                },
+                                onChangeUnit: (value) {
+                                  selectedUnit = value;
+                                  setState(() {});
+                                },
+                                onChangeVendor: (value) {
+                                  selectedVendor = value;
+                                  setState(() {});
+                                },
+                              );
+                            },
+                          );
+                          print('filters$selectedUnit');
                         },
                       )
                     ],
@@ -112,9 +177,11 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                             confirmButtonColor: AppColors.red,
                             confirmButtonText: 'Checkout All',
                             title: 'Checkout for All Check-Ins',
-                            // onConfirm: ()async{
-                            //   context.read<CheckInsCubit>().checkOutAll(context);
-                            // },
+                            onConfirm: () async {
+                              return context
+                                  .read<CheckInsCubit>()
+                                  .checkOutAll(context);
+                            },
                             contentBuilder: (context, setState) {
                               return const Align(
                                 alignment: Alignment.center,
@@ -131,7 +198,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                 Expanded(
                   child: state.isLoading
                       ? LoaderWidget()
-                      : state.checkInsRecord?.isNotEmpty ?? false
+                      : state.checkInModel?.isNotEmpty ?? false
                           ? RefreshIndicator(
                               onRefresh: () async {
                                 context.read<CheckInsCubit>().getCheckIns(
@@ -143,10 +210,10 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                 padding: const EdgeInsets.only(bottom: 10),
                                 shrinkWrap: true,
                                 primary: false,
-                                itemCount: state.checkInsRecord?.length ?? 0,
+                                itemCount: state.checkInModel?.length ?? 0,
                                 itemBuilder: (context, index) {
-                                  CheckInsModel? checkInsRecord =
-                                      state.checkInsRecord?[index];
+                                  CheckInModel? checkInsRecord =
+                                      state.checkInModel?[index];
                                   return CheckInCardWidget(
                                     count: checkInsRecord?.visitorCount ?? "",
                                     typeImage:
@@ -178,10 +245,14 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                       _showCheckoutDialog(context);
                                     },
                                     detailsOnPressed: () {
-                                      context.read<CheckInsDetailsCubit>().getCheckInDetails(id: checkInsRecord?.id);
+                                      context
+                                          .read<CheckInsDetailsCubit>()
+                                          .getCheckInDetails(
+                                              id: checkInsRecord?.id);
                                       Navigator.pushNamed(context,
-                                          AppRoutes.checkInDetailsScreen,arguments: state.checkInsRecord?[index]);
-
+                                          AppRoutes.checkInDetailsScreen,
+                                          arguments:
+                                              state.checkInModel?[index]);
                                     },
                                   );
                                 },
@@ -255,16 +326,18 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
     );
   }
 
-  _checkInFilterBottomSheet(context) {
-    showModalBottomSheet(
-      constraints: BoxConstraints(
-        minWidth: MediaQuery.of(context).size.width,
-      ),
-      context: context,
-      barrierColor: Colors.transparent,
-      builder: (context) {
-        return const CheckInFilterBottomSheet();
-      },
-    );
-  }
+  // _checkInFilterBottomSheet(context) {
+  //   showModalBottomSheet(
+  //     constraints: BoxConstraints(
+  //       minWidth: MediaQuery.of(context).size.width,
+  //     ),
+  //     context: context,
+  //     barrierColor: Colors.transparent,
+  //     builder: (context) {
+  //       context.read<CheckInsCubit>().getUnits();
+  //       context.read<CheckInsCubit>().getVendors();
+  //       return const CheckInFilterBottomSheet();
+  //     },
+  //   );
+  // }
 }

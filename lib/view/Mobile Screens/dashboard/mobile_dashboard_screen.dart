@@ -22,6 +22,7 @@ import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../utils/date_time.dart';
 import '../../widgets/container_widgets/check_out_container_widget.dart';
+import '../../widgets/empty_widget.dart';
 
 class MobileDashboardScreen extends StatelessWidget {
   const MobileDashboardScreen({
@@ -190,13 +191,20 @@ class MobileDashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
+                state.checkInsModel?.isEmpty ?? true ?
+                SizedBox(
+                  height: 100,
+                  child: const EmptyWidget(
+                    text: 'No data available',
+                  ),
+                ):
                 ListView.separated(
                   padding: const EdgeInsets.only(bottom: 10),
                   shrinkWrap: true,
                   primary: false,
                   itemCount: (state.checkInsModel?.length ?? 0) > 3 ? 3 : (state.checkInsModel?.length ?? 3),
                   itemBuilder: (context, index) {
-                    CheckInsModel? checkInsRecord =
+                    CheckInModel? checkInsRecord =
                         state.checkInsModel?[index];
                     return CheckInCardWidget(
                       count: checkInsRecord?.visitorCount ?? "",

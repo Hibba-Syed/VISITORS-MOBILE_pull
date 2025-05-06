@@ -8,4 +8,6 @@ class ApiUrl {
   static const String checkIns = '$baseUrl/visitor/check-ins';
   static const String checkInLogs = '$baseUrl/visitor/get-logs';
   static const String checkOutAll = '$baseUrl/visitor/check-out-all';
+  static const String units = '$baseUrl/visitor/units';
+  static const String vendors = '$baseUrl/visitor/vendors';
 }

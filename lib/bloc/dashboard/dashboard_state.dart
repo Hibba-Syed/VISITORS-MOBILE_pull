@@ -5,7 +5,7 @@ class DashboardState {
   final bool? isCheckInLoading;
    ProfileRecord? profileRecord;
   final int page;
-  List<CheckInsModel>? checkInsModel;
+  List<CheckInModel>? checkInsModel;
    DashboardState({
     this.isLoading = false,
     this.isCheckInLoading = false,
@@ -18,7 +18,7 @@ class DashboardState {
     bool? isCheckInLoading,
     ProfileRecord? profileRecord,
     int? page,
-    List<CheckInsModel>? checkInsRecord,
+    List<CheckInModel>? checkInsRecord,
   }) {
     return DashboardState(
       isLoading: isLoading ?? this.isLoading,

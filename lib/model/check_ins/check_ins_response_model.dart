@@ -13,7 +13,7 @@ String visitorCheckInsModelToJson(CheckInsResponseModel data) => json.encode(dat
 
 class CheckInsResponseModel {
   String? status;
-  List<CheckInsModel>? record;
+  List<CheckInModel>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
@@ -30,7 +30,7 @@ class CheckInsResponseModel {
 
   factory CheckInsResponseModel.fromJson(Map<String, dynamic> json) => CheckInsResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<CheckInsModel>.from(json["record"]!.map((x) => CheckInsModel.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckInModel>.from(json["record"]!.map((x) => CheckInModel.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],
@@ -91,7 +91,7 @@ class Meta {
   };
 }
 
-class CheckInsModel {
+class CheckInModel {
   int? id;
   int? associationId;
   int? unitId;
@@ -119,7 +119,7 @@ class CheckInsModel {
   Serviceable? serviceable;
   Vendor? vendor;
 
-  CheckInsModel({
+  CheckInModel({
     this.id,
     this.associationId,
     this.unitId,
@@ -148,7 +148,7 @@ class CheckInsModel {
     this.vendor,
   });
 
-  factory CheckInsModel.fromJson(Map<String, dynamic> json) => CheckInsModel(
+  factory CheckInModel.fromJson(Map<String, dynamic> json) => CheckInModel(
     id: json["id"],
     associationId: json["association_id"],
     unitId: json["unit_id"],

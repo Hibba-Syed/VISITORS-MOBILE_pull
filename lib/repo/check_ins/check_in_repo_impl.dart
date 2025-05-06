@@ -11,17 +11,29 @@ class CheckInRepoImpl implements CheckInRepo {
   final BaseApiServices _apiService = NetworkApiServices();
 
   @override
-  Future<CheckInsResponseModel?> getCheckIns({int? page, int? limit,String? keyword})async {
+  Future<CheckInsResponseModel?> getCheckIns({
+    int? page,
+    int? limit,
+    String? keyword,
+    int? unitId,
+    String? dateRange,
+    String? serviceableType,
+    int? vendorId,
+  }) async {
     try {
-      String url = '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}';
+      String url =
+          '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}';
+      print('url^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckInsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
+
   }
+
   @override
-  Future<CheckInLogModel?> getCheckInLogs({required int? id})async {
+  Future<CheckInLogModel?> getCheckInLogs({required int? id}) async {
     try {
       String url = '${ApiUrl.checkInLogs}/$id';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
@@ -32,15 +44,13 @@ class CheckInRepoImpl implements CheckInRepo {
   }
 
   @override
-  Future<CheckOutAllModel?> checkOutAll(
-      ) async {
+  Future<CheckOutAllModel?> checkOutAll() async {
     try {
       dynamic response = await _apiService
-          .getAuthPutApiResponse(ApiUrl.checkOutAll );
+          .getAuthPutApiResponse(ApiUrl.checkOutAll);
       return CheckOutAllModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
   }
-
 }

@@ -8,7 +8,7 @@ void main() async {
   await initPreferences();
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => const  IskaanVisitorsMobile(), // Wrap your app
     ),
   );

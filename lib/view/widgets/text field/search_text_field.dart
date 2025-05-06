@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/styles/styles.dart';
-import '../../../utils/validation_util.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? initialValue;

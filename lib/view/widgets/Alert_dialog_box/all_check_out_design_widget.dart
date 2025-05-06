@@ -8,7 +8,6 @@ import '../../../resource/constants/app_colors.dart' show AppColors;
 import '../../../utils/app_utils.dart';
 class AllCheckOutDesignWidget extends StatelessWidget {
   const AllCheckOutDesignWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Column(

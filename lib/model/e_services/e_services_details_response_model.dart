@@ -6,7 +6,8 @@ import 'dart:convert';
 
 import 'package:visitors/model/user_model.dart';
 
-import '../unit_model.dart';
+import '../unit/units_response_model.dart';
+
 
 EServicesDetailsResponseModel eServicesDetailsResponseModelFromJson(String str) => EServicesDetailsResponseModel.fromJson(json.decode(str));
 
@@ -126,7 +127,7 @@ class Record {
   String? profileImageUrl;
   Application? application;
   List<StatusHistory>? statusHistory;
-  Unit? unit;
+  UnitsResponseModel? unit;
 
   Record({
     this.id,
@@ -287,7 +288,7 @@ class Record {
     profileImageUrl: json["profile_image_url"],
     application: json["application"] == null ? null : Application.fromJson(json["application"]),
     statusHistory: json["status_history"] == null ? [] : List<StatusHistory>.from(json["status_history"]!.map((x) => StatusHistory.fromJson(x))),
-    unit: json["unit"] == null ? null : Unit.fromJson(json["unit"]),
+    unit: json["unit"] == null ? null : UnitsResponseModel.fromJson(json["unit"]),
   );
 
   Map<String, dynamic> toJson() => {

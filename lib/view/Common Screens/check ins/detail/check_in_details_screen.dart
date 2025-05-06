@@ -28,8 +28,8 @@ class CheckInDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CheckInsModel? checkInsModel =
-        ModalRoute.of(context)?.settings.arguments as CheckInsModel?;
+    CheckInModel? checkInsModel =
+        ModalRoute.of(context)?.settings.arguments as CheckInModel?;
 
     print(
         'check in details ${checkInsModel?.name} ${checkInsModel?.visitor?.nationality}');
