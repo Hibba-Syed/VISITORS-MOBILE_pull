@@ -21,9 +21,6 @@ import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
-import '../../../model/unit/unit_model.dart';
-import '../../../model/unit/units_response_model.dart';
-import '../../../model/vendor/vendor_response_model.dart';
 import '../../widgets/empty_widget.dart';
 
 class CheckInsScreen extends StatefulWidget {
@@ -36,11 +33,6 @@ class CheckInsScreen extends StatefulWidget {
 class _CheckInsScreenState extends State<CheckInsScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  String? selectedDateRange;
-  String? selectedRang;
-  String? selectedType;
-  UnitModel? selectedUnit;
-  VendorsRecord? selectedVendor;
   @override
   void initState() {
     super.initState();
@@ -51,10 +43,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
           _scrollController.position.maxScrollExtent) {
         context.read<CheckInsCubit>().getMoreCheckIns(
               keyword: _searchController.text,
-              unitId: selectedUnit?.id,
-              vendorId: selectedVendor?.id,
-              dateRange: selectedRang,
-              serviceableType: selectedType,
+
             );
       }
     });
@@ -99,55 +88,15 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                       ),
                       const Gap(6),
                       FilterContainerWidget(
-                        isFilterApplied: (selectedType != null) ||
-                                (selectedVendor != null) ||
-                                (selectedUnit != null) ||
-                                (selectedRang != null)
+                        isFilterApplied:
+                        (state.selectedVendor != null) ||
+                            (state.selectedType?.value.isNotEmpty ?? false) ||
+                            (state.selectedUnit !=null) ||
+                            (state.dateRang !=null)
                             ? true
                             : false,
                         onPressed: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            constraints: BoxConstraints(
-                              minWidth: MediaQuery.of(context).size.width,
-                            ),
-                            context: context,
-                            barrierColor: Colors.transparent,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return CheckInFilterBottomSheet(
-                                keywordFilter: _searchController.text,
-                                selectedDateRange: selectedDateRange,
-                                selectedRang: selectedRang,
-                                selectedType: selectedType,
-                                selectedUnit: selectedUnit,
-                                selectedVendor: selectedVendor,
-                                onChangeDateRange: (value) {
-                                  selectedDateRange = value;
-                                  setState(() {});
-                                },
-                                onChangeRang: (value) {
-                                  selectedRang = value;
-                                  setState(() {});
-                                },
-                                onChangeType: (value) {
-                                  selectedType = value;
-                                  print('type:::$value');
-                                  print('selected type:::$value');
-                                  setState(() {});
-                                },
-                                onChangeUnit: (value) {
-                                  selectedUnit = value;
-                                  setState(() {});
-                                },
-                                onChangeVendor: (value) {
-                                  selectedVendor = value;
-                                  setState(() {});
-                                },
-                              );
-                            },
-                          );
-                          print('filters$selectedUnit');
+                          _checkInFilterBottomSheet(context);
                         },
                       )
                     ],
@@ -326,18 +275,18 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
     );
   }
 
-  // _checkInFilterBottomSheet(context) {
-  //   showModalBottomSheet(
-  //     constraints: BoxConstraints(
-  //       minWidth: MediaQuery.of(context).size.width,
-  //     ),
-  //     context: context,
-  //     barrierColor: Colors.transparent,
-  //     builder: (context) {
-  //       context.read<CheckInsCubit>().getUnits();
-  //       context.read<CheckInsCubit>().getVendors();
-  //       return const CheckInFilterBottomSheet();
-  //     },
-  //   );
-  // }
+  _checkInFilterBottomSheet(context) {
+    showModalBottomSheet(
+      constraints: BoxConstraints(
+        minWidth: MediaQuery.of(context).size.width,
+      ),
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        context.read<CheckInsCubit>().getUnits();
+        context.read<CheckInsCubit>().getVendors();
+        return const CheckInFilterBottomSheet();
+      },
+    );
+  }
 }

@@ -11,33 +11,10 @@ import 'package:visitors/view/widgets/picker/date_range_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/unit/unit_model.dart';
-import '../../../../model/unit/units_response_model.dart';
-import '../../../../model/vendor/vendor_response_model.dart';
+import '../../../../model/vendor/vendor_model.dart';
 
 class CheckInFilterBottomSheet extends StatefulWidget {
-  final String? keywordFilter;
-  final String? selectedDateRange;
-  final String? selectedRang;
-  final String? selectedType;
-  final UnitModel? selectedUnit;
-  final VendorsRecord? selectedVendor;
-  final Function(UnitModel? value)? onChangeUnit;
-  final Function(String? value)? onChangeDateRange;
-  final Function(String? value)? onChangeRang;
-  final Function(VendorsRecord? value)? onChangeVendor;
-  final Function(String? value)? onChangeType;
   const CheckInFilterBottomSheet({super.key,
-    this.keywordFilter,
-    this.selectedDateRange,
-    this.onChangeRang,
-    this.selectedRang,
-    this.selectedType,
-    this.onChangeDateRange,
-    this.onChangeUnit,
-    this.onChangeVendor,
-    this.selectedUnit,
-    this.selectedVendor,
-    this.onChangeType,
 
   });
 
@@ -47,37 +24,20 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
-  String? selectedDateRange;
   String? selectedRang;
-  String? selectedType;
-  UnitModel? selectedUnit;
-  VendorsRecord? selectedVendor;
 
   final List<String> rangList = [
     'Last 30 Days',
     'Last 60 Days',
     'Last 90 Days'
   ];
-  List<RangeModel?>? statuesList = [
-    RangeModel(label: "Last 30 Days", value: "Last 30 Days"),
-    RangeModel(label: "Last 60 Days", value: "Last 60 Days"),
-    RangeModel(label: "Last 90 Days", value: "Last 90 Days"),
-  ];
-  final List<String> typeList = [
-    'Guests',
-    'Services',
-    'Work Order / RFPs',
-    'Visitor Pass'
-  ];
-  @override
-  void initState() {
-    selectedDateRange = widget.selectedDateRange;
-    selectedRang = widget.selectedRang;
-    selectedType = widget.selectedType;
-    selectedUnit = widget.selectedUnit;
-    selectedVendor = widget.selectedVendor;
-    super.initState();
-  }
+
+  final List<TypeModel> typeList = [
+    TypeModel(label: 'Guests', value: 'guest'),
+    TypeModel(label: 'Services', value: 'application'),
+    TypeModel(label: 'Work Order / RFPs', value: 'job'),
+    TypeModel(label: 'Visitor Pass', value: 'visitor Pass'),];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -104,32 +64,54 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 const Gap(15),
                 CustomDateRangePickerWidget(
                   hintText: "Date Range",
-                  selectedDate: selectedDateRange,
+                  selectedDate: context.watch<CheckInsCubit>().state.dateRang,
                   onChangeDate: (value) {
-                    selectedDateRange = value;
+                    context.read<CheckInsCubit>().onChangeDateRange(value);
                   },
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Range",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedRang,
-                    itemAsString: (rang) => rang,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: rangList,
-                    onChanged: (value) {
-                      selectedRang = value;
-                    }),
+                  hint: "Range",
+                  fillColor: AppColors.white,
+                  selectedItem: selectedRang,
+                  itemAsString: (rang) => rang,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: rangList,
+                  onChanged: (value) {
+                    selectedRang = value;
+                    final now = DateTime.now();
+                    DateTime fromDate;
+                    if (value == 'Last 30 Days') {
+                      fromDate = now.subtract(Duration(days: 30));
+                    } else if (value == 'Last 60 Days') {
+                      fromDate = now.subtract(Duration(days: 60));
+                    } else if (value == 'Last 90 Days') {
+                      fromDate = now.subtract(Duration(days: 90));
+                    } else {
+                      fromDate = now;
+                    }
+
+                    // Format dates without time
+                    final formattedFromDate = '${fromDate.year}-${fromDate.month.toString().padLeft(2, '0')}-${fromDate.day.toString().padLeft(2, '0')}';
+                    final formattedNow = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+                    // Create a string representation in the format your cubit expects
+                    final dateRangeString = '$formattedFromDate - $formattedNow';
+
+                    context.read<CheckInsCubit>().onChangeDateRange(dateRangeString);
+                    print('dateRange $dateRangeString');
+                  },
+                ),
                 const Gap(10),
-                SingleSelectedDropdownWidget<String>(
+                SingleSelectedDropdownWidget<TypeModel>(
                     hint: "Type",
                     fillColor: AppColors.white,
-                    selectedItem: selectedType,
-                    itemAsString: (type) => type,
-                    compareFn: (p0, p1) => p0 == p1,
+                    selectedItem:  context.watch<CheckInsCubit>().state.selectedType,
+                    itemAsString: (type) => type.label,
+                    compareFn:(p0, p1) => p0.value == p1.value,
                     items: typeList,
                     onChanged: (value) {
-                      selectedType = value;
+                      context.read<CheckInsCubit>().onChangeSelectedType(value);
                     }),
                 const Gap(10),
                 BlocBuilder<CheckInsCubit, CheckInsState>(
@@ -140,57 +122,40 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                     return SingleSelectedDropdownWidget<UnitModel>(
                         hint: "Unit",
                         fillColor: AppColors.white,
-                        selectedItem: selectedUnit,
+                        selectedItem: context.watch<CheckInsCubit>().state.selectedUnit,
                         itemAsString: (unit) => unit.unitNumber ?? "",
                         compareFn: (p0, p1) => p0.id == p1.id,
                         items: state.units ?? [],
                         onChanged: (value) {
-                          selectedUnit = value;
+                          context.read<CheckInsCubit>().onChangeSelectedUnit(value);
                         });
                   },
                 ),
                 const Gap(10),
                 BlocBuilder<CheckInsCubit, CheckInsState>(
                   builder: (context, state) {
-                    return SingleSelectedDropdownWidget<VendorsRecord>(
+                    return SingleSelectedDropdownWidget<VendorModel>(
                         hint: "Vendors",
                         fillColor: AppColors.white,
-                        selectedItem: selectedVendor,
+                        selectedItem: context.watch<CheckInsCubit>().state.selectedVendor,
                         itemAsString: (vendor) => vendor.companyName ?? "",
                         compareFn: (p0, p1) => p0.id == p1.id,
-                        items: state.vendorsModel?.record ?? [],
+                        items: state.vendors ?? [],
                         onChanged: (value) {
-                          selectedVendor = value;
+                          context.read<CheckInsCubit>().onChangeSelectedVendors(value);
                         });
                   },
                 ),
                 const Gap(30),
                 FilterButtonWidget(
                   applyOnPressed: () {
-                    widget.onChangeType?.call(selectedType);
-                    widget.onChangeVendor?.call(selectedVendor);
-                    widget.onChangeUnit?.call(selectedUnit);
-                    widget.onChangeDateRange?.call(selectedDateRange);
-                    widget.onChangeRang?.call(selectedRang);
-                    context.read<CheckInsCubit>().getCheckIns(
-                        keyword: widget.keywordFilter,
-                      unitId: widget.selectedUnit?.id,
-                      vendorId: widget.selectedVendor?.id,
-                      dateRange: widget.selectedDateRange,
-                      serviceableType: widget.selectedType
-                    );
-                    print('vendor ${widget.selectedDateRange}${widget.selectedUnit?.id} ${widget.selectedType}');
+                    context.read<CheckInsCubit>().getCheckIns();
                     Navigator.pop(context);
                   },
                   clearOnPressed: () {
-                    context.read<CheckInsCubit>().getCheckIns(
-                        keyword: widget.keywordFilter,);
-                    widget.onChangeRang?.call(null);
-                    widget.onChangeDateRange?.call(null);
-                    widget.onChangeUnit?.call(null);
-                    widget.onChangeVendor?.call(null);
-                    widget.onChangeType?.call(null);
+                    context.read<CheckInsCubit>().clearFilterData();
                     Navigator.pop(context);
+                     context.read<CheckInsCubit>().getCheckIns();
                   },
                 ),
               ],
@@ -199,11 +164,9 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
     );
   }
 }
-class RangeModel{
-  final String? label;
-  final String? value;
-  RangeModel({
-    this.label,
-    this.value,
-  });
+class TypeModel {
+  final String label;
+  final String value;
+
+  TypeModel({required this.label, required this.value});
 }

@@ -10,7 +10,10 @@ class CheckInsState {
   List<CheckInModel>? checkInModel;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  //final VendorsResponseModel? vendorsModel;
+  final TypeModel? selectedType;
+ final UnitModel? selectedUnit;
+ final VendorModel? selectedVendor;
+  final String? dateRang;
   CheckInsState({
     this.isLoading = false,
     this.loadMore = false,
@@ -19,9 +22,12 @@ class CheckInsState {
     this.page = 1,
     this.checkInModel,
     this.units,
-   // this.vendorsModel,
     this.vendors,
+    this.selectedType,
+    this.selectedUnit,
+    this.selectedVendor,
     this.isCheckOutAllLoading = false,
+    this.dateRang
   });
   CheckInsState copyWith({
     bool? isLoading,
@@ -30,10 +36,15 @@ class CheckInsState {
     bool? isCheckOutAllLoading,
     bool? loadMore,
     int? page,
-    List<CheckInModel>? checkInsRecord,
+    List<CheckInModel>? checkInModel,
     List<UnitModel>? units,
      List<VendorModel>? vendors,
-   // VendorsResponseModel? vendorsModel,
+    TypeModel? selectedType,
+    UnitModel? selectedUnit,
+    VendorModel? selectedVendor,
+    final String? dateRang,
+
+
   }) {
     return CheckInsState(
       isLoading: isLoading ?? this.isLoading,
@@ -42,10 +53,14 @@ class CheckInsState {
       isCheckOutAllLoading: isCheckOutAllLoading ?? this.isCheckOutAllLoading,
       loadMore: loadMore ?? this.loadMore,
       page: page ?? this.page,
-      checkInModel: checkInsRecord ?? this.checkInModel,
+      checkInModel: checkInModel ?? this.checkInModel,
       vendors: vendors ?? this.vendors,
-      // vendorsModel: vendorsModel ?? this.vendorsModel,
       units: units ?? this.units,
+      selectedType: selectedType ?? this.selectedType,
+      selectedUnit: selectedUnit ?? this.selectedUnit,
+      selectedVendor: selectedVendor ?? this.selectedVendor,
+      dateRang: dateRang ?? this.dateRang
+
     );
   }
 }

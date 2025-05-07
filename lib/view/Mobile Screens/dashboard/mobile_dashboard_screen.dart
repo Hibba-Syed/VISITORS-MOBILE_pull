@@ -31,59 +31,60 @@ class MobileDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActionsItemModel> actions = [
-      ActionsItemModel(
-        title: 'All Check-Ins',
-        count: 10,
-        iconPath: AppImages.checkIn,
-        backgroundColor: AppColors.white,
-        forGroundColor: AppColors.green,
-        onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
-        },
-      ),
-      ActionsItemModel(
-        title: 'Guests',
-        count: 10,
-        iconPath: AppImages.guests,
-        backgroundColor: AppColors.white,
-        forGroundColor: AppColors.yellow,
-        onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
-        },
-      ),
-      ActionsItemModel(
-        title: 'E-Services',
-        count: 6,
-        iconPath: AppImages.eServices,
-        backgroundColor: AppColors.white,
-        forGroundColor: AppColors.cyanBlue,
-        onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
-        },
-      ),
-      ActionsItemModel(
-        title: 'Work Order / RFPs',
-        count: 2,
-        iconPath: AppImages.rfps,
-        backgroundColor: AppColors.white,
-        forGroundColor: AppColors.primary,
-        onTap: () {
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
-        },
-      ),
-    ];
+
     return Scaffold(
       body: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
+          final List<ActionsItemModel> actions = [
+            ActionsItemModel(
+              title: 'All Check-Ins',
+              count: state.countModel?.total ?? 0,
+              iconPath: AppImages.checkIn,
+              backgroundColor: AppColors.white,
+              forGroundColor: AppColors.green,
+              onTap: () {
+                context
+                    .read<DeviceDeciderCubit>()
+                    .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+              },
+            ),
+            ActionsItemModel(
+              title: 'Guests',
+              count: state.countModel?.guests ?? 0,
+              iconPath: AppImages.guests,
+              backgroundColor: AppColors.white,
+              forGroundColor: AppColors.yellow,
+              onTap: () {
+                context
+                    .read<DeviceDeciderCubit>()
+                    .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+              },
+            ),
+            ActionsItemModel(
+              title: 'E-Services',
+              count: state.countModel?.service ?? 0,
+              iconPath: AppImages.eServices,
+              backgroundColor: AppColors.white,
+              forGroundColor: AppColors.cyanBlue,
+              onTap: () {
+                context
+                    .read<DeviceDeciderCubit>()
+                    .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
+              },
+            ),
+            ActionsItemModel(
+              title: 'Work Order / RFPs',
+              count: state.countModel?.jobs ?? 0,
+              iconPath: AppImages.rfps,
+              backgroundColor: AppColors.white,
+              forGroundColor: AppColors.primary,
+              onTap: () {
+                context
+                    .read<DeviceDeciderCubit>()
+                    .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
+              },
+            ),
+          ];
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
                 vertical: AppConstants.verticalPadding,

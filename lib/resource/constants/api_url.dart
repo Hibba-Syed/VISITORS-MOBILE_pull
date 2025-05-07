@@ -10,4 +10,5 @@ class ApiUrl {
   static const String checkOutAll = '$baseUrl/visitor/check-out-all';
   static const String units = '$baseUrl/visitor/units';
   static const String vendors = '$baseUrl/visitor/vendors';
+  static const String counts = '$baseUrl/visitor/counts';
 }

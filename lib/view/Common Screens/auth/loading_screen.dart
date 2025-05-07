@@ -23,6 +23,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
      await  context.read<DashboardCubit>().getProfile(context);
      await context.read<CheckInsCubit>().getCheckIns();
      await context.read<DashboardCubit>().getCheckIns();
+     await context.read<DashboardCubit>().getDashboardCount();
 
     // if (!mounted) return;
       Navigator.of(context).pushNamedAndRemoveUntil(

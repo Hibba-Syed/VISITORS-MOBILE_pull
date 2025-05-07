@@ -5,6 +5,7 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/repo/filter/general_filter_impl.dart';
+import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
 
 import '../../model/check_ins/check_out_all_model.dart';
 import '../../model/unit/unit_model.dart';
@@ -20,21 +21,48 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
   final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
 
+  onChangeSelectedType(TypeModel? type) {
+    emit(state.copyWith(selectedType: type));
+  }
+
+  onChangeSelectedUnit(UnitModel? unit) {
+    emit(state.copyWith(selectedUnit: unit));
+  }
+
+  onChangeSelectedVendors(VendorModel? vendor) {
+    emit(state.copyWith(selectedVendor: vendor));
+  }
+
+  onChangeDateRange(String? dateRange) {
+    emit(state.copyWith(dateRang: dateRange));
+  }
+
+
+
+
+  clearFilterData() {
+    emit(
+      state.copyWith(
+        selectedType: null,
+        selectedUnit: null,
+        selectedVendor: null,
+        dateRang: null
+      ),
+    );
+    print('selectedType ${state.selectedType}');
+  }
+
   Future<void> getCheckIns({
     String? keyword,
-    int? unitId,
-    String? dateRange,
-    String? serviceableType,
-    int? vendorId,
   }) async {
     emit(state.copyWith(isLoading: true, page: 1));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
             keyword: keyword,
-            unitId: unitId,
-            dateRange: dateRange,
-            serviceableType: serviceableType,
-            vendorId: vendorId)
+            unitId: state.selectedUnit?.id,
+            dateRange: state.dateRang,
+            serviceableType: state.selectedType?.value,
+            vendorId: state.selectedVendor?.id)
         .onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -45,8 +73,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       },
     );
     emit(state.copyWith(isLoading: false));
-    if (response != null) {
-      emit(state.copyWith(checkInsRecord: response.record));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(checkInModel: response.record));
       print('response${response.record?.length}');
     } else {
       Fluttertoast.showToast(
@@ -56,10 +84,6 @@ class CheckInsCubit extends Cubit<CheckInsState> {
 
   Future<void> getMoreCheckIns({
     String? keyword,
-    int? unitId,
-    String? dateRange,
-    String? serviceableType,
-    int? vendorId,
   }) async {
     int page = state.page + 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
@@ -67,10 +91,10 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         .getCheckIns(
             page: state.page,
             keyword: keyword,
-            unitId: unitId,
-            dateRange: dateRange,
-            serviceableType: serviceableType,
-            vendorId: vendorId)
+            unitId: state.selectedUnit?.id,
+            dateRange: state.dateRang,
+            serviceableType: state.selectedType?.value,
+            vendorId: state.selectedVendor?.id)
         .onError(
       (error, stackTrace) {
         emit(state.copyWith(loadMore: false));
@@ -81,11 +105,11 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       },
     );
     emit(state.copyWith(loadMore: false));
-    if (response != null) {
+    if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
         List<CheckInModel> checkIns = state.checkInModel ?? [];
         checkIns.addAll(response.record as Iterable<CheckInModel>);
-        emit(state.copyWith(checkInsRecord: checkIns));
+        emit(state.copyWith(checkInModel: checkIns));
       } else {
         Fluttertoast.showToast(msg: 'No more check-ins');
         page = state.page - 1;
@@ -104,10 +128,12 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         await _checkInRepo.checkOutAll().onError((error, stackTrace) {
       emit(state.copyWith(isCheckOutAllLoading: false));
       Fluttertoast.showToast(msg: error.toString());
+      ///
+      return null;
     });
     emit(state.copyWith(isCheckOutAllLoading: false));
 
-    if (response != null) {
+    if (response != null && response.status == 'success') {
       Fluttertoast.showToast(msg: 'Check out all visitors successfully');
       getCheckIns();
       return true;
@@ -139,7 +165,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
 
   Future<void> getVendors() async {
     emit(state.copyWith(isVendorLoading: true));
-    VendorsResponseModel? response = await _generalFilterRepo.getVendors().onError(
+    VendorsResponseModel? response =
+        await _generalFilterRepo.getVendors().onError(
       (error, stackTrace) {
         emit(state.copyWith(isVendorLoading: false));
         Fluttertoast.showToast(
@@ -149,8 +176,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       },
     );
     emit(state.copyWith(isVendorLoading: false));
-    if (response != null) {
-      emit(state.copyWith(vendorsModel: response));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(vendors: response.record));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching vendors');
