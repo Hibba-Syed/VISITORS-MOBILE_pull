@@ -1,24 +1,24 @@
 // To parse this JSON data, do
 //
-//     final workOrderResponseModel = workOrderResponseModelFromJson(jsonString);
+//     final checkOutResponseModel = checkOutResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-import 'package:visitors/model/work_order/work_order_model.dart';
+import 'check_out_model.dart';
 
-WorkOrderResponseModel workOrderResponseModelFromJson(String str) => WorkOrderResponseModel.fromJson(json.decode(str));
+CheckOutResponseModel checkOutResponseModelFromJson(String str) => CheckOutResponseModel.fromJson(json.decode(str));
 
-String workOrderResponseModelToJson(WorkOrderResponseModel data) => json.encode(data.toJson());
+String checkOutResponseModelToJson(CheckOutResponseModel data) => json.encode(data.toJson());
 
-class WorkOrderResponseModel {
+class CheckOutResponseModel {
   String? status;
-  List<WorkOrderModel>? record;
+  List<CheckOutModel>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
   String? message;
 
-  WorkOrderResponseModel({
+  CheckOutResponseModel({
     this.status,
     this.record,
     this.code,
@@ -27,9 +27,9 @@ class WorkOrderResponseModel {
     this.message,
   });
 
-  factory WorkOrderResponseModel.fromJson(Map<String, dynamic> json) => WorkOrderResponseModel(
+  factory CheckOutResponseModel.fromJson(Map<String, dynamic> json) => CheckOutResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<WorkOrderModel>.from(json["record"]!.map((x) => WorkOrderModel.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckOutModel>.from(json["record"]!.map((x) => CheckOutModel.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],

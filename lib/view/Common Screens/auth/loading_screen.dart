@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
-import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../utils/routes/app_routes.dart';
 import '../../widgets/loader/loader_widget.dart';
@@ -21,9 +20,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
   Future getData() async{
      await  context.read<DashboardCubit>().getProfile(context);
-     await context.read<CheckInsCubit>().getCheckIns();
-     await context.read<DashboardCubit>().getCheckIns();
+     await context.read<DashboardCubit>().getDashboardCheckIns();
      await context.read<DashboardCubit>().getDashboardCount();
+     await context.read<DashboardCubit>().getDashboardServices();
+     await context.read<DashboardCubit>().getDashboardWorkOrder();
 
     // if (!mounted) return;
       Navigator.of(context).pushNamedAndRemoveUntil(

@@ -13,9 +13,13 @@ import 'package:visitors/view/widgets/button/visitor_passes_button.dart';
 import 'package:visitors/view/widgets/container_widgets/actions_container_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
+import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
+import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../model/check_ins/check_ins_response_model.dart';
+import '../../../model/service/service_model.dart';
+import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
@@ -166,6 +170,7 @@ class MobileDashboardScreen extends StatelessWidget {
                             borderRadius: 6,
                             image: AppImages.checkout,
                             onPressed: () {
+                               context.read<CheckOutCubit>().getCheckOut();
                               context
                                   .read<DeviceDeciderCubit>()
                                   .onChangeSelectedIndex(
@@ -181,7 +186,7 @@ class MobileDashboardScreen extends StatelessWidget {
                             borderRadius: 6,
                             image: AppImages.view,
                             onPressed: () {
-                              // context.read<CheckInsCubit>().getCheckIns();
+                               context.read<CheckInsCubit>().getCheckIns();
                               context
                                   .read<DeviceDeciderCubit>()
                                   .onChangeSelectedIndex(
@@ -291,19 +296,28 @@ class MobileDashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Gap(15),
+                state.serviceModel?.isEmpty ?? true ?
+                SizedBox(
+                  height: 100,
+                  child: const EmptyWidget(
+                    text: 'No data available',
+                  ),
+                ):
                 ListView.separated(
                   padding: const EdgeInsets.only(bottom: 10),
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: 3,
+                  itemCount: (state.serviceModel?.length ?? 0) > 3 ? 3 : (state.serviceModel?.length ?? 3),
                   itemBuilder: (context, index) {
+                    ServiceModel? serviceModel = state.serviceModel?[index];
                     return ServicesCardWidget(
-                      unit: '1006',
-                      title: 'Facility Booking',
-                      reference: 'FO202401101791',
-                      status: 'Notified',
-                      serviceType: 'Fit Out NOC',
-                      name: 'Suhaan',
+                      isActiveCheckins: (serviceModel?.activeCheckIns?.isNotEmpty ?? true) ? true : false,
+                      unit: serviceModel?.unit?.unitNumber ?? "",
+                      title: serviceModel?.applicationTitle ?? "",
+                      reference: serviceModel?.reference ?? "",
+                      status: serviceModel?.status ?? "",
+                      serviceType: serviceModel?.applicationType ?? "",
+                      name: serviceModel?.clientName ?? "",
                       checkInOnPressed: () {
                         Navigator.pushNamed(
                             context, AppRoutes.mobileGuestCheckInScreen);
@@ -347,19 +361,31 @@ class MobileDashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Gap(15),
+                state.workOrderModel?.isEmpty ?? true ?
+                SizedBox(
+                  height: 100,
+                  child: const EmptyWidget(
+                    text: 'No data available',
+                  ),
+                ):
                 ListView.separated(
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: 3,
+                  itemCount:  (state.workOrderModel?.length ?? 0) > 3 ? 3 : (state.workOrderModel?.length ?? 3),
                   itemBuilder: (context, index) {
+                    WorkOrderModel? workOrderModel = state.workOrderModel?[index];
+                    // print('wdate: ${workOrderModel?.createdAt}');
                     return WorkOrderRFPCardWidget(
+                      isAwarded: workOrderModel?.isAwarded,
+                      isActiveCheckins: (workOrderModel?.activeCheckIns?.isNotEmpty ?? true) ? true : false,
                       typeText: 'Work Order',
                       typeAssetImage: AppImages.hammer,
-                      status: 'Active',
-                      title: '(2 Months) Services Contract',
-                      reference: 'JB001-24-00102',
-                      vendorName: 'Mohammed Faisal Al-Haddad',
-                      date: '2025-04-04T05:33:36.000000Z',
+                      status: workOrderModel?.status ?? "",
+                      title: workOrderModel?.title ?? "",
+                      reference: workOrderModel?.reference ?? "",
+                      vendorName: workOrderModel?.newVendor?.companyName ?? "",
+                     date: workOrderModel?.startDate?.toString(),
+                     //DateTimeUtil.getFormattedDatesTime(workOrderModel?.startDate),
                       checkInPressed: () {
                         Navigator.pushNamed(
                             context, AppRoutes.mobileGuestCheckInScreen);
@@ -368,6 +394,7 @@ class MobileDashboardScreen extends StatelessWidget {
                         Navigator.pushNamed(
                             context, AppRoutes.workOrderJobDetailsScreen);
                       },
+
                       jobCheckInOnPressed: () {
                         Navigator.pushNamed(
                             context, AppRoutes.jobCheckInsScreen);

@@ -144,7 +144,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                             status: checkInLogRecord?.status ?? "",
                             byValue: '',
                             description: checkInLogRecord?.description ?? "",
-                            dateTime: DateTimeUtil.getFormattedDatesTime(checkInLogRecord?.createdAt),
+                            dateTime: DateTimeUtil.getFormattedDateTime(checkInLogRecord?.createdAt.toString()),
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {

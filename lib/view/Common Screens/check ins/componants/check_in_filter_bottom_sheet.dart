@@ -6,12 +6,13 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
-import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/picker/date_range_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/unit/unit_model.dart';
 import '../../../../model/vendor/vendor_model.dart';
+import '../../../widgets/loader/loader_widget.dart';
+
 
 class CheckInFilterBottomSheet extends StatefulWidget {
   const CheckInFilterBottomSheet({super.key,
@@ -79,25 +80,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   items: rangList,
                   onChanged: (value) {
                     selectedRang = value;
-                    final now = DateTime.now();
-                    DateTime fromDate;
-                    if (value == 'Last 30 Days') {
-                      fromDate = now.subtract(Duration(days: 30));
-                    } else if (value == 'Last 60 Days') {
-                      fromDate = now.subtract(Duration(days: 60));
-                    } else if (value == 'Last 90 Days') {
-                      fromDate = now.subtract(Duration(days: 90));
-                    } else {
-                      fromDate = now;
-                    }
-
-                    // Format dates without time
-                    final formattedFromDate = '${fromDate.year}-${fromDate.month.toString().padLeft(2, '0')}-${fromDate.day.toString().padLeft(2, '0')}';
-                    final formattedNow = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
-
-                    // Create a string representation in the format your cubit expects
-                    final dateRangeString = '$formattedFromDate - $formattedNow';
-
+                    final dateRangeString = getDateRangeStringFromLabel(value!);
                     context.read<CheckInsCubit>().onChangeDateRange(dateRangeString);
                     print('dateRange $dateRangeString');
                   },
@@ -119,15 +102,16 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                     if (state.isUnitLoading) {
                       return LoaderWidget();
                     }
+
                     return SingleSelectedDropdownWidget<UnitModel>(
                         hint: "Unit",
                         fillColor: AppColors.white,
-                        selectedItem: context.watch<CheckInsCubit>().state.selectedUnit,
+                         selectedItem: context.watch<CheckInsCubit>().state.selectedUnit,
                         itemAsString: (unit) => unit.unitNumber ?? "",
-                        compareFn: (p0, p1) => p0.id == p1.id,
+                        compareFn: (unit, item) => unit.id == item.id,
                         items: state.units ?? [],
                         onChanged: (value) {
-                          context.read<CheckInsCubit>().onChangeSelectedUnit(value);
+                          context.read<CheckInsCubit>().onChangeSelectedUnit(value!);
                         });
                   },
                 ),
@@ -139,10 +123,10 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                         fillColor: AppColors.white,
                         selectedItem: context.watch<CheckInsCubit>().state.selectedVendor,
                         itemAsString: (vendor) => vendor.companyName ?? "",
-                        compareFn: (p0, p1) => p0.id == p1.id,
+                        compareFn: (vendor, item) => vendor.id == item.id,
                         items: state.vendors ?? [],
                         onChanged: (value) {
-                          context.read<CheckInsCubit>().onChangeSelectedVendors(value);
+                          context.read<CheckInsCubit>().onChangeSelectedVendors(value!);
                         });
                   },
                 ),
@@ -163,6 +147,25 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
       ),
     );
   }
+  String getDateRangeStringFromLabel(String label) {
+    final now = DateTime.now();
+    DateTime fromDate;
+    if (label == 'Last 30 Days') {
+      fromDate = now.subtract(const Duration(days: 30));
+    } else if (label == 'Last 60 Days') {
+      fromDate = now.subtract(const Duration(days: 60));
+    } else if (label == 'Last 90 Days') {
+      fromDate = now.subtract(const Duration(days: 90));
+    } else {
+      fromDate = now;
+    }
+    String format(DateTime date) {
+      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    }
+
+    return '${format(fromDate)} - ${format(now)}';
+  }
+
 }
 class TypeModel {
   final String label;

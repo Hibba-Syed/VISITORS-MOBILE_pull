@@ -18,9 +18,9 @@ class ServiceRepoImpl implements ServiceRepo {
   }) async {
     try {
       String url =
-          '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ??
+          '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
           10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}';
-      print('url^^ $url');
+      print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);
     } catch (e) {

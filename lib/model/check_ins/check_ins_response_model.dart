@@ -3,8 +3,7 @@
 //     final visitorCheckInsModel = visitorCheckInsModelFromJson(jsonString);
 
 import 'dart:convert';
-
-import '../e_services/e_services_response_model.dart';
+import '../unit/unit_model.dart';
 import '../visitor_model.dart';
 
 CheckInsResponseModel visitorCheckInsModelFromJson(String str) => CheckInsResponseModel.fromJson(json.decode(str));
@@ -114,7 +113,7 @@ class CheckInModel {
   String? description;
   DateTime? createdAt;
   DateTime? updatedAt;
-  Unit? unit;
+  UnitModel? unit;
   Visitor? visitor;
   Serviceable? serviceable;
   Vendor? vendor;
@@ -171,7 +170,7 @@ class CheckInModel {
     description: json["description"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    unit: json["unit"] == null ? null : Unit.fromJson(json["unit"]),
+    unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
     visitor: json["visitor"] == null ? null : Visitor.fromJson(json["visitor"]),
     serviceable: json["serviceable"] == null ? null : Serviceable.fromJson(json["serviceable"]),
     vendor: json["vendor"] == null ? null : Vendor.fromJson(json["vendor"]),

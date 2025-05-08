@@ -28,4 +28,20 @@ class AppUtils {
     return MediaQuery.of(context).size.shortestSide <=
         AppConstants.mobileScreen;
   }
+  static Color getCheckOutTypeColor(String? type) {
+    if (type?.toLowerCase() == "community visit") {
+      return AppColors.yellow;
+    }
+    if (type?.toLowerCase() == "community service") {
+      return AppColors.cyanBlue;
+    }
+    if (type?.toLowerCase() == "unit visit") {
+      return AppColors.green;
+    }
+    if (type?.toLowerCase() == "guest") {
+      return AppColors.primary;
+    }
+
+    return AppColors.red;
+  }
 }

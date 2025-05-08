@@ -1,61 +1,54 @@
-part of 'check_ins_cubit.dart';
+part of 'check_out_cubit.dart';
 
-class CheckInsState {
+class CheckOutState {
   final bool isLoading;
   final bool isUnitLoading;
   final bool isVendorLoading;
   final bool isCheckOutAllLoading;
   final bool loadMore;
+  final bool isCheckOutLoading;
   final int page;
-  List<CheckInModel>? checkInModel;
+  List<CheckOutModel>? checkOutModel;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  final TypeModel? selectedType;
-  final UnitModel? selectedUnit;
-  final VendorModel? selectedVendor;
   final String? dateRang;
-  CheckInsState(
+  CheckOutState(
       {this.isLoading = false,
       this.loadMore = false,
       this.isUnitLoading = false,
       this.isVendorLoading = false,
       this.page = 1,
-      this.checkInModel,
+      this.checkOutModel,
       this.units,
       this.vendors,
-      this.selectedType,
-      this.selectedUnit,
-      this.selectedVendor,
       this.isCheckOutAllLoading = false,
-      this.dateRang});
-  CheckInsState copyWith({
+      this.dateRang,
+        this.isCheckOutLoading = false,
+      });
+  CheckOutState copyWith({
     bool? isLoading,
     bool? isUnitLoading,
     bool? isVendorLoading,
     bool? isCheckOutAllLoading,
+    bool? isCheckOutLoading,
     bool? loadMore,
     int? page,
-    List<CheckInModel>? checkInModel,
+    List<CheckOutModel>? checkOutModel,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    TypeModel? selectedType,
-    UnitModel? selectedUnit,
-    VendorModel? selectedVendor,
     final String? dateRang,
   }) {
-    return CheckInsState(
+    return CheckOutState(
         isLoading: isLoading ?? this.isLoading,
         isUnitLoading: isUnitLoading ?? this.isUnitLoading,
         isVendorLoading: isVendorLoading ?? this.isVendorLoading,
         isCheckOutAllLoading: isCheckOutAllLoading ?? this.isCheckOutAllLoading,
+        isCheckOutLoading: isCheckOutLoading ?? this.isCheckOutLoading,
         loadMore: loadMore ?? this.loadMore,
         page: page ?? this.page,
-        checkInModel: checkInModel ?? this.checkInModel,
+        dateRang: dateRang ?? this.dateRang,
         vendors: vendors ?? this.vendors,
         units: units ?? this.units,
-        selectedType: selectedType ?? this.selectedType,
-        selectedUnit: selectedUnit ?? this.selectedUnit,
-        selectedVendor: selectedVendor ?? this.selectedVendor,
-        dateRang: dateRang ?? this.dateRang);
+        checkOutModel: checkOutModel ?? this.checkOutModel);
   }
 }

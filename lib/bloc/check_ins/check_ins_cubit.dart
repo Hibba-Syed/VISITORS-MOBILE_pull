@@ -25,11 +25,11 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(selectedType: type));
   }
 
-  onChangeSelectedUnit(UnitModel? unit) {
+  onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
-  onChangeSelectedVendors(VendorModel? vendor) {
+  onChangeSelectedVendors(VendorModel vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 
@@ -37,19 +37,15 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(dateRang: dateRange));
   }
 
-
-
-
   clearFilterData() {
     emit(
       state.copyWith(
         selectedType: null,
-        selectedUnit: null,
-        selectedVendor: null,
+        units: [],
+        vendors: [],
         dateRang: null
       ),
     );
-    print('selectedType ${state.selectedType}');
   }
 
   Future<void> getCheckIns({
@@ -59,10 +55,11 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
             keyword: keyword,
-            unitId: state.selectedUnit?.id,
+            unitId: state.units?.map((e) => e.id!).toList(),
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
-            vendorId: state.selectedVendor?.id)
+            vendorId: state.vendors?.map((e) => e.id!).toList()
+    )
         .onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -91,10 +88,11 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         .getCheckIns(
             page: state.page,
             keyword: keyword,
-            unitId: state.selectedUnit?.id,
+            unitId: state.units?.map((e) => e.id!).toList(),
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
-            vendorId: state.selectedVendor?.id)
+            vendorId: state.vendors?.map((e) => e.id!).toList()
+    )
         .onError(
       (error, stackTrace) {
         emit(state.copyWith(loadMore: false));

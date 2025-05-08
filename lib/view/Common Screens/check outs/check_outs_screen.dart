@@ -9,8 +9,12 @@ import 'package:visitors/view/Common%20Screens/check%20outs/components/check_out
 import 'package:visitors/view/Common%20Screens/check%20outs/components/check_outs_filter_bottom_sheet.dart';
 import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
+import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 
+import '../../../bloc/check_out/check_out_cubit.dart';
+import '../../../model/check_out/check_out_model.dart';
+import '../../widgets/empty_widget.dart';
 
 class CheckOutsScreen extends StatefulWidget {
   const CheckOutsScreen({super.key});
@@ -20,74 +24,105 @@ class CheckOutsScreen extends StatefulWidget {
 }
 
 class _CheckOutsScreenState extends State<CheckOutsScreen> {
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+        context
+            .read<DeviceDeciderCubit>()
+            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
       },
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding),
-          child: Column(
-            children: [
-             const  Gap(10),
-              Row(
+        body: BlocBuilder<CheckOutCubit, CheckOutState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalPadding),
+              child: Column(
                 children: [
-                  const Flexible(child: SearchTextField()),
-                  const Gap(6),
-                  FilterContainerWidget(
-                    onPressed: () {
-                      _checkOutFilterBottomSheet(context);
-                    },
-                  )
+                  const Gap(10),
+                  Row(
+                    children: [
+                       Flexible(child: SearchTextField(
+                          controller: _searchController,
+                          onClearPressed: () async {
+                            _searchController.clear();
+                            await context
+                                .read<CheckOutCubit>()
+                                .getCheckOut(keyword: '');
+                          },
+                          onFieldSubmitted: (value) {
+                            context
+                                .read<CheckOutCubit>()
+                                .getCheckOut(keyword: value);
+                          }
+                      )),
+                      const Gap(6),
+                      FilterContainerWidget(
+                        onPressed: () {
+                          _checkOutFilterBottomSheet(context);
+                        },
+                      )
+                    ],
+                  ),
+                  const Gap(10),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: CustomButton(
+                        buttonColor: AppColors.primary,
+                        text: 'Export',
+                        height: 41,
+                        width: 90,
+                        borderRadius: 6,
+                        onPressed: () {}),
+                  ),
+                  const Gap(10),
+                  Expanded(
+                    child:
+                    state.isCheckOutLoading
+                        ? const LoaderWidget()
+                        : state.checkOutModel?.isNotEmpty ?? false
+                        ?
+                    RefreshIndicator(
+                      onRefresh: () async{
+                       await context.read<CheckOutCubit>().getCheckOut();
+                      },
+                      child: ListView.separated(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(bottom: 10),
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: state.checkOutModel?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          CheckOutModel? checkOutModel = state.checkOutModel?[index];
+                          return CheckOutsCardWidget(
+                            visitorCount: checkOutModel?.visitorCount ?? "",
+                            typeText: checkOutModel?.unit?.unitNumber ?? "",
+                            name: checkOutModel?.name ?? "",
+                            profileImageUrl: checkOutModel?.visitor?.imageUrl ?? "",
+                            type: checkOutModel?.type ?? "",
+                            checkInDate: DateTimeUtil.getFormattedDateTime(checkOutModel?.checkinTime.toString()),
+                            checkOutDate: DateTimeUtil.getFormattedDateTime(checkOutModel?.checkoutTime.toString()),
+                            phone: checkOutModel?.phone ?? "",
+                            checkInGateValue: checkOutModel?.checkinGate ?? "",
+                            checkOutGateValue: checkOutModel?.checkoutGate ?? "",
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Gap(10);
+                        },
+                      ),
+                    ) : const EmptyWidget(
+                      text: 'No data found',
+                    ),
+                  ),
                 ],
               ),
-              const Gap(10),
-              Align(
-                alignment: Alignment.bottomRight,
-                child:  CustomButton(
-                    buttonColor: AppColors.primary,
-                    text: 'Export',
-                    height: 41,
-                    width: 90,
-                    borderRadius: 6,
-                    onPressed: () {
-                    }),
-              ),
-              const Gap(10),
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: 12,
-                  itemBuilder: (context, index) {
-                    return CheckOutsCardWidget(
-                      typeBackgroundColor: AppColors.yellow,
-                      visitorCount: '10',
-                        typeText: "45678",
-                        name: 'MUHAMMAD AHMED MOHAMMED ',
-                        profileImageUrl:
-                        "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                        type: 'Visitor Pass',
-                        checkInDate: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
-                        checkOutDate: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
-                        phone: '34567890098',
-                        checkInGateValue: "The W Residences Reception",
-                        checkOutGateValue: "The W Residences Reception",
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Gap(10);
-                  },
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

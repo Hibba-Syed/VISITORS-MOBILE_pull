@@ -19,11 +19,10 @@ import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
 import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/check_ins/details/check_ins_details_cubit.dart';
+import '../../bloc/check_out/check_out_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
 import '../../view/Common Screens/splash_screen.dart';
 import 'app_routes.dart';
-
-
 
 class AppPages {
   static List<PageEntity> routes = [
@@ -59,6 +58,9 @@ class AppPages {
           ),
           BlocProvider(
             create: (context) => CheckInsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CheckOutCubit(),
           ),
         ],
         child: const SizedBox.shrink(),

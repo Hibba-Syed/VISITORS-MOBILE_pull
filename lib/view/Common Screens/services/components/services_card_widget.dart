@@ -9,7 +9,6 @@ import 'package:visitors/view/widgets/container_widgets/overlap_container_widget
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-
 class ServicesCardWidget extends StatelessWidget {
   final String? title;
   final String? reference;
@@ -21,42 +20,45 @@ class ServicesCardWidget extends StatelessWidget {
   final VoidCallback checkInOnPressed;
   final VoidCallback serviceableOnPressed;
   final VoidCallback detailsOnPressed;
-
-  const ServicesCardWidget(
-      {super.key,
-      this.title,
-      this.unit,
-      this.reference,
-      this.status,
-      this.name,
-      this.serviceType,
-      this.countValue,
-      required this.checkInOnPressed,
-        required this.serviceableOnPressed,
-        required this.detailsOnPressed,
-      });
+  final bool isActiveCheckins;
+  const ServicesCardWidget({
+    super.key,
+    this.title,
+    this.unit,
+    this.reference,
+    this.status,
+    this.name,
+    this.serviceType,
+    this.countValue,
+    required this.checkInOnPressed,
+    required this.serviceableOnPressed,
+    required this.detailsOnPressed,
+    this.isActiveCheckins = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Row(
-           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-           children: [
-             OverlapContainerWidget(
-               text: unit ?? "",),
-             OverlapContainerWidget(
-               text: reference ?? "",),
-           ],
-         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            OverlapContainerWidget(
+              text: unit ?? "",
+            ),
+            OverlapContainerWidget(
+              text: reference ?? "",
+            ),
+          ],
+        ),
         InkWell(
           overlayColor: const WidgetStatePropertyAll(Colors.transparent),
           onTap: detailsOnPressed,
           child: Container(
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.all(10),
-            decoration:const  BoxDecoration(
+            decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(8),
                   bottomLeft: Radius.circular(8),
@@ -66,15 +68,19 @@ class ServicesCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       title ?? "",
-                      style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
+                      style: AppUtils.isTablet(context)
+                          ? AppTextStyles.style15Black600
+                          : AppTextStyles.style14Black600,
                     ),
-                    StatusWidget(
-                      status: status ?? "",
-                    ),
+                    status?.isNotEmpty ?? true
+                        ? StatusWidget(
+                            status: status ?? "",
+                          )
+                        : SizedBox.shrink(),
                   ],
                 ),
                 const Gap(5),
@@ -101,25 +107,29 @@ class ServicesCardWidget extends StatelessWidget {
                     Expanded(
                       child: CustomButton(
                           height: AppUtils.isTablet(context) ? 55 : 42,
-                          fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                          imageHeight: AppUtils.isTablet(context) ?25 :18,
+                          fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                          imageHeight: AppUtils.isTablet(context) ? 25 : 18,
                           buttonColor: AppColors.green,
                           image: AppImages.checkInButton,
-                          text: 'Check-In', onPressed: checkInOnPressed),
+                          text: 'Check-In',
+                          onPressed: checkInOnPressed),
                     ),
-                    const Gap(8),
-                    Expanded(
-                      child: CustomButton(
-                        height: AppUtils.isTablet(context) ? 55 : 42,
-                          fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                          imageHeight: AppUtils.isTablet(context) ?25 :18,
-                          buttonColor: AppColors.cyanBlue,
-                          image: AppImages.serviceable,
-                          text: 'Serviceable Check Ins', onPressed: serviceableOnPressed),
-                    ),
+                    if(isActiveCheckins)...[
+                      const Gap(8),
+                      Expanded(
+                        child: CustomButton(
+                            height: AppUtils.isTablet(context) ? 55 : 42,
+                            fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                            imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+                            buttonColor: AppColors.cyanBlue,
+                            image: AppImages.serviceable,
+                            text: 'Serviceable Check Ins',
+                            onPressed: serviceableOnPressed),
+                      ),
+                    ],
+
                   ],
                 )
-
               ],
             ),
           ),

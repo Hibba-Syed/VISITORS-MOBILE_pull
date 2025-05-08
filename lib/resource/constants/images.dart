@@ -56,5 +56,6 @@ class AppImages {
   static const String loginGate = "${baseSvgPath}login_gate.svg";
   static const String loginLock = "${baseSvgPath}login_lock.svg";
   static const String forgot = "${baseSvgPath}forgot.svg";
+  static const String rfpCard = "${baseSvgPath}rfp_card.svg";
 
 }

@@ -23,6 +23,8 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
   final VoidCallback checkInPressed;
   final VoidCallback detailsOnPressed;
   final VoidCallback jobCheckInOnPressed;
+  final bool isActiveCheckins;
+  final int? isAwarded;
   const WorkOrderRFPCardWidget({
     super.key,
     this.title,
@@ -35,6 +37,8 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
     required this.detailsOnPressed,
     this.typeAssetImage,
     required this.jobCheckInOnPressed,
+    this.isActiveCheckins = false,
+    this.isAwarded,
   });
 
   @override
@@ -46,8 +50,8 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             OverlapContainerWidget(
-              text: typeText,
-              image: typeAssetImage,
+              text: (isAwarded == 1) ? 'Work Order' : 'RFP',
+              image: (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard ,
             ),
             OverlapContainerWidget(
               text: reference,
@@ -71,12 +75,21 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title ?? "",
-                      style: AppUtils.isTablet(context) ? AppTextStyles.style16black600 : AppTextStyles.style15Black600,
+                    Expanded(
+                      child: Text(
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        title ?? "",
+                        style: AppUtils.isTablet(context) ? AppTextStyles.style16black600 : AppTextStyles.style15Black600,
+                      ),
                     ),
-                    StatusWidget(
-                      status: status ?? "",
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        StatusWidget(
+                          status: status ?? "",
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -103,17 +116,20 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                               text: 'Check-In',
                               onPressed: checkInPressed),
                         ),
-                        const Gap(8),
-                        Expanded(
-                          child: CustomButton(
-                              height:  AppUtils.isTablet(context)  ? 55 : 42,
-                              fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                              imageHeight: AppUtils.isTablet(context) ?25 :18,
-                              buttonColor: AppColors.cyanBlue,
-                              image: AppImages.serviceable,
-                              text: 'Job Check - Ins', onPressed: jobCheckInOnPressed
+                        if(isActiveCheckins)...[
+                          const Gap(8),
+                          Expanded(
+                            child: CustomButton(
+                                height:  AppUtils.isTablet(context)  ? 55 : 42,
+                                fontSize: AppUtils.isTablet(context)  ? 20 : 15,
+                                imageHeight: AppUtils.isTablet(context) ?25 :18,
+                                buttonColor: AppColors.cyanBlue,
+                                image: AppImages.serviceable,
+                                text: 'Job Check - Ins', onPressed: jobCheckInOnPressed
+                            ),
                           ),
-                        ),
+                        ]
+
                       ],
                     )
 

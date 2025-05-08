@@ -50,14 +50,15 @@ class CheckOutsCardWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            typeText?.isNotEmpty ?? true ?
             OverlapContainerWidget(
               text: typeText,
               image: typeImage,
               backgroundColor: AppColors.primary,
-            ),
+            ) : SizedBox.shrink(),
             OverlapContainerWidget(
               text: type,
-              backgroundColor: typeBackgroundColor ?? AppColors.yellow,
+              backgroundColor: AppUtils.getCheckOutTypeColor(type),
             ),
           ],
         ),
