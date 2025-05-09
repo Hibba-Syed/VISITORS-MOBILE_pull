@@ -44,4 +44,22 @@ class AppUtils {
 
     return AppColors.red;
   }
+  static String getDateRangeStringFromLabel(String label) {
+    final now = DateTime.now();
+    DateTime fromDate;
+    if (label == 'Last 30 Days') {
+      fromDate = now.subtract(const Duration(days: 30));
+    } else if (label == 'Last 60 Days') {
+      fromDate = now.subtract(const Duration(days: 60));
+    } else if (label == 'Last 90 Days') {
+      fromDate = now.subtract(const Duration(days: 90));
+    } else {
+      fromDate = now;
+    }
+    String format(DateTime date) {
+      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    }
+
+    return '${format(fromDate)} - ${format(now)}';
+  }
 }

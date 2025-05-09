@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../utils/routes/app_routes.dart';
 import '../../widgets/loader/loader_widget.dart';
@@ -24,6 +26,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
      await context.read<DashboardCubit>().getDashboardCount();
      await context.read<DashboardCubit>().getDashboardServices();
      await context.read<DashboardCubit>().getDashboardWorkOrder();
+     await context.read<CheckOutCubit>().getCheckOut();
+     await context.read<MessageCubit>().getMessages();
+
 
     // if (!mounted) return;
       Navigator.of(context).pushNamedAndRemoveUntil(

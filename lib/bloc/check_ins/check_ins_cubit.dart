@@ -38,13 +38,17 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   }
 
   clearFilterData() {
-    emit(
-      state.copyWith(
-        selectedType: null,
-        units: [],
-        vendors: [],
-        dateRang: null
-      ),
+    emit(CheckInsState(
+      checkInModel: state.checkInModel,
+      isCheckOutAllLoading: state.isCheckOutAllLoading,
+      isLoading: state.isLoading,
+      isUnitLoading: state.isUnitLoading,
+      loadMore: state.loadMore,
+      isVendorLoading: state.isVendorLoading,
+      page: state.page,
+      units: state.units,
+      vendors: state.vendors,
+    )
     );
   }
 
@@ -55,10 +59,10 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
             keyword: keyword,
-            unitId: state.units?.map((e) => e.id!).toList(),
+            unitId: state.selectedUnit?.id,
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
-            vendorId: state.vendors?.map((e) => e.id!).toList()
+            vendorId: state.selectedVendor?.id
     )
         .onError(
       (error, stackTrace) {
@@ -88,10 +92,10 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         .getCheckIns(
             page: state.page,
             keyword: keyword,
-            unitId: state.units?.map((e) => e.id!).toList(),
+            unitId: state.selectedUnit?.id,
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
-            vendorId: state.vendors?.map((e) => e.id!).toList()
+            vendorId: state.selectedVendor?.id,
     )
         .onError(
       (error, stackTrace) {

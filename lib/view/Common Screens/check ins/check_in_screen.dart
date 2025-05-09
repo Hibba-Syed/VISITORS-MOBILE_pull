@@ -89,9 +89,9 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                       const Gap(6),
                       FilterContainerWidget(
                         isFilterApplied:
-                        (state.units?.isNotEmpty ?? false) ||
+                        (state.selectedUnit != null) ||
                             (state.selectedType?.value.isNotEmpty ?? false) ||
-                            (state.vendors?.isNotEmpty ?? false) ||
+                            (state.selectedVendor != null) ||
                             (state.dateRang !=null)
                             ? true
                             : false,

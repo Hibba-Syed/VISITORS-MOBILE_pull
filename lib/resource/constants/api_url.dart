@@ -14,4 +14,5 @@ class ApiUrl {
   static const String service = '$baseUrl/visitor/e-services';
   static const String workOrder = '$baseUrl/visitor/work-orders';
   static const String checkOuts = '$baseUrl/visitor/check-outs';
+  static const String message = '$baseUrl/visitor/messages';
 }

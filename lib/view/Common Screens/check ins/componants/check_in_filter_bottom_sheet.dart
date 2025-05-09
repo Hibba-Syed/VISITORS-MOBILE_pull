@@ -4,6 +4,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/picker/date_range_picker_widget.dart';
@@ -80,8 +81,8 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   items: rangList,
                   onChanged: (value) {
                     selectedRang = value;
-                    final dateRangeString = getDateRangeStringFromLabel(value!);
-                    context.read<CheckInsCubit>().onChangeDateRange(dateRangeString);
+                    final dateRangeString = AppUtils.getDateRangeStringFromLabel(value!);
+                    //context.read<CheckInsCubit>().onChangeDateRange(dateRangeString);
                     print('dateRange $dateRangeString');
                   },
                 ),
@@ -147,25 +148,6 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
       ),
     );
   }
-  String getDateRangeStringFromLabel(String label) {
-    final now = DateTime.now();
-    DateTime fromDate;
-    if (label == 'Last 30 Days') {
-      fromDate = now.subtract(const Duration(days: 30));
-    } else if (label == 'Last 60 Days') {
-      fromDate = now.subtract(const Duration(days: 60));
-    } else if (label == 'Last 90 Days') {
-      fromDate = now.subtract(const Duration(days: 90));
-    } else {
-      fromDate = now;
-    }
-    String format(DateTime date) {
-      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-    }
-
-    return '${format(fromDate)} - ${format(now)}';
-  }
-
 }
 class TypeModel {
   final String label;

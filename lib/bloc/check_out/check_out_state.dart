@@ -12,19 +12,19 @@ class CheckOutState {
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final String? dateRang;
-  CheckOutState(
-      {this.isLoading = false,
-      this.loadMore = false,
-      this.isUnitLoading = false,
-      this.isVendorLoading = false,
-      this.page = 1,
-      this.checkOutModel,
-      this.units,
-      this.vendors,
-      this.isCheckOutAllLoading = false,
-      this.dateRang,
-        this.isCheckOutLoading = false,
-      });
+  CheckOutState({
+    this.isLoading = false,
+    this.loadMore = false,
+    this.isUnitLoading = false,
+    this.isVendorLoading = false,
+    this.page = 1,
+    this.checkOutModel,
+    this.units,
+    this.vendors,
+    this.isCheckOutAllLoading = false,
+    this.dateRang,
+    this.isCheckOutLoading = false,
+  });
   CheckOutState copyWith({
     bool? isLoading,
     bool? isUnitLoading,
