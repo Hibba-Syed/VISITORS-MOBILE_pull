@@ -68,7 +68,8 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> {
                   ),
                   shape: widget.shape,
                   border: widget.border,
-                  borderRadius: widget.borderRadius),
+                  borderRadius: widget.borderRadius
+              ),
             ),
             width: widget.width,
             height: widget.height,

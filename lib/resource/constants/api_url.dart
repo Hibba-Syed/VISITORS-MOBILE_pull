@@ -1,5 +1,6 @@
 class ApiUrl {
   static const String baseUrl = 'https://staging.iskaanapi.com';
+
   ///
   static const String dashboard = '$baseUrl/';
   static const String login = '$baseUrl/auth/login/visitor';
@@ -14,5 +15,6 @@ class ApiUrl {
   static const String service = '$baseUrl/visitor/e-services';
   static const String workOrder = '$baseUrl/visitor/work-orders';
   static const String checkOuts = '$baseUrl/visitor/check-outs';
-  static const String message = '$baseUrl/visitor/messages';
+  static const String messages = '$baseUrl/visitor/messages';
+  static const String sendMessage = '$messages/send';
 }

@@ -11,7 +11,7 @@ class MessageModel {
   int? isVisitorRead;
   DateTime? createdAt;
   DateTime? updatedAt;
-  List<Attachment>? attachments;
+  List<AttachmentModel>? attachments;
   User? user;
 
   MessageModel({
@@ -38,7 +38,7 @@ class MessageModel {
     isVisitorRead: json["is_visitor_read"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    attachments: json["attachments"] == null ? [] : List<Attachment>.from(json["attachments"]!.map((x) => Attachment.fromJson(x))),
+    attachments: json["attachments"] == null ? [] : List<AttachmentModel>.from(json["attachments"]!.map((x) => AttachmentModel.fromJson(x))),
     user: json["user"] == null ? null : User.fromJson(json["user"]),
   );
 

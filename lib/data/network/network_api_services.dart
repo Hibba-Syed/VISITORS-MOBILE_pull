@@ -213,7 +213,8 @@ class NetworkApiServices implements BaseApiServices {
       }
       request.files.addAll(files);
       Map<String, String> headers = {
-        "content-type": "multipart/form-data",
+        // "content-type": "multipart/form-data",
+        "content-type": "application/json",
         'Accept': 'application/json',
         "Authorization": 'Bearer ${Globals().token}'
 
@@ -226,6 +227,7 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
+      print('response::: ${response.body}');
       responseJson = returnResponse(response);
 
       return responseJson;
@@ -271,6 +273,7 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   dynamic returnResponse(http.Response response) {
+    print('ress:: ${response.body}');
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
     // print('body:: $body');

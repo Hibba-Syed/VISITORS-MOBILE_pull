@@ -1,4 +1,4 @@
-class Attachment {
+class AttachmentModel {
   int? id;
   int? visitorChatMessageId;
   String? file;
@@ -7,7 +7,7 @@ class Attachment {
   DateTime? updatedAt;
   String? fileUrl;
 
-  Attachment({
+  AttachmentModel({
     this.id,
     this.visitorChatMessageId,
     this.file,
@@ -17,7 +17,7 @@ class Attachment {
     this.fileUrl,
   });
 
-  factory Attachment.fromJson(Map<String, dynamic> json) => Attachment(
+  factory AttachmentModel.fromJson(Map<String, dynamic> json) => AttachmentModel(
     id: json["id"],
     visitorChatMessageId: json["visitor_chat_message_id"],
     file: json["file"],
