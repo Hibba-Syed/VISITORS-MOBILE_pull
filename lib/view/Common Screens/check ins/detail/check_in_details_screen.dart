@@ -21,7 +21,7 @@ import 'package:visitors/utils/app_utils.dart';
 import '../../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../../model/check_ins/check_in_log_model.dart';
-import '../../../../model/check_ins/check_ins_response_model.dart';
+import '../../../../model/check_ins/check_in_model.dart';
 
 class CheckInDetailsScreen extends StatelessWidget {
   const CheckInDetailsScreen({super.key});

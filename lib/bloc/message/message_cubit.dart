@@ -1,15 +1,14 @@
-import 'package:bloc/bloc.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:visitors/model/message/message_model.dart';
 
 import '../../model/message/message_response_model.dart';
 import '../../model/message/send_response_messages_model.dart';
 import '../../repo/message/message_repo.dart';
 import '../../repo/message/message_repo_impl.dart';
-import '../../view/Common Screens/messages/message_screen.dart';
 
 part 'message_state.dart';
 

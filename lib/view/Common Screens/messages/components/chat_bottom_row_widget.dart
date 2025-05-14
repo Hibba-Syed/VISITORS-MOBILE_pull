@@ -51,8 +51,6 @@ class _ChatBottomRowWidgetState extends State<ChatBottomRowWidget> {
                       Expanded(
                         flex: 7,
                         child: TextFormField(
-                          maxLength: null,
-                          maxLines: null,
                           controller: widget.messageController,
                           inputFormatters: [RemoveEmojiInputFormatter()],
                           decoration: const InputDecoration(

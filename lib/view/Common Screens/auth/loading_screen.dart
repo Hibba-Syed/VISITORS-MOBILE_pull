@@ -22,10 +22,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
   Future getData() async{
      await  context.read<DashboardCubit>().getProfile(context);
-     await context.read<DashboardCubit>().getDashboardCheckIns();
+     await context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
      await context.read<DashboardCubit>().getDashboardCount();
-     await context.read<DashboardCubit>().getDashboardServices();
-     await context.read<DashboardCubit>().getDashboardWorkOrder();
+     await context.read<DashboardCubit>().getDashboardServices(limit: 3);
+     await context.read<DashboardCubit>().getDashboardWorkOrder(limit: 3);
      await context.read<CheckOutCubit>().getCheckOut();
      await context.read<MessageCubit>().getMessages();
 

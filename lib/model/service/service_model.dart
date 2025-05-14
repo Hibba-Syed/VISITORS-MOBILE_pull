@@ -1,5 +1,6 @@
-import '../active_checkIn_model.dart';
+
 import '../association_model.dart';
+import '../check_ins/check_in_model.dart';
 import '../unit/unit_model.dart';
 
 class ServiceModel {
@@ -14,7 +15,7 @@ class ServiceModel {
   DateTime? createdAt;
   String? applicationType;
   UnitModel? unit;
-  List<ActiveCheckIn>? activeCheckIns;
+  List<CheckInModel>? activeCheckIns;
   Association? association;
 
   ServiceModel({
@@ -45,7 +46,7 @@ class ServiceModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     applicationType: json["application_type"],
     unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
-    activeCheckIns: json["active_check_ins"] == null ? [] : List<ActiveCheckIn>.from(json["active_check_ins"]!.map((x) => ActiveCheckIn.fromJson(x))),
+    activeCheckIns: json["active_check_ins"] == null ? [] : List<CheckInModel>.from(json["active_check_ins"]!.map((x) => CheckInModel.fromJson(x))),
     association: json["association"] == null ? null : Association.fromJson(json["association"]),
   );
 

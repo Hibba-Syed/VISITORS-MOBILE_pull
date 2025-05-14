@@ -64,11 +64,10 @@ class MessageSenderCardWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5
-                  ),
+            Padding(
+              padding:  const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
               child: Column(
-                children: List.generate(
+                children:  (attachments?.isNotEmpty ?? true) ?List.generate(
                   attachments?.length ?? 0,
                       (index) => InkWell(
                     overlayColor: const WidgetStatePropertyAll(
@@ -80,6 +79,7 @@ class MessageSenderCardWidget extends StatelessWidget {
                           ""));
                     },
                     child: Container(
+                      height: 30,
                       margin: EdgeInsets.symmetric(vertical: 3),
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class MessageSenderCardWidget extends StatelessWidget {
                               size: 18,
                             ),
                           const Gap(5),
-                          Flexible(
+                          Expanded(
                             child: Text(
                               (attachments?[index].name?.split('/').last)?.toString() ?? "",
                               maxLines: 1,
@@ -104,9 +104,9 @@ class MessageSenderCardWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
+                    ) ,
                   ),
-                ),
+                ) : []
               ),
             ),
           ],

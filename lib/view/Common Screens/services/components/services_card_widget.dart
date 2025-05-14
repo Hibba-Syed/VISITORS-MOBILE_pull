@@ -16,7 +16,6 @@ class ServicesCardWidget extends StatelessWidget {
   final String? status;
   final String? name;
   final String? serviceType;
-  final String? countValue;
   final VoidCallback checkInOnPressed;
   final VoidCallback serviceableOnPressed;
   final VoidCallback detailsOnPressed;
@@ -29,7 +28,6 @@ class ServicesCardWidget extends StatelessWidget {
     this.status,
     this.name,
     this.serviceType,
-    this.countValue,
     required this.checkInOnPressed,
     required this.serviceableOnPressed,
     required this.detailsOnPressed,

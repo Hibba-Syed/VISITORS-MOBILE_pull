@@ -14,20 +14,25 @@ class CheckInsState {
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
   final String? dateRang;
-  CheckInsState(
-      {this.isLoading = false,
-      this.loadMore = false,
-      this.isUnitLoading = false,
-      this.isVendorLoading = false,
-      this.page = 1,
-      this.checkInModel,
-      this.units,
-      this.vendors,
-      this.selectedType,
-      this.selectedUnit,
-      this.selectedVendor,
-      this.isCheckOutAllLoading = false,
-      this.dateRang});
+  final String? selectedRang;
+  final String? searchKeyword;
+  CheckInsState({
+    this.isLoading = false,
+    this.loadMore = false,
+    this.isUnitLoading = false,
+    this.isVendorLoading = false,
+    this.page = 1,
+    this.checkInModel,
+    this.units,
+    this.vendors,
+    this.selectedType,
+    this.selectedUnit,
+    this.selectedVendor,
+    this.isCheckOutAllLoading = false,
+    this.dateRang,
+    this.selectedRang,
+    this.searchKeyword,
+  });
   CheckInsState copyWith({
     bool? isLoading,
     bool? isUnitLoading,
@@ -41,7 +46,9 @@ class CheckInsState {
     TypeModel? selectedType,
     UnitModel? selectedUnit,
     VendorModel? selectedVendor,
-    final String? dateRang,
+     String? dateRang,
+     String? selectedRang,
+     String? searchKeyword,
   }) {
     return CheckInsState(
         isLoading: isLoading ?? this.isLoading,
@@ -56,6 +63,9 @@ class CheckInsState {
         selectedType: selectedType ?? this.selectedType,
         selectedUnit: selectedUnit ?? this.selectedUnit,
         selectedVendor: selectedVendor ?? this.selectedVendor,
-        dateRang: dateRang ?? this.dateRang);
+        dateRang: dateRang ?? this.dateRang,
+        selectedRang: selectedRang ?? this.selectedRang,
+        searchKeyword: searchKeyword ?? this.searchKeyword,
+    );
   }
 }

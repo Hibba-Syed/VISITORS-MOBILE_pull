@@ -68,7 +68,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   hintText: "Date Range",
                   selectedDate: context.watch<CheckInsCubit>().state.dateRang,
                   onChangeDate: (value) {
-                    context.read<CheckInsCubit>().onChangeDateRange(value);
+                    context.read<CheckInsCubit>().onChangeRange(value);
                   },
                 ),
                 const Gap(10),
@@ -82,7 +82,8 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   onChanged: (value) {
                     selectedRang = value;
                     final dateRangeString = AppUtils.getDateRangeStringFromLabel(value!);
-                    //context.read<CheckInsCubit>().onChangeDateRange(dateRangeString);
+                    context.read<CheckInsCubit>().onChangeDateRange(dateRangeString);
+                    context.read<CheckInsCubit>().onChangeRange(dateRangeString);
                     print('dateRange $dateRangeString');
                   },
                 ),

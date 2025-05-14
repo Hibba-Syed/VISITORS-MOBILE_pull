@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/model/check_ins/check_in_model.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
@@ -17,7 +18,7 @@ import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
-import '../../../model/check_ins/check_ins_response_model.dart';
+import '../../../bloc/e_service/service_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/app_colors.dart';
@@ -208,7 +209,7 @@ class MobileDashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: (state.checkInsModel?.length ?? 0) > 3 ? 3 : (state.checkInsModel?.length ?? 3),
+                  itemCount: state.checkInsModel?.length ?? 0,
                   itemBuilder: (context, index) {
                     CheckInModel? checkInsRecord =
                         state.checkInsModel?[index];
@@ -229,7 +230,15 @@ class MobileDashboardScreen extends StatelessWidget {
                       name: checkInsRecord?.name ?? "",
                       profileImageUrl:
                           checkInsRecord?.visitor?.imageUrl ?? "",
-                      type: "Guest",
+                      type: checkInsRecord?.serviceableType == "job"
+                          ? "Work Order / RFP"
+                          : checkInsRecord?.serviceableType == "application"
+                          ? "Service"
+                          : checkInsRecord?.serviceableType == "visitorpass"
+                          ? "Visitor Pass"
+                          : (checkInsRecord?.serviceableType?.isEmpty ?? true)
+                          ? "Guest"
+                          : "",
                       date: DateTimeUtil.getFormattedDatesTime(checkInsRecord?.visitor?.createdAt),
                       phone: checkInsRecord?.phone ?? "",
                       gateValue: checkInsRecord?.checkinGate ?? "",
@@ -286,6 +295,7 @@ class MobileDashboardScreen extends StatelessWidget {
                             borderRadius: 6,
                             image: AppImages.view,
                             onPressed: () {
+                              context.read<ServiceCubit>().getServices();
                               context
                                   .read<DeviceDeciderCubit>()
                                   .onChangeSelectedIndex(
@@ -307,22 +317,23 @@ class MobileDashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: (state.serviceModel?.length ?? 0) > 3 ? 3 : (state.serviceModel?.length ?? 3),
+                  itemCount: state.serviceModel?.length ?? 0,
                   itemBuilder: (context, index) {
-                    ServiceModel? serviceModel = state.serviceModel?[index];
+                    ServiceModel? service = state.serviceModel?[index];
                     return ServicesCardWidget(
-                      isActiveCheckins: (serviceModel?.activeCheckIns?.isNotEmpty ?? true) ? true : false,
-                      unit: serviceModel?.unit?.unitNumber ?? "",
-                      title: serviceModel?.applicationTitle ?? "",
-                      reference: serviceModel?.reference ?? "",
-                      status: serviceModel?.status ?? "",
-                      serviceType: serviceModel?.applicationType ?? "",
-                      name: serviceModel?.clientName ?? "",
+                      isActiveCheckins: (service?.activeCheckIns?.isNotEmpty ?? true) ? true : false,
+                      unit: service?.unit?.unitNumber ?? "",
+                      title: service?.applicationType ?? "",
+                      reference: service?.reference ?? "",
+                      status: service?.status ?? "",
+                      serviceType: service?.applicationType ?? "",
+                      name: service?.clientName ?? "",
                       checkInOnPressed: () {
                         Navigator.pushNamed(
                             context, AppRoutes.mobileGuestCheckInScreen);
                       },
                       serviceableOnPressed: () {
+                        //context.read<CheckInsCubit>().onChangeSelectedType(service?.);
                         Navigator.pushNamed(
                             context, AppRoutes.serviceableCheckInsScreen);
                       },
@@ -371,7 +382,7 @@ class MobileDashboardScreen extends StatelessWidget {
                 ListView.separated(
                   shrinkWrap: true,
                   primary: false,
-                  itemCount:  (state.workOrderModel?.length ?? 0) > 3 ? 3 : (state.workOrderModel?.length ?? 3),
+                  itemCount: state.workOrderModel?.length ?? 0,
                   itemBuilder: (context, index) {
                     WorkOrderModel? workOrderModel = state.workOrderModel?[index];
                     // print('wdate: ${workOrderModel?.createdAt}');

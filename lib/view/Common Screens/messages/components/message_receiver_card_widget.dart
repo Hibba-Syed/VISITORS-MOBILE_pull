@@ -7,7 +7,6 @@ import '../../../../model/attachment_model.dart';
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
 import '../../../../utils/date_time.dart';
-import '../../../widgets/network_image_widget.dart';
 
 class MessageReceiverCardWidget extends StatelessWidget {
   const MessageReceiverCardWidget({
@@ -69,9 +68,8 @@ class MessageReceiverCardWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5
-                    ),
+                  Padding(
+                    padding:  const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     child: Column(
                       children: List.generate(
                         attachments?.length ?? 0,
@@ -85,6 +83,7 @@ class MessageReceiverCardWidget extends StatelessWidget {
                                 ""));
                           },
                           child: Container(
+                            height: 30,
                             margin: EdgeInsets.symmetric(vertical: 3),
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
@@ -99,7 +98,7 @@ class MessageReceiverCardWidget extends StatelessWidget {
                                   size: 18,
                                 ),
                                 const Gap(5),
-                                Flexible(
+                                Expanded(
                                   child: Text(
                                       (attachments?[index].name?.split('/').last)?.toString() ?? "",
                                       maxLines: 1,

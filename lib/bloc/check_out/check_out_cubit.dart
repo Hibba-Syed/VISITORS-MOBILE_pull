@@ -1,8 +1,5 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:meta/meta.dart';
-
-import '../../model/check_ins/check_ins_response_model.dart';
 import '../../model/check_out/check_out_model.dart';
 import '../../model/check_out/check_out_response_model.dart';
 import '../../model/unit/unit_model.dart';

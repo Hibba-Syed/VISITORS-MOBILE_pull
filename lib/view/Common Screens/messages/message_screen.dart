@@ -57,64 +57,67 @@ class _MessageScreenState extends State<MessageScreen> {
                     vertical: AppConstants.verticalPadding),
                 child: Column(
                   children: [
-                    state.isLoading
-                        ? Expanded(child: LoaderWidget())
-                        : state.messageModel?.isEmpty ?? true
-                            ? EmptyWidget(
-                                text: 'No data available',
-                              )
-                            : Expanded(
-                                child: RefreshIndicator(
-                                  onRefresh: () async {
-                                    context.read<MessageCubit>().getMessages();
-                                  },
-                                  child: ListView.separated(
-                                    physics: AlwaysScrollableScrollPhysics(),
-                                    controller: _scrollController,
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemCount: state.messageModel?.length ?? 0,
-                                    itemBuilder: (context, index) {
-                                      MessageModel? message =
-                                          state.messageModel?[index];
-                                      return Row(
-                                        mainAxisAlignment: message?.by == 'user'
-                                            ? MainAxisAlignment.start
-                                            : MainAxisAlignment.end,
-                                        children: [
-                                          message?.by == 'user'
-                                              ? MessageReceiverCardWidget(
-                                                  message: message?.message ?? "",
-                                                  date: message?.createdAt
-                                                      .toString(),
-                                                  userName:
-                                                      message?.user?.fullName ??
-                                                          "",
-                                                  profileImage: message?.user
-                                                          ?.profileImageUrl ??
-                                                      "",
-                                                  attachments:
-                                                      message?.attachments,
-                                                )
-                                              : MessageSenderCardWidget(
-                                                  message: message?.message ?? "",
-                                                  date: message?.createdAt
-                                                      .toString(),
-                                                  attachments:
-                                                      message?.attachments,
+                     state.isLoading
+                         ? LoaderWidget()
+                         : state.messageModel?.isEmpty ?? true
+                         ? EmptyWidget(
+                       text: 'No data available',
+                     )
+                         : Expanded(
+                           child: RefreshIndicator(
+                                                  onRefresh: () async {
+                           context.read<MessageCubit>().getMessages();
+                                                  },
+                                                  child: ListView.separated(
+                           physics: AlwaysScrollableScrollPhysics(),
+                           controller: _scrollController,
+                           shrinkWrap: true,
+                           primary: false,
+                           itemCount: state.messageModel?.length ?? 0,
+                           itemBuilder: (context, index) {
+                             MessageModel? message =
+                             state.messageModel?[index];
+                             return
+                               Row(
+                               mainAxisAlignment: message?.by == 'user'
+                                   ? MainAxisAlignment.start
+                                   : MainAxisAlignment.end,
+                               children: [
+                                 message?.by == 'user'
+                                     ?
+                                 MessageReceiverCardWidget(
+                                   message: message?.message ?? "",
+                                   date: message?.createdAt
+                                       .toString(),
+                                   userName:
+                                   message?.user?.fullName ??
+                                       "",
+                                   profileImage: message?.user
+                                       ?.profileImageUrl ??
+                                       "",
+                                   attachments:
+                                   message?.attachments,
+                                 )
+                                     :
+                                 MessageSenderCardWidget(
+                                   message: message?.message ?? "",
+                                   date: message?.createdAt
+                                       .toString(),
+                                   attachments:
+                                   message?.attachments,
+                                 ),
+                               ],
+                             );
+                           },
+                           separatorBuilder:
+                               (BuildContext context, int index) {
+                             return const Padding(
+                                 padding:
+                                 EdgeInsets.symmetric(vertical: 5));
+                           },
+                                                  ),
                                                 ),
-                                        ],
-                                      );
-                                    },
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return const Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 5));
-                                    },
-                                  ),
-                                ),
-                              ),
+                         ),
                      if (state.loadMore) const LoaderWidget(),
                     if (attachmentsList.isNotEmpty) _buildAttachmentSection(),
                   ],

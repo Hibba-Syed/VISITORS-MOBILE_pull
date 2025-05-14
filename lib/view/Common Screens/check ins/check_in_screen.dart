@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -21,6 +20,7 @@ import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
+import '../../../model/check_ins/check_in_model.dart';
 import '../../widgets/empty_widget.dart';
 
 class CheckInsScreen extends StatefulWidget {
@@ -43,7 +43,6 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
           _scrollController.position.maxScrollExtent) {
         context.read<CheckInsCubit>().getMoreCheckIns(
               keyword: _searchController.text,
-
             );
       }
     });
@@ -78,21 +77,21 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                               _searchController.clear();
                               await context
                                   .read<CheckInsCubit>()
-                                  .getCheckIns(keyword: '');
+                                  .onChangeSearchKeyWord('');
                             },
                             onFieldSubmitted: (value) {
                               context
                                   .read<CheckInsCubit>()
-                                  .getCheckIns(keyword: value);
+                                  .onChangeSearchKeyWord(value);
                             }),
                       ),
                       const Gap(6),
                       FilterContainerWidget(
-                        isFilterApplied:
-                        (state.selectedUnit != null) ||
-                            (state.selectedType?.value.isNotEmpty ?? false) ||
-                            (state.selectedVendor != null) ||
-                            (state.dateRang !=null)
+                        isFilterApplied: (state.selectedUnit != null) ||
+                                (state.selectedType?.value.isNotEmpty ??
+                                    false) ||
+                                (state.selectedVendor != null) ||
+                                (state.dateRang != null)
                             ? true
                             : false,
                         onPressed: () {
@@ -184,8 +183,17 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                     name: checkInsRecord?.name ?? "",
                                     profileImageUrl:
                                         checkInsRecord?.visitor?.imageUrl ?? "",
-                                    type: "Guest",
-                                    date: DateTimeUtil.getFormattedDatesTime(
+                                      type:  checkInsRecord?.serviceableType == "job"
+                                  ? "Work Order / RFP"
+                                      : checkInsRecord?.serviceableType == "application"
+                                      ? "Service"
+                                          : checkInsRecord?.serviceableType == "visitorpass"
+                                  ? "Visitor Pass"
+                                      : (checkInsRecord?.serviceableType?.isEmpty ?? true)
+                                      ? "Guest"
+                                      : "",
+
+                                  date: DateTimeUtil.getFormattedDatesTime(
                                         checkInsRecord?.visitor?.createdAt),
                                     phone: checkInsRecord?.phone ?? "",
                                     gateValue:

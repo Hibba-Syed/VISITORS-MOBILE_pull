@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
+import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
+
+import '../../../../model/unit/unit_model.dart';
+import '../../../widgets/loader/loader_widget.dart';
+import '../../check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class ServicesFilterBottomSheet extends StatefulWidget {
   const ServicesFilterBottomSheet({super.key});
@@ -15,22 +21,22 @@ class ServicesFilterBottomSheet extends StatefulWidget {
 }
 
 class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
-  String? selectedType;
-  String? selectedUnit;
 
-  final List<String> typeList = [
-    'Guests',
-    'Services',
-    'Work Order / RFPs',
-    'Visitor Pass'
+  final List<TypeModel> typeList = [
+    TypeModel(label: 'Access device', value: 'AD'),
+    TypeModel(label: 'Delivery Permit', value: 'dp'),
+    TypeModel(label: 'Facility Booking', value: 'fb'),
+    TypeModel(label: 'Fit Out', value: 'fo'),
+    TypeModel(label: 'Move In', value: 'mi'),
+    TypeModel(label: 'Move Out', value: 'mo'),
+    TypeModel(label: 'Work Permit', value: 'wp'),
+    TypeModel(label: 'Short Stay', value: 'ss'),
   ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minWidth: 600
-        ),
+        constraints: const BoxConstraints(minWidth: 600),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
           decoration: BoxDecoration(
@@ -52,31 +58,50 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                     style: AppTextStyles.style16black600),
               ),
               const Gap(15),
-              SingleSelectedDropdownWidget<String>(
+              SingleSelectedDropdownWidget<TypeModel>(
                   hint: "Type",
                   fillColor: AppColors.white,
-                  selectedItem: selectedType,
-                  itemAsString: (type) => type,
-                  compareFn: (p0, p1) => p0 == p1,
+                  selectedItem:
+                      context.watch<ServiceCubit>().state.selectedType,
+                  itemAsString: (type) => type.label,
+                   compareFn: (p0, p1) => p0.value == p1.value,
                   items: typeList,
                   onChanged: (value) {
-                    selectedType = value;
+                    context.read<ServiceCubit>().onChangeSelectedType(value);
                   }),
               const Gap(10),
-              SingleSelectedDropdownWidget<String>(
-                  hint: "Unit",
-                  fillColor: AppColors.white,
-                  selectedItem: selectedUnit,
-                  itemAsString: (type) => type,
-                  compareFn: (p0, p1) => p0 == p1,
-                  items: ['1', '2', '3'],
-                  onChanged: (value) {
-                    selectedUnit = value;
-                  }),
+              BlocBuilder<ServiceCubit, ServiceState>(
+                builder: (context, state) {
+                  if (state.isUnitLoading) {
+                    return LoaderWidget();
+                  }
+
+                  return SingleSelectedDropdownWidget<UnitModel>(
+                      hint: "Unit",
+                      fillColor: AppColors.white,
+                      selectedItem:
+                          context.watch<ServiceCubit>().state.selectedUnit,
+                      itemAsString: (unit) => unit.unitNumber ?? "",
+                      compareFn: (unit, item) => unit.id == item.id,
+                      items: state.units ?? [],
+                      onChanged: (value) {
+                        context
+                            .read<ServiceCubit>()
+                            .onChangeSelectedUnit(value!);
+                      });
+                },
+              ),
               const Gap(30),
               FilterButtonWidget(
-                applyOnPressed: () {},
-                clearOnPressed: () {},
+                applyOnPressed: () {
+                  context.read<ServiceCubit>().getServices();
+                  Navigator.pop(context);
+                },
+                clearOnPressed: () {
+                  context.read<ServiceCubit>().clearFilterData();
+                  Navigator.pop(context);
+                  context.read<ServiceCubit>().getServices();
+                },
               ),
             ],
           )),

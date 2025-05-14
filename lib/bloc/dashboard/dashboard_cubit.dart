@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 
+import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_ins/check_ins_response_model.dart';
 import '../../model/check_out/check_out_model.dart';
-import '../../model/check_out/check_out_response_model.dart';
 import '../../model/count/count_model.dart';
 import '../../model/count/count_response_model.dart';
 import '../../model/profile/profile_response_model.dart';
@@ -14,8 +14,6 @@ import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
 import '../../repo/check_ins/check_in_repo.dart';
 import '../../repo/check_ins/check_in_repo_impl.dart';
-import '../../repo/check_outs/check_out_impl.dart';
-import '../../repo/check_outs/check_out_repo.dart';
 import '../../repo/dashboard/dashboard_repo.dart';
 import '../../repo/dashboard/dashboard_repo_impl.dart';
 import '../../repo/profile/profile_repo.dart';
@@ -35,7 +33,6 @@ class DashboardCubit extends Cubit<DashboardState> {
   final DashboardRepo _dashboardRepo = DashboardRepoImpl();
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
-
 
   Future<void> getProfile(BuildContext context) async {
     emit(state.copyWith(isLoading: true));
@@ -58,9 +55,10 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
-  Future<void> getDashboardCheckIns() async {
+  Future<void> getDashboardCheckIns({int? limit}) async {
     emit(state.copyWith(isCheckInLoading: true));
-    CheckInsResponseModel? response = await _checkInRepo.getCheckIns().onError(
+    CheckInsResponseModel? response =
+        await _checkInRepo.getCheckIns(limit: limit).onError(
       (error, stackTrace) {
         emit(state.copyWith(isCheckInLoading: false));
         Fluttertoast.showToast(
@@ -98,9 +96,9 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
-  Future<void> getDashboardServices() async {
+  Future<void> getDashboardServices({int? limit}) async {
     emit(state.copyWith(isServicesLoading: true));
-    ServiceResponseModel? response = await _serviceRepo.getServices().onError(
+    ServiceResponseModel? response = await _serviceRepo.getServices(limit: limit).onError(
       (error, stackTrace) {
         emit(state.copyWith(isServicesLoading: false));
         Fluttertoast.showToast(
@@ -113,14 +111,14 @@ class DashboardCubit extends Cubit<DashboardState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(serviceModel: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching ');
+      Fluttertoast.showToast(msg: 'Something went wrong while fetching service');
     }
   }
 
-  Future<void> getDashboardWorkOrder() async {
+  Future<void> getDashboardWorkOrder({int? limit}) async {
     emit(state.copyWith(isWorkOrderLoading: true));
     WorkOrderResponseModel? response =
-        await _workOrderRFPRepo.getWorkOrder().onError(
+        await _workOrderRFPRepo.getWorkOrder(limit: limit).onError(
       (error, stackTrace) {
         emit(state.copyWith(isWorkOrderLoading: false));
         Fluttertoast.showToast(
@@ -133,8 +131,8 @@ class DashboardCubit extends Cubit<DashboardState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(workOrderModel: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching work order');
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching work order');
     }
   }
-
 }

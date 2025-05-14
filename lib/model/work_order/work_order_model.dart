@@ -1,4 +1,5 @@
-import '../active_checkIn_model.dart';
+
+import '../check_ins/check_in_model.dart';
 import '../new_vendor_model.dart';
 
 class WorkOrderModel {
@@ -15,7 +16,7 @@ class WorkOrderModel {
   int? vendorId;
   DateTime? createdAt;
   NewVendor? newVendor;
-  List<ActiveCheckIn>? activeCheckIns;
+  List<CheckInModel>? activeCheckIns;
 
   WorkOrderModel({
     this.id,
@@ -48,7 +49,7 @@ class WorkOrderModel {
     vendorId: json["vendor_id"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     newVendor: json["new_vendor"] == null ? null : NewVendor.fromJson(json["new_vendor"]),
-    activeCheckIns: json["active_check_ins"] == null ? [] : List<ActiveCheckIn>.from(json["active_check_ins"]!.map((x) => ActiveCheckIn.fromJson(x))),
+    activeCheckIns: json["active_check_ins"] == null ? [] : List<CheckInModel>.from(json["active_check_ins"]!.map((x) => CheckInModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

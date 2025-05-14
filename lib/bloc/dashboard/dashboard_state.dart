@@ -13,20 +13,20 @@ class DashboardState {
   List<WorkOrderModel>? workOrderModel;
   List<CheckOutModel>? checkOutModel;
   CountModel? countModel;
-  DashboardState({
-    this.isLoading = false,
-    this.isCheckInLoading = false,
-    this.isCountLoading = false,
-    this.isServicesLoading = false,
-    this.profileRecord,
-    this.page = 1,
-    this.checkInsModel,
-    this.countModel,
-    this.serviceModel,
-    this.isWorkOrderLoading,
-    this.workOrderModel,
-    this.checkOutModel,
-  });
+  DashboardState(
+      {this.isLoading = false,
+      this.isCheckInLoading = false,
+      this.isCountLoading = false,
+      this.isServicesLoading = false,
+      this.profileRecord,
+      this.page = 1,
+      this.checkInsModel,
+      this.countModel,
+      this.serviceModel,
+      this.isWorkOrderLoading,
+      this.workOrderModel,
+      this.checkOutModel,
+   });
   DashboardState copyWith({
     bool? isLoading,
     bool? isCheckInLoading,
@@ -54,6 +54,7 @@ class DashboardState {
       serviceModel: serviceModel ?? this.serviceModel,
       workOrderModel: workOrderModel ?? this.workOrderModel,
       checkOutModel: checkOutModel ?? this.checkOutModel,
+
     );
   }
 }

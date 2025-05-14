@@ -10,7 +10,7 @@ class AppUtils {
       return AppColors.green;
     }
     if (status?.toLowerCase() == "approved") {
-      return AppColors.primary;
+      return AppColors.green;
     }
     if (status?.toLowerCase() == "notified") {
       return AppColors.primary;

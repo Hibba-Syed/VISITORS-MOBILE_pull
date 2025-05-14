@@ -1,9 +1,13 @@
+import '../serviceable.dart';
+import '../unit/unit_model.dart';
+import '../visitor_model.dart';
+import 'check_ins_response_model.dart';
 
-class ActiveCheckIn {
+class CheckInModel {
   int? id;
   int? associationId;
   int? unitId;
-  dynamic vendorId;
+  int? vendorId;
   int? visitorId;
   int? serviceableId;
   String? serviceableType;
@@ -15,15 +19,19 @@ class ActiveCheckIn {
   String? purpose;
   String? visitorCount;
   dynamic idExpiry;
-  dynamic entryCardNumber;
+  String? entryCardNumber;
   String? name;
   String? phone;
-  dynamic email;
-  dynamic description;
+  String? email;
+  String? description;
   DateTime? createdAt;
   DateTime? updatedAt;
+  UnitModel? unit;
+  Visitor? visitor;
+  Serviceable? serviceable;
+  Vendor? vendor;
 
-  ActiveCheckIn({
+  CheckInModel({
     this.id,
     this.associationId,
     this.unitId,
@@ -46,9 +54,13 @@ class ActiveCheckIn {
     this.description,
     this.createdAt,
     this.updatedAt,
+    this.unit,
+    this.visitor,
+    this.serviceable,
+    this.vendor,
   });
 
-  factory ActiveCheckIn.fromJson(Map<String, dynamic> json) => ActiveCheckIn(
+  factory CheckInModel.fromJson(Map<String, dynamic> json) => CheckInModel(
     id: json["id"],
     associationId: json["association_id"],
     unitId: json["unit_id"],
@@ -71,6 +83,10 @@ class ActiveCheckIn {
     description: json["description"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
+    visitor: json["visitor"] == null ? null : Visitor.fromJson(json["visitor"]),
+    serviceable: json["serviceable"] == null ? null : Serviceable.fromJson(json["serviceable"]),
+    vendor: json["vendor"] == null ? null : Vendor.fromJson(json["vendor"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -96,5 +112,9 @@ class ActiveCheckIn {
     "description": description,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
+    "unit": unit?.toJson(),
+    "visitor": visitor?.toJson(),
+    "serviceable": serviceable?.toJson(),
+    "vendor": vendor?.toJson(),
   };
 }
