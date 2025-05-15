@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart'
     show ServicesCardWidget;
@@ -149,6 +150,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                 .serviceableCheckInsScreen);
                                       },
                                       detailsOnPressed: () {
+                                        context.read<ServiceDetailsCubit>().getServiceDetails();
                                         Navigator.pushNamed(context,
                                             AppRoutes.servicesDetailsScreen);
                                       },

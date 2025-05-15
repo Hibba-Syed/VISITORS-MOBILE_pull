@@ -62,4 +62,21 @@ class AppUtils {
 
     return '${format(fromDate)} - ${format(now)}';
   }
+
+  static String getServiceableType(String? serviceableType) {
+    if (serviceableType == "job") {
+      return "Work Order / RFP";
+    } else if (serviceableType == "application") {
+      return "Service";
+    }
+    else if (serviceableType == "visitor_pass") {
+      return "Visitor Pass";
+    }
+    else if (serviceableType == null || serviceableType.isEmpty) {
+      return "Guest";
+    } else {
+      return "";
+    }
+  }
+
 }

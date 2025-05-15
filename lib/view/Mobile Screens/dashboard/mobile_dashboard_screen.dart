@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/model/check_ins/check_in_model.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/Common%20Screens/Components/actions_item_model.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_card_widget.dart';
@@ -18,6 +19,7 @@ import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
+import '../../../bloc/e_service/details/service_details_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../model/work_order/work_order_model.dart';
@@ -333,11 +335,12 @@ class MobileDashboardScreen extends StatelessWidget {
                             context, AppRoutes.mobileGuestCheckInScreen);
                       },
                       serviceableOnPressed: () {
-                        //context.read<CheckInsCubit>().onChangeSelectedType(service?.);
+                       // context.read<CheckInsCubit>().onChangeSelectedType();
                         Navigator.pushNamed(
                             context, AppRoutes.serviceableCheckInsScreen);
                       },
                       detailsOnPressed: () {
+                        context.read<ServiceDetailsCubit>().getServiceDetails();
                         Navigator.pushNamed(
                             context, AppRoutes.servicesDetailsScreen);
                       },
@@ -364,8 +367,7 @@ class MobileDashboardScreen extends StatelessWidget {
                         borderRadius: 6,
                         image: AppImages.view,
                         onPressed: () {
-                          context
-                              .read<DeviceDeciderCubit>()
+                          context.read<DeviceDeciderCubit>()
                               .onChangeSelectedIndex(
                                   context, AppConstants.workOrderRfpIndex);
                         }),
@@ -407,6 +409,7 @@ class MobileDashboardScreen extends StatelessWidget {
                       },
 
                       jobCheckInOnPressed: () {
+
                         Navigator.pushNamed(
                             context, AppRoutes.jobCheckInsScreen);
                       },

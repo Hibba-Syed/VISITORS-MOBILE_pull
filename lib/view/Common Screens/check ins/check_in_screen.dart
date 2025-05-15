@@ -183,16 +183,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                     name: checkInsRecord?.name ?? "",
                                     profileImageUrl:
                                         checkInsRecord?.visitor?.imageUrl ?? "",
-                                      type:  checkInsRecord?.serviceableType == "job"
-                                  ? "Work Order / RFP"
-                                      : checkInsRecord?.serviceableType == "application"
-                                      ? "Service"
-                                          : checkInsRecord?.serviceableType == "visitorpass"
-                                  ? "Visitor Pass"
-                                      : (checkInsRecord?.serviceableType?.isEmpty ?? true)
-                                      ? "Guest"
-                                      : "",
-
+                                      type:  AppUtils.getServiceableType(checkInsRecord?.serviceableType),
                                   date: DateTimeUtil.getFormattedDatesTime(
                                         checkInsRecord?.visitor?.createdAt),
                                     phone: checkInsRecord?.phone ?? "",

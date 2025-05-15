@@ -17,4 +17,5 @@ class ApiUrl {
   static const String checkOuts = '$baseUrl/visitor/check-outs';
   static const String messages = '$baseUrl/visitor/messages';
   static const String sendMessage = '$messages/send';
+  static const String serviceDetails = '$baseUrl/visitor/all-applications/one';
 }

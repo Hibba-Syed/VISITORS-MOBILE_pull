@@ -23,7 +23,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         throw error!;
       },
     );
-    if (response != null) {
+    if (response != null && response.status == 'success') {
       emit(state.copyWith(isLoading: false));
        emit(state.copyWith(checkInLogModel: response.record,isLoading: false));
     } else {

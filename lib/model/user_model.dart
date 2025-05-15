@@ -13,23 +13,39 @@ class User {
   String? profileImageUrl;
   List<dynamic>? myCityAssociations;
   String? idFileUrl;
+  int? userId;
+  dynamic type;
+  int? applicationId;
+  dynamic refferedType;
+  dynamic refferedId;
+  String? status;
+  String? note;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic deletedAt;
+  int? userTo;
+  int? userFrom;
+  User? user;
 
-  User({
-    this.id,
-    this.reference,
-    this.username,
-    this.firstName,
-    this.lastName,
-    this.companyId,
-    this.roleId,
-    this.email,
-    this.mobile,
-    this.fullName,
-    this.isCompanyAvailable,
-    this.profileImageUrl,
-    this.myCityAssociations,
-    this.idFileUrl,
-  });
+  User(
+      {this.id,
+      this.reference,
+      this.username,
+      this.firstName,
+      this.lastName,
+      this.companyId,
+      this.roleId,
+      this.email,
+      this.mobile,
+      this.fullName,
+      this.isCompanyAvailable,
+      this.profileImageUrl,
+      this.myCityAssociations,
+      this.idFileUrl,
+      this.type,
+      this.status,
+      this.user,
+      this.createdAt});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -67,5 +83,6 @@ class User {
             ? []
             : List<dynamic>.from(myCityAssociations!.map((x) => x)),
         "id_file_url": idFileUrl,
+
       };
 }

@@ -4,7 +4,7 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/check_ins/check_in_log_model.dart';
-import '../../model/check_ins/check_out_all_model.dart';
+import '../../model/check_out/check_out_all_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_in_repo.dart';
 

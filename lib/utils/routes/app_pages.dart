@@ -20,6 +20,7 @@ import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check
 import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../bloc/check_out/check_out_cubit.dart';
+import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
@@ -69,6 +70,8 @@ class AppPages {
           ),
           BlocProvider(
             create: (context) => ServiceCubit(),
+          ),BlocProvider(
+            create: (context) => ServiceDetailsCubit(),
           ),
         ],
         child: const SizedBox.shrink(),

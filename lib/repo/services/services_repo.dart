@@ -1,3 +1,4 @@
+import '../../model/service/service_details_response_model.dart';
 import '../../model/service/service_response_model.dart';
 
 abstract class ServiceRepo{
@@ -8,4 +9,5 @@ abstract class ServiceRepo{
     int? unitId,
     String? serviceType,
   });
+  Future<ServiceDetailsResponseModel?> getServiceDetails();
 }

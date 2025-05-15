@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:intl/intl.dart';
+import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
+import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -17,12 +20,16 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-
 class ServiceDetailsScreen extends StatelessWidget {
   const ServiceDetailsScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    List<String> documents = ['Vendor License','Worker ID','NOC from Landlord','Scope of Work'];
+    List<String> documents = [
+      'Vendor License',
+      'Worker ID',
+      'NOC from Landlord',
+      'Scope of Work'
+    ];
     return SafeArea(
       child: Scaffold(
         appBar: const AppBarWidget(
@@ -34,152 +41,160 @@ class ServiceDetailsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.horizontalPadding),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(20),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
+              builder: (context, state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeadingWidget(
-                      heading: 'Facility Booking',
+                    const Gap(20),
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        HeadingWidget(
+                          heading: state.serviceDetails?.applicationType ?? "",
+                        ),
+                        StatusWidget(status: state.serviceDetails?.status ?? ""),
+                      ],
                     ),
-                    StatusWidget(status: 'Approved'),
+                    const Gap(3),
+                     HeadingWidget(
+                      heading: state.serviceDetails?.reference ?? "",
+                      style: AppTextStyles.style14Black600,
+                    ),
+                    const Gap(10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child:  Column(
+                        children: [
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Facility',
+                            value: state.serviceDetails?.application?.contractorName ?? ""
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Nature of function',
+                            value: 'Birthday Celebration',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Expected Guests',
+                            value: '25',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Booking Date',
+                            value: 'Aug 7, 2024',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Start Time',
+                            value: '11:00 PM',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            isLast: true,
+                            title: 'End Time',
+                            value: '03:00 PM',
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Gap(20),
+                    const HeadingWidget(
+                      heading: 'Documents',
+                    ),
+                    const Gap(10),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: documents.length,
+                        itemBuilder: (context, index) {
+                          String document = documents[index];
+                          return ServicesDocumentsCardWidget(name: document);
+                        },
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            color: AppColors.gray,
+                          );
+                        },
+                      ),
+                    ),
+                    const Gap(20),
+                    const HeadingWidget(
+                      heading: 'Applicant Details',
+                    ),
+                    const Gap(10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Column(
+                        children: [
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Requester Type',
+                            value: 'Owner',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Name',
+                            value: 'Oliver Stone',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Phone',
+                            value: '9714567890',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Email',
+                            value: 'Oliver@gmail.com',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Passport Number',
+                            value: '345678905678',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Passport Expiry',
+                            value: 'Apr 15, 2025',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'ID Number',
+                            value: '543745278980',
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            isLast: true,
+                            title: 'ID Expiry',
+                            value: 'Oct 19, 2025',
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Gap(20),
+                    const Text(
+                      'Activity Log',
+                      style: AppTextStyles.style20primary600,
+                    ),
+                    const Gap(10),
+                    ActivityLogWidget(
+                      horizontalPadding: 8,
+                      isLast: true,
+                      status: 'Request Received By ',
+                      byValue: 'System',
+                      description:
+                          'Application has been submitted successfully',
+                      dateTime: DateFormat("MMM dd, yyyy, hh:mm a")
+                          .format(DateTime.now()),
+                    ),
                   ],
-                ),
-                const Gap(3),
-                const HeadingWidget(
-                  heading: 'HB2024080725',
-                  style: AppTextStyles.style14Black600,
-                ),
-                const Gap(10),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Column(
-                    children: [
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Facility',
-                        value: 'Hall',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Nature of function',
-                        value: 'Birthday Celebration',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Expected Guests',
-                        value: '25',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Booking Date',
-                        value: 'Aug 7, 2024',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Start Time',
-                        value: '11:00 PM',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        isLast: true,
-                        title: 'End Time',
-                        value: '03:00 PM',
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(20),
-                const HeadingWidget(
-                  heading: 'Documents',
-                ),
-                const Gap(10),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 7,vertical: 10),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                      primary: false,
-                      itemCount: documents.length,
-                      itemBuilder: (context,index){
-                     String document = documents[index];
-                        return ServicesDocumentsCardWidget(
-                          name: document
-                        );
-                      },
-                      separatorBuilder: (context,index){
-                        return Divider(color: AppColors.gray,);
-                      },
-                  ),
-                ),
-                const Gap(20),
-                const HeadingWidget(
-                  heading: 'Applicant Details',
-                ),
-                const Gap(10),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Column(
-                    children: [
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Requester Type',
-                        value: 'Owner',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Name',
-                        value: 'Oliver Stone',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Phone',
-                        value: '9714567890',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Email',
-                        value: 'Oliver@gmail.com',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Passport Number',
-                        value: '345678905678',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'Passport Expiry',
-                        value: 'Apr 15, 2025',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        title: 'ID Number',
-                        value: '543745278980',
-                      ),
-                      TitleValueRowDividerDetailsContainerWidget(
-                        isLast: true,
-                        title: 'ID Expiry',
-                        value: 'Oct 19, 2025',
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(20),
-                const Text(
-                  'Activity Log',
-                  style: AppTextStyles.style20primary600,
-                ),
-                const Gap(10),
-                ActivityLogWidget(
-                  horizontalPadding: 8,
-                  isLast: true,
-                  status: 'Request Received By ',
-                  byValue: 'System',
-                  description: 'Application has been submitted successfully',
-                  dateTime: DateFormat("MMM dd, yyyy, hh:mm a")
-                      .format(DateTime.now()),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),
@@ -191,8 +206,8 @@ class ServiceDetailsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
-                    height:  AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context)  ? 20 : 15,
+                    height: AppUtils.isTablet(context) ? 55 : 42,
+                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -203,8 +218,9 @@ class ServiceDetailsScreen extends StatelessWidget {
                                 TextEditingController();
                             return CustomAlertDialogBox(
                               isCancelButtonDisable: true,
-                              insetPadding: AppUtils.isTablet( context) ?
-                                   EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppUtils.isTablet(context)
+                                  ? EdgeInsets.symmetric(horizontal: 35)
+                                  : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to JB001-24-00102',
                               confirmButtonText: 'Add Log',
                               onConfirm: () async {
@@ -212,7 +228,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                               },
                               contentBuilder: (context, setState) {
                                 return Column(
-                                   crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Gap(5),
                                     SvgPicture.asset(
@@ -241,7 +257,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 child: CustomButton(
                     buttonColor: AppColors.green,
                     height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context)  ? 20 : 15,
+                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
                     text: 'Complete',
                     onPressed: () {
                       showDialog(
@@ -255,9 +271,9 @@ class ServiceDetailsScreen extends StatelessWidget {
                             TextEditingController idController =
                                 TextEditingController();
                             return CustomAlertDialogBox(
-                              insetPadding:
-                              AppUtils.isTablet( context) ?
-                              EdgeInsets.symmetric(horizontal: 35) : EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppUtils.isTablet(context)
+                                  ? EdgeInsets.symmetric(horizontal: 35)
+                                  : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Complete HB2024080725',
                               disableCancelButtonBorder: true,
                               cancelButtonTextColor: AppColors.white,

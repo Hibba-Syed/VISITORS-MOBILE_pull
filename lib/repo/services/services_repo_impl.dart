@@ -1,3 +1,4 @@
+import 'package:visitors/model/service/service_details_response_model.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 import 'package:visitors/repo/services/services_repo.dart';
 
@@ -27,5 +28,17 @@ class ServiceRepoImpl implements ServiceRepo {
       rethrow;
     }
   }
+  @override
+  Future<ServiceDetailsResponseModel?> getServiceDetails() async {
+    try {
+      String url =
+          ApiUrl.serviceDetails;
+      print('services details^^ $url');
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
+      return ServiceDetailsResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
 
+  }
 }

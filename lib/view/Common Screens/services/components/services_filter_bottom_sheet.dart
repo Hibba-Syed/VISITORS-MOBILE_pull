@@ -24,13 +24,13 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
 
   final List<TypeModel> typeList = [
     TypeModel(label: 'Access device', value: 'AD'),
-    TypeModel(label: 'Delivery Permit', value: 'dp'),
-    TypeModel(label: 'Facility Booking', value: 'fb'),
+    TypeModel(label: 'Delivery Permit', value: 'DP'),
+    TypeModel(label: 'Facility Booking', value: 'FB'),
     TypeModel(label: 'Fit Out', value: 'fo'),
-    TypeModel(label: 'Move In', value: 'mi'),
-    TypeModel(label: 'Move Out', value: 'mo'),
-    TypeModel(label: 'Work Permit', value: 'wp'),
-    TypeModel(label: 'Short Stay', value: 'ss'),
+    TypeModel(label: 'Move In', value: 'MI'),
+    TypeModel(label: 'Move Out', value: 'MO'),
+    TypeModel(label: 'Work Permit', value: 'WP'),
+    TypeModel(label: 'Short Stay', value: 'SS'),
   ];
   @override
   Widget build(BuildContext context) {

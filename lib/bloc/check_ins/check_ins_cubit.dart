@@ -8,7 +8,7 @@ import 'package:visitors/repo/filter/general_filter_impl.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
 
 import '../../model/check_ins/check_in_model.dart';
-import '../../model/check_ins/check_out_all_model.dart';
+import '../../model/check_out/check_out_all_model.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
 import '../../model/vendor/vendor_model.dart';
