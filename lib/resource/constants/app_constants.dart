@@ -15,4 +15,5 @@ class AppConstants {
   /// screen size
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
+
 }

@@ -189,8 +189,6 @@ class TabletDashboardScreen extends StatelessWidget {
                   typeText: '1234',
                   type: 'Guest',
                   date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
-                  phone: '234567890',
-                  gateValue: 'The W Residences Reception',
                   checkOutOnPressed: (){
                     _showCheckoutDialog(context);
                   },

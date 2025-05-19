@@ -20,10 +20,11 @@ class CheckInRepoImpl implements CheckInRepo {
     String? dateRange,
     String? serviceableType,
     int? vendorId,
+    int? serviceableId,
   }) async {
     try {
       String url =
-          '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}';
+          '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}&serviceable_id=${serviceableId ?? ''}';
       print('url^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckInsResponseModel.fromJson(response);

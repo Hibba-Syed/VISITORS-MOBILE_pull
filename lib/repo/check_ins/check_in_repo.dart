@@ -14,6 +14,7 @@ abstract class CheckInRepo {
     String? dateRange,
     String? serviceableType,
     int? vendorId,
+    int? serviceableId
 
   });
   Future<CheckInLogModel?> getCheckInLogs({required int? id});

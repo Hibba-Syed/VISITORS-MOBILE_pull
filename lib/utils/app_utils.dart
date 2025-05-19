@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+
+import '../view/Common Screens/check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class AppUtils {
   // Status colors
@@ -28,6 +29,7 @@ class AppUtils {
     return MediaQuery.of(context).size.shortestSide <=
         AppConstants.mobileScreen;
   }
+
   static Color getCheckOutTypeColor(String? type) {
     if (type?.toLowerCase() == "community visit") {
       return AppColors.yellow;
@@ -44,6 +46,7 @@ class AppUtils {
 
     return AppColors.red;
   }
+
   static String getDateRangeStringFromLabel(String label) {
     final now = DateTime.now();
     DateTime fromDate;
@@ -63,20 +66,27 @@ class AppUtils {
     return '${format(fromDate)} - ${format(now)}';
   }
 
-  static String getServiceableType(String? serviceableType) {
-    if (serviceableType == "job") {
-      return "Work Order / RFP";
-    } else if (serviceableType == "application") {
-      return "Service";
-    }
-    else if (serviceableType == "visitor_pass") {
-      return "Visitor Pass";
-    }
-    else if (serviceableType == null || serviceableType.isEmpty) {
-      return "Guest";
+  static TypeModel getServiceableType(String? type) {
+    if (type == "job") {
+      return TypeModel(label: "Work Order / RFP", value: "job");
+    } else if (type == "application") {
+      return TypeModel(label: "Service", value: "application");
+    } else if (type == "visitor_pass") {
+      return TypeModel(label: "Visitor Pass", value: "visitor_pass");
+    } else if (type == null || type.isEmpty) {
+      return TypeModel(label: "Guest", value: "guest");
     } else {
-      return "";
+      return TypeModel(label: "", value: "");
     }
   }
-
+  static List<TypeModel> typeList = [
+    TypeModel(label: 'Access device', value: 'AD'),
+    TypeModel(label: 'Delivery Permit', value: 'DP'),
+    TypeModel(label: 'Facility Booking', value: 'FB'),
+    TypeModel(label: 'Fit Out', value: 'FO'),
+    TypeModel(label: 'Move In', value: 'MI'),
+    TypeModel(label: 'Move Out', value: 'MO'),
+    TypeModel(label: 'Work Permit', value: 'WP'),
+    TypeModel(label: 'Short Stay', value: 'SS'),
+  ];
 }

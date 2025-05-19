@@ -26,6 +26,7 @@ import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
+import '../../../resource/constants/strings.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../utils/date_time.dart';
 import '../../widgets/container_widgets/check_out_container_widget.dart';
@@ -38,7 +39,6 @@ class MobileDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
@@ -74,9 +74,8 @@ class MobileDashboardScreen extends StatelessWidget {
               backgroundColor: AppColors.white,
               forGroundColor: AppColors.cyanBlue,
               onTap: () {
-                context
-                    .read<DeviceDeciderCubit>()
-                    .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
+                context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
+                    context, AppConstants.eServicesIndex);
               },
             ),
             ActionsItemModel(
@@ -86,340 +85,364 @@ class MobileDashboardScreen extends StatelessWidget {
               backgroundColor: AppColors.white,
               forGroundColor: AppColors.primary,
               onTap: () {
-                context
-                    .read<DeviceDeciderCubit>()
-                    .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
+                context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
+                    context, AppConstants.workOrderRfpIndex);
               },
             ),
           ];
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-                vertical: AppConstants.verticalPadding,
-                horizontal: AppConstants.horizontalPadding),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HeadingWidget(
-                          heading: 'Welcome',
-                          style: AppTextStyles.style15DarkGrey600,
-                        ),
-                        HeadingWidget(
-                            heading:
-                                "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
-                      ],
-                    ),
-                  ],
-                ),
-                const Gap(10),
-                GridView.builder(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  primary: false,
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      mainAxisExtent: 100),
-                  itemCount: actions.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    ActionsItemModel actionsItem = actions[index];
-                    return ActionsContainerWidget(
-                      title: actionsItem.title,
-                      count: actionsItem.count,
-                      backgroundColor: actionsItem.backgroundColor,
-                      forGroundColor: actionsItem.forGroundColor,
-                      iconPath: actionsItem.iconPath,
-                      actionOnTap: actionsItem.onTap,
-                    );
-                  },
-                ),
-                CustomButton(
-                    imageHeight: 25,
-                    fontSize: 17,
-                    height: 70,
-                    text: 'Guest Check-In',
-                    buttonColor: AppColors.green,
-                    textColor: AppColors.white,
-                    image: AppImages.guestCheckIn,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, AppRoutes.mobileGuestCheckInScreen);
-                    }),
-                const Gap(10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      children: [
-                        Text(
-                          'Check-Ins',
-                          style: AppTextStyles.style19Primary600,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        CustomButton(
-                            buttonColor: AppColors.red,
-                            fontWeight: FontWeight.w500,
-                            text: 'Check-Outs',
-                            fontSize: 14,
-                            height: 41,
-                            borderRadius: 6,
-                            image: AppImages.checkout,
-                            onPressed: () {
-                               context.read<CheckOutCubit>().getCheckOut();
-                              context
-                                  .read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                      context, AppConstants.checkOutsIndex);
-                            }),
-                        const Gap(10),
-                        CustomButton(
-                            buttonColor: AppColors.primary,
-                            text: 'View All',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            height: 41.5,
-                            borderRadius: 6,
-                            image: AppImages.view,
-                            onPressed: () {
-                               context.read<CheckInsCubit>().getCheckIns();
-                              context
-                                  .read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                      context, AppConstants.checkInsIndex);
-                            }),
-                      ],
-                    ),
-                  ],
-                ),
-                const Gap(10),
-                state.checkInsModel?.isEmpty ?? true ?
-                SizedBox(
-                  height: 100,
-                  child: const EmptyWidget(
-                    text: 'No data available',
-                  ),
-                ):
-                ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: state.checkInsModel?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    CheckInModel? checkInsRecord =
-                        state.checkInsModel?[index];
-                    return CheckInCardWidget(
-                      count: checkInsRecord?.visitorCount ?? "",
-                      typeImage: (checkInsRecord?.type?.toLowerCase() ==
-                                  'community visit' ||
-                              checkInsRecord?.type?.toLowerCase() ==
-                                  'community service')
-                          ? AppImages.community
-                          : "",
-                      typeText: (checkInsRecord?.type?.toLowerCase() ==
-                                  'unit visit' ||
-                              checkInsRecord?.type?.toLowerCase() ==
-                                  'unit service')
-                          ? checkInsRecord?.unit?.unitNumber
-                          : checkInsRecord?.type ?? "",
-                      name: checkInsRecord?.name ?? "",
-                      profileImageUrl:
-                          checkInsRecord?.visitor?.imageUrl ?? "",
-                      type: checkInsRecord?.serviceableType == "job"
-                          ? "Work Order / RFP"
-                          : checkInsRecord?.serviceableType == "application"
-                          ? "Service"
-                          : checkInsRecord?.serviceableType == "visitorpass"
-                          ? "Visitor Pass"
-                          : (checkInsRecord?.serviceableType?.isEmpty ?? true)
-                          ? "Guest"
-                          : "",
-                      date: DateTimeUtil.getFormattedDatesTime(checkInsRecord?.visitor?.createdAt),
-                      phone: checkInsRecord?.phone ?? "",
-                      gateValue: checkInsRecord?.checkinGate ?? "",
-                      checkOutOnPressed: () {
-                        _showCheckoutDialog(context);
-                      },
-                      detailsOnPressed: () {
-                        context.read<CheckInsDetailsCubit>().getCheckInDetails(id: checkInsRecord?.id);
-                        Navigator.pushNamed(
-                            context, AppRoutes.checkInDetailsScreen,arguments: state.checkInsModel?[index]);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Gap(10);
-                  },
-                ),
-                const Gap(5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+          return RefreshIndicator(
+            onRefresh: ()async{
+
+            },
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                  vertical: AppConstants.verticalPadding,
+                  horizontal: AppConstants.horizontalPadding),
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: Text(
-                              'E-Services',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTextStyles.style19Primary600,
-                            ),
+                          HeadingWidget(
+                            heading: 'Welcome',
+                            style: AppTextStyles.style15DarkGrey600,
+                          ),
+                          HeadingWidget(
+                              heading:
+                                  "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Gap(10),
+                  GridView.builder(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    primary: false,
+                    shrinkWrap: true,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        mainAxisExtent: 100),
+                    itemCount: actions.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      ActionsItemModel actionsItem = actions[index];
+                      return ActionsContainerWidget(
+                        title: actionsItem.title,
+                        count: actionsItem.count,
+                        backgroundColor: actionsItem.backgroundColor,
+                        forGroundColor: actionsItem.forGroundColor,
+                        iconPath: actionsItem.iconPath,
+                        actionOnTap: actionsItem.onTap,
+                      );
+                    },
+                  ),
+                  CustomButton(
+                      imageHeight: 25,
+                      fontSize: 17,
+                      height: 70,
+                      text: 'Guest Check-In',
+                      buttonColor: AppColors.green,
+                      textColor: AppColors.white,
+                      image: AppImages.guestCheckIn,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.mobileGuestCheckInScreen);
+                      }),
+                  const Gap(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Row(
+                        children: [
+                          Text(
+                            'Check-Ins',
+                            style: AppTextStyles.style19Primary600,
                           ),
                         ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        VisitorPassesButton(
-                          horizontalPadding: 6,
-                          count: 25,
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, AppRoutes.visitorPassesScreen);
+                      Row(
+                        children: [
+                          CustomButton(
+                              buttonColor: AppColors.red,
+                              fontWeight: FontWeight.w500,
+                              text: 'Check-Outs',
+                              fontSize: 14,
+                              height: 41,
+                              borderRadius: 6,
+                              image: AppImages.checkout,
+                              onPressed: () {
+                                context.read<CheckOutCubit>().getCheckOut();
+                                context
+                                    .read<DeviceDeciderCubit>()
+                                    .onChangeSelectedIndex(
+                                        context, AppConstants.checkOutsIndex);
+                              }),
+                          const Gap(10),
+                          CustomButton(
+                              buttonColor: AppColors.primary,
+                              text: 'View All',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              height: 41.5,
+                              borderRadius: 6,
+                              image: AppImages.view,
+                              onPressed: () {
+                                context
+                                    .read<DeviceDeciderCubit>()
+                                    .onChangeSelectedIndex(
+                                        context, AppConstants.checkInsIndex);
+                              }),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Gap(10),
+                  state.checkInsModel?.isEmpty ?? true
+                      ? SizedBox(
+                          height: 100,
+                          child: const EmptyWidget(
+                            text: 'No data available',
+                          ),
+                        )
+                      : ListView.separated(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: state.checkInsModel?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            CheckInModel? checkInsRecord =
+                                state.checkInsModel?[index];
+                            return CheckInCardWidget(
+                              count: checkInsRecord?.visitorCount ?? "",
+                              typeImage: (checkInsRecord?.type?.toLowerCase() ==
+                                          'community visit' ||
+                                      checkInsRecord?.type?.toLowerCase() ==
+                                          'community service')
+                                  ? AppImages.community
+                                  : "",
+                              typeText: (checkInsRecord?.type?.toLowerCase() ==
+                                          'unit visit' ||
+                                      checkInsRecord?.type?.toLowerCase() ==
+                                          'unit service')
+                                  ? checkInsRecord?.unit?.unitNumber
+                                  : checkInsRecord?.type ?? "",
+                              name: checkInsRecord?.name ?? "",
+                              profileImageUrl:
+                                  checkInsRecord?.visitor?.imageUrl ?? "",
+                              type:AppUtils.getServiceableType(
+                                  checkInsRecord?.serviceableType)
+                                  .label,
+                              date: DateTimeUtil.getFormattedDatesTime(
+                                  checkInsRecord?.visitor?.createdAt),
+                              checkOutOnPressed: () {
+                                _showCheckoutDialog(context);
+                              },
+                              detailsOnPressed: () {
+                                context
+                                    .read<CheckInsDetailsCubit>()
+                                    .getCheckInDetails(id: checkInsRecord?.id);
+                                Navigator.pushNamed(
+                                    context, AppRoutes.checkInDetailsScreen,
+                                    arguments: state.checkInsModel?[index]);
+                              },
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Gap(10);
                           },
                         ),
-                        const Gap(6),
-                        CustomButton(
-                            buttonColor: AppColors.primary,
-                            text: 'View All',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            height: 41,
-                            borderRadius: 6,
-                            image: AppImages.view,
+                  const Gap(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                'E-Services',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.style19Primary600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          VisitorPassesButton(
+                            horizontalPadding: 6,
+                            count: 25,
                             onPressed: () {
-                              context.read<ServiceCubit>().getServices();
-                              context
-                                  .read<DeviceDeciderCubit>()
-                                  .onChangeSelectedIndex(
-                                      context, AppConstants.eServicesIndex);
-                            }),
-                      ],
-                    ),
-                  ],
-                ),
-                const Gap(15),
-                state.serviceModel?.isEmpty ?? true ?
-                SizedBox(
-                  height: 100,
-                  child: const EmptyWidget(
-                    text: 'No data available',
+                              Navigator.pushNamed(
+                                  context, AppRoutes.visitorPassesScreen);
+                            },
+                          ),
+                          const Gap(6),
+                          CustomButton(
+                              buttonColor: AppColors.primary,
+                              text: 'View All',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              height: 41,
+                              borderRadius: 6,
+                              image: AppImages.view,
+                              onPressed: () {
+                                context.read<ServiceCubit>().getServices();
+                                context
+                                    .read<DeviceDeciderCubit>()
+                                    .onChangeSelectedIndex(
+                                        context, AppConstants.eServicesIndex);
+                              }),
+                        ],
+                      ),
+                    ],
                   ),
-                ):
-                ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: state.serviceModel?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    ServiceModel? service = state.serviceModel?[index];
-                    return ServicesCardWidget(
-                      isActiveCheckins: (service?.activeCheckIns?.isNotEmpty ?? true) ? true : false,
-                      unit: service?.unit?.unitNumber ?? "",
-                      title: service?.applicationType ?? "",
-                      reference: service?.reference ?? "",
-                      status: service?.status ?? "",
-                      serviceType: service?.applicationType ?? "",
-                      name: service?.clientName ?? "",
-                      checkInOnPressed: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.mobileGuestCheckInScreen);
-                      },
-                      serviceableOnPressed: () {
-                       // context.read<CheckInsCubit>().onChangeSelectedType();
-                        Navigator.pushNamed(
-                            context, AppRoutes.serviceableCheckInsScreen);
-                      },
-                      detailsOnPressed: () {
-                        context.read<ServiceDetailsCubit>().getServiceDetails();
-                        Navigator.pushNamed(
-                            context, AppRoutes.servicesDetailsScreen);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Gap(10);
-                  },
-                ),
-                const Gap(5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Work Orders / RFPs',
-                      style: AppTextStyles.style19Primary600,
-                    ),
-                    CustomButton(
-                        buttonColor: AppColors.primary,
-                        fontSize: 14,
-                        text: 'View All',
-                        height: 41,
-                        fontWeight: FontWeight.w500,
-                        borderRadius: 6,
-                        image: AppImages.view,
-                        onPressed: () {
-                          context.read<DeviceDeciderCubit>()
-                              .onChangeSelectedIndex(
-                                  context, AppConstants.workOrderRfpIndex);
-                        }),
-                  ],
-                ),
-                const Gap(15),
-                state.workOrderModel?.isEmpty ?? true ?
-                SizedBox(
-                  height: 100,
-                  child: const EmptyWidget(
-                    text: 'No data available',
+                  const Gap(15),
+                  state.serviceModel?.isEmpty ?? true
+                      ? SizedBox(
+                          height: 100,
+                          child: const EmptyWidget(
+                            text: 'No data available',
+                          ),
+                        )
+                      : ListView.separated(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: state.serviceModel?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            ServiceModel? service = state.serviceModel?[index];
+                            return ServicesCardWidget(
+                              isActiveCheckins:
+                                  (service?.activeCheckIns?.isNotEmpty ?? true)
+                                      ? true
+                                      : false,
+                              unit: service?.unit?.unitNumber ?? "",
+                              title: service?.applicationType ?? "",
+                              reference: service?.reference ?? "",
+                              status: service?.status ?? "",
+                              serviceType: service?.applicationType ?? "",
+                              name: service?.clientName ?? "",
+                              checkInOnPressed: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.mobileGuestCheckInScreen);
+                              },
+                              serviceableOnPressed: () {
+                                context
+                                    .read<CheckInsCubit>()
+                                    .onChangeSelectedType(
+                                        AppUtils.getServiceableType(
+                                            Strings.keyServices));
+                                context.read<CheckInsCubit>().onChangeSelectedServiceableId(service?.id);
+                                context.read<CheckInsCubit>().getCheckIns();
+                                Navigator.pushNamed(
+                                    context, AppRoutes.serviceableCheckInsScreen);
+                              },
+                              detailsOnPressed: () {
+                                context
+                                    .read<ServiceDetailsCubit>()
+                                    .getServiceDetails();
+                                Navigator.pushNamed(
+                                    context, AppRoutes.servicesDetailsScreen);
+                              },
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Gap(10);
+                          },
+                        ),
+                  const Gap(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Work Orders / RFPs',
+                        style: AppTextStyles.style19Primary600,
+                      ),
+                      CustomButton(
+                          buttonColor: AppColors.primary,
+                          fontSize: 14,
+                          text: 'View All',
+                          height: 41,
+                          fontWeight: FontWeight.w500,
+                          borderRadius: 6,
+                          image: AppImages.view,
+                          onPressed: () {
+                            context
+                                .read<DeviceDeciderCubit>()
+                                .onChangeSelectedIndex(
+                                    context, AppConstants.workOrderRfpIndex);
+                          }),
+                    ],
                   ),
-                ):
-                ListView.separated(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: state.workOrderModel?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    WorkOrderModel? workOrderModel = state.workOrderModel?[index];
-                    // print('wdate: ${workOrderModel?.createdAt}');
-                    return WorkOrderRFPCardWidget(
-                      isAwarded: workOrderModel?.isAwarded,
-                      isActiveCheckins: (workOrderModel?.activeCheckIns?.isNotEmpty ?? true) ? true : false,
-                      typeText: 'Work Order',
-                      typeAssetImage: AppImages.hammer,
-                      status: workOrderModel?.status ?? "",
-                      title: workOrderModel?.title ?? "",
-                      reference: workOrderModel?.reference ?? "",
-                      vendorName: workOrderModel?.newVendor?.companyName ?? "",
-                     date: workOrderModel?.startDate?.toString(),
-                     //DateTimeUtil.getFormattedDatesTime(workOrderModel?.startDate),
-                      checkInPressed: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.mobileGuestCheckInScreen);
-                      },
-                      detailsOnPressed: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.workOrderJobDetailsScreen);
-                      },
+                  const Gap(15),
+                  state.workOrderModel?.isEmpty ?? true
+                      ? SizedBox(
+                          height: 100,
+                          child: const EmptyWidget(
+                            text: 'No data available',
+                          ),
+                        )
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: state.workOrderModel?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            WorkOrderModel? workOrderModel =
+                                state.workOrderModel?[index];
+                            // print('wdate: ${workOrderModel?.createdAt}');
+                            return WorkOrderRFPCardWidget(
+                              isAwarded: workOrderModel?.isAwarded,
+                              isActiveCheckins:
+                                  (workOrderModel?.activeCheckIns?.isNotEmpty ??
+                                          true)
+                                      ? true
+                                      : false,
+                              typeText: 'Work Order',
+                              typeAssetImage: AppImages.hammer,
+                              status: workOrderModel?.status ?? "",
+                              title: workOrderModel?.title ?? "",
+                              reference: workOrderModel?.reference ?? "",
+                              vendorName:
+                                  workOrderModel?.newVendor?.companyName ?? "",
+                              date: workOrderModel?.startDate?.toString(),
+                              //DateTimeUtil.getFormattedDatesTime(workOrderModel?.startDate),
+                              checkInPressed: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.mobileGuestCheckInScreen);
+                              },
+                              detailsOnPressed: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.workOrderJobDetailsScreen);
+                              },
 
-                      jobCheckInOnPressed: () {
-
-                        Navigator.pushNamed(
-                            context, AppRoutes.jobCheckInsScreen);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Gap(10);
-                  },
-                ),
-              ],
+                              jobCheckInOnPressed: () {
+                                context
+                                    .read<CheckInsCubit>()
+                                    .onChangeSelectedType(
+                                    AppUtils.getServiceableType(
+                                        Strings.keyWorkOrder));
+                                context.read<CheckInsCubit>().onChangeSelectedServiceableId(workOrderModel?.id);
+                                context.read<CheckInsCubit>().getCheckIns();
+                                Navigator.pushNamed(
+                                    context, AppRoutes.jobCheckInsScreen);
+                              },
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Gap(10);
+                          },
+                        ),
+                ],
+              ),
             ),
           );
         },

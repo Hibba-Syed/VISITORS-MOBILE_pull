@@ -26,6 +26,10 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(selectedType: type));
   }
 
+  onChangeSelectedServiceableId(int? serviceableId) {
+    emit(state.copyWith(serviceableId: serviceableId));
+
+  }
   onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
@@ -71,6 +75,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
             vendorId: state.selectedVendor?.id,
+            serviceableId: state.serviceableId
 
     )
         .onError(
@@ -105,6 +110,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
             vendorId: state.selectedVendor?.id,
+           serviceableId: state.serviceableId,
+
     )
         .onError(
       (error, stackTrace) {

@@ -4,6 +4,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
@@ -22,16 +23,6 @@ class ServicesFilterBottomSheet extends StatefulWidget {
 
 class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
 
-  final List<TypeModel> typeList = [
-    TypeModel(label: 'Access device', value: 'AD'),
-    TypeModel(label: 'Delivery Permit', value: 'DP'),
-    TypeModel(label: 'Facility Booking', value: 'FB'),
-    TypeModel(label: 'Fit Out', value: 'fo'),
-    TypeModel(label: 'Move In', value: 'MI'),
-    TypeModel(label: 'Move Out', value: 'MO'),
-    TypeModel(label: 'Work Permit', value: 'WP'),
-    TypeModel(label: 'Short Stay', value: 'SS'),
-  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,7 +56,7 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                       context.watch<ServiceCubit>().state.selectedType,
                   itemAsString: (type) => type.label,
                    compareFn: (p0, p1) => p0.value == p1.value,
-                  items: typeList,
+                  items: AppUtils.typeList,
                   onChanged: (value) {
                     context.read<ServiceCubit>().onChangeSelectedType(value);
                   }),

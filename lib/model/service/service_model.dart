@@ -1,4 +1,3 @@
-
 import '../association_model.dart';
 import '../check_ins/check_in_model.dart';
 import '../unit/unit_model.dart';

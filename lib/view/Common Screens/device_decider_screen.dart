@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/check_out/check_out_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
@@ -12,6 +15,7 @@ import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_scree
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../bloc/auth/auth_cubit.dart';
+import '../../bloc/e_service/service_cubit.dart';
 import '../../resource/constants/app_colors.dart';
 import '../../resource/constants/app_constants.dart';
 import '../../resource/constants/images.dart';
@@ -309,8 +313,8 @@ class DeviceDeciderScreen extends StatelessWidget {
               ),
             ),
             body: ResponsiveLayoutWidget(
-              mobile: _getMobileScreen(state),
-              tablet: _getTabletScreen(state),
+              mobile: _getMobileScreen(state,context),
+              tablet: _getTabletScreen(state,context),
             ),
           ),
         );
@@ -337,22 +341,26 @@ class DeviceDeciderScreen extends StatelessWidget {
     return '';
   }
 
-  Widget _getMobileScreen(DeviceDeciderState state) {
+  Widget _getMobileScreen(DeviceDeciderState state, BuildContext context) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
       return  const MobileDashboardScreen();
     }
     else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      context.read<CheckInsCubit>().getCheckIns();
       return const CheckInsScreen();
     }
     else if (state.selectedIndex == AppConstants.eServicesIndex) {
+      context.read<ServiceCubit>().getServices();
       return const AllServicesScreen();
     }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
     }
     else if (state.selectedIndex == AppConstants.messagesIndex) {
+      context.read<MessageCubit>().getMessages();
       return const MessageScreen();
     }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      context.read<CheckOutCubit>().getCheckOut();
       return const CheckOutsScreen() ;
     }
     else if (state.selectedIndex == AppConstants.directoryIndex) {
@@ -361,24 +369,28 @@ class DeviceDeciderScreen extends StatelessWidget {
     return const SizedBox.shrink();
   }
 
-  Widget _getTabletScreen(DeviceDeciderState state) {
+  Widget _getTabletScreen(DeviceDeciderState state, BuildContext context) {
     // print('_getTabletScreen${state.selectedIndex}');
     if (state.selectedIndex == AppConstants.dashboardIndex) {
       return  const TabletDashboardScreen();
     }
     else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      context.read<CheckInsCubit>().getCheckIns();
       return const CheckInsScreen();
      }
     else if (state.selectedIndex == AppConstants.eServicesIndex) {
+      context.read<ServiceCubit>().getServices();
       return const AllServicesScreen();
     }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       return const WorkOrderRfpScreen();
     }
     else if (state.selectedIndex == AppConstants.messagesIndex) {
+      context.read<MessageCubit>().getMessages();
       return const MessageScreen();
     }
     else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      context.read<CheckOutCubit>().getCheckOut();
       return const CheckOutsScreen() ;
     }
     else if (state.selectedIndex == AppConstants.directoryIndex) {

@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:intl/intl.dart';
 import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
-import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';

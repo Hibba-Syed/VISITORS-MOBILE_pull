@@ -1,7 +1,5 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:meta/meta.dart';
-
 import '../../../model/service/service_details_model.dart';
 import '../../../model/service/service_details_response_model.dart';
 import '../../../repo/services/services_repo.dart';

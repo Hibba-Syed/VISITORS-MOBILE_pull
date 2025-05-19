@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:visitors/model/service/service_details_response_model.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 import 'package:visitors/repo/services/services_repo.dart';
@@ -31,14 +33,57 @@ class ServiceRepoImpl implements ServiceRepo {
   @override
   Future<ServiceDetailsResponseModel?> getServiceDetails() async {
     try {
+      final filter = {
+        "where": {
+          "and": [
+            {
+              "field": "id",
+              "value": 2518,
+            }
+          ]
+        },
+        "include": [
+          {"relation": "application"},
+          {
+            "relation": "status_history",
+            "include": [
+              {
+                "relation": "user",
+                "select": ["id", "first_name", "last_name"]
+              }
+            ]
+          },
+          {
+            "relation": "unit",
+            "select": ["id"]
+          }
+        ]
+      };
+
       String url =
-          ApiUrl.serviceDetails;
-      print('services details^^ $url');
+          '${ApiUrl.serviceDetails}?filter=${Uri.encodeComponent(jsonEncode(filter))}';
+
+      // print('service details URL: $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceDetailsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
+  }}
 
-  }
-}
+//   @override
+//   Future<ServiceDetailsResponseModel?> getServiceDetails(
+//       ) async {
+//
+//     try {
+//       String url ='${ApiUrl.serviceDetails}'
+//                    ;
+//      // print('services details^^ $url');
+//       dynamic response = await _apiService.getAuthGetApiResponse(url);
+//       return ServiceDetailsResponseModel.fromJson(response);
+//     } catch (e) {
+//       rethrow;
+//     }
+//
+//   }
+// }

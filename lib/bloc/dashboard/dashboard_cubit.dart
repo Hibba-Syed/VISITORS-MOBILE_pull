@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as context;
 import 'package:visitors/model/service/service_response_model.dart';
 
 import '../../model/check_ins/check_in_model.dart';
@@ -23,7 +24,7 @@ import '../../repo/services/services_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
-
+import '../../utils/routes/app_routes.dart';
 part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
@@ -34,24 +35,20 @@ class DashboardCubit extends Cubit<DashboardState> {
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
 
-  Future<void> getProfile(BuildContext context) async {
+  Future<bool> getProfile() async {
     emit(state.copyWith(isLoading: true));
-    ProfileResponseModel? profileResponse =
-        await _profileRepo.getProfile().onError(
-      (error, stackTrace) {
-        emit(state.copyWith(isLoading: false));
-        Fluttertoast.showToast(
-          msg: error.toString(),
-        );
-        throw error!;
-      },
-    );
+
+    ProfileResponseModel? profileResponse = await _profileRepo.getProfile();
+
     emit(state.copyWith(isLoading: false));
+
     if (profileResponse != null) {
       spUtil.profileRecord = profileResponse.record;
       emit(state.copyWith(profileRecord: profileResponse.record));
+      return true;
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong');
+      return false;
     }
   }
 
@@ -135,4 +132,21 @@ class DashboardCubit extends Cubit<DashboardState> {
           msg: 'Something went wrong while fetching work order');
     }
   }
+  Future getData( BuildContext context) async {
+    bool profileSuccess = await context.read<DashboardCubit>().getProfile();
+
+    if (profileSuccess && context.mounted) {
+       context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
+      await context.read<DashboardCubit>().getDashboardCount();
+       context.read<DashboardCubit>().getDashboardServices(limit: 3);
+       context.read<DashboardCubit>().getDashboardWorkOrder(limit: 3);
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.deviceDeciderScreen, (route) => false);
+    } else {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.loginScreen, (route) => false);
+    }
+  }
+
 }

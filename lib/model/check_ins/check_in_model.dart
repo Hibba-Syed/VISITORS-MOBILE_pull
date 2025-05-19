@@ -31,6 +31,8 @@ class CheckInModel {
   Serviceable? serviceable;
   Vendor? vendor;
 
+
+
   CheckInModel({
     this.id,
     this.associationId,

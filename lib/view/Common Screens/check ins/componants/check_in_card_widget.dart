@@ -13,11 +13,9 @@ import '../../../../resource/styles/styles.dart';
 class CheckInCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final String? gateValue;
   final String? reference;
   final String? type;
   final String? purpose;
-  final String? phone;
   final String? date;
   final String? count;
   final String? typeText;
@@ -31,10 +29,8 @@ class CheckInCardWidget extends StatelessWidget {
     this.profileImageUrl,
     this.name,
     this.type,
-    this.phone,
     this.typeText,
     this.date,
-    this.gateValue,
     this.typeImage,
     this.count,
     this.reference,
@@ -61,7 +57,6 @@ class CheckInCardWidget extends StatelessWidget {
                 ? OverlapContainerWidget(
                   backgroundColor: AppColors.yellow,
                     text: reference,
-                    image: typeImage,
                   )
                 : OverlapContainerWidget(
                    backgroundColor: typeBackgroundColor,

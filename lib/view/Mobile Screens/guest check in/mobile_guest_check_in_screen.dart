@@ -288,7 +288,6 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
     return '';
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -620,8 +619,9 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                               builder: (context) {
                                 return CustomAlertDialogBox(
                                   hideBothButtons: true,
-                                  insetPadding: AppUtils.isTablet(context) ? EdgeInsets.symmetric(horizontal: 30):
-                                EdgeInsets.symmetric(horizontal: 10),
+                                  insetPadding: AppUtils.isTablet(context)
+                                      ? EdgeInsets.symmetric(horizontal: 30)
+                                      : EdgeInsets.symmetric(horizontal: 10),
                                   title: 'Select Visitor',
                                   contentBuilder: (context, setState) {
                                     return const SelectVisitorNumberWidget(
