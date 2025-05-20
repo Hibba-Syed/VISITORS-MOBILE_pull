@@ -14,12 +14,12 @@ class WorkOrderRFPImpl implements WorkOrderRFPRepo{
     int? limit,
     String? keyword,
     int? vendorId,
-    String? isAwarded,
+    int? isAwarded,
   }) async {
     try {
       String url =
           '${ApiUrl.workOrder}?page=${page ?? 1}&limit=${limit ??
-          10}&keyword=${keyword ?? ''}&is_awarded=${isAwarded ?? ''}&vendor_id=${vendorId ?? ''}';
+          10}&keyword=${keyword ?? ''}&is_awarded=${isAwarded != null ? (isAwarded == 1 ? 'Work Order' : 'rfp') : ''}&vendor_id=${vendorId ?? ''}';
       print('workOrder^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return WorkOrderResponseModel.fromJson(response);

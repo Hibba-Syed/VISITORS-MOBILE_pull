@@ -33,13 +33,14 @@ class NetworkApiServices implements BaseApiServices {
 
   @override
   Future getAuthGetApiResponse(String url) async {
+    final headers = {
+      'Accept': 'application/json, text/plain, */*',
+      'Authorization': 'Bearer ${Globals().token ?? ""}',
+      'User-Agent': 'Windows',
+    };
     dynamic responseJson;
     try {
-      final response = await http.get(Uri.parse(url), headers: {
-        'accept': "application/json",
-        'Content-Type': "application/json",
-        'authorization': 'Bearer ${Globals().token ?? ""}'
-      }).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
+      final response = await http.get(Uri.parse(url), headers: headers).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
         throw FetchDataException(
             "Connection timeout, please check your internet");
       });

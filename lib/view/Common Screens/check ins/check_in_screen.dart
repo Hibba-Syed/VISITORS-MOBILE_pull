@@ -84,7 +84,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                 context
                                     .read<CheckInsCubit>()
                                     .onChangeSearchKeyWord(value);
-                              }),
+                              }
+                              ),
                         ),
                         const Gap(6),
                         FilterContainerWidget(

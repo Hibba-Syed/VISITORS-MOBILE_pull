@@ -349,7 +349,7 @@ class MobileDashboardScreen extends StatelessWidget {
                               detailsOnPressed: () {
                                 context
                                     .read<ServiceDetailsCubit>()
-                                    .getServiceDetails();
+                                    .getServiceDetails(serviceId: service?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.servicesDetailsScreen);
                               },

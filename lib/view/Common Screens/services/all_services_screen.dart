@@ -150,7 +150,10 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                 .serviceableCheckInsScreen);
                                       },
                                       detailsOnPressed: () {
-                                        context.read<ServiceDetailsCubit>().getServiceDetails();
+                                        print('service move: ${serviceModel?.toJson()
+                                        }');
+
+                                        context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: serviceModel?.id);
                                         Navigator.pushNamed(context,
                                             AppRoutes.servicesDetailsScreen);
                                       },

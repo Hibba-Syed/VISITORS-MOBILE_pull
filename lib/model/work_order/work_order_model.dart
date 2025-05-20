@@ -18,6 +18,7 @@ class WorkOrderModel {
   NewVendor? newVendor;
   List<CheckInModel>? activeCheckIns;
 
+
   WorkOrderModel({
     this.id,
     this.status,

@@ -92,7 +92,7 @@ class ActivityLogWidget extends StatelessWidget {
                                 ? AppTextStyles.style16black600
                                 : AppTextStyles.style14Black600),
                         Flexible(
-                          child: Text(byValue ?? "",
+                          child: Text(  byValue ?? "",
                               style: AppUtils.isTablet(context)
                                   ? AppTextStyles.style16Primary600
                                   : AppTextStyles.style14Primary600),

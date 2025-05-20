@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:intl/intl.dart';
 import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/Common%20Screens/services/components/services_documents_card_widget.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
@@ -15,20 +15,19 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
+import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
+
+import '../../../../model/service/document_model.dart';
+import '../../../../model/service/status_history_model.dart';
+import '../../../widgets/empty_widget.dart';
 
 class ServiceDetailsScreen extends StatelessWidget {
   const ServiceDetailsScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    List<String> documents = [
-      'Vendor License',
-      'Worker ID',
-      'NOC from Landlord',
-      'Scope of Work'
-    ];
     return SafeArea(
       child: Scaffold(
         appBar: const AppBarWidget(
@@ -46,21 +45,26 @@ class ServiceDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap(20),
-                     Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        HeadingWidget(
-                          heading: state.serviceDetails?.applicationType ?? "",
+                        Expanded(
+                          child: HeadingWidget(
+                            heading: AppUtils.getRequestName(
+                                state.serviceDetails?.applicationType ?? ""),
+                          ),
                         ),
-                        StatusWidget(status: state.serviceDetails?.status ?? ""),
+                        StatusWidget(
+                            status: state.serviceDetails?.status ?? ""),
                       ],
                     ),
                     const Gap(3),
-                     HeadingWidget(
+                    HeadingWidget(
                       heading: state.serviceDetails?.reference ?? "",
                       style: AppTextStyles.style14Black600,
                     ),
                     const Gap(10),
+
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 10),
@@ -68,32 +72,51 @@ class ServiceDetailsScreen extends StatelessWidget {
                         color: AppColors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child:  Column(
+                      child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Facility',
-                            value: state.serviceDetails?.application?.contractorName ?? ""
+                              title: 'Contractor Name',
+                              value: state.serviceDetails?.application
+                                      ?.contractorName ??
+                                  ""),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Contractor Phone',
+                            value: state.serviceDetails?.application
+                                    ?.contractorPhone ??
+                                "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Nature of function',
-                            value: 'Birthday Celebration',
+                              title: 'Start Date',
+                              value: DateTimeUtil.getFormattedDatesTime(state
+                                  .serviceDetails?.application?.startDate)),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Contractor Contact Person',
+                            value: state.serviceDetails?.application
+                                    ?.contactPerson ??
+                                "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Expected Guests',
-                            value: '25',
+                            title: 'No. of Staff Expected',
+                            value: state.serviceDetails?.application
+                                    ?.noOfStaffExpected
+                                    ?.toString() ??
+                                "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Booking Date',
-                            value: 'Aug 7, 2024',
+                            title: 'End Date',
+                            value: DateTimeUtil.getFormattedDatesTime(
+                                state.serviceDetails?.application?.endDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Start Time',
-                            value: '11:00 PM',
+                            title: '	Security Deposit',
+                            value: state.serviceDetails?.securityDeposit
+                                    ?.toString() ??
+                                "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'End Time',
-                            value: '03:00 PM',
+                            title: 'Temporary Electricity Required',
+                            valueIcon: Icons.clear,
                           ),
                         ],
                       ),
@@ -104,27 +127,37 @@ class ServiceDetailsScreen extends StatelessWidget {
                     ),
                     const Gap(10),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 7, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: documents.length,
-                        itemBuilder: (context, index) {
-                          String document = documents[index];
-                          return ServicesDocumentsCardWidget(name: document);
-                        },
-                        separatorBuilder: (context, index) {
-                          return Divider(
-                            color: AppColors.gray,
-                          );
-                        },
-                      ),
-                    ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: state.isDocumentLoading
+                            ? LoaderWidget()
+                            :
+                            // state.serviceDetails?.documents?.isNotEmpty ?? true ?
+                            ListView.separated(
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount:
+                                    state.serviceDetails?.documents?.length ??
+                                        0,
+                                itemBuilder: (context, index) {
+                                  Document? document =
+                                      state.serviceDetails?.documents?[index];
+                                  return ServicesDocumentsCardWidget(
+                                    name: document?.name,
+                                    url: document?.pathUrl ?? "",
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Divider(
+                                    color: AppColors.gray,
+                                  );
+                                },
+                              ) //: EmptyWidget(text: 'No data available',) ,
+                        ),
                     const Gap(20),
                     const HeadingWidget(
                       heading: 'Applicant Details',
@@ -137,40 +170,44 @@ class ServiceDetailsScreen extends StatelessWidget {
                         color: AppColors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Column(
+                      child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Requester Type',
-                            value: 'Owner',
-                          ),
+                              title: 'Requester Type',
+                              value: state.serviceDetails?.clientType ?? ""),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Name',
-                            value: 'Oliver Stone',
+                            value: state.serviceDetails?.clientName ?? "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Phone',
-                            value: '9714567890',
+                            value: state.serviceDetails?.clientPhone ?? "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Email',
-                            value: 'Oliver@gmail.com',
+                            value: state.serviceDetails?.clientEmail ?? "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Passport Number',
-                            value: '345678905678',
-                          ),
+                              title: 'Passport Number',
+                              value: state.serviceDetails?.passportNumber
+                                      ?.toString() ??
+                                  ""),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Passport Expiry',
-                            value: 'Apr 15, 2025',
+                            value: DateTimeUtil.getFormattedDate(
+                                state.serviceDetails?.clientIdExpiry),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'ID Number',
-                            value: '543745278980',
+                            value: state.serviceDetails?.clientIdNumber
+                                    ?.toString() ??
+                                "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
                             title: 'ID Expiry',
-                            value: 'Oct 19, 2025',
+                            value: DateTimeUtil.getFormattedDate(
+                                state.serviceDetails?.clientIdExpiry),
                           ),
                         ],
                       ),
@@ -181,16 +218,36 @@ class ServiceDetailsScreen extends StatelessWidget {
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
-                    ActivityLogWidget(
-                      horizontalPadding: 8,
-                      isLast: true,
-                      status: 'Request Received By ',
-                      byValue: 'System',
-                      description:
-                          'Application has been submitted successfully',
-                      dateTime: DateFormat("MMM dd, yyyy, hh:mm a")
-                          .format(DateTime.now()),
-                    ),
+                    state.isStatusLoading ? LoaderWidget() :
+                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
+                    ListView.separated(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount:
+                          state.serviceDetails?.statusHistory?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        StatusHistory? statusHistory = state.serviceDetails?.statusHistory?[index];
+                        return ActivityLogWidget(
+                          horizontalPadding: 8,
+                          isLast: true,
+                          status: statusHistory?.status ?? "",
+                          byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
+                              ?  statusHistory.user?.fullName ?? ""
+                              : " System",
+                          description: statusHistory?.note
+                              ?.replaceAll('\n\n', ' ')
+                              .trim()
+                              .split('.')
+                              .first
+                              .trim(),
+
+                          dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return Gap(10);
+                      },
+                    ) : EmptyWidget(text: 'No data available',),
                   ],
                 );
               },

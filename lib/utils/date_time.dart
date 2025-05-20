@@ -20,4 +20,13 @@ class DateTimeUtil {
     return '--';
   }
 
+ static String getFormattedDate(DateTime? inputDateTime) {
+    if (inputDateTime != null) {
+      String formattedDateString =
+      DateFormat("MMMM dd, yyyy").format(inputDateTime);
+      return formattedDateString;
+    }
+    return '--';
+  }
+
 }

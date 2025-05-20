@@ -6,6 +6,7 @@ import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/check_out/check_out_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
+import 'package:visitors/bloc/work_order/work_order_cubit.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
@@ -354,6 +355,7 @@ class DeviceDeciderScreen extends StatelessWidget {
       return const AllServicesScreen();
     }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+      context.read<WorkOrderCubit>().getWorkOrder();
       return const WorkOrderRfpScreen();
     }
     else if (state.selectedIndex == AppConstants.messagesIndex) {
@@ -383,6 +385,7 @@ class DeviceDeciderScreen extends StatelessWidget {
       return const AllServicesScreen();
     }
     else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+      context.read<WorkOrderCubit>().getWorkOrder();
       return const WorkOrderRfpScreen();
     }
     else if (state.selectedIndex == AppConstants.messagesIndex) {

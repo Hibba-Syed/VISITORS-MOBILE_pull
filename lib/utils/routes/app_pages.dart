@@ -23,8 +23,10 @@ import '../../bloc/check_out/check_out_cubit.dart';
 import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
+import '../../bloc/work_order/work_order_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
 import '../../view/Common Screens/splash_screen.dart';
+import '../../view/Common Screens/work order/work_order_rfp_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -70,7 +72,8 @@ class AppPages {
           ),
           BlocProvider(
             create: (context) => ServiceCubit(),
-          ),BlocProvider(
+          ),
+          BlocProvider(
             create: (context) => ServiceDetailsCubit(),
           ),
         ],
@@ -95,7 +98,13 @@ class AppPages {
       bloc: BlocProvider(
         create: (context) => CheckInsDetailsCubit(),
       ),
-
+    ),
+    PageEntity(
+      route: AppRoutes.workOrderScreen,
+      page: const WorkOrderRfpScreen(),
+      bloc: BlocProvider(
+        create: (context) => WorkOrderCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.visitorPassesScreen,

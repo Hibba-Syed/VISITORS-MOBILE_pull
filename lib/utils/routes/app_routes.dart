@@ -14,6 +14,6 @@ class AppRoutes {
   static const String loginScreen = '/loginScreen';
   static const String biometricAuth = '/biometricAuth';
   static const String loadingScreen = '/loadingScreen';
-
+  static const String workOrderScreen = '/workOrderScreen';
 
 }

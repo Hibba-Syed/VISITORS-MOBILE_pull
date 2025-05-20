@@ -11,10 +11,12 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
   ServiceDetailsCubit() : super(ServiceDetailsState());
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
 
-  Future<ServiceDetailsResponseModel?> getServiceDetails() async {
+  Future<ServiceDetailsResponseModel?> getServiceDetails({required int? serviceId}) async {
     emit(state.copyWith(isLoading: true));
     ServiceDetailsResponseModel? response =
-    await _serviceRepo.getServiceDetails().onError(
+    await _serviceRepo.getServiceDetails(
+      serviceId: serviceId
+    ).onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
@@ -23,6 +25,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
         throw error!;
       },
     );
+    print("Status Code::: ${response?.code}");
     if (response != null && response.status == 'success') {
       emit(state.copyWith(isLoading: false));
       emit(state.copyWith(serviceDetails: response.record,isLoading: false));

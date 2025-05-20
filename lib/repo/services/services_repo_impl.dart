@@ -7,6 +7,7 @@ import 'package:visitors/repo/services/services_repo.dart';
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../resource/constants/api_url.dart';
+import '../encrption/encryption_helper.dart';
 
 class ServiceRepoImpl implements ServiceRepo {
   final BaseApiServices _apiService = NetworkApiServices();
@@ -31,40 +32,15 @@ class ServiceRepoImpl implements ServiceRepo {
     }
   }
   @override
-  Future<ServiceDetailsResponseModel?> getServiceDetails() async {
+  Future<ServiceDetailsResponseModel?> getServiceDetails({required int? serviceId}) async {
+    print('service details URL: $serviceId');
     try {
-      final filter = {
-        "where": {
-          "and": [
-            {
-              "field": "id",
-              "value": 2518,
-            }
-          ]
-        },
-        "include": [
-          {"relation": "application"},
-          {
-            "relation": "status_history",
-            "include": [
-              {
-                "relation": "user",
-                "select": ["id", "first_name", "last_name"]
-              }
-            ]
-          },
-          {
-            "relation": "unit",
-            "select": ["id"]
-          }
-        ]
-      };
+      final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
+      print(filter);
+      String url = '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
 
-      String url =
-          '${ApiUrl.serviceDetails}?filter=${Uri.encodeComponent(jsonEncode(filter))}';
-
-      // print('service details URL: $url');
-      dynamic response = await _apiService.getAuthGetApiResponse(url);
+       print('service details URL: ${Uri.parse(url)}');
+      dynamic response = await _apiService.getAuthGetApiResponse((url));
       return ServiceDetailsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

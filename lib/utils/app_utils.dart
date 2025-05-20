@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 
+import '../model/service/service_details_model.dart';
 import '../view/Common Screens/check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class AppUtils {
@@ -89,4 +90,41 @@ class AppUtils {
     TypeModel(label: 'Work Permit', value: 'WP'),
     TypeModel(label: 'Short Stay', value: 'SS'),
   ];
+  static String? getRequestName(String? applicationType) {
+    String? requestName;
+    if (applicationType == "AD") {
+      requestName = "Access Device";
+    }
+    if (applicationType == "MI") {
+      requestName = "Move In";
+    }
+    if (applicationType == "MO") {
+      requestName = "Move Out";
+    }
+    if (applicationType == "WP") {
+      requestName = "Work Permit";
+    }
+    if (applicationType == "FO") {
+      requestName = "Fit Out";
+    }
+    if (applicationType == "HB") {
+      requestName = "Facility Booking";
+    }
+    if (applicationType == "TP") {
+      requestName = "Transfer of Property";
+
+    }
+    if (applicationType == "CS") {
+    }
+    if (applicationType == "RI") {
+      requestName = "Resident Information";
+    }
+    if (applicationType == "DP") {
+      requestName = "Delivery Permit";
+    }
+    if (applicationType == "SS") {
+      requestName = "Short Stay";
+    }
+    return requestName;
+  }
 }
