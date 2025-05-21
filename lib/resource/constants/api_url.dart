@@ -20,4 +20,5 @@ class ApiUrl {
   static const String serviceDetails = '$baseUrl/visitor/all-applications/one';
   static const String workOrderDetails = '$baseUrl/visitor/job';
   static const String addWorkOrderLog = '$baseUrl/visitor/log-job';
+  static const String visitorPasses = '$baseUrl/visitor/visitor-passes';
 }

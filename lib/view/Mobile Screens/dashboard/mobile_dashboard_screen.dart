@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/visitor_pass/visitor_pass_cubit.dart';
 import 'package:visitors/model/check_ins/check_in_model.dart';
 import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
@@ -282,6 +283,7 @@ class MobileDashboardScreen extends StatelessWidget {
                             horizontalPadding: 6,
                             count: 25,
                             onPressed: () {
+                              context.read<VisitorPassCubit>().getVisitorPass();
                               Navigator.pushNamed(
                                   context, AppRoutes.visitorPassesScreen);
                             },

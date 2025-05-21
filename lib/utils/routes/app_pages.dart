@@ -23,6 +23,7 @@ import '../../bloc/check_out/check_out_cubit.dart';
 import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
+import '../../bloc/visitor_pass/visitor_pass_cubit.dart';
 import '../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../bloc/work_order/work_order_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
@@ -113,6 +114,10 @@ class AppPages {
     PageEntity(
       route: AppRoutes.visitorPassesScreen,
       page: const VisitorPassesScreen(),
+      bloc: BlocProvider(
+        create: (context) => VisitorPassCubit(),
+      ),
+
     ),
     PageEntity(
       route: AppRoutes.serviceableCheckInsScreen,
