@@ -33,12 +33,6 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
     'Last 90 Days'
   ];
 
-  final List<TypeModel> typeList = [
-    TypeModel(label: 'Guests', value: 'guest'),
-    TypeModel(label: 'Services', value: 'application'),
-    TypeModel(label: 'Work Order / RFPs', value: 'job'),
-    TypeModel(label: 'Visitor Pass', value: 'visitor Pass'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +91,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 selectedItem: context.watch<CheckInsCubit>().state.selectedType,
                 itemAsString: (type) => type.label,
                 compareFn: (p0, p1) => p0.value == p1.value,
-                items: typeList,
+                items: AppUtils.checkInTypeList,
                 onChanged: (value) {
                   context.read<CheckInsCubit>().onChangeSelectedType(value);
                 }),

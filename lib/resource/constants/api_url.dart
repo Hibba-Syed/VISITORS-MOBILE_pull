@@ -18,4 +18,6 @@ class ApiUrl {
   static const String messages = '$baseUrl/visitor/messages';
   static const String sendMessage = '$messages/send';
   static const String serviceDetails = '$baseUrl/visitor/all-applications/one';
+  static const String workOrderDetails = '$baseUrl/visitor/job';
+  static const String addWorkOrderLog = '$baseUrl/visitor/log-job';
 }

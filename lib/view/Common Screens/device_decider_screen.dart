@@ -41,7 +41,7 @@ class DeviceDeciderScreen extends StatelessWidget {
     DrawerItemModel(
       index: AppConstants.checkInsIndex,
       title: 'Check-Ins',
-      iconPath: AppImages.menuCheckin,
+      iconPath: AppImages.menuCheckIn,
       onTap: () {},
     ),
     DrawerItemModel(
@@ -297,7 +297,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                                       context
                                           .read<DeviceDeciderCubit>()
                                           .onChangeSelectedIndex(
-                                          context, item.index);
+                                           item.index);
                                       Navigator.of(context).pop();
                                     }
                                   },

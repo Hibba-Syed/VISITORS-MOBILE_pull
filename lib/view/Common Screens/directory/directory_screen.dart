@@ -23,7 +23,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
       child: Scaffold(
               body: Padding(

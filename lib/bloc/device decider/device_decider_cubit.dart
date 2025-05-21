@@ -1,5 +1,4 @@
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 
@@ -28,7 +27,7 @@ class DeviceDeciderCubit extends Cubit<DeviceDeciderState> {
   //   }
   //   emit(state.copyWith(selectedIndex: index));
   // }
-  void onChangeSelectedIndex(BuildContext context,int index) {
+  void onChangeSelectedIndex(int index) {
     if (index == AppConstants.dashboardIndex) {
       emit(state.copyWith(
         selectedIndex: index,

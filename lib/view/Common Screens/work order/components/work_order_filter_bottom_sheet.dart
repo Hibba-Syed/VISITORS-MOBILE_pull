@@ -4,11 +4,13 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/work_order/work_order_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/vendor/vendor_model.dart';
+import '../../check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class WorkOrderFilterBottomSheet extends StatefulWidget {
   const WorkOrderFilterBottomSheet({super.key});
@@ -20,10 +22,6 @@ class WorkOrderFilterBottomSheet extends StatefulWidget {
 
 class _WorkOrderFilterBottomSheetState
     extends State<WorkOrderFilterBottomSheet> {
-  final List<String> typeList = [
-    'RFPs',
-    'Work Orders',
-  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,15 +49,16 @@ class _WorkOrderFilterBottomSheetState
                     style: AppTextStyles.style16black600),
               ),
               const Gap(15),
-              SingleSelectedDropdownWidget<String>(
+              SingleSelectedDropdownWidget<TypeModel>(
                   hint: "Type",
                   fillColor: AppColors.white,
-                  selectedItem: state.selectedType,
-                  itemAsString: (type) => type,
-                  compareFn: (p0, p1) => p0 == p1,
-                  items: typeList,
+                  selectedItem:  context.watch<WorkOrderCubit>().state.selectedType,
+                  itemAsString: (type) => type.label,
+                  compareFn: (p0, p1) => p0.value == p1.value,
+                  items: AppUtils.workOrderType,
                   onChanged: (value) {
                     context.read<WorkOrderCubit>().onChangeSelectedType(value);
+                    print('work ${value?.value}');
                   }),
               const Gap(10),
               SingleSelectedDropdownWidget<VendorModel>(

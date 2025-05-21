@@ -45,7 +45,7 @@ class _MessageScreenState extends State<MessageScreen> {
         if (didPop) return;
         context
             .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+            .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
       child: SafeArea(
         child: Scaffold(

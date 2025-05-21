@@ -1,7 +1,7 @@
 part of 'work_order_cubit.dart';
 
 class WorkOrderState {
-  final int? page;
+  final int page;
   final bool isLoading;
   final bool loadMore;
   final String? searchKeyword;
@@ -10,7 +10,7 @@ class WorkOrderState {
   List<WorkOrderModel>? workOrderModel;
   List<VendorModel>? vendors;
   final VendorModel? selectedVendor;
-  final String? selectedType;
+  final TypeModel? selectedType;
   WorkOrderState({
     this.isLoading = false,
     this.loadMore = false,
@@ -33,7 +33,7 @@ class WorkOrderState {
     List<WorkOrderModel>? workOrderModel,
     List<VendorModel>? vendors,
     VendorModel? selectedVendor,
-    String? selectedType,
+    final TypeModel? selectedType,
   }) {
     return WorkOrderState(
         page: page ?? this.page,

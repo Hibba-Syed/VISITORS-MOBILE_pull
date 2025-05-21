@@ -37,7 +37,7 @@ class TabletDashboardScreen extends StatelessWidget {
         onTap: () {
           context
               .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+              .onChangeSelectedIndex(AppConstants.checkInsIndex);
         },
       ),
       ActionsItemModel(
@@ -49,7 +49,7 @@ class TabletDashboardScreen extends StatelessWidget {
         onTap: () {
           context
               .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+              .onChangeSelectedIndex(AppConstants.checkInsIndex);
         },
       ),
       ActionsItemModel(
@@ -61,7 +61,7 @@ class TabletDashboardScreen extends StatelessWidget {
         onTap: () {
           context
               .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.eServicesIndex);
+              .onChangeSelectedIndex(AppConstants.eServicesIndex);
         },
       ),
       ActionsItemModel(
@@ -73,7 +73,7 @@ class TabletDashboardScreen extends StatelessWidget {
         onTap: () {
           context
               .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.workOrderRfpIndex);
+              .onChangeSelectedIndex( AppConstants.workOrderRfpIndex);
         },
       ),
     ];
@@ -153,7 +153,7 @@ class TabletDashboardScreen extends StatelessWidget {
                             onPressed: () {
                               context.read<DeviceDeciderCubit>()
                                   .onChangeSelectedIndex(
-                                  context, AppConstants.checkOutsIndex);
+                                  AppConstants.checkOutsIndex);
                             }),
                       ),
                       const Gap(10),
@@ -169,7 +169,7 @@ class TabletDashboardScreen extends StatelessWidget {
                               context
                                   .read<DeviceDeciderCubit>()
                                   .onChangeSelectedIndex(
-                                  context, AppConstants.checkInsIndex);
+                                  AppConstants.checkInsIndex);
                             }),
                       ),
                     ],
@@ -237,7 +237,7 @@ class TabletDashboardScreen extends StatelessWidget {
                         onPressed: () {
                           context.read<DeviceDeciderCubit>()
                               .onChangeSelectedIndex(
-                              context, AppConstants.eServicesIndex);
+                               AppConstants.eServicesIndex);
                         }),
                   ],
                 ),
@@ -259,7 +259,7 @@ class TabletDashboardScreen extends StatelessWidget {
                   checkInOnPressed: () {
                     Navigator.pushNamed(context, AppRoutes.tabletGuestCheckInScreen);
                   },
-                  serviceableOnPressed: () {
+                  serviceableCheckInOnPressed: () {
                     Navigator.pushNamed(
                         context, AppRoutes.serviceableCheckInsScreen);
                   },
@@ -293,7 +293,7 @@ class TabletDashboardScreen extends StatelessWidget {
                       context
                           .read<DeviceDeciderCubit>()
                           .onChangeSelectedIndex(
-                          context, AppConstants.workOrderRfpIndex);
+                          AppConstants.workOrderRfpIndex);
                     }),
               ],
             ),
@@ -335,7 +335,7 @@ class TabletDashboardScreen extends StatelessWidget {
         shape: const CircleBorder(),
         onPressed: (){
           context.read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+              .onChangeSelectedIndex(AppConstants.messagesIndex);
         },
         child: Icon(CupertinoIcons.chat_bubble_2,color: AppColors.white,),
       ),

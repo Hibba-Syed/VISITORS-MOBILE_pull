@@ -33,7 +33,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
         if (didPop) return;
         context
             .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+            .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
       child: Scaffold(
         body: BlocBuilder<CheckOutCubit, CheckOutState>(

@@ -17,7 +17,7 @@ class ServicesCardWidget extends StatelessWidget {
   final String? name;
   final String? serviceType;
   final VoidCallback checkInOnPressed;
-  final VoidCallback serviceableOnPressed;
+  final VoidCallback serviceableCheckInOnPressed;
   final VoidCallback detailsOnPressed;
   final bool isActiveCheckins;
   const ServicesCardWidget({
@@ -29,7 +29,7 @@ class ServicesCardWidget extends StatelessWidget {
     this.name,
     this.serviceType,
     required this.checkInOnPressed,
-    required this.serviceableOnPressed,
+    required this.serviceableCheckInOnPressed,
     required this.detailsOnPressed,
     this.isActiveCheckins = false,
   });
@@ -122,7 +122,7 @@ class ServicesCardWidget extends StatelessWidget {
                             buttonColor: AppColors.cyanBlue,
                             image: AppImages.serviceable,
                             text: 'Serviceable Check Ins',
-                            onPressed: serviceableOnPressed),
+                            onPressed: serviceableCheckInOnPressed),
                       ),
                     ],
 

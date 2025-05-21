@@ -10,5 +10,5 @@ abstract class ServiceRepo{
     String? serviceType,
 
   });
-  Future<ServiceDetailsResponseModel?> getServiceDetails( {required int? serviceId});
+  Future<ServiceDetailsResponseModel?> getServiceDetails( {int? serviceId});
 }

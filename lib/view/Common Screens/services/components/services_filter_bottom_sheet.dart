@@ -56,7 +56,7 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                       context.watch<ServiceCubit>().state.selectedType,
                   itemAsString: (type) => type.label,
                    compareFn: (p0, p1) => p0.value == p1.value,
-                  items: AppUtils.typeList,
+                  items: AppUtils.serviceTypeList,
                   onChanged: (value) {
                     context.read<ServiceCubit>().onChangeSelectedType(value);
                   }),

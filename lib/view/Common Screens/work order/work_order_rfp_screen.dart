@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/work_order/details/work_order_details_cubit.dart';
 import 'package:visitors/bloc/work_order/work_order_cubit.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
@@ -22,22 +23,20 @@ class WorkOrderRfpScreen extends StatefulWidget {
 }
 
 class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
-  final TextEditingController _scrollController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   context.read<CheckInsCubit>().getUnits();
-  //   context.read<CheckInsCubit>().getVendors();
-  //   _scrollController.addListener(() {
-  //     if (_scrollController.position.pixels >=
-  //         _scrollController.position.maxScrollExtent) {
-  //       context.read<CheckInsCubit>().getMoreCheckIns(
-  //         keyword: _searchController.text,
-  //       );
-  //     }
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        context.read<WorkOrderCubit>().getMoreWorkOrder(
+
+        );
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -46,7 +45,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
         if (didPop) return;
         context
             .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+            .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
       child: SafeArea(
         child: Scaffold(
@@ -78,7 +77,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                           const Gap(6),
                           FilterContainerWidget(
                             isFilterApplied: (state.selectedVendor != null) ||
-                                (state.selectedType?.isNotEmpty ?? false)
+                                (state.selectedType?.value.isNotEmpty ?? false)
                                 ? true
                                 : false,
                             onPressed: () {
@@ -97,6 +96,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         child: state.isLoading ? LoaderWidget() :
                         state.workOrderModel?.isNotEmpty ?? true ?
                         ListView.separated(
+                          controller: _scrollController,
                           physics: AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           primary: false,
@@ -119,6 +119,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                         AppRoutes.mobileGuestCheckInScreen);
                               },
                               detailsOnPressed: () {
+                                context.read<WorkOrderDetailsCubit>().getWorkOrderDetails(workOrderId: workOrder?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.workOrderJobDetailsScreen);
                               },
@@ -134,6 +135,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                         ) : EmptyWidget(text: 'No data available',),
                       ),
                     ),
+                    if (state.loadMore) const LoaderWidget(),
                   ],
                 ),
               );

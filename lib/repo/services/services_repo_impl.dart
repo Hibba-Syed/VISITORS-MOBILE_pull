@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:visitors/model/service/service_details_response_model.dart';
 import 'package:visitors/model/service/service_response_model.dart';
@@ -32,7 +31,7 @@ class ServiceRepoImpl implements ServiceRepo {
     }
   }
   @override
-  Future<ServiceDetailsResponseModel?> getServiceDetails({required int? serviceId}) async {
+  Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId}) async {
     print('service details URL: $serviceId');
     try {
       final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
@@ -47,19 +46,3 @@ class ServiceRepoImpl implements ServiceRepo {
     }
   }}
 
-//   @override
-//   Future<ServiceDetailsResponseModel?> getServiceDetails(
-//       ) async {
-//
-//     try {
-//       String url ='${ApiUrl.serviceDetails}'
-//                    ;
-//      // print('services details^^ $url');
-//       dynamic response = await _apiService.getAuthGetApiResponse(url);
-//       return ServiceDetailsResponseModel.fromJson(response);
-//     } catch (e) {
-//       rethrow;
-//     }
-//
-//   }
-// }

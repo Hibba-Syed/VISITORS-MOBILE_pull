@@ -23,6 +23,7 @@ import '../../bloc/check_out/check_out_cubit.dart';
 import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
+import '../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../bloc/work_order/work_order_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
 import '../../view/Common Screens/splash_screen.dart';
@@ -73,9 +74,6 @@ class AppPages {
           BlocProvider(
             create: (context) => ServiceCubit(),
           ),
-          BlocProvider(
-            create: (context) => ServiceDetailsCubit(),
-          ),
         ],
         child: const SizedBox.shrink(),
       ),
@@ -83,10 +81,16 @@ class AppPages {
     PageEntity(
       route: AppRoutes.workOrderJobDetailsScreen,
       page: const WorkOrderJobDetailsScreen(),
+      bloc: BlocProvider(
+          create: (context) => WorkOrderDetailsCubit(),
+      )
     ),
     PageEntity(
       route: AppRoutes.servicesDetailsScreen,
       page: const ServiceDetailsScreen(),
+        bloc: BlocProvider(
+          create: (context) => ServiceDetailsCubit(),
+        )
     ),
     PageEntity(
       route: AppRoutes.mobileGuestCheckInScreen,

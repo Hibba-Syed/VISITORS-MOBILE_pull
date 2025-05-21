@@ -21,6 +21,7 @@ import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../bloc/e_service/details/service_details_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
+import '../../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/app_colors.dart';
@@ -52,7 +53,7 @@ class MobileDashboardScreen extends StatelessWidget {
               onTap: () {
                 context
                     .read<DeviceDeciderCubit>()
-                    .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+                    .onChangeSelectedIndex(AppConstants.checkInsIndex);
               },
             ),
             ActionsItemModel(
@@ -64,7 +65,7 @@ class MobileDashboardScreen extends StatelessWidget {
               onTap: () {
                 context
                     .read<DeviceDeciderCubit>()
-                    .onChangeSelectedIndex(context, AppConstants.checkInsIndex);
+                    .onChangeSelectedIndex(AppConstants.checkInsIndex);
               },
             ),
             ActionsItemModel(
@@ -75,7 +76,7 @@ class MobileDashboardScreen extends StatelessWidget {
               forGroundColor: AppColors.cyanBlue,
               onTap: () {
                 context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
-                    context, AppConstants.eServicesIndex);
+                    AppConstants.eServicesIndex);
               },
             ),
             ActionsItemModel(
@@ -86,7 +87,7 @@ class MobileDashboardScreen extends StatelessWidget {
               forGroundColor: AppColors.primary,
               onTap: () {
                 context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
-                    context, AppConstants.workOrderRfpIndex);
+                    AppConstants.workOrderRfpIndex);
               },
             ),
           ];
@@ -180,7 +181,7 @@ class MobileDashboardScreen extends StatelessWidget {
                                 context
                                     .read<DeviceDeciderCubit>()
                                     .onChangeSelectedIndex(
-                                        context, AppConstants.checkOutsIndex);
+                                        AppConstants.checkOutsIndex);
                               }),
                           const Gap(10),
                           CustomButton(
@@ -195,7 +196,7 @@ class MobileDashboardScreen extends StatelessWidget {
                                 context
                                     .read<DeviceDeciderCubit>()
                                     .onChangeSelectedIndex(
-                                        context, AppConstants.checkInsIndex);
+                                    AppConstants.checkInsIndex);
                               }),
                         ],
                       ),
@@ -299,7 +300,7 @@ class MobileDashboardScreen extends StatelessWidget {
                                 context
                                     .read<DeviceDeciderCubit>()
                                     .onChangeSelectedIndex(
-                                        context, AppConstants.eServicesIndex);
+                                         AppConstants.eServicesIndex);
                               }),
                         ],
                       ),
@@ -335,7 +336,7 @@ class MobileDashboardScreen extends StatelessWidget {
                                 Navigator.pushNamed(
                                     context, AppRoutes.mobileGuestCheckInScreen);
                               },
-                              serviceableOnPressed: () {
+                              serviceableCheckInOnPressed: () {
                                 context
                                     .read<CheckInsCubit>()
                                     .onChangeSelectedType(
@@ -379,7 +380,7 @@ class MobileDashboardScreen extends StatelessWidget {
                             context
                                 .read<DeviceDeciderCubit>()
                                 .onChangeSelectedIndex(
-                                    context, AppConstants.workOrderRfpIndex);
+                                AppConstants.workOrderRfpIndex);
                           }),
                     ],
                   ),
@@ -396,30 +397,31 @@ class MobileDashboardScreen extends StatelessWidget {
                           primary: false,
                           itemCount: state.workOrderModel?.length ?? 0,
                           itemBuilder: (context, index) {
-                            WorkOrderModel? workOrderModel =
+                            WorkOrderModel? workOrder =
                                 state.workOrderModel?[index];
                             // print('wdate: ${workOrderModel?.createdAt}');
                             return WorkOrderRFPCardWidget(
-                              isAwarded: workOrderModel?.isAwarded,
+                              isAwarded: workOrder?.isAwarded,
                               isActiveCheckins:
-                                  (workOrderModel?.activeCheckIns?.isNotEmpty ??
+                                  (workOrder?.activeCheckIns?.isNotEmpty ??
                                           true)
                                       ? true
                                       : false,
                               typeText: 'Work Order',
                               typeAssetImage: AppImages.hammer,
-                              status: workOrderModel?.status ?? "",
-                              title: workOrderModel?.title ?? "",
-                              reference: workOrderModel?.reference ?? "",
+                              status: workOrder?.status ?? "",
+                              title: workOrder?.title ?? "",
+                              reference: workOrder?.reference ?? "",
                               vendorName:
-                                  workOrderModel?.newVendor?.companyName ?? "",
-                              date: workOrderModel?.startDate?.toString(),
+                                  workOrder?.newVendor?.companyName ?? "",
+                              date: workOrder?.startDate?.toString(),
                               //DateTimeUtil.getFormattedDatesTime(workOrderModel?.startDate),
                               checkInPressed: () {
                                 Navigator.pushNamed(
                                     context, AppRoutes.mobileGuestCheckInScreen);
                               },
                               detailsOnPressed: () {
+                                context.read<WorkOrderDetailsCubit>().getWorkOrderDetails(workOrderId: workOrder?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.workOrderJobDetailsScreen);
                               },
@@ -430,7 +432,7 @@ class MobileDashboardScreen extends StatelessWidget {
                                     .onChangeSelectedType(
                                     AppUtils.getServiceableType(
                                         Strings.keyWorkOrder));
-                                context.read<CheckInsCubit>().onChangeSelectedServiceableId(workOrderModel?.id);
+                                context.read<CheckInsCubit>().onChangeSelectedServiceableId(workOrder?.id);
                                 context.read<CheckInsCubit>().getCheckIns();
                                 Navigator.pushNamed(
                                     context, AppRoutes.jobCheckInsScreen);
@@ -453,7 +455,7 @@ class MobileDashboardScreen extends StatelessWidget {
         onPressed: () {
           context
               .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(context, AppConstants.messagesIndex);
+              .onChangeSelectedIndex(AppConstants.messagesIndex);
         },
         child: Icon(
           CupertinoIcons.chat_bubble_2,

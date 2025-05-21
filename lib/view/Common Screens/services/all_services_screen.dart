@@ -49,7 +49,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
         if (didPop) return;
         context
             .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+            .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
       child: Scaffold(
         body: BlocBuilder<ServiceCubit, ServiceState>(
@@ -143,7 +143,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                 AppRoutes
                                                     .mobileGuestCheckInScreen);
                                       },
-                                      serviceableOnPressed: () {
+                                      serviceableCheckInOnPressed: () {
                                         Navigator.pushNamed(
                                             context,
                                             AppRoutes

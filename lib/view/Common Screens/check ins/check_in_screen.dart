@@ -36,8 +36,6 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CheckInsCubit>().getUnits();
-    context.read<CheckInsCubit>().getVendors();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
@@ -56,7 +54,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
         if (didPop) return;
         context
             .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+            .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
       child: SafeArea(
         child: Scaffold(

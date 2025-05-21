@@ -41,6 +41,12 @@ class ServiceDetailsScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
               builder: (context, state) {
+                if(state.isLoading){
+                  return Padding(
+                    padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
+                    child: LoaderWidget(),
+                  );
+                }
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -133,10 +139,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: state.isDocumentLoading
-                            ? LoaderWidget()
-                            :
-                            // state.serviceDetails?.documents?.isNotEmpty ?? true ?
+                        child:
+                            state.serviceDetails?.documents?.isNotEmpty ?? true ?
                             ListView.separated(
                                 shrinkWrap: true,
                                 primary: false,
@@ -156,7 +160,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                                     color: AppColors.gray,
                                   );
                                 },
-                              ) //: EmptyWidget(text: 'No data available',) ,
+                              )
+                      : EmptyWidget(text: 'No data available',) ,
                         ),
                     const Gap(20),
                     const HeadingWidget(
@@ -218,7 +223,6 @@ class ServiceDetailsScreen extends StatelessWidget {
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
-                    state.isStatusLoading ? LoaderWidget() :
                         state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
                     ListView.separated(
                       shrinkWrap: true,

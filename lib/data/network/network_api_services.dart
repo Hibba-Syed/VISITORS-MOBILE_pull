@@ -62,6 +62,7 @@ class NetworkApiServices implements BaseApiServices {
               headers: {
                 'accept': "application/json",
                 'Content-Type': "application/json",
+                'Authorization': 'Bearer ${Globals().token ?? ""}',
               },
               body: jsonEncode(data))
           .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
@@ -70,6 +71,7 @@ class NetworkApiServices implements BaseApiServices {
       });
       debugPrint('code: ${response.statusCode}\nbody: ${response.body}');
       responseJson = returnResponse(response);
+      print('add Log ??? ${response.body} status  ${response.statusCode}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     } catch (e) {
@@ -98,6 +100,7 @@ class NetworkApiServices implements BaseApiServices {
       debugPrint(
           'status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
+      print('response::: ${response.body}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     }

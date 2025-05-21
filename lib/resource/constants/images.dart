@@ -32,7 +32,7 @@ class AppImages {
   static const String logout = "${baseSvgPath}logouts.svg";
   static const String dashboard = "${baseSvgPath}dashboard.svg";
   static const String menuCheckout = "${baseSvgPath}menu_checkout.svg";
-  static const String menuCheckin = "${baseSvgPath}menu_checkin.svg";
+  static const String menuCheckIn = "${baseSvgPath}menu_checkin.svg";
   static const String checkInButton = "${baseSvgPath}checkin_button.svg";
   static const String eServices = "${baseSvgPath}eservices.svg";
   static const String rfps = "${baseSvgPath}rfps.svg";

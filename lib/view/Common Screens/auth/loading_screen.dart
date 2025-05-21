@@ -18,9 +18,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     context.read<DashboardCubit>().getData(context);
     super.initState();
   }
-
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

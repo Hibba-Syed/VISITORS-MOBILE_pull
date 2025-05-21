@@ -1,5 +1,4 @@
 
-import 'deviceInfo_model.dart';
 
 class Application {
   int? id;

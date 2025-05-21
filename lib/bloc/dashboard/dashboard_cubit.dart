@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as context;
 import 'package:visitors/model/service/service_response_model.dart';
 
 import '../../model/check_ins/check_in_model.dart';
@@ -132,21 +131,34 @@ class DashboardCubit extends Cubit<DashboardState> {
           msg: 'Something went wrong while fetching work order');
     }
   }
-  Future getData( BuildContext context) async {
-    bool profileSuccess = await context.read<DashboardCubit>().getProfile();
+  Future<void> getData(BuildContext context) async {
+    final dashboardCubit = context.read<DashboardCubit>();
+
+    bool profileSuccess = await dashboardCubit.getProfile();
 
     if (profileSuccess && context.mounted) {
-       context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
-      await context.read<DashboardCubit>().getDashboardCount();
-       context.read<DashboardCubit>().getDashboardServices(limit: 3);
-       context.read<DashboardCubit>().getDashboardWorkOrder(limit: 3);
+      await Future.wait([
+        dashboardCubit.getDashboardCheckIns(limit: 3),
+        dashboardCubit.getDashboardCount(),
+        dashboardCubit.getDashboardServices(limit: 3),
+        dashboardCubit.getDashboardWorkOrder(limit: 3),
+      ]);
 
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.deviceDeciderScreen, (route) => false);
+      if (context.mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.deviceDeciderScreen,
+              (route) => false,
+        );
+      }
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.loginScreen, (route) => false);
+      if (context.mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.loginScreen,
+              (route) => false,
+        );
+      }
     }
   }
+
 
 }

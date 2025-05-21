@@ -97,7 +97,7 @@ class Record {
   String? visitor;
   String? visitorCompany;
   String? mobile;
-  String? email;
+  dynamic email;
   DateTime? startDate;
   DateTime? endDate;
   DateTime? createdAt;

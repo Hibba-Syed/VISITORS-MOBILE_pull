@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 
-import '../model/service/service_details_model.dart';
+import '../resource/constants/strings.dart';
 import '../view/Common Screens/check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class AppUtils {
@@ -72,7 +72,7 @@ class AppUtils {
       return TypeModel(label: "Work Order / RFP", value: "job");
     } else if (type == "application") {
       return TypeModel(label: "Service", value: "application");
-    } else if (type == "visitor_pass") {
+    } else if (type == "App\\Models\\Visitor\\VisitorPass") {
       return TypeModel(label: "Visitor Pass", value: "visitor_pass");
     } else if (type == null || type.isEmpty) {
       return TypeModel(label: "Guest", value: "guest");
@@ -80,7 +80,7 @@ class AppUtils {
       return TypeModel(label: "", value: "");
     }
   }
-  static List<TypeModel> typeList = [
+  static List<TypeModel> serviceTypeList = [
     TypeModel(label: 'Access device', value: 'AD'),
     TypeModel(label: 'Delivery Permit', value: 'DP'),
     TypeModel(label: 'Facility Booking', value: 'FB'),
@@ -90,6 +90,19 @@ class AppUtils {
     TypeModel(label: 'Work Permit', value: 'WP'),
     TypeModel(label: 'Short Stay', value: 'SS'),
   ];
+
+  static List<TypeModel> workOrderType = [
+    TypeModel(label: 'Work Order',value: '1'),
+    TypeModel(label: 'RFP',value: '0'),
+  ];
+
+ static  List<TypeModel> checkInTypeList = [
+    TypeModel(label: 'Guests', value: Strings.guest),
+    TypeModel(label: 'Services', value: Strings.keyServices),
+    TypeModel(label: 'Work Order / RFPs', value: Strings.keyWorkOrder),
+    TypeModel(label: 'Visitor Pass', value: Strings.keyVisitorPass),
+  ];
+
   static String? getRequestName(String? applicationType) {
     String? requestName;
     if (applicationType == "AD") {

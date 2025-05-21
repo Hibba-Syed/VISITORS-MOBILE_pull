@@ -9,6 +9,7 @@ import '../../repo/filter/general_filter_impl.dart';
 import '../../repo/filter/general_filter_repo.dart';
 import '../../repo/work_order_rfp/work_order_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
+import '../../view/Common Screens/check ins/componants/check_in_filter_bottom_sheet.dart';
 
 part 'work_order_state.dart';
 
@@ -23,7 +24,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   onChangeSelectedVendors(VendorModel vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
-  onChangeSelectedType(String? type) {
+  onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
   }
 
@@ -42,10 +43,9 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   Future<void> getWorkOrder(
       ) async {
     emit(state.copyWith(isLoading: true, page: 1));
-   // String type = (state.isAwarded == 1) ? 'Work Order' : 'RFP';
     WorkOrderResponseModel? response = await _workOrderRFPRepo.getWorkOrder(
       keyword: state.searchKeyword,
-      isAwarded: state.isAwarded,
+      isAwarded: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
     ).onError(
           (error, stackTrace) {
@@ -82,6 +82,41 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching vendors');
+    }
+  }
+  Future<void> getMoreWorkOrder() async {
+    int page = state.page+ 1;
+    emit(state.copyWith(loadMore: true, isLoading: false, page: page));
+    WorkOrderResponseModel? response = await _workOrderRFPRepo
+        .getWorkOrder(
+      keyword: state.searchKeyword,
+      isAwarded: state.selectedType?.value,
+      vendorId: state.selectedVendor?.id,
+
+    )
+        .onError(
+          (error, stackTrace) {
+        emit(state.copyWith(loadMore: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(loadMore: false));
+    if (response != null && response.status == 'success') {
+      if (response.record?.isNotEmpty ?? false) {
+        List<WorkOrderModel> checkIns = state.workOrderModel ?? [];
+        checkIns.addAll(response.record as Iterable<WorkOrderModel>);
+        emit(state.copyWith(workOrderModel: checkIns));
+      } else {
+        Fluttertoast.showToast(msg: 'No more work order');
+        page = state.page - 1;
+        emit(state.copyWith(page: page));
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching work order');
     }
   }
 }
