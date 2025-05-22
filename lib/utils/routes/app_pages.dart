@@ -159,14 +159,10 @@ class AppPages {
       var result = routes.where((element) => element.route == settings.name);
       if (result.isNotEmpty) {
         return MaterialPageRoute(
-            maintainState: true,
-            fullscreenDialog: true,
             builder: (context) => result.first.page, settings: settings);
       }
     }
     return MaterialPageRoute(
-        maintainState: true,
-        fullscreenDialog: true,
         builder: (context) =>  LoginScreen(), settings: settings);
   }
 }

@@ -15,6 +15,7 @@ import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
+import 'package:visitors/view/Common%20Screens/components/drawer_item_model.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
 import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart';
@@ -94,7 +95,7 @@ class DeviceDeciderScreen extends StatelessWidget {
   }
 
   Widget _buildDrawer(BuildContext context, int selectedIndex) {
-    final items = AppConstants.drawerItems;
+    final items = drawerItems;
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
       backgroundColor: AppColors.white,
@@ -222,4 +223,14 @@ class DeviceDeciderScreen extends StatelessWidget {
         return const SizedBox.shrink();
     }
   }
+    static final List<DrawerItemModel> drawerItems = [
+    DrawerItemModel(index: AppConstants.dashboardIndex, title: 'Dashboard', iconPath: AppImages.dashboard),
+    DrawerItemModel(index: AppConstants.checkInsIndex, title: 'Check-Ins', iconPath: AppImages.menuCheckIn),
+    DrawerItemModel(index: AppConstants.eServicesIndex, title: 'E-Services', iconPath: AppImages.menuEservices),
+    DrawerItemModel(index: AppConstants.workOrderRfpIndex, title: 'Work Order / RFPs', iconPath: AppImages.menuRFPs),
+    DrawerItemModel(index: AppConstants.messagesIndex, title: 'Messages', iconPath: AppImages.menuMsg),
+    DrawerItemModel(index: AppConstants.checkOutsIndex, title: 'Check-Outs', iconPath: AppImages.menuCheckout),
+    DrawerItemModel(index: AppConstants.directoryIndex, title: 'Directory', iconPath: AppImages.directory),
+    DrawerItemModel(index: AppConstants.logoutIndex, title: 'Logout', iconPath: AppImages.logout),
+  ];
 }

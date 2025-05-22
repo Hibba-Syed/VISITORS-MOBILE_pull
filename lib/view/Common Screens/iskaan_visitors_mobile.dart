@@ -31,7 +31,7 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
         providers: [...AppPages.getAllBlocProviders(context)],
         child:  GestureDetector(
           onTap: (){
-            // FocusManager.instance.primaryFocus?.unfocus();
+            FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp(
             title: 'Visitors Mobile',
