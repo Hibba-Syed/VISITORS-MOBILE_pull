@@ -11,8 +11,10 @@ import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart'
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
 import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart' show AllServicesScreen;
-import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
+import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart'
+    show AllServicesScreen;
+import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart'
+    show WorkOrderRfpScreen;
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../bloc/auth/auth_cubit.dart';
@@ -78,76 +80,74 @@ class DeviceDeciderScreen extends StatelessWidget {
       index: AppConstants.logoutIndex,
       title: 'Logout',
       iconPath: AppImages.logout,
-      onTap: ()  {
-      },
+      onTap: () {},
     ),
   ];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DeviceDeciderCubit, DeviceDeciderState>(
       builder: (context, state) {
-       return WillPopScope(
+        return WillPopScope(
           onWillPop: () async {
-          //  print('PopScope triggered!');
+            //  print('PopScope triggered!');
             if (state.selectedIndex == AppConstants.dashboardIndex) {
               bool shouldExit = await showDialog<bool>(
-                barrierDismissible: false,
-                context: context,
-                builder: (ctx) {
-                  return  AlertDialog(
-                    content: SizedBox(
-                      width: MediaQuery.of(context)
-                          .size
-                          .width,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            AppImages.logout,
-                            height: 35,
-                            width: 35,
-                            colorFilter: const ColorFilter.mode(
-                              AppColors.primary,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                          const Gap(16.0),
-                          const Text(
-                            'Are you sure you want to logout?',
-                            style: AppTextStyles
-                                .style16DarkGrey600,
-                          ),
-                          const Gap(20.0),
-                          Row(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        content: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Flexible(
-                                child: CustomButton(
-                                  text: 'Cancel',
-                                  onPressed: () {
-                                    Navigator.pop(
-                                        context);
-                                  },
+                              SvgPicture.asset(
+                                AppImages.logout,
+                                height: 35,
+                                width: 35,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.primary,
+                                  BlendMode.srcIn,
                                 ),
                               ),
-                              const Gap(10.0),
-                              Flexible(
-                                child: CustomButton(
-                                  text: 'Logout',
-                                  invert: true,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    context.read<AuthCubit>().logout(context);
-                                  },
-                                ),
+                              const Gap(16.0),
+                              const Text(
+                                'Are you sure you want to logout?',
+                                style: AppTextStyles.style16DarkGrey600,
+                              ),
+                              const Gap(20.0),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: CustomButton(
+                                      text: 'Cancel',
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                  const Gap(10.0),
+                                  Flexible(
+                                    child: CustomButton(
+                                      text: 'Logout',
+                                      invert: true,
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        context
+                                            .read<AuthCubit>()
+                                            .logout(context);
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ) ?? false;
+                        ),
+                      );
+                    },
+                  ) ??
+                  false;
               if (shouldExit) {
                 Navigator.pop(context);
               }
@@ -182,7 +182,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     SizedBox(
-                      height:  AppUtils.isTablet(context) ? 300 : 210,
+                      height: AppUtils.isTablet(context) ? 300 : 210,
                       child: DrawerHeader(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -203,16 +203,20 @@ class DeviceDeciderScreen extends StatelessWidget {
                             ),
                             const Gap(10),
                             Container(
-                              padding:  EdgeInsets.symmetric(
-                                  horizontal: AppUtils.isTablet(context) ? 15 : 8.0, vertical: AppUtils.isTablet(context) ? 8:4.0
-                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      AppUtils.isTablet(context) ? 15 : 8.0,
+                                  vertical:
+                                      AppUtils.isTablet(context) ? 8 : 4.0),
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
                                 borderRadius: BorderRadius.circular(6.0),
                               ),
-                              child:  Text(
+                              child: Text(
                                 'VMS APPLICATION',
-                                style: AppUtils.isTablet(context) ? AppTextStyles.style15white600 : AppTextStyles.style13white500,
+                                style: AppUtils.isTablet(context)
+                                    ? AppTextStyles.style15white600
+                                    : AppTextStyles.style13white500,
                               ),
                             ),
                           ],
@@ -234,7 +238,8 @@ class DeviceDeciderScreen extends StatelessWidget {
                                   title: item.title,
                                   iconPath: item.iconPath,
                                   onTap: () {
-                                    if (item.index == AppConstants.logoutIndex) {
+                                    if (item.index ==
+                                        AppConstants.logoutIndex) {
                                       showDialog(
                                         barrierDismissible: false,
                                         context: context,
@@ -251,7 +256,8 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                     AppImages.logout,
                                                     height: 35,
                                                     width: 35,
-                                                    colorFilter: const ColorFilter.mode(
+                                                    colorFilter:
+                                                        const ColorFilter.mode(
                                                       AppColors.primary,
                                                       BlendMode.srcIn,
                                                     ),
@@ -279,9 +285,14 @@ class DeviceDeciderScreen extends StatelessWidget {
                                                         child: CustomButton(
                                                           text: 'Logout',
                                                           invert: true,
-                                                          onPressed: (){
-                                                            Navigator.pop(context);
-                                                            context.read<AuthCubit>().logout(context);
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            context
+                                                                .read<
+                                                                    AuthCubit>()
+                                                                .logout(
+                                                                    context);
                                                           },
                                                         ),
                                                       ),
@@ -296,15 +307,19 @@ class DeviceDeciderScreen extends StatelessWidget {
                                     } else {
                                       context
                                           .read<DeviceDeciderCubit>()
-                                          .onChangeSelectedIndex(
-                                           item.index);
+                                          .onChangeSelectedIndex(item.index);
                                       Navigator.of(context).pop();
                                     }
                                   },
-                                  isSelected: item.index == state.selectedIndex);
-                            }, separatorBuilder: (BuildContext context, int index) {
-                              return AppUtils.isTablet(context) ?  Gap(20) : Gap(0);
-                          },
+                                  isSelected:
+                                      item.index == state.selectedIndex);
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return AppUtils.isTablet(context)
+                                  ? Gap(20)
+                                  : Gap(0);
+                            },
                           ),
                         ],
                       ),
@@ -313,10 +328,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                 ),
               ),
             ),
-            body: ResponsiveLayoutWidget(
-              mobile: _getMobileScreen(state,context),
-              tablet: _getTabletScreen(state,context),
-            ),
+            body: _getScreen(state, context),
           ),
         );
       },
@@ -342,61 +354,28 @@ class DeviceDeciderScreen extends StatelessWidget {
     return '';
   }
 
-  Widget _getMobileScreen(DeviceDeciderState state, BuildContext context) {
+  Widget _getScreen(DeviceDeciderState state, BuildContext context) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  const MobileDashboardScreen();
-    }
-    else if (state.selectedIndex == AppConstants.checkInsIndex) {
+      return ResponsiveLayoutWidget(
+        tablet: TabletDashboardScreen(),
+        mobile: MobileDashboardScreen(),
+      );
+    } else if (state.selectedIndex == AppConstants.checkInsIndex) {
       context.read<CheckInsCubit>().getCheckIns();
       return const CheckInsScreen();
-    }
-    else if (state.selectedIndex == AppConstants.eServicesIndex) {
+    } else if (state.selectedIndex == AppConstants.eServicesIndex) {
       context.read<ServiceCubit>().getServices();
       return const AllServicesScreen();
-    }
-    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
+    } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
       context.read<WorkOrderCubit>().getWorkOrder();
       return const WorkOrderRfpScreen();
-    }
-    else if (state.selectedIndex == AppConstants.messagesIndex) {
+    } else if (state.selectedIndex == AppConstants.messagesIndex) {
       context.read<MessageCubit>().getMessages();
       return const MessageScreen();
-    }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+    } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
       context.read<CheckOutCubit>().getCheckOut();
-      return const CheckOutsScreen() ;
-    }
-    else if (state.selectedIndex == AppConstants.directoryIndex) {
-      return const DirectoryScreen();
-    }
-    return const SizedBox.shrink();
-  }
-
-  Widget _getTabletScreen(DeviceDeciderState state, BuildContext context) {
-    // print('_getTabletScreen${state.selectedIndex}');
-    if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  const TabletDashboardScreen();
-    }
-    else if (state.selectedIndex == AppConstants.checkInsIndex) {
-      context.read<CheckInsCubit>().getCheckIns();
-      return const CheckInsScreen();
-     }
-    else if (state.selectedIndex == AppConstants.eServicesIndex) {
-      context.read<ServiceCubit>().getServices();
-      return const AllServicesScreen();
-    }
-    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-      context.read<WorkOrderCubit>().getWorkOrder();
-      return const WorkOrderRfpScreen();
-    }
-    else if (state.selectedIndex == AppConstants.messagesIndex) {
-      context.read<MessageCubit>().getMessages();
-      return const MessageScreen();
-    }
-    else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-      context.read<CheckOutCubit>().getCheckOut();
-      return const CheckOutsScreen() ;
-    }
-    else if (state.selectedIndex == AppConstants.directoryIndex) {
+      return const CheckOutsScreen();
+    } else if (state.selectedIndex == AppConstants.directoryIndex) {
       return const DirectoryScreen();
     }
     return const SizedBox.shrink();

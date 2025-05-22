@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'owner_unit_model.dart';
 
 class VisitorPassModel {
@@ -35,23 +37,26 @@ class VisitorPassModel {
     this.activeCheckInsCount,
   });
 
-  factory VisitorPassModel.fromJson(Map<String, dynamic> json) => VisitorPassModel(
-    id: json["id"],
-    companyId: json["company_id"],
-    associationId: json["association_id"],
-    ownerUnitId: json["owner_unit_id"],
-    reference: json["reference"],
-    visitor: json["visitor"],
-    visitorCompany: json["visitor_company"],
-    mobile: json["mobile"],
-    email: json["email"],
-    startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-    endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    ownerUnit: json["owner_unit"] == null ? null : OwnerUnit.fromJson(json["owner_unit"]),
-    activeCheckInsCount: json["active_check_ins_count"],
+  factory VisitorPassModel.fromJson(Map<String, dynamic> json) {
+  log("Visitor Passes response::::: ${json.toString()}");
+    return VisitorPassModel(
+  id: json["id"],
+  companyId: json["company_id"],
+  associationId: json["association_id"],
+  ownerUnitId: json["owner_unit_id"],
+  reference: json["reference"],
+  visitor: json["visitor"],
+  visitorCompany: json["visitor_company"],
+  mobile: json["mobile"],
+  email: json["email"],
+  startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
+  endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
+  createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+  updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+  ownerUnit: json["owner_unit"] == null ? null : OwnerUnit.fromJson(json["owner_unit"]),
+  activeCheckInsCount: json["active_check_ins_count"],
   );
+}
 
   Map<String, dynamic> toJson() => {
     "id": id,

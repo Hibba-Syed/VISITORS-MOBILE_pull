@@ -3,7 +3,7 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
-import '../../model/check_ins/check_in_log_model.dart';
+import '../../model/check_ins/check_in_log_response_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_in_repo.dart';
@@ -35,11 +35,11 @@ class CheckInRepoImpl implements CheckInRepo {
   }
 
   @override
-  Future<CheckInLogModel?> getCheckInLogs({required int? id}) async {
+  Future<CheckInLogResponseModel?> getCheckInLogs({required int? id}) async {
     try {
       String url = '${ApiUrl.checkInLogs}/$id';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
-      return CheckInLogModel.fromJson(response);
+      return CheckInLogResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

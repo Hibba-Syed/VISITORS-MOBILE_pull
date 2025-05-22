@@ -41,6 +41,7 @@ class MobileDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
@@ -92,9 +93,12 @@ class MobileDashboardScreen extends StatelessWidget {
               },
             ),
           ];
+          int totalCheckIns = (state.visitorPassModel ?? [])
+              .map((e) => e.activeCheckInsCount   ?? 0)
+              .fold(0, (prev, curr) => prev + curr);
           return RefreshIndicator(
             onRefresh: ()async{
-
+              context.read<DashboardCubit>().getData(context, isNavigationAllow: false);
             },
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -247,7 +251,7 @@ class MobileDashboardScreen extends StatelessWidget {
                               detailsOnPressed: () {
                                 context
                                     .read<CheckInsDetailsCubit>()
-                                    .getCheckInDetails(id: checkInsRecord?.id);
+                                    .getCheckInDetailsLog(id: checkInsRecord?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.checkInDetailsScreen,
                                     arguments: state.checkInsModel?[index]);
@@ -281,7 +285,10 @@ class MobileDashboardScreen extends StatelessWidget {
                         children: [
                           VisitorPassesButton(
                             horizontalPadding: 6,
-                            count: 25,
+                            count:
+                            totalCheckIns,
+
+                            //state.visitorPassModel?.fold<int?>(0, (previousValue, element) => ((previousValue??0)+ (element.activeCheckInsCount??0))),
                             onPressed: () {
                               context.read<VisitorPassCubit>().getVisitorPass();
                               Navigator.pushNamed(

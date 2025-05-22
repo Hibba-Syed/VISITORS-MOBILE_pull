@@ -31,150 +31,155 @@ class CheckInDetailsScreen extends StatelessWidget {
     CheckInModel? checkInsModel =
         ModalRoute.of(context)?.settings.arguments as CheckInModel?;
 
-    print(
-        'check in details ${checkInsModel?.name} ${checkInsModel?.visitor?.nationality}');
-    return Scaffold(
-      appBar: const AppBarWidget(
-        title: 'Check-In Details',
-        titleColor: AppColors.black,
-        iconColor: AppColors.black,
-      ),
-      body: BlocBuilder<CheckInsCubit, CheckInsState>(
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppConstants.horizontalPadding),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(20),
-                  Align(
-                    alignment: Alignment.center,
-                    child: StackCountContainerWidget(
-                      count: checkInsModel?.visitorCount ?? "",
-                      imageUrl: checkInsModel?.visitor?.imageUrl ?? "",
-                      imageBackgroundColor: AppColors.darkGrey.withAlpha(25),
+    // print(
+    //     'check in details ${checkInsModel?.name} ${checkInsModel?.visitor?.nationality}');
+    return SafeArea(
+      child: Scaffold(
+        appBar: const AppBarWidget(
+          title: 'Check-In Details',
+          titleColor: AppColors.black,
+          iconColor: AppColors.black,
+        ),
+        body: BlocBuilder<CheckInsCubit, CheckInsState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalPadding),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Gap(20),
+                    Align(
+                      alignment: Alignment.center,
+                      child: StackCountContainerWidget(
+                        countPadding: 5,
+                        count: checkInsModel?.visitorCount ?? "",
+                        imageUrl: checkInsModel?.visitor?.imageUrl ?? "",
+                        imageBackgroundColor: AppColors.darkGrey.withAlpha(25),
+                      ),
                     ),
-                  ),
-                  const Gap(5),
-                  const HeadingWidget(
-                    heading: 'Guest Details',
-                  ),
-                  const Gap(10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10),
+                    const Gap(5),
+                     HeadingWidget(
+                      heading: '${AppUtils.getServiceableType(
+                          checkInsModel?.serviceableType)
+                          .label} ${checkInsModel?.purpose ?? ""} Details',
                     ),
-                    child: Column(
-                      children: [
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Name',
-                          value: checkInsModel?.name ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Phone',
-                          value: checkInsModel?.phone ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Email',
-                          value: checkInsModel?.email ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Unit',
-                          value: checkInsModel?.unit?.unitNumber ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Current Visitors Count',
-                          value: checkInsModel?.visitorCount ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Visit Purpose',
-                          value: 'Apartment Viewing/RE Agent',
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Entry Card Number',
-                          value: checkInsModel?.entryCardNumber ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Nationality',
-                          value: checkInsModel?.visitor?.nationality ?? "",
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Check-In Time',
-                          value: DateTimeUtil.getFormattedDatesTime(
-                              checkInsModel?.checkinTime),
-                        ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: 'Check-In Gate',
-                          value: checkInsModel?.checkinGate ?? "",
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: ReadMoreWidget(
-                              title: 'Description',
-                              valueText: checkInsModel?.description ?? ""),
-                        ),
-                      ],
+                    const Gap(10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Name',
+                            value: checkInsModel?.name ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Phone',
+                            value: checkInsModel?.phone ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Email',
+                            value: checkInsModel?.email ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Unit',
+                            value: checkInsModel?.unit?.unitNumber ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Current Visitors Count',
+                            value: checkInsModel?.visitorCount ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Visit Purpose',
+                            value: checkInsModel?.purpose ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Entry Card Number',
+                            value: checkInsModel?.entryCardNumber ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Nationality',
+                            value: checkInsModel?.visitor?.nationality ?? "",
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Check-In Time',
+                            value: DateTimeUtil.getFormattedDatesTime(
+                                checkInsModel?.checkinTime),
+                          ),
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: 'Check-In Gate',
+                            value: checkInsModel?.checkinGate ?? "",
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: ReadMoreWidget(
+                                title: 'Description',
+                                valueText: checkInsModel?.description ?? ""),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const Gap(20),
-                  const Text(
-                    'Check-In Log',
-                    style: AppTextStyles.style20primary600,
-                  ),
-                  const Gap(10),
-                  BlocBuilder<CheckInsDetailsCubit, CheckInsDetailsState>(
-                    builder: (context, state) {
-                      if(state.isLoading){
-                        return LoaderWidget();
-                      }
-                      return ListView.separated(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: state.checkInLogModel?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          CheckInLogRecord? checkInLogRecord = state.checkInLogModel?[index];
-                          return ActivityLogWidget(
-                            isLast: true,
-                            status: checkInLogRecord?.status ?? "",
-                            byValue: '',
-                            description: checkInLogRecord?.description ?? "",
-                            dateTime: DateTimeUtil.getFormattedDateTime(checkInLogRecord?.createdAt.toString()),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return Divider(
-                            color: AppColors.gray,
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
+                    const Gap(20),
+                    const Text(
+                      'Check-In Log',
+                      style: AppTextStyles.style20primary600,
+                    ),
+                    const Gap(10),
+                    BlocBuilder<CheckInsDetailsCubit, CheckInsDetailsState>(
+                      builder: (context, state) {
+                        if(state.isLoading){
+                          return LoaderWidget();
+                        }
+                        return ListView.separated(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: state.checkInLogModel?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) {
+                            CheckInLogModel? checkInLogRecord = state.checkInLogModel?[index];
+                            return ActivityLogWidget(
+                              isLast: true,
+                              status: checkInLogRecord?.status ?? "",
+                              byValue: '',
+                              description: checkInLogRecord?.description ?? "",
+                              dateTime: DateTimeUtil.getFormattedDateTime(checkInLogRecord?.createdAt.toString()),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Divider(
+                              color: AppColors.gray,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: AppConstants.horizontalPadding,
-            vertical: AppConstants.horizontalPadding),
-        child: CustomButton(
-            fontSize: AppUtils.isTablet(context) ? 20 : 15,
-            height: AppUtils.isTablet(context) ? 55 : 42,
-            imageHeight: AppUtils.isTablet(context) ? 25 : 18,
-            image: AppImages.logoutCard,
-            buttonColor: AppColors.red,
-            text: 'Check Out',
-            onPressed: () {
-              _showCheckoutDialog(context);
-            }),
+            );
+          },
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.horizontalPadding,
+              vertical: AppConstants.horizontalPadding),
+          child: CustomButton(
+              fontSize: AppUtils.isTablet(context) ? 20 : 15,
+              height: AppUtils.isTablet(context) ? 55 : 42,
+              imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+              image: AppImages.logoutCard,
+              buttonColor: AppColors.red,
+              text: 'Check Out',
+              onPressed: () {
+                _showCheckoutDialog(context);
+              }),
+        ),
       ),
     );
   }

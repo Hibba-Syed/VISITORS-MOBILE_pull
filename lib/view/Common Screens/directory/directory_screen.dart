@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/directory/directory_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
+import '../../../model/unit/unit_model.dart';
 import '../../widgets/phone_email_information_card_widget.dart';
+
 class DirectoryScreen extends StatefulWidget {
   const DirectoryScreen({super.key});
 
@@ -16,51 +19,73 @@ class DirectoryScreen extends StatefulWidget {
 }
 
 class _DirectoryScreenState extends State<DirectoryScreen> {
-  String? selectedUnit ;
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(AppConstants.dashboardIndex);
+        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
+            AppConstants.dashboardIndex);
       },
       child: Scaffold(
-              body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(10),
-              SingleSelectedDropdownWidget<String>(
-                 outLineColor: AppColors.gray,
-                  hint: "Select Unit",
-                  fillColor: AppColors.white,
-                  selectedItem: selectedUnit,
-                  itemAsString: (type) => type ,
-                  compareFn: (p0, p1) => p0 == p1,
-                  items: ['1','2','3','4'],
-                  onChanged: (value) {
-                    selectedUnit = value;
-                  }),
-              const Gap(20),
-              const HeadingWidget(heading: 'RESIDENT INFORMATION',),
-              const Gap(10),
-              const PhoneEmailInformationCardWidget(
-                name: 'Fiza Rameez',
-                phone: '23456789789',
-                email: 'Fiza@gmail.com',
+        body:BlocBuilder<DirectoryCubit, DirectoryState>(
+          builder: (context, state) {
+            final selectedUnit = state.selectedUnit;
+            final units = state.units;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(10),
+                  SingleSelectedDropdownWidget<UnitModel>(
+                    hint: "Unit",
+                    fillColor: AppColors.white,
+                    selectedItem: selectedUnit,
+                    itemAsString: (unit) => unit.unitNumber ?? "",
+                    compareFn: (unit, item) => unit.id == item.id,
+                    items: state.units ?? [],
+                    onChanged: (value) {
+                      if (value != null) {
+                        context.read<DirectoryCubit>().onChangeSelectedUnit(value);
+                        final selectedUnit = value;
+                        final primaryOwner = (selectedUnit.primaryOwner?.isNotEmpty ?? false) ? selectedUnit.primaryOwner?.first : null;
+                        final resident = selectedUnit.resident;
+                        context.read<DirectoryCubit>().setOwnerData(primaryOwner);
+                        context.read<DirectoryCubit>().setResidentData(resident);
+                      }else{
+                        context.read<DirectoryCubit>().resetOwnerAndResident();
+                      }
+                    },
+                  ),
+                  if (state.primaryOwner != null) ...[
+                    const Gap(20),
+                    const HeadingWidget(heading: 'OWNER INFORMATION'),
+                    const Gap(10),
+                      PhoneEmailInformationCardWidget(
+                        name: state.primaryOwner?.fullName ?? "",
+                        phone: state.primaryOwner?.primaryPhone ?? "" ,
+                        email: state.primaryOwner?.primaryEmail ?? "",
+                      ),
+                  ],
+                  if (state.resident != null)...[
+                    const Gap(20),
+                    const HeadingWidget(heading: 'RESIDENT INFORMATION'),
+                    const Gap(10),
+                    PhoneEmailInformationCardWidget(
+                      name: state.resident?.fullName ?? "",
+                      phone: state.resident?.primaryPhone ?? "",
+                      email: state.resident?.primaryEmail ?? "",
+                    ),
+                  ]
+
+                  ],
+
               ),
-              const Gap(20),
-              const HeadingWidget(heading: 'OWNER INFORMATION',),
-              const Gap(10),
-              const PhoneEmailInformationCardWidget(
-                name: 'Hamid Aijaz',
-                phone: '23456789789',
-                email: 'Hamid@gmail.com',
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

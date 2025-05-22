@@ -4,5 +4,7 @@ abstract class VisitorPassRepo{
   Future<VisitorPassResponseModel?> getVisitorPass({
     int? page,
     int? limit,
+    String? keyword,
+    int? unitId,
   });
 }

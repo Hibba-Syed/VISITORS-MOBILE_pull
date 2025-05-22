@@ -2,7 +2,7 @@ part of 'check_ins_details_cubit.dart';
 
 class CheckInsDetailsState {
   final bool isLoading;
-  List<CheckInLogRecord>? checkInLogModel;
+  List<CheckInLogModel>? checkInLogModel;
   CheckInsDetailsState({
     this.isLoading = false,
   this.checkInLogModel,
@@ -10,7 +10,7 @@ class CheckInsDetailsState {
   });
   CheckInsDetailsState copyWith({
     bool? isLoading,
-    List<CheckInLogRecord>? checkInLogModel,
+    List<CheckInLogModel>? checkInLogModel,
 
   }) {
     return CheckInsDetailsState(

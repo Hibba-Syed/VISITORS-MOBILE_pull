@@ -10,9 +10,11 @@ import 'package:visitors/view/Common%20Screens/services/components/services_filt
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
+import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../resource/constants/app_constants.dart';
+import '../../../resource/constants/strings.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -114,24 +116,24 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                   primary: false,
                                   itemCount: state.serviceModel?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    ServiceModel? serviceModel =
+                                    ServiceModel? service =
                                         state.serviceModel?[index];
                                     return ServicesCardWidget(
-                                      isActiveCheckins: (serviceModel
+                                      isActiveCheckins: (service
                                                   ?.activeCheckIns
                                                   ?.isNotEmpty ??
                                               true)
                                           ? true
                                           : false,
                                       unit:
-                                          serviceModel?.unit?.unitNumber ?? "",
+                                          service?.unit?.unitNumber ?? "",
                                       title:
-                                          serviceModel?.applicationType ?? "",
-                                      reference: serviceModel?.reference ?? "",
-                                      status: serviceModel?.status ?? "",
+                                          service?.applicationType ?? "",
+                                      reference: service?.reference ?? "",
+                                      status: service?.status ?? "",
                                       serviceType:
-                                          serviceModel?.applicationTitle ?? "",
-                                      name: serviceModel?.clientName ?? "",
+                                          service?.applicationTitle ?? "",
+                                      name: service?.clientName ?? "",
                                       checkInOnPressed: () {
                                         AppUtils.isTablet(context)
                                             ? Navigator.pushNamed(
@@ -144,16 +146,23 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                     .mobileGuestCheckInScreen);
                                       },
                                       serviceableCheckInOnPressed: () {
+                                        context
+                                            .read<CheckInsCubit>()
+                                            .onChangeSelectedType(
+                                            AppUtils.getServiceableType(
+                                                Strings.keyServices));
+                                        context.read<CheckInsCubit>().onChangeSelectedServiceableId(service?.id);
+                                        context.read<CheckInsCubit>().getCheckIns();
                                         Navigator.pushNamed(
                                             context,
                                             AppRoutes
                                                 .serviceableCheckInsScreen);
                                       },
                                       detailsOnPressed: () {
-                                        print('service move: ${serviceModel?.toJson()
+                                        print('service move: ${service?.toJson()
                                         }');
 
-                                        context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: serviceModel?.id);
+                                        context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
                                         Navigator.pushNamed(context,
                                             AppRoutes.servicesDetailsScreen);
                                       },

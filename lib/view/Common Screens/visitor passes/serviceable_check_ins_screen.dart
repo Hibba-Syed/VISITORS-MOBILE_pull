@@ -17,6 +17,7 @@ import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
+import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../model/check_ins/check_in_model.dart';
 
 
@@ -119,13 +120,18 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                             profileImageUrl: checkInModel?.visitor?.imageUrl ?? "",
                             type:  AppUtils.getServiceableType(checkInModel?.type).label,
                             date: DateTimeUtil.getFormattedDateTime(checkInModel?.createdAt.toString()),
-                            purpose: checkInModel?.description ?? "",
+                            purpose: checkInModel?.serviceableType == "visitor_pass" ? checkInModel?.purpose :
+                            checkInModel?.description ?? "",
                             checkOutOnPressed: () {
                               _showCheckoutDialog(context);
                             },
                             detailsOnPressed: () {
+                              context
+                                  .read<CheckInsDetailsCubit>()
+                                  .getCheckInDetailsLog(id: checkInModel?.id);
                               Navigator.pushNamed(
-                                  context, AppRoutes.checkInDetailsScreen);
+                                  context, AppRoutes.checkInDetailsScreen,
+                                  arguments: state.checkInModel?[index]);
                             },
                           );
                         },

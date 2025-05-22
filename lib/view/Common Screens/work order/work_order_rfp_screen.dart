@@ -10,7 +10,9 @@ import 'package:visitors/view/Common%20Screens/work%20order/components/work_orde
 import 'package:visitors/view/Common%20Screens/work%20order/components/work_order_rfp_card_widget.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
+import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/work_order/work_order_model.dart';
+import '../../../resource/constants/strings.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -64,14 +66,16 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                               controller: _searchController,
                               onClearPressed: () async {
                                 _searchController.clear();
-                                await context
+                                 context
                                     .read<WorkOrderCubit>()
                                     .onChangeSearchKeyWord('');
+                                 context.read<WorkOrderCubit>().getWorkOrder();
                               },
                               onFieldSubmitted: (value) {
                                 context
                                     .read<WorkOrderCubit>()
                                     .onChangeSearchKeyWord(value);
+                                context.read<WorkOrderCubit>().getWorkOrder();
                               }
                           )),
                           const Gap(6),
@@ -110,6 +114,10 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                               reference: workOrder?.reference ?? "",
                               vendorName: workOrder?.newVendor?.companyName ?? "",
                               date: workOrder?.createdAt.toString() ?? "",
+                              isActiveCheckins: (workOrder?.activeCheckIns?.isNotEmpty ??
+                                  true)
+                                  ? true
+                                  : false,
                               //DateTimeUtil.getFormattedDateTime(workOrder?.createdAt.toString()),
                               checkInPressed: () {
                                 AppUtils.isTablet(context)
@@ -124,6 +132,13 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                     context, AppRoutes.workOrderJobDetailsScreen);
                               },
                               jobCheckInOnPressed: () {
+                                context
+                                    .read<CheckInsCubit>()
+                                    .onChangeSelectedType(
+                                    AppUtils.getServiceableType(
+                                        Strings.keyWorkOrder));
+                                context.read<CheckInsCubit>().onChangeSelectedServiceableId(workOrder?.id);
+                                context.read<CheckInsCubit>().getCheckIns();
                                 Navigator.pushNamed(
                                     context, AppRoutes.jobCheckInsScreen);
                               },

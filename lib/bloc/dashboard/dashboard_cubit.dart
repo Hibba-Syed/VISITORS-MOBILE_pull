@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/bloc/directory/directory_cubit.dart';
+import 'package:visitors/bloc/visitor_pass/visitor_pass_cubit.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 
 import '../../model/check_ins/check_in_model.dart';
@@ -10,6 +12,8 @@ import '../../model/count/count_model.dart';
 import '../../model/count/count_response_model.dart';
 import '../../model/profile/profile_response_model.dart';
 import '../../model/service/service_model.dart';
+import '../../model/visitor_passes/visitor_pass_model.dart';
+import '../../model/visitor_passes/visitor_pass_response_model.dart';
 import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
 import '../../repo/check_ins/check_in_repo.dart';
@@ -20,6 +24,8 @@ import '../../repo/profile/profile_repo.dart';
 import '../../repo/profile/profile_repo_impl.dart';
 import '../../repo/services/services_repo.dart';
 import '../../repo/services/services_repo_impl.dart';
+import '../../repo/visitor_passes/visitor_pass_repo.dart';
+import '../../repo/visitor_passes/visitor_pass_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
@@ -33,6 +39,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   final DashboardRepo _dashboardRepo = DashboardRepoImpl();
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
+  final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
 
   Future<bool> getProfile() async {
     emit(state.copyWith(isLoading: true));
@@ -131,7 +138,32 @@ class DashboardCubit extends Cubit<DashboardState> {
           msg: 'Something went wrong while fetching work order');
     }
   }
-  Future<void> getData(BuildContext context) async {
+
+  Future<void> getVisitorPass() async {
+    emit(state.copyWith(isVisitorPassLoading: true, page: 1));
+    VisitorPassResponseModel? response = await _visitorPassRepo
+        .getVisitorPass(
+    )
+        .onError(
+          (error, stackTrace) {
+        emit(state.copyWith(isVisitorPassLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(isVisitorPassLoading: false));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(visitorPassModel: response.record));
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching visitor pass');
+    }
+  }
+
+
+  Future<void> getData(BuildContext context,{bool isNavigationAllow = true}) async {
     final dashboardCubit = context.read<DashboardCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
@@ -142,21 +174,27 @@ class DashboardCubit extends Cubit<DashboardState> {
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
+        context.read<VisitorPassCubit>().getVisitorPass(),
+        context.read<DirectoryCubit>().getUnits(),
+
       ]);
 
-      if (context.mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.deviceDeciderScreen,
-              (route) => false,
-        );
+      if (isNavigationAllow) {
+        if (context.mounted) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.deviceDeciderScreen,
+                (route) => false,
+          );
+        }
+       else {
+        if (context.mounted) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.loginScreen,
+                (route) => false,
+          );
+        }
       }
-    } else {
-      if (context.mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.loginScreen,
-              (route) => false,
-        );
-      }
+    }
     }
   }
 

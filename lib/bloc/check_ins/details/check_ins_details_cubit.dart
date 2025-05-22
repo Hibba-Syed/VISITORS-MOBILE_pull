@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
+import '../../../model/check_ins/check_in_log_response_model.dart';
 import '../../../repo/check_ins/check_in_repo.dart';
 import '../../../repo/check_ins/check_in_repo_impl.dart';
 
@@ -11,9 +12,9 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
   CheckInsDetailsCubit() : super(CheckInsDetailsState());
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
 
-  Future<CheckInLogModel?> getCheckInDetails({required int? id}) async {
+  Future<CheckInLogResponseModel?> getCheckInDetailsLog({required int? id}) async {
     emit(state.copyWith(isLoading: true));
-    CheckInLogModel? response =
+    CheckInLogResponseModel? response =
     await _checkInRepo.getCheckInLogs(id: id).onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));

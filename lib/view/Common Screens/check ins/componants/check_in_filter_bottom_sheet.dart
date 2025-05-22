@@ -27,13 +27,6 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
   String? selectedRang;
 
-  final List<String> rangList = [
-    'Last 30 Days',
-    'Last 60 Days',
-    'Last 90 Days'
-  ];
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,7 +65,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
               selectedItem: selectedRang,
               itemAsString: (rang) => rang,
               compareFn: (p0, p1) => p0 == p1,
-              items: rangList,
+              items: AppUtils.rangList,
               onChanged: (value) {
                 selectedRang = value;
                 final dateRangeString =
@@ -81,7 +74,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                     .read<CheckInsCubit>()
                     .onChangeDateRange(dateRangeString);
                 context.read<CheckInsCubit>().onChangeRange(dateRangeString);
-                print('dateRange $dateRangeString');
+                // print('dateRange $dateRangeString');
               },
             ),
             const Gap(10),

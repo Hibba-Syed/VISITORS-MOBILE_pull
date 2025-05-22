@@ -11,10 +11,12 @@ class VisitorPassRepoImpl implements VisitorPassRepo {
   Future<VisitorPassResponseModel?> getVisitorPass({
     int? page,
     int? limit,
+    String? keyword,
+    int? unitId
   }) async {
     try {
       String url =
-          '${ApiUrl.visitorPasses}?page=${page ?? 1}&limit=${limit ?? 10}';
+          '${ApiUrl.visitorPasses}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&unit_id=${unitId ?? ''}';
       print('Visitor Pass^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return VisitorPassResponseModel.fromJson(response);

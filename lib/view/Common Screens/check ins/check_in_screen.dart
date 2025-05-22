@@ -74,14 +74,16 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                               controller: _searchController,
                               onClearPressed: () async {
                                 _searchController.clear();
-                                await context
+                                 context
                                     .read<CheckInsCubit>()
                                     .onChangeSearchKeyWord('');
+                                 context.read<CheckInsCubit>().getCheckIns();
                               },
                               onFieldSubmitted: (value) {
                                 context
                                     .read<CheckInsCubit>()
                                     .onChangeSearchKeyWord(value);
+                                context.read<CheckInsCubit>().getCheckIns();
                               }
                               ),
                         ),
@@ -194,7 +196,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                       detailsOnPressed: () {
                                         context
                                             .read<CheckInsDetailsCubit>()
-                                            .getCheckInDetails(
+                                            .getCheckInDetailsLog(
                                                 id: checkInsRecord?.id);
                                         Navigator.pushNamed(context,
                                             AppRoutes.checkInDetailsScreen,
@@ -287,8 +289,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<CheckInsCubit>().getUnits();
         context.read<CheckInsCubit>().getVendors();
+        context.read<CheckInsCubit>().getUnits();
         return const CheckInFilterBottomSheet();
       },
     );

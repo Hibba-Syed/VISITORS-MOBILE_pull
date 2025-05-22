@@ -14,7 +14,9 @@ import 'package:visitors/view/widgets/container_widgets/check_out_container_widg
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../bloc/check_ins/check_ins_cubit.dart';
+import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../model/check_ins/check_in_model.dart';
+import '../../../utils/routes/app_routes.dart';
 
 class JobCheckInsScreen extends StatelessWidget {
   const JobCheckInsScreen({super.key});
@@ -117,6 +119,14 @@ class JobCheckInsScreen extends StatelessWidget {
                         purpose: checkInModel?.description ?? "",
                         checkOutOnPressed: () {
                           _showCheckoutDialog(context);
+                        },
+                        detailsOnPressed: (){
+                          context
+                              .read<CheckInsDetailsCubit>()
+                              .getCheckInDetailsLog(id: checkInModel?.id);
+                          Navigator.pushNamed(
+                              context, AppRoutes.checkInDetailsScreen,
+                              arguments: state.checkInModel?[index]);
                         },
                       );
                     },
