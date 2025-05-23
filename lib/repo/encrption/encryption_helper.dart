@@ -9,7 +9,7 @@ class EncryptionHelper {
   /// Encrypts [data] and returns a URI-encoded Base64 string
   static String encryptPayload(Map<String, dynamic> data,) {
     // Convert inner 'filter' map to a string
-    final fixed = {
+    final fixed = (data["filter"]==null)?data:{
       "filter": jsonEncode(data["filter"])
     };
     final jsonStr = jsonEncode(fixed);

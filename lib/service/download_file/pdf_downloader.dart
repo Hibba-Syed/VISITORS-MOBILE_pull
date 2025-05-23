@@ -65,7 +65,9 @@ class FileDownloader {
 
   /// Get the download URL based on the file type
   static Uri _getDownloadUrl() {
-    final filter = {"date_range":AppUtils.getDateRangeStringFromLabel('Last 30 Days'),"export":true,"timezone":"Asia/Karachi"};
+    final filter = {"date_range":"2025-04-23 - 2025-05-23","export":true,"timezone":"Asia/Karachi"};
+    print("FILTER:::: ${filter.toString()}");
+    print(EncryptionHelper.encryptPayload(filter));
     var url = Uri.parse(
        '${ApiUrl.checkOuts}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}');
     return url;
@@ -92,6 +94,8 @@ class FileDownloader {
       http.Response response) async {
     String? filename = _extractFileName(
         response.headers['content-disposition']);
+    print("RESPONSE HEADERS:::: ${response.headers}");
+    print("RESPONSE HEADERS SPLITTED:::: ${response.headers}");
     String? filePath = await _saveFileInIsolate(SaveFileParams(
       data: response.bodyBytes,
       filename: filename,
@@ -115,7 +119,7 @@ class FileDownloader {
       final regExp = RegExp(r'filename="?(.*\.(\w+))"?');
       final match = regExp.firstMatch(contentDisposition);
       if (match != null) {
-        return match.group(1) ?? "checkout.pdf";
+        return match.group(1) ?? "checkout.";
       }
     }
     return "checkout.pdf";
