@@ -373,6 +373,7 @@ class DeviceDeciderScreen extends StatelessWidget {
       context.read<MessageCubit>().getMessages();
       return const MessageScreen();
     } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
+      context.read<CheckOutCubit>().onChangeDateRange(AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
       context.read<CheckOutCubit>().getCheckOut();
       return const CheckOutsScreen();
     } else if (state.selectedIndex == AppConstants.directoryIndex) {

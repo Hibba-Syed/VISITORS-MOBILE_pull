@@ -10,7 +10,6 @@ import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/vendor/vendor_model.dart';
-import '../../check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class WorkOrderFilterBottomSheet extends StatefulWidget {
   const WorkOrderFilterBottomSheet({super.key});
@@ -58,7 +57,7 @@ class _WorkOrderFilterBottomSheetState
                   items: AppUtils.workOrderType,
                   onChanged: (value) {
                     context.read<WorkOrderCubit>().onChangeSelectedType(value);
-                    print('work ${value?.value}');
+                    // print('work ${value?.value}');
                   }),
               const Gap(10),
               SingleSelectedDropdownWidget<VendorModel>(
@@ -73,7 +72,9 @@ class _WorkOrderFilterBottomSheetState
                     context
                         .read<WorkOrderCubit>()
                         .onChangeSelectedVendors(value!);
-                  }),
+                  },
+              enabled: context.watch<WorkOrderCubit>().state.selectedType != null ? true : false
+                  ),
               const Gap(30),
               FilterButtonWidget(
                 applyOnPressed: () {

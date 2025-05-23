@@ -25,10 +25,11 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
-  String? selectedRang;
-
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final firstDayOfMonth = DateTime(now.year, now.month, 1);
+    final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
@@ -52,28 +53,32 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
             ),
             const Gap(15),
             CustomDateRangePickerWidget(
+              firstDate: firstDayOfMonth,
+              lastDate: lastDayOfMonth,
               hintText: "Date Range",
-              selectedDate: context.watch<CheckInsCubit>().state.dateRang,
+              selectedDate: context.watch<CheckInsCubit>().state.selectedRang,
               onChangeDate: (value) {
-                context.read<CheckInsCubit>().onChangeRange(value);
+                context.read<CheckInsCubit>().onChangeDateRange(value);
               },
             ),
             const Gap(10),
             SingleSelectedDropdownWidget<String>(
               hint: "Range",
               fillColor: AppColors.white,
-              selectedItem: selectedRang,
+              selectedItem: context.watch<CheckInsCubit>().state.selectedRang,
               itemAsString: (rang) => rang,
               compareFn: (p0, p1) => p0 == p1,
               items: AppUtils.rangList,
               onChanged: (value) {
-                selectedRang = value;
+                // selectedRang = value;
                 final dateRangeString =
                     AppUtils.getDateRangeStringFromLabel(value!);
                 context
                     .read<CheckInsCubit>()
                     .onChangeDateRange(dateRangeString);
-                context.read<CheckInsCubit>().onChangeRange(dateRangeString);
+                context
+                    .read<CheckInsCubit>()
+                    .onChangeDateRange(dateRangeString);
                 // print('dateRange $dateRangeString');
               },
             ),
@@ -145,11 +150,4 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
       ),
     );
   }
-}
-
-class TypeModel {
-  final String label;
-  final String value;
-
-  TypeModel({required this.label, required this.value});
 }

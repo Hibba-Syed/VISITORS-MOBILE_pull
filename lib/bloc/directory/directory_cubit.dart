@@ -1,4 +1,5 @@
-import 'package:bloc/bloc.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
@@ -21,12 +22,6 @@ class DirectoryCubit extends Cubit<DirectoryState> {
   void setResidentData(Resident? resident) {
     emit(state.copyWith(resident: resident));
   }
-  // void resetOwnerAndResident() {
-  //   emit(state.copyWith(
-  //       primaryOwner: null,
-  //       resident: null
-  //   ));
-  // }
   resetOwnerAndResident() {
     emit(DirectoryState(
       isLoading: state.isLoading,

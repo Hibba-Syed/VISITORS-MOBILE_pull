@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/model/message/message_model.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -54,21 +55,25 @@ class _MessageScreenState extends State<MessageScreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppConstants.horizontalPadding,
-                    vertical: AppConstants.verticalPadding),
-                child: Column(
-                  children: [
-                     state.isLoading
-                         ? LoaderWidget()
-                         : state.messageModel?.isEmpty ?? true
-                         ? EmptyWidget(
-                       text: 'No data available',
-                     )
-                         : Expanded(
-                           child: RefreshIndicator(
-                                                  onRefresh: () async {
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Gap(10),
+                       state.isLoading
+                           ? Padding(
+                             padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
+                             child: LoaderWidget(),
+                           )
+                           : state.messageModel?.isEmpty ?? true
+                           ? EmptyWidget(
+                         text: 'No data available',
+                       )
+                           : RefreshIndicator(
+                             onRefresh: () async {
                            context.read<MessageCubit>().getMessages();
-                                                  },
-                                                  child: ListView.separated(
+                           },
+                             child: ListView.separated(
                            physics: AlwaysScrollableScrollPhysics(),
                            controller: _scrollController,
                            shrinkWrap: true,
@@ -117,10 +122,10 @@ class _MessageScreenState extends State<MessageScreen> {
                            },
                                                   ),
                                                 ),
-                         ),
-                     if (state.loadMore) const LoaderWidget(),
-                    if (attachmentsList.isNotEmpty) _buildAttachmentSection(),
-                  ],
+                       if (state.loadMore) const LoaderWidget(),
+                      if (attachmentsList.isNotEmpty) _buildAttachmentSection(),
+                    ],
+                  ),
                 ),
               );
             },
@@ -180,13 +185,4 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 }
-// class SendMessageImageModel {
-//   int? id;
-//   String? filePath;
-//   String? url;
-//   SendMessageImageModel({
-//     this.id,
-//     this.filePath,
-//     this.url,
-//   });
-// }
+

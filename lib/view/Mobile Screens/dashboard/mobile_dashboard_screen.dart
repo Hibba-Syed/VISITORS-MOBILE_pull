@@ -93,9 +93,10 @@ class MobileDashboardScreen extends StatelessWidget {
               },
             ),
           ];
-          int totalCheckIns = (state.visitorPassModel ?? [])
-              .map((e) => e.activeCheckInsCount   ?? 0)
-              .fold(0, (prev, curr) => prev + curr);
+          final totalCheckIns = (state.visitorPassModel ?? [])
+              .map((e) => e.activeCheckInsCount ?? 0)
+              .fold<int>(0, (prev, curr) => prev + curr);
+
           return RefreshIndicator(
             onRefresh: ()async{
               context.read<DashboardCubit>().getData(context, isNavigationAllow: false);
@@ -182,6 +183,7 @@ class MobileDashboardScreen extends StatelessWidget {
                               borderRadius: 6,
                               image: AppImages.checkout,
                               onPressed: () {
+                                context.read<CheckOutCubit>().onChangeDateRange(AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
                                 context.read<CheckOutCubit>().getCheckOut();
                                 context
                                     .read<DeviceDeciderCubit>()

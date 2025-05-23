@@ -5,7 +5,6 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/repo/filter/general_filter_impl.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/componants/check_in_filter_bottom_sheet.dart';
 
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
@@ -14,6 +13,7 @@ import '../../model/unit/units_response_model.dart';
 import '../../model/vendor/vendor_model.dart';
 import '../../model/vendor/vendor_response_model.dart';
 import '../../repo/filter/general_filter_repo.dart';
+import '../../utils/app_utils.dart';
 
 part 'check_ins_state.dart';
 
@@ -42,9 +42,9 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(dateRang: dateRange));
   }
 
-  onChangeRange(String? range) {
-    emit(state.copyWith(selectedRang: range));
-  }
+  // onChangeRange(String? range) {
+  //   emit(state.copyWith(selectedRang: range));
+  // }
 
   onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
@@ -64,9 +64,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     );
   }
 
-  Future<void> getCheckIns({
-    String? keyword,
-  }) async {
+  Future<void> getCheckIns() async {
     emit(state.copyWith(isLoading: true, page: 1));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(

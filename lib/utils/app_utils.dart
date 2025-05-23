@@ -3,7 +3,6 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../resource/constants/strings.dart';
-import '../view/Common Screens/check ins/componants/check_in_filter_bottom_sheet.dart';
 
 class AppUtils {
   // Status colors
@@ -69,13 +68,13 @@ class AppUtils {
 
   static TypeModel getServiceableType(String? type) {
     if (type == "job") {
-      return TypeModel(label: "Work Order / RFP", value: "job");
+      return TypeModel(label: "Work Order / RFP", value: Strings.keyWorkOrder);
     } else if (type == "application") {
-      return TypeModel(label: "Service", value: "application");
+      return TypeModel(label: "Service", value: Strings.keyServices);
     } else if (type == "App\\Models\\Visitor\\VisitorPass") {
-      return TypeModel(label: "Visitor Pass", value: "visitor_pass");
+      return TypeModel(label: "Visitor Pass", value: Strings.keyVisitorPass);
     } else if (type == null || type.isEmpty) {
-      return TypeModel(label: "Guest", value: "guest");
+      return TypeModel(label: "Guest", value: Strings.guest);
     } else {
       return TypeModel(label: "", value: "");
     }
@@ -145,4 +144,13 @@ class AppUtils {
     }
     return requestName;
   }
+}
+
+
+
+class TypeModel {
+  final String label;
+  final String value;
+
+  TypeModel({required this.label, required this.value});
 }

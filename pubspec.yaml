@@ -40,7 +40,7 @@ dependencies:
   image_picker: ^1.1.2
   firebase_core: ^3.8.1
   image: ^4.5.0
-  camera: ^0.11.0+2
+#  camera: ^0.11.0+2
   google_fonts: ^6.2.1
   flutter_svg: ^2.0.17
   gap: ^3.0.1
@@ -66,6 +66,9 @@ dependencies:
   file_picker: ^10.1.8
   encrypt: ^5.0.3
   convert: ^3.1.2
+  progress_dialog2: ^1.0.0
+  open_file: ^3.5.10
+  path_provider: ^2.1.5
 
 
 dev_dependencies:

@@ -46,7 +46,7 @@ class CheckInsState {
     List<UnitModel>? units,
     List<VendorModel>? vendors,
     TypeModel? selectedType,
-    UnitModel? selectedUnit,
+    UnitModel?selectedUnit,
     VendorModel? selectedVendor,
      String? dateRang,
      String? selectedRang,

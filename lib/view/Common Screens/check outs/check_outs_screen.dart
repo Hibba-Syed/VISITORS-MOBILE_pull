@@ -14,6 +14,7 @@ import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 
 import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../model/check_out/check_out_model.dart';
+import '../../../service/download_file/pdf_downloader.dart';
 import '../../widgets/empty_widget.dart';
 
 class CheckOutsScreen extends StatefulWidget {
@@ -50,18 +51,27 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                           controller: _searchController,
                           onClearPressed: () async {
                             _searchController.clear();
-                            await context
+                             context
                                 .read<CheckOutCubit>()
-                                .getCheckOut(keyword: '');
+                                .onChangeSearchKeyWord('');
+                            context.read<CheckOutCubit>().getCheckOut();
                           },
                           onFieldSubmitted: (value) {
                             context
-                                .read<CheckOutCubit>()
-                                .getCheckOut(keyword: value);
+                                .read<CheckOutCubit>().
+                            onChangeSearchKeyWord(value);
+                            context.read<CheckOutCubit>().getCheckOut();
                           }
                       )),
                       const Gap(6),
                       FilterContainerWidget(
+                        isFilterApplied: (state.selectedUnit != null) ||
+                            (state.selectedType?.value.isNotEmpty ??
+                                false) ||
+                            (state.selectedVendor != null) ||
+                            (state.dateRang != null) || (state.selectedRang != null)
+                            ? true
+                            : false,
                         onPressed: () {
                           _checkOutFilterBottomSheet(context);
                         },
@@ -77,7 +87,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                         height: 41,
                         width: 90,
                         borderRadius: 6,
-                        onPressed: () {}),
+                        onPressed: () {
+                          FileDownloader.downloadFile(context: context);
+                        }),
                   ),
                   const Gap(10),
                   Expanded(
@@ -136,6 +148,8 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
+        context.read<CheckOutCubit>().getVendors();
+        context.read<CheckOutCubit>().getUnits();
         return const CheckOutsFilterBottomSheet();
       },
     );

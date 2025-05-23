@@ -12,6 +12,11 @@ class CheckOutState {
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final String? dateRang;
+  final String? selectedRang;
+  final TypeModel? selectedType;
+  final UnitModel? selectedUnit;
+  final VendorModel? selectedVendor;
+  final String? searchKeyword;
   CheckOutState({
     this.isLoading = false,
     this.loadMore = false,
@@ -23,7 +28,12 @@ class CheckOutState {
     this.vendors,
     this.isCheckOutAllLoading = false,
     this.dateRang,
+    this.selectedRang,
     this.isCheckOutLoading = false,
+    this.selectedType,
+    this.selectedUnit,
+    this.selectedVendor,
+    this.searchKeyword,
   });
   CheckOutState copyWith({
     bool? isLoading,
@@ -36,7 +46,12 @@ class CheckOutState {
     List<CheckOutModel>? checkOutModel,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    final String? dateRang,
+    String? dateRang,
+    String? selectedRang,
+    TypeModel? selectedType,
+    UnitModel? selectedUnit,
+    VendorModel? selectedVendor,
+    String? searchKeyword,
   }) {
     return CheckOutState(
         isLoading: isLoading ?? this.isLoading,
@@ -49,6 +64,11 @@ class CheckOutState {
         dateRang: dateRang ?? this.dateRang,
         vendors: vendors ?? this.vendors,
         units: units ?? this.units,
-        checkOutModel: checkOutModel ?? this.checkOutModel);
+        checkOutModel: checkOutModel ?? this.checkOutModel,
+        selectedRang: selectedRang ?? this.selectedRang,
+        selectedType: selectedType ?? this.selectedType,
+        selectedUnit: selectedUnit ?? this.selectedUnit,
+        selectedVendor: selectedVendor ?? this.selectedVendor,
+        searchKeyword: searchKeyword ?? this.searchKeyword);
   }
 }

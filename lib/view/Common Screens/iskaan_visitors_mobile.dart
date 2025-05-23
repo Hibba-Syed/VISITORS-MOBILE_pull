@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/routes/app_pages.dart';
 
-import '../../resource/globals.dart';
 import '../../utils/routes/app_routes.dart';
 class IskaanVisitorsMobile extends StatefulWidget {
   const IskaanVisitorsMobile({super.key});
@@ -26,12 +25,11 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
   //   );
   // }
   Widget build(BuildContext context) {
-    Globals.setContext(context);
     return MultiBlocProvider(
         providers: [...AppPages.getAllBlocProviders(context)],
         child:  GestureDetector(
           onTap: (){
-            // FocusManager.instance.primaryFocus?.unfocus();
+             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp(
             title: 'Visitors Mobile',

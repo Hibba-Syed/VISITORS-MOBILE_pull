@@ -4,7 +4,6 @@ class DirectoryState {
   final bool isLoading;
   final List<UnitModel>? units;
   final UnitModel? selectedUnit;
-  // final UnitModel? unitModel;
   final PrimaryOwner? primaryOwner;
   final Resident? resident;
 
@@ -12,7 +11,6 @@ class DirectoryState {
     this.isLoading = false,
     this.units,
     this.selectedUnit,
-    // this.unitModel,
     this.primaryOwner,
     this.resident,
   });
@@ -20,7 +18,6 @@ class DirectoryState {
     bool? isLoading,
     List<UnitModel>? units,
     UnitModel? selectedUnit,
-    // UnitModel? unitModel,
     PrimaryOwner? primaryOwner,
     Resident? resident,
   }) {
@@ -28,7 +25,6 @@ class DirectoryState {
         isLoading: isLoading ?? this.isLoading,
         units: units ?? this.units,
         selectedUnit: selectedUnit ?? this.selectedUnit,
-        // unitModel: unitModel ?? this.unitModel,
         primaryOwner: primaryOwner ?? this.primaryOwner,
         resident: resident ?? this.resident,
     );

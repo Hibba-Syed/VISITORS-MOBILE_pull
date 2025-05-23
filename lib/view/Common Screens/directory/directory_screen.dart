@@ -32,8 +32,6 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
         body:BlocBuilder<DirectoryCubit, DirectoryState>(
           builder: (context, state) {
             final selectedUnit = state.selectedUnit;
-            final units = state.units;
-
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
               child: Column(
