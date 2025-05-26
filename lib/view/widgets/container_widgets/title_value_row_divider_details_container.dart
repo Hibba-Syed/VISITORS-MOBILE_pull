@@ -8,6 +8,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
   final String? value;
   final Color? textColor;
   final Color? valueColor;
+  final IconData? valueIcon;
   final bool isLast;
   const TitleValueRowDividerDetailsContainerWidget({
     super.key,
@@ -16,6 +17,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
     this.textColor,
     this.valueColor,
     this.isLast = false,
+    this.valueIcon,
   });
 
   @override
@@ -34,9 +36,18 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
             ),
             Expanded(
               flex: 5,
-              child: Text(
+              child: valueIcon != null
+                  ? Icon(
+                valueIcon,
+                color: valueColor ?? AppColors.red,
+                size: AppUtils.isTablet(context) ? 20 : 16,
+              )
+                  : Text(
                 value ?? "",
-                style: AppUtils.isTablet(context) ? AppTextStyles.style15DarkGrey600 :AppTextStyles.style13DarkGrey600,
+                style: (AppUtils.isTablet(context)
+                    ? AppTextStyles.style15DarkGrey600
+                    : AppTextStyles.style13DarkGrey600)
+                    .copyWith(color: valueColor),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

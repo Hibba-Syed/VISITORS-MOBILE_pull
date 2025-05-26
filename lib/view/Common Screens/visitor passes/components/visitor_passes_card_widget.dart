@@ -3,8 +3,6 @@ import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
-import 'package:visitors/view/widgets/container_widgets/icon_title_value_container_widget.dart'
-    show IconTitleValueContainerWidget;
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 
@@ -12,6 +10,7 @@ import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/styles/styles.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../../widgets/container_widgets/icon_title_value_container_widget.dart';
 
 class VisitorPassesCardWidget extends StatelessWidget {
   final String? reference;
@@ -23,38 +22,37 @@ class VisitorPassesCardWidget extends StatelessWidget {
   final String? email;
   final String? profileImageUrl;
   final VoidCallback checkInOnPressed;
-  final VoidCallback visitorPassOnPressed;
+  final VoidCallback visitorPassCheckInOnPressed;
+  final bool isActiveCheckins;
 
-  const VisitorPassesCardWidget(
-      {super.key,
-        this.unit,
-        this.reference,
-        this.name,
-        this.fromDate,
-        this.phone,
-        this.email,
-        this.company,
-        this.profileImageUrl,
-        required this.checkInOnPressed,
-        required this.visitorPassOnPressed,
-      });
+  const VisitorPassesCardWidget({
+    super.key,
+    this.unit,
+    this.reference,
+    this.name,
+    this.fromDate,
+    this.phone,
+    this.email,
+    this.company,
+    this.profileImageUrl,
+    required this.checkInOnPressed,
+    required this.visitorPassCheckInOnPressed,
+    this.isActiveCheckins = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Row(
-           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-           children: [
-             OverlapContainerWidget(
-              text: unit,
-                     ),
-             OverlapContainerWidget(
-              text: reference,
-               backgroundColor: AppColors.yellow),
-           ],
-         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            OverlapContainerWidget(text: unit),
+            OverlapContainerWidget(
+                text: reference, backgroundColor: AppColors.yellow),
+          ],
+        ),
         Container(
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
@@ -72,7 +70,9 @@ class VisitorPassesCardWidget extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      NetworkImageWidget(url: profileImageUrl,),
+                      NetworkImageWidget(
+                        url: profileImageUrl,
+                      ),
                     ],
                   ),
                   const Gap(10),
@@ -101,43 +101,52 @@ class VisitorPassesCardWidget extends StatelessWidget {
                           image: AppImages.phone,
                           text: phone ?? "",
                         ),
-
                       ],
                     ),
                   ),
                 ],
               ),
               const Gap(5),
-               Row(
+              Row(
                 children: [
-                  const Text('Company: ',style: AppTextStyles.style14Black600,),
-                  Text( company ?? "",style: AppTextStyles.style13black400,),
+                  const Text(
+                    'Company: ',
+                    style: AppTextStyles.style14Black600,
+                  ),
+                  Text(
+                    company ?? "",
+                    style: AppTextStyles.style13black400,
+                  ),
                 ],
               ),
               const Gap(10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomButton(
-                            height: AppUtils.isTablet(context) ? 55 : 42,
-                            fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                            imageHeight: AppUtils.isTablet(context) ?25 :18,
-                            buttonColor: AppColors.green,
-                            image: AppImages.checkInButton,
-                            text: 'Check-In', onPressed: checkInOnPressed ),
-                      ),
-                      const Gap(10),
-                      Expanded(
-                        child: CustomButton(
-                            height: AppUtils.isTablet(context) ? 55 : 42,
-                            fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                            imageHeight: AppUtils.isTablet(context) ?25 :18,
-                            buttonColor: AppColors.cyanBlue,
-                            image: AppImages.serviceable,
-                            text: 'Visitor Pass Check - Ins', onPressed: visitorPassOnPressed ),
-                      ),
-                    ],
-                  )
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                        height: AppUtils.isTablet(context) ? 55 : 42,
+                        fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                        imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+                        buttonColor: AppColors.green,
+                        image: AppImages.checkInButton,
+                        text: 'Check-In',
+                        onPressed: checkInOnPressed),
+                  ),
+                  if (isActiveCheckins) ...[
+                    const Gap(10),
+                    Expanded(
+                      child: CustomButton(
+                          height: AppUtils.isTablet(context) ? 55 : 42,
+                          fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                          imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+                          buttonColor: AppColors.cyanBlue,
+                          image: AppImages.serviceable,
+                          text: 'Visitor Pass Check - Ins',
+                          onPressed: visitorPassCheckInOnPressed),
+                    ),
+                  ],
+                ],
+              )
             ],
           ),
         ),

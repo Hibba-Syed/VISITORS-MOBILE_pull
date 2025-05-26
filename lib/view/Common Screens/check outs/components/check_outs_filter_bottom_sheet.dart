@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
@@ -6,6 +7,12 @@ import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/picker/date_range_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
+
+import '../../../../bloc/check_out/check_out_cubit.dart';
+import '../../../../model/unit/unit_model.dart';
+import '../../../../model/vendor/vendor_model.dart';
+import '../../../../utils/app_utils.dart';
+import '../../../widgets/loader/loader_widget.dart';
 class CheckOutsFilterBottomSheet extends StatefulWidget {
   const CheckOutsFilterBottomSheet({super.key});
 
@@ -14,14 +21,7 @@ class CheckOutsFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet> {
-  String? _selectedDateRange;
-  String?  _selectedRang;
-  String? _selectedType;
-  String? _selectedUnit;
-  String? _selectedVendor;
-
-  final List<String> rangList = ['Last 30 Days', 'Last 60 Days','Last 90 Days'];
-  final List<String> typeList = ['Guests', 'Services','Work Order / RFPs','Visitor Pass'];
+  // String? selectedRang;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,10 +30,10 @@ class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet>
         decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
-            border: Border.all(color: AppColors.gray)
-        ),
+            border: Border.all(color: AppColors.gray)),
         child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,65 +42,96 @@ class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet>
                 const Align(
                   alignment: Alignment.center,
                   child: HeadingWidget(
-                      heading: 'Check-Outs Filter',
+                      heading: 'Check-In Filter',
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
                 CustomDateRangePickerWidget(
                   hintText: "Date Range",
-                  selectedDate: _selectedDateRange,
+                  selectedDate: context.watch<CheckOutCubit>().state.dateRang,
                   onChangeDate: (value) {
-                    _selectedDateRange = value;
+                    context.read<CheckOutCubit>().onChangeDateRange(value);
                   },
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Range",
-                    fillColor: AppColors.white,
-                    selectedItem: _selectedRang,
-                    itemAsString: (rang) => rang,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items:rangList,
-                    onChanged: (value) {
-                      _selectedRang = value;
-                    }),
+                  hint: "Range",
+                  fillColor: AppColors.white,
+                  selectedItem: context.watch<CheckOutCubit>().state.selectedRang,
+                  itemAsString: (rang) => rang,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: AppUtils.rangList,
+                  onChanged: (value) {
+                    if (value != null) {
+                      final dateRangeString = AppUtils.getDateRangeStringFromLabel(value);
+                      context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
+                      context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
+                    }
+                  },
+                ),
                 const Gap(10),
-                SingleSelectedDropdownWidget<String>(
+                SingleSelectedDropdownWidget<TypeModel>(
                     hint: "Type",
                     fillColor: AppColors.white,
-                    selectedItem: _selectedType,
-                    itemAsString: (type) => type,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items:typeList,
+                    selectedItem: context.watch<CheckOutCubit>().state.selectedType,
+                    itemAsString: (type) => type.label,
+                    compareFn: (p0, p1) => p0.value == p1.value,
+                    items: AppUtils.checkInTypeList,
                     onChanged: (value) {
-                      _selectedType = value;
+                      context.read<CheckOutCubit>().onChangeSelectedType(value);
                     }),
                 const Gap(10),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Unit",
-                    fillColor: AppColors.white,
-                    selectedItem: _selectedUnit,
-                    itemAsString: (type) => type,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: ['1','2','3'],
-                    onChanged: (value) {
-                      _selectedUnit = value;
-                    }),
+                BlocBuilder<CheckOutCubit, CheckOutState>(
+                  builder: (context, state) {
+                    if (state.isUnitLoading) {
+                      return LoaderWidget();
+                    }
+
+                    return SingleSelectedDropdownWidget<UnitModel>(
+                        hint: "Unit",
+                        fillColor: AppColors.white,
+                        selectedItem:
+                        context.watch<CheckOutCubit>().state.selectedUnit,
+                        itemAsString: (unit) => unit.unitNumber ?? "",
+                        compareFn: (unit, item) => unit.id == item.id,
+                        items: state.units ?? [],
+                        onChanged: (value) {
+                          context
+                              .read<CheckOutCubit>()
+                              .onChangeSelectedUnit(value!);
+                        });
+                  },
+                ),
                 const Gap(10),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Vendors",
-                    fillColor: AppColors.white,
-                    selectedItem: _selectedVendor,
-                    itemAsString: (type) => type,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: ['A','B','C'],
-                    onChanged: (value) {
-                      _selectedVendor = value;
-                    }),
+                BlocBuilder<CheckOutCubit, CheckOutState>(
+                  builder: (context, state) {
+                    return SingleSelectedDropdownWidget<VendorModel>(
+                        hint: "Vendors",
+                        fillColor: AppColors.white,
+                        selectedItem:
+                        context.watch<CheckOutCubit>().state.selectedVendor,
+                        itemAsString: (vendor) => vendor.companyName ?? "",
+                        compareFn: (vendor, item) => vendor.id == item.id,
+                        items: state.vendors ?? [],
+                        onChanged: (value) {
+                          context
+                              .read<CheckOutCubit>()
+                              .onChangeSelectedVendors(value!);
+                        });
+                  },
+                ),
                 const Gap(30),
                 FilterButtonWidget(
-                  applyOnPressed: () {  },
-                  clearOnPressed: () {  },),
+                  applyOnPressed: () {
+                    context.read<CheckOutCubit>().getCheckOut();
+                    Navigator.pop(context);
+                  },
+                  clearOnPressed: () {
+                    context.read<CheckOutCubit>().clearFilterData();
+                    Navigator.pop(context);
+                    context.read<CheckOutCubit>().getCheckOut();
+                  },
+                ),
               ],
             )),
       ),

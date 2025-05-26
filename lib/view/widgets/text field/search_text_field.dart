@@ -13,19 +13,22 @@ class SearchTextField extends StatelessWidget {
   final VoidCallback? onFilterPressed;
   final bool isFilterApplied;
   final Color? fillColor;
+  final IconData? suffixIcon;
   final VoidCallback? onSearchPressed;
-  const SearchTextField({
-    super.key,
-    this.initialValue,
-    this.hint = 'Search by keyword',
-    this.controller,
-    this.onChanged,
-    this.onFieldSubmitted,
-    this.onFilterPressed,
-    this.isFilterApplied = false,
-    this.fillColor,
-    this.onSearchPressed,
-  });
+  final VoidCallback? onClearPressed;
+  const SearchTextField(
+      {super.key,
+      this.initialValue,
+      this.hint = 'Search by keyword',
+      this.controller,
+      this.onChanged,
+      this.onFieldSubmitted,
+      this.onFilterPressed,
+      this.isFilterApplied = false,
+      this.fillColor,
+      this.onSearchPressed,
+      this.onClearPressed,
+      this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +49,28 @@ class SearchTextField extends StatelessWidget {
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 10.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
                 hintText: hint,
                 hintStyle: AppTextStyles.style12darkGrey400,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-               // suffixIcon:
-                prefixIcon:
-                GestureDetector(
+                suffixIcon: controller?.text.isNotEmpty == true
+                    ? GestureDetector(
+                        onTap: () {
+                          if (onClearPressed != null) {
+                            onClearPressed!();
+                          }
+                          // Clear the controller which will trigger a rebuild
+                          controller?.clear();
+                        },
+                        child: Icon(
+                          suffixIcon ?? Icons.clear,
+                          color: AppColors.primary,
+                          size: 16,
+                        ),
+                      )
+                    : null,
+                prefixIcon: GestureDetector(
                   onTap: onSearchPressed,
                   child: const Icon(
                     Icons.search,

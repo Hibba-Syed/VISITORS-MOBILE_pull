@@ -67,7 +67,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
 
   /// starting point of ml kit code
   File? _imageFile;
-  String _extractedText = '';
+  // String _extractedText = '';
   List<File?>? _personImageFiles; // To store the extracted person image
 
   Future<void> _pickImage() async {
@@ -102,7 +102,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
     final parsedData = _parseExtractedText(text);
 
     setState(() {
-      _extractedText = text;
+      // _extractedText = text;
       _personImageFiles = _extractPersonImage(imageFile, faces);
 
       // Auto-fill form fields
@@ -287,7 +287,6 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
     }
     return '';
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -620,8 +619,9 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
                               builder: (context) {
                                 return CustomAlertDialogBox(
                                   hideBothButtons: true,
-                                  insetPadding: AppUtils.isTablet(context) ? EdgeInsets.symmetric(horizontal: 30):
-                                EdgeInsets.symmetric(horizontal: 10),
+                                  insetPadding: AppUtils.isTablet(context)
+                                      ? EdgeInsets.symmetric(horizontal: 30)
+                                      : EdgeInsets.symmetric(horizontal: 10),
                                   title: 'Select Visitor',
                                   contentBuilder: (context, setState) {
                                     return const SelectVisitorNumberWidget(

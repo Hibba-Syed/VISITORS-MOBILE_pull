@@ -9,6 +9,7 @@ class AppImages {
   static const String background = "${basePngPath}background.png";
   static const String splashBg = "${basePngPath}splash_bg.png";
   static const String vmImage = "${basePngPath}vm_image.png";
+  static const String splash = "${basePngPath}splash.png";
 
   ///icons
   static const String menuEservices = "${baseSvgPath}menu_services.svg";
@@ -31,7 +32,7 @@ class AppImages {
   static const String logout = "${baseSvgPath}logouts.svg";
   static const String dashboard = "${baseSvgPath}dashboard.svg";
   static const String menuCheckout = "${baseSvgPath}menu_checkout.svg";
-  static const String menuCheckin = "${baseSvgPath}menu_checkin.svg";
+  static const String menuCheckIn = "${baseSvgPath}menu_checkin.svg";
   static const String checkInButton = "${baseSvgPath}checkin_button.svg";
   static const String eServices = "${baseSvgPath}eservices.svg";
   static const String rfps = "${baseSvgPath}rfps.svg";
@@ -55,5 +56,6 @@ class AppImages {
   static const String loginGate = "${baseSvgPath}login_gate.svg";
   static const String loginLock = "${baseSvgPath}login_lock.svg";
   static const String forgot = "${baseSvgPath}forgot.svg";
+  static const String rfpCard = "${baseSvgPath}rfp_card.svg";
 
 }

@@ -42,7 +42,7 @@ class PhoneEmailInformationCardWidget extends StatelessWidget {
             backgroundColor: AppColors.white,
             icon: CupertinoIcons.phone,
             text: phone ?? "",
-          ),
+          ) ,
           const Divider(
             indent: 10,
             endIndent: 10,

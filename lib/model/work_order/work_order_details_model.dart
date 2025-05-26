@@ -1,50 +1,10 @@
-// To parse this JSON data, do
-//
-//     final workOrderJobDetailsResponseModel = workOrderJobDetailsResponseModelFromJson(jsonString);
+import 'package:visitors/model/work_order/primary_contact_model.dart';
 
-import 'dart:convert';
+import '../new_vendor_model.dart';
+import 'asset_model.dart';
+import 'category_model.dart';
 
-WorkOrderJobDetailsResponseModel workOrderJobDetailsResponseModelFromJson(String str) => WorkOrderJobDetailsResponseModel.fromJson(json.decode(str));
-
-String workOrderJobDetailsResponseModelToJson(WorkOrderJobDetailsResponseModel data) => json.encode(data.toJson());
-
-class WorkOrderJobDetailsResponseModel {
-  String? status;
-  Record? record;
-  int? code;
-  dynamic meta;
-  bool? requestStatus;
-  String? message;
-
-  WorkOrderJobDetailsResponseModel({
-    this.status,
-    this.record,
-    this.code,
-    this.meta,
-    this.requestStatus,
-    this.message,
-  });
-
-  factory WorkOrderJobDetailsResponseModel.fromJson(Map<String, dynamic> json) => WorkOrderJobDetailsResponseModel(
-    status: json["status"],
-    record: json["record"] == null ? null : Record.fromJson(json["record"]),
-    code: json["code"],
-    meta: json["meta"],
-    requestStatus: json["request_status"],
-    message: json["message"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "record": record?.toJson(),
-    "code": code,
-    "meta": meta,
-    "request_status": requestStatus,
-    "message": message,
-  };
-}
-
-class Record {
+class WorkOrderDetailsModel {
   int? id;
   String? titleType;
   String? title;
@@ -120,7 +80,7 @@ class Record {
   List<Asset>? assets;
   PrimaryContact? primaryContact;
 
-  Record({
+  WorkOrderDetailsModel({
     this.id,
     this.titleType,
     this.title,
@@ -197,7 +157,7 @@ class Record {
     this.primaryContact,
   });
 
-  factory Record.fromJson(Map<String, dynamic> json) => Record(
+  factory WorkOrderDetailsModel.fromJson(Map<String, dynamic> json) => WorkOrderDetailsModel(
     id: json["id"],
     titleType: json["title_type"],
     title: json["title"],
@@ -349,209 +309,5 @@ class Record {
     "category": category?.toJson(),
     "assets": assets == null ? [] : List<dynamic>.from(assets!.map((x) => x.toJson())),
     "primary_contact": primaryContact?.toJson(),
-  };
-}
-
-class Asset {
-  int? id;
-  String? name;
-  dynamic fullLocation;
-  String? warrantyAttachmentUrl;
-  String? fullName;
-  Pivot? pivot;
-
-  Asset({
-    this.id,
-    this.name,
-    this.fullLocation,
-    this.warrantyAttachmentUrl,
-    this.fullName,
-    this.pivot,
-  });
-
-  factory Asset.fromJson(Map<String, dynamic> json) => Asset(
-    id: json["id"],
-    name: json["name"],
-    fullLocation: json["full_location"],
-    warrantyAttachmentUrl: json["warranty_attachment_url"],
-    fullName: json["full_name"],
-    pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "full_location": fullLocation,
-    "warranty_attachment_url": warrantyAttachmentUrl,
-    "full_name": fullName,
-    "pivot": pivot?.toJson(),
-  };
-}
-
-class Pivot {
-  int? jpJobId;
-  int? jpAssetId;
-
-  Pivot({
-    this.jpJobId,
-    this.jpAssetId,
-  });
-
-  factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(
-    jpJobId: json["jp_job_id"],
-    jpAssetId: json["jp_asset_id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "jp_job_id": jpJobId,
-    "jp_asset_id": jpAssetId,
-  };
-}
-
-class Category {
-  int? id;
-  String? name;
-  String? pictureUrl;
-
-  Category({
-    this.id,
-    this.name,
-    this.pictureUrl,
-  });
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-    id: json["id"],
-    name: json["name"],
-    pictureUrl: json["picture_url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "picture_url": pictureUrl,
-  };
-}
-
-class NewVendor {
-  int? id;
-  String? companyName;
-  String? contactNumber;
-  String? contactEmail;
-  double? rating;
-  String? logoUrl;
-  String? jpgLogoUrl;
-  String? faviconUrl;
-  String? backgroundImageUrl;
-  String? trnCertificateUrl;
-  String? licenseCopyUrl;
-  bool? hasPendingCreditNotes;
-  int? paymentGatewayEnabled;
-  bool? smsGatewayEnabled;
-  dynamic subdomain;
-  String? fullAddress;
-  int? isBilled;
-  List<dynamic>? offDays;
-  dynamic user;
-
-  NewVendor({
-    this.id,
-    this.companyName,
-    this.contactNumber,
-    this.contactEmail,
-    this.rating,
-    this.logoUrl,
-    this.jpgLogoUrl,
-    this.faviconUrl,
-    this.backgroundImageUrl,
-    this.trnCertificateUrl,
-    this.licenseCopyUrl,
-    this.hasPendingCreditNotes,
-    this.paymentGatewayEnabled,
-    this.smsGatewayEnabled,
-    this.subdomain,
-    this.fullAddress,
-    this.isBilled,
-    this.offDays,
-    this.user,
-  });
-
-  factory NewVendor.fromJson(Map<String, dynamic> json) => NewVendor(
-    id: json["id"],
-    companyName: json["company_name"],
-    contactNumber: json["contact_number"],
-    contactEmail: json["contact_email"],
-    rating: json["rating"]?.toDouble(),
-    logoUrl: json["logo_url"],
-    jpgLogoUrl: json["jpg_logo_url"],
-    faviconUrl: json["favicon_url"],
-    backgroundImageUrl: json["background_image_url"],
-    trnCertificateUrl: json["trn_certificate_url"],
-    licenseCopyUrl: json["license_copy_url"],
-    hasPendingCreditNotes: json["has_pending_credit_notes"],
-    paymentGatewayEnabled: json["payment_gateway_enabled"],
-    smsGatewayEnabled: json["sms_gateway_enabled"],
-    subdomain: json["subdomain"],
-    fullAddress: json["full_address"],
-    isBilled: json["is_billed"],
-    offDays: json["off_days"] == null ? [] : List<dynamic>.from(json["off_days"]!.map((x) => x)),
-    user: json["user"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "company_name": companyName,
-    "contact_number": contactNumber,
-    "contact_email": contactEmail,
-    "rating": rating,
-    "logo_url": logoUrl,
-    "jpg_logo_url": jpgLogoUrl,
-    "favicon_url": faviconUrl,
-    "background_image_url": backgroundImageUrl,
-    "trn_certificate_url": trnCertificateUrl,
-    "license_copy_url": licenseCopyUrl,
-    "has_pending_credit_notes": hasPendingCreditNotes,
-    "payment_gateway_enabled": paymentGatewayEnabled,
-    "sms_gateway_enabled": smsGatewayEnabled,
-    "subdomain": subdomain,
-    "full_address": fullAddress,
-    "is_billed": isBilled,
-    "off_days": offDays == null ? [] : List<dynamic>.from(offDays!.map((x) => x)),
-    "user": user,
-  };
-}
-
-class PrimaryContact {
-  int? id;
-  int? jpJobId;
-  String? name;
-  String? email;
-  String? contactNumber;
-  int? isPrimary;
-
-  PrimaryContact({
-    this.id,
-    this.jpJobId,
-    this.name,
-    this.email,
-    this.contactNumber,
-    this.isPrimary,
-  });
-
-  factory PrimaryContact.fromJson(Map<String, dynamic> json) => PrimaryContact(
-    id: json["id"],
-    jpJobId: json["jp_job_id"],
-    name: json["name"],
-    email: json["email"],
-    contactNumber: json["contact_number"],
-    isPrimary: json["is_primary"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "jp_job_id": jpJobId,
-    "name": name,
-    "email": email,
-    "contact_number": contactNumber,
-    "is_primary": isPrimary,
   };
 }

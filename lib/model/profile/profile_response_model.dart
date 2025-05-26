@@ -5,8 +5,6 @@
 import 'dart:convert';
 
 import '../association_model.dart';
-import '../city_model.dart';
-import '../user_model.dart';
 
 ProfileResponseModel profileResponseModelFromJson(String str) => ProfileResponseModel.fromJson(json.decode(str));
 

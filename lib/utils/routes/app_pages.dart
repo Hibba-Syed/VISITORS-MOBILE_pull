@@ -18,11 +18,19 @@ import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_c
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
 import '../../bloc/auth/auth_cubit.dart';
+import '../../bloc/check_ins/details/check_ins_details_cubit.dart';
+import '../../bloc/check_out/check_out_cubit.dart';
+import '../../bloc/directory/directory_cubit.dart';
+import '../../bloc/e_service/details/service_details_cubit.dart';
+import '../../bloc/e_service/service_cubit.dart';
+import '../../bloc/message/message_cubit.dart';
+import '../../bloc/visitor_pass/visitor_pass_cubit.dart';
+import '../../bloc/work_order/details/work_order_details_cubit.dart';
+import '../../bloc/work_order/work_order_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
 import '../../view/Common Screens/splash_screen.dart';
+import '../../view/Common Screens/work order/work_order_rfp_screen.dart';
 import 'app_routes.dart';
-
-
 
 class AppPages {
   static List<PageEntity> routes = [
@@ -59,6 +67,18 @@ class AppPages {
           BlocProvider(
             create: (context) => CheckInsCubit(),
           ),
+          BlocProvider(
+            create: (context) => CheckOutCubit(),
+          ),
+          BlocProvider(
+            create: (context) => MessageCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ServiceCubit(),
+          ),
+          BlocProvider(
+            create: (context) => DirectoryCubit(),
+          ),
         ],
         child: const SizedBox.shrink(),
       ),
@@ -66,10 +86,16 @@ class AppPages {
     PageEntity(
       route: AppRoutes.workOrderJobDetailsScreen,
       page: const WorkOrderJobDetailsScreen(),
+      bloc: BlocProvider(
+          create: (context) => WorkOrderDetailsCubit(),
+      )
     ),
     PageEntity(
       route: AppRoutes.servicesDetailsScreen,
       page: const ServiceDetailsScreen(),
+        bloc: BlocProvider(
+          create: (context) => ServiceDetailsCubit(),
+        )
     ),
     PageEntity(
       route: AppRoutes.mobileGuestCheckInScreen,
@@ -78,10 +104,24 @@ class AppPages {
     PageEntity(
       route: AppRoutes.checkInDetailsScreen,
       page: const CheckInDetailsScreen(),
+      bloc: BlocProvider(
+        create: (context) => CheckInsDetailsCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.workOrderScreen,
+      page: const WorkOrderRfpScreen(),
+      bloc: BlocProvider(
+        create: (context) => WorkOrderCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.visitorPassesScreen,
       page: const VisitorPassesScreen(),
+      bloc: BlocProvider(
+        create: (context) => VisitorPassCubit(),
+      ),
+
     ),
     PageEntity(
       route: AppRoutes.serviceableCheckInsScreen,

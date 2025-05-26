@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
@@ -36,8 +35,8 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
           },
           child: MaterialApp(
             title: 'Visitors Mobile',
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
             theme: ThemeData(
               textTheme: GoogleFonts.interTextTheme(),
               scaffoldBackgroundColor: AppColors.backgroundColor,

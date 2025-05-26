@@ -2,26 +2,66 @@ part of 'dashboard_cubit.dart';
 
 class DashboardState {
   final bool isLoading;
-   ProfileRecord? profileRecord;
+  final bool? isCheckInLoading;
+  final bool? isCountLoading;
+  final bool? isServicesLoading;
+  final bool? isWorkOrderLoading;
+  final bool? isVisitorPassLoading;
+  ProfileRecord? profileRecord;
   final int page;
-  List<CheckInsRecord>? checkInsRecord;
-   DashboardState({
+  List<CheckInModel>? checkInsModel;
+  List<ServiceModel>? serviceModel;
+  List<WorkOrderModel>? workOrderModel;
+  List<CheckOutModel>? checkOutModel;
+  List<VisitorPassModel>? visitorPassModel;
+  CountModel? countModel;
+  DashboardState({
     this.isLoading = false,
+    this.isCheckInLoading = false,
+    this.isCountLoading = false,
+    this.isServicesLoading = false,
+    this.isVisitorPassLoading = false,
     this.profileRecord,
-     this.page = 1,
-     this.checkInsRecord,
+    this.page = 1,
+    this.checkInsModel,
+    this.countModel,
+    this.serviceModel,
+    this.isWorkOrderLoading,
+    this.workOrderModel,
+    this.checkOutModel,
+    this.visitorPassModel,
   });
   DashboardState copyWith({
     bool? isLoading,
+    bool? isCheckInLoading,
+    bool? isCountLoading,
+    bool? isServicesLoading,
+    bool? isWorkOrderLoading,
+    bool? isVisitorPassLoading,
     ProfileRecord? profileRecord,
     int? page,
-    List<CheckInsRecord>? checkInsRecord,
+    List<CheckInModel>? checkInsModel,
+    List<ServiceModel>? serviceModel,
+    List<WorkOrderModel>? workOrderModel,
+    List<CheckOutModel>? checkOutModel,
+    List<VisitorPassModel>? visitorPassModel,
+    CountModel? countModel,
   }) {
     return DashboardState(
-      isLoading: isLoading ?? this.isLoading,
-      profileRecord: profileRecord ?? this.profileRecord,
+        isLoading: isLoading ?? this.isLoading,
+        isCheckInLoading: isCheckInLoading ?? this.isCheckInLoading,
+        isCountLoading: isCountLoading ?? this.isCountLoading,
+        isServicesLoading: isServicesLoading ?? this.isServicesLoading,
+        isWorkOrderLoading: isWorkOrderLoading ?? this.isWorkOrderLoading,
+        profileRecord: profileRecord ?? this.profileRecord,
         page: page ?? this.page,
-        checkInsRecord: checkInsRecord ?? this.checkInsRecord
+        checkInsModel: checkInsModel ?? this.checkInsModel,
+        countModel: countModel ?? this.countModel,
+        serviceModel: serviceModel ?? this.serviceModel,
+        workOrderModel: workOrderModel ?? this.workOrderModel,
+        checkOutModel: checkOutModel ?? this.checkOutModel,
+        visitorPassModel: visitorPassModel ?? visitorPassModel,
+        isVisitorPassLoading: isVisitorPassLoading ?? isVisitorPassLoading
     );
   }
 }

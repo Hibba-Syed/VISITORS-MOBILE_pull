@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -20,8 +19,9 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
+import '../../../model/check_ins/check_in_model.dart';
 import '../../widgets/empty_widget.dart';
-
 
 class CheckInsScreen extends StatefulWidget {
   const CheckInsScreen({super.key});
@@ -32,16 +32,20 @@ class CheckInsScreen extends StatefulWidget {
 
 class _CheckInsScreenState extends State<CheckInsScreen> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<CheckInsCubit>().getMoreCheckIns();
+        context.read<CheckInsCubit>().getMoreCheckIns(
+              keyword: _searchController.text,
+            );
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -50,11 +54,12 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
         if (didPop) return;
         context
             .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(context, AppConstants.dashboardIndex);
+            .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
-      child: Scaffold(
-        body: BlocBuilder<CheckInsCubit, CheckInsState>(
-          builder: (context, state) {
+      child: SafeArea(
+        child: Scaffold(
+          body: BlocBuilder<CheckInsCubit, CheckInsState>(
+              builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.horizontalPadding),
@@ -64,9 +69,33 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                     padding: const EdgeInsets.only(top: 10),
                     child: Row(
                       children: [
-                        const Flexible(child: SearchTextField()),
+                        Flexible(
+                          child: SearchTextField(
+                              controller: _searchController,
+                              onClearPressed: () async {
+                                _searchController.clear();
+                                 context
+                                    .read<CheckInsCubit>()
+                                    .onChangeSearchKeyWord('');
+                                 context.read<CheckInsCubit>().getCheckIns();
+                              },
+                              onFieldSubmitted: (value) {
+                                context
+                                    .read<CheckInsCubit>()
+                                    .onChangeSearchKeyWord(value);
+                                context.read<CheckInsCubit>().getCheckIns();
+                              }
+                              ),
+                        ),
                         const Gap(6),
                         FilterContainerWidget(
+                          isFilterApplied: (state.selectedUnit != null) ||
+                                  (state.selectedType?.value.isNotEmpty ??
+                                      false) ||
+                                  (state.selectedVendor != null) ||
+                                  (state.dateRang != null)
+                              ? true
+                              : false,
                           onPressed: () {
                             _checkInFilterBottomSheet(context);
                           },
@@ -80,23 +109,29 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                     child: CustomButton(
                       buttonColor: AppColors.red,
                       text: 'Check-Outs All',
-                      height:  AppUtils.isTablet(context)  ? 50 : 42,
+                      height: AppUtils.isTablet(context) ? 50 : 42,
                       width: AppUtils.isTablet(context) ? 200 : 170,
-                      imageHeight: AppUtils.isTablet( context) ? 25 : 18,
+                      imageHeight: AppUtils.isTablet(context) ? 25 : 18,
                       borderRadius: 6,
-                      image: AppImages.logout,
+                      image: AppImages.logoutCard,
                       onPressed: () {
                         showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
                             return CustomAlertDialogBox(
-                              insetPadding:
-                              AppUtils.isTablet(context) ?  EdgeInsets.symmetric(horizontal: 30) : EdgeInsets.symmetric(horizontal: 10),
+                              insetPadding: AppUtils.isTablet(context)
+                                  ? EdgeInsets.symmetric(horizontal: 30)
+                                  : EdgeInsets.symmetric(horizontal: 10),
                               isCancelButtonDisable: true,
                               confirmButtonColor: AppColors.red,
                               confirmButtonText: 'Checkout All',
                               title: 'Checkout for All Check-Ins',
+                              onConfirm: () async {
+                                return context
+                                    .read<CheckInsCubit>()
+                                    .checkOutAll(context);
+                              },
                               contentBuilder: (context, setState) {
                                 return const Align(
                                   alignment: Alignment.center,
@@ -111,60 +146,81 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                   ),
                   const Gap(10),
                   Expanded(
-                    child: state.isLoading ? LoaderWidget() :
-                        state.checkInsRecord?.isNotEmpty ?? false
-                            ?
-                             RefreshIndicator(
-                             onRefresh: ()async{
-                               context.read<CheckInsCubit>().getCheckIns();
-                            },
-                      child: ListView.separated(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        controller: _scrollController,
-                        padding: const EdgeInsets.only(bottom: 10),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: state.checkInsRecord?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          CheckInsRecord? checkInsRecord = state.checkInsRecord?[index];
-                          return CheckInCardWidget(
-                            count:  int.tryParse(checkInsRecord?.visitorCount.toString() ?? '0') ?? 0,
-                            typeImage: (checkInsRecord?.type?.toLowerCase() == 'community visit' || checkInsRecord?.type?.toLowerCase() == 'community service' )?
-                            AppImages.community : "",
-                            typeText: (checkInsRecord?.type?.toLowerCase() == 'unit visit' || checkInsRecord?.type?.toLowerCase() == 'unit service') ?
-                                checkInsRecord?.unit?.unitNumber
-                            : checkInsRecord?.type ?? "",
-                            name: checkInsRecord?.name ?? "",
-                            profileImageUrl: checkInsRecord?.visitor?.imageUrl ?? "",
-                            type:  "Guest",
-                            date: DateTimeUtil.getFormattedDatesTime(checkInsRecord?.visitor?.createdAt),
-                            phone: checkInsRecord?.phone ?? "",
-                            gateValue: checkInsRecord?.checkinGate ?? "",
-                            checkOutOnPressed: () {
-                              _showCheckoutDialog(context);
-                            },
-                            detailsOnPressed: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.checkInDetailsScreen);
-                            },
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Gap(10);
-                        },
-                      ),
-                    ) :  const EmptyWidget(
-                          text: 'No data available',
-                        ),
+                    child: state.isLoading
+                        ? LoaderWidget()
+                        : state.checkInModel?.isNotEmpty ?? false
+                            ? RefreshIndicator(
+                                onRefresh: () async {
+                                  context.read<CheckInsCubit>().getCheckIns();
+                                },
+                                child: ListView.separated(
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  controller: _scrollController,
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: state.checkInModel?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    CheckInModel? checkInsRecord =
+                                        state.checkInModel?[index];
+                                    return CheckInCardWidget(
+                                      count: checkInsRecord?.visitorCount ?? "",
+                                      typeImage:
+                                          (checkInsRecord?.type?.toLowerCase() ==
+                                                      'community visit' ||
+                                                  checkInsRecord?.type
+                                                          ?.toLowerCase() ==
+                                                      'community service')
+                                              ? AppImages.community
+                                              : "",
+                                      typeText:
+                                          (checkInsRecord?.type?.toLowerCase() ==
+                                                      'unit visit' ||
+                                                  checkInsRecord?.type
+                                                          ?.toLowerCase() ==
+                                                      'unit service')
+                                              ? checkInsRecord?.unit?.unitNumber
+                                              : checkInsRecord?.type ?? "",
+                                      name: checkInsRecord?.name ?? "",
+                                      profileImageUrl:
+                                          checkInsRecord?.visitor?.imageUrl ?? "",
+                                      type: AppUtils.getServiceableType(
+                                              checkInsRecord?.serviceableType)
+                                          .value,
+                                      date: DateTimeUtil.getFormattedDatesTime(
+                                          checkInsRecord?.visitor?.createdAt),
+                                      checkOutOnPressed: () {
+                                        _showCheckoutDialog(context);
+                                      },
+                                      detailsOnPressed: () {
+                                        context
+                                            .read<CheckInsDetailsCubit>()
+                                            .getCheckInDetailsLog(
+                                                id: checkInsRecord?.id);
+                                        Navigator.pushNamed(context,
+                                            AppRoutes.checkInDetailsScreen,
+                                            arguments:
+                                                state.checkInModel?[index]);
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const Gap(10);
+                                  },
+                                ),
+                              )
+                            : const EmptyWidget(
+                                text: 'No data available',
+                              ),
                   ),
                   if (state.loadMore) const LoaderWidget(),
                 ],
               ),
             );
-             }
-    ),
+          }),
         ),
-
+      ),
     );
   }
 
@@ -192,6 +248,11 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                       confirmButtonColor: AppColors.red,
                       confirmButtonText: 'Checkout All',
                       title: 'Checkout for All Check-Ins',
+                      onConfirm: (){
+                        return context
+                            .read<CheckInsCubit>()
+                            .checkOutAll(context);
+                      },
                       contentBuilder: (context, setState) {
                         return const Align(
                           alignment: Alignment.center,
@@ -222,10 +283,13 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
   _checkInFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
-        minWidth: AppUtils.isTablet(context) ? AppConstants.tabletScreen : AppConstants.mobileScreen),
+        minWidth: MediaQuery.of(context).size.width,
+      ),
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
+        context.read<CheckInsCubit>().getVendors();
+        context.read<CheckInsCubit>().getUnits();
         return const CheckInFilterBottomSheet();
       },
     );

@@ -34,8 +34,8 @@ class StatusWidget extends StatelessWidget {
                 ),
           const Gap(3),
           Flexible(
-            child: Text(
-              TextUtils.capitalizeWords(status),
+            child: Text( status.isNotEmpty ?
+              TextUtils.capitalizeWords(status) : "",
               style:  TextStyle(
                 color: AppUtils.getStatusColor(status),
                 fontWeight:  FontWeight.w500,

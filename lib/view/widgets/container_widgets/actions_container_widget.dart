@@ -41,7 +41,6 @@ class ActionsContainerWidget extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
               const Gap(5),
-              if (count != null && count! > 0)...[
                 Text(
                   count?.toString() ?? "",
                   style: TextStyle(
@@ -52,7 +51,6 @@ class ActionsContainerWidget extends StatelessWidget {
                   ),
                   //AppTextStyles.style14white600,
                 ),
-              ],
               Text( title ?? "",
                 style: TextStyle(
                     fontFamily: 'Inter',

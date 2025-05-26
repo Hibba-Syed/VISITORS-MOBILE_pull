@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';

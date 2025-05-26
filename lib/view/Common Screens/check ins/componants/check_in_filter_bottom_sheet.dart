@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
+import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/picker/date_range_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
+import '../../../../model/unit/unit_model.dart';
+import '../../../../model/vendor/vendor_model.dart';
+import '../../../widgets/loader/loader_widget.dart';
+
 class CheckInFilterBottomSheet extends StatefulWidget {
-  const CheckInFilterBottomSheet({super.key});
+  const CheckInFilterBottomSheet({
+    super.key,
+  });
 
   @override
   State<CheckInFilterBottomSheet> createState() =>
@@ -16,26 +25,21 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
-  String? _selectedDateRange;
-  String?  _selectedRang;
-  String? _selectedType;
-  String? _selectedUnit;
-  String? _selectedVendor;
-
-  final List<String> rangList = ['Last 30 Days', 'Last 60 Days','Last 90 Days'];
-  final List<String> typeList = ['Guests', 'Services','Work Order / RFPs','Visitor Pass'];
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final firstDayOfMonth = DateTime(now.year, now.month, 1);
+    final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20),
-          ),
-          border: Border.all(color: AppColors.gray)
-        ),
+            color: AppColors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            border: Border.all(color: AppColors.gray)),
         child: SingleChildScrollView(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,60 +53,98 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
             ),
             const Gap(15),
             CustomDateRangePickerWidget(
+              firstDate: firstDayOfMonth,
+              lastDate: lastDayOfMonth,
               hintText: "Date Range",
-              selectedDate: _selectedDateRange,
+              selectedDate: context.watch<CheckInsCubit>().state.selectedRang,
               onChangeDate: (value) {
-                _selectedDateRange = value;
+                context.read<CheckInsCubit>().onChangeDateRange(value);
               },
             ),
             const Gap(10),
             SingleSelectedDropdownWidget<String>(
-                hint: "Range",
-                fillColor: AppColors.white,
-                selectedItem: _selectedRang,
-                itemAsString: (rang) => rang,
-                compareFn: (p0, p1) => p0 == p1,
-                items:rangList,
-                onChanged: (value) {
-                  _selectedRang = value;
-                }),
+              hint: "Range",
+              fillColor: AppColors.white,
+              selectedItem: context.watch<CheckInsCubit>().state.selectedRang,
+              itemAsString: (rang) => rang,
+              compareFn: (p0, p1) => p0 == p1,
+              items: AppUtils.rangList,
+              onChanged: (value) {
+                // selectedRang = value;
+                final dateRangeString =
+                    AppUtils.getDateRangeStringFromLabel(value!);
+                context
+                    .read<CheckInsCubit>()
+                    .onChangeDateRange(dateRangeString);
+                context
+                    .read<CheckInsCubit>()
+                    .onChangeDateRange(dateRangeString);
+                // print('dateRange $dateRangeString');
+              },
+            ),
             const Gap(10),
-            SingleSelectedDropdownWidget<String>(
+            SingleSelectedDropdownWidget<TypeModel>(
                 hint: "Type",
                 fillColor: AppColors.white,
-                selectedItem: _selectedType,
-                itemAsString: (type) => type,
-                compareFn: (p0, p1) => p0 == p1,
-                items:typeList,
+                selectedItem: context.watch<CheckInsCubit>().state.selectedType,
+                itemAsString: (type) => type.label,
+                compareFn: (p0, p1) => p0.value == p1.value,
+                items: AppUtils.checkInTypeList,
                 onChanged: (value) {
-                  _selectedType = value;
+                  context.read<CheckInsCubit>().onChangeSelectedType(value);
                 }),
             const Gap(10),
-            SingleSelectedDropdownWidget<String>(
-                hint: "Unit",
-                fillColor: AppColors.white,
-                selectedItem: _selectedUnit,
-                itemAsString: (type) => type,
-                compareFn: (p0, p1) => p0 == p1,
-                items: ['1','2','3'],
-                onChanged: (value) {
-                  _selectedUnit = value;
-                }),
+            BlocBuilder<CheckInsCubit, CheckInsState>(
+              builder: (context, state) {
+                if (state.isUnitLoading) {
+                  return LoaderWidget();
+                }
+
+                return SingleSelectedDropdownWidget<UnitModel>(
+                    hint: "Unit",
+                    fillColor: AppColors.white,
+                    selectedItem:
+                        context.watch<CheckInsCubit>().state.selectedUnit,
+                    itemAsString: (unit) => unit.unitNumber ?? "",
+                    compareFn: (unit, item) => unit.id == item.id,
+                    items: state.units ?? [],
+                    onChanged: (value) {
+                      context
+                          .read<CheckInsCubit>()
+                          .onChangeSelectedUnit(value!);
+                    });
+              },
+            ),
             const Gap(10),
-            SingleSelectedDropdownWidget<String>(
-                hint: "Vendors",
-                fillColor: AppColors.white,
-                selectedItem: _selectedVendor,
-                itemAsString: (type) => type,
-                compareFn: (p0, p1) => p0 == p1,
-                items: ['A','B','C'],
-                onChanged: (value) {
-                  _selectedVendor = value;
-                }),
+            BlocBuilder<CheckInsCubit, CheckInsState>(
+              builder: (context, state) {
+                return SingleSelectedDropdownWidget<VendorModel>(
+                    hint: "Vendors",
+                    fillColor: AppColors.white,
+                    selectedItem:
+                        context.watch<CheckInsCubit>().state.selectedVendor,
+                    itemAsString: (vendor) => vendor.companyName ?? "",
+                    compareFn: (vendor, item) => vendor.id == item.id,
+                    items: state.vendors ?? [],
+                    onChanged: (value) {
+                      context
+                          .read<CheckInsCubit>()
+                          .onChangeSelectedVendors(value!);
+                    });
+              },
+            ),
             const Gap(30),
             FilterButtonWidget(
-              applyOnPressed: () {  },
-              clearOnPressed: () {  },),
+              applyOnPressed: () {
+                context.read<CheckInsCubit>().getCheckIns();
+                Navigator.pop(context);
+              },
+              clearOnPressed: () {
+                context.read<CheckInsCubit>().clearFilterData();
+                Navigator.pop(context);
+                context.read<CheckInsCubit>().getCheckIns();
+              },
+            ),
           ],
         )),
       ),

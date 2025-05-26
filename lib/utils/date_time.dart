@@ -1,13 +1,5 @@
 import 'package:intl/intl.dart';
 class DateTimeUtil {
-  static String getFormattedDate(String? inputDateString) {
-    if (inputDateString?.isNotEmpty ?? false) {
-      DateTime dateTime = DateTime.parse(inputDateString!).toLocal();
-      String formattedDateString = DateFormat.yMMMMd().format(dateTime);
-      return formattedDateString;
-    }
-    return '--';
-  }
 
   static String getFormattedDateTime(String? inputDateTimeString) {
     if (inputDateTimeString?.isNotEmpty ?? false) {
@@ -23,6 +15,15 @@ class DateTimeUtil {
     if (inputDateTime != null) {
       String formattedDateString =
       DateFormat("MMMM dd, yyyy hh:mm a").format(inputDateTime);
+      return formattedDateString;
+    }
+    return '--';
+  }
+
+ static String getFormattedDate(DateTime? inputDateTime) {
+    if (inputDateTime != null) {
+      String formattedDateString =
+      DateFormat("MMMM dd, yyyy").format(inputDateTime);
       return formattedDateString;
     }
     return '--';

@@ -113,8 +113,18 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );
+  static const TextStyle style20white600 = TextStyle(
+    color: AppColors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
   static const TextStyle style25black600 = TextStyle(
     color: AppColors.black,
+    fontSize: 25,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle style25white600 = TextStyle(
+    color: AppColors.white,
     fontSize: 25,
     fontWeight: FontWeight.w600,
   );
@@ -199,13 +209,13 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w400,
   );
-  static const TextStyle style24primary600 = TextStyle(
-    color: AppColors.primary,
+  static const TextStyle style24white600 = TextStyle(
+    color: AppColors.white,
     fontSize: 24,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle style35primary600 = TextStyle(
-    color: AppColors.primary,
+  static const TextStyle style35white600 = TextStyle(
+    color: AppColors.white,
     fontSize: 35,
     fontWeight: FontWeight.w600,
   );

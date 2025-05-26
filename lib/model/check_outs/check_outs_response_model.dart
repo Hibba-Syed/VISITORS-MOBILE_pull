@@ -3,8 +3,8 @@
 //     final checkOutsResponseModel = checkOutsResponseModelFromJson(jsonString);
 
 import 'dart:convert';
-
-import '../check_ins/check_ins_response_model.dart';
+import '../unit/unit_model.dart';
+import '../visitor_model.dart';
 
 CheckOutsResponseModel checkOutsResponseModelFromJson(String str) => CheckOutsResponseModel.fromJson(json.decode(str));
 
@@ -111,7 +111,7 @@ class Record {
   String? phone;
   String? email;
   dynamic description;
-  Unit? unit;
+  UnitModel? unit;
   Visitor? visitor;
   dynamic vendor;
 
@@ -162,7 +162,7 @@ class Record {
     phone: json["phone"],
     email: json["email"],
     description: json["description"],
-    unit: json["unit"] == null ? null : Unit.fromJson(json["unit"]),
+    unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
     visitor: json["visitor"] == null ? null : Visitor.fromJson(json["visitor"]),
     vendor: json["vendor"],
   );

@@ -2,152 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/bloc/auth/auth_cubit.dart';
+import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/check_out/check_out_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/utils/routes/app_routes.dart';
+import 'package:visitors/bloc/e_service/service_cubit.dart';
+import 'package:visitors/bloc/message/message_cubit.dart';
+import 'package:visitors/bloc/work_order/work_order_cubit.dart';
+import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/check_in_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/check_outs_screen.dart';
+import 'package:visitors/view/Common%20Screens/components/drawer_item_model.dart';
 import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
 import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart' show AllServicesScreen;
-import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart' show WorkOrderRfpScreen;
+import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart';
+import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart';
+import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen.dart';
 import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
-import 'package:visitors/utils/app_utils.dart';
-import '../../bloc/auth/auth_cubit.dart';
-import '../../resource/constants/app_colors.dart';
-import '../../resource/constants/app_constants.dart';
-import '../../resource/constants/images.dart';
-import '../../resource/styles/styles.dart';
-import '../Mobile Screens/dashboard/mobile_dashboard_screen.dart';
-import '../widgets/app_bar/appbar_widget.dart';
-import '../widgets/button/custom_button.dart';
-import '../widgets/drawer/drawer_list_tile.dart';
-import '../widgets/responsive_layout_widget.dart';
-import 'Components/drawer_item_model.dart';
+import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
+import 'package:visitors/view/widgets/button/custom_button.dart';
+import 'package:visitors/view/widgets/drawer/drawer_list_tile.dart';
+import 'package:visitors/view/widgets/responsive_layout_widget.dart';
 
 class DeviceDeciderScreen extends StatelessWidget {
   DeviceDeciderScreen({super.key});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<DrawerItemModel> _drawerItems = [
-    DrawerItemModel(
-      index: AppConstants.dashboardIndex,
-      title: 'Dashboard',
-      iconPath: AppImages.dashboard,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.checkInsIndex,
-      title: 'Check-Ins',
-      iconPath: AppImages.menuCheckin,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.eServicesIndex,
-      title: 'E-Services',
-      iconPath: AppImages.menuEservices,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.workOrderRfpIndex,
-      title: 'Work Order / RFPs',
-      iconPath: AppImages.menuRFPs,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.messagesIndex,
-      title: 'Messages',
-      iconPath: AppImages.menuMsg,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.checkOutsIndex,
-      title: 'Check-Outs',
-      iconPath: AppImages.menuCheckout,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.directoryIndex,
-      title: 'Directory',
-      iconPath: AppImages.directory,
-      onTap: () {},
-    ),
-    DrawerItemModel(
-      index: AppConstants.logoutIndex,
-      title: 'Logout',
-      iconPath: AppImages.logout,
-      onTap: ()  {
-      },
-    ),
-  ];
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DeviceDeciderCubit, DeviceDeciderState>(
-      builder: (context, state) {
-       return WillPopScope(
+    return BlocSelector<DeviceDeciderCubit, DeviceDeciderState, int>(
+      selector: (state) => state.selectedIndex,
+      builder: (context, selectedIndex) {
+        return WillPopScope(
           onWillPop: () async {
-          //  print('PopScope triggered!');
-            if (state.selectedIndex == AppConstants.dashboardIndex) {
-              bool shouldExit = await showDialog<bool>(
-                barrierDismissible: false,
-                context: context,
-                builder: (ctx) {
-                  return  AlertDialog(
-                    content: SizedBox(
-                      width: MediaQuery.of(context)
-                          .size
-                          .width,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            AppImages.logout,
-                            height: 35,
-                            width: 35,
-                            colorFilter: const ColorFilter.mode(
-                              AppColors.primary,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                          const Gap(16.0),
-                          const Text(
-                            'Are you sure you want to logout?',
-                            style: AppTextStyles
-                                .style16DarkGrey600,
-                          ),
-                          const Gap(20.0),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: CustomButton(
-                                  text: 'Cancel',
-                                  onPressed: () {
-                                    Navigator.pop(
-                                        context);
-                                  },
-                                ),
-                              ),
-                              const Gap(10.0),
-                              Flexible(
-                                child: CustomButton(
-                                  text: 'Logout',
-                                  invert: true,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    context.read<AuthCubit>().logout(context);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ) ?? false;
-              if (shouldExit) {
-                Navigator.pop(context);
-              }
-              return false;
+            if (selectedIndex == AppConstants.dashboardIndex) {
+              return await _showLogoutDialog(context);
             } else {
               context.read<DeviceDeciderCubit>().onBackButtonPressed();
               return false;
@@ -157,161 +49,15 @@ class DeviceDeciderScreen extends StatelessWidget {
             key: _scaffoldKey,
             appBar: AppBarWidget(
               leading: IconButton(
-                onPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  color: AppColors.black,
-                ),
+                icon: const Icon(Icons.menu, color: AppColors.black),
+                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
-              title: _getTitle(state),
+              title: _getTitle(selectedIndex),
             ),
-            drawer: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Drawer(
-                backgroundColor: AppColors.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    SizedBox(
-                      height:  AppUtils.isTablet(context) ? 300 : 210,
-                      child: DrawerHeader(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage(
-                              AppImages.drawerBackground,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              AppImages.appLogo,
-                              width: AppUtils.isTablet(context) ? 300 : 200,
-                              height: AppUtils.isTablet(context) ? 120 : 80,
-                            ),
-                            const Gap(10),
-                            Container(
-                              padding:  EdgeInsets.symmetric(
-                                  horizontal: AppUtils.isTablet(context) ? 15 : 8.0, vertical: AppUtils.isTablet(context) ? 8:4.0
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                              child:  Text(
-                                'VMS APPLICATION',
-                                style: AppUtils.isTablet(context) ? AppTextStyles.style15white600 : AppTextStyles.style13white500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.separated(
-                            itemCount: (_drawerItems.length),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              DrawerItemModel item = _drawerItems[index];
-                              return DrawerListTile(
-                                  title: item.title,
-                                  iconPath: item.iconPath,
-                                  onTap: () {
-                                    if (item.index == AppConstants.logoutIndex) {
-                                      showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (ctx) {
-                                          return AlertDialog(
-                                            content: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    AppImages.logout,
-                                                    height: 35,
-                                                    width: 35,
-                                                    colorFilter: const ColorFilter.mode(
-                                                      AppColors.primary,
-                                                      BlendMode.srcIn,
-                                                    ),
-                                                  ),
-                                                  const Gap(16.0),
-                                                  const Text(
-                                                    'Are you sure you want to logout?',
-                                                    style: AppTextStyles
-                                                        .style16DarkGrey600,
-                                                  ),
-                                                  const Gap(20.0),
-                                                  Row(
-                                                    children: [
-                                                      Flexible(
-                                                        child: CustomButton(
-                                                          text: 'Cancel',
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                        ),
-                                                      ),
-                                                      const Gap(10.0),
-                                                      Flexible(
-                                                        child: CustomButton(
-                                                          text: 'Logout',
-                                                          invert: true,
-                                                          onPressed: (){
-                                                            Navigator.pop(context);
-                                                            context.read<AuthCubit>().logout(context);
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      context
-                                          .read<DeviceDeciderCubit>()
-                                          .onChangeSelectedIndex(
-                                          context, item.index);
-                                      Navigator.of(context).pop();
-                                    }
-                                  },
-                                  isSelected: item.index == state.selectedIndex);
-                            }, separatorBuilder: (BuildContext context, int index) {
-                              return AppUtils.isTablet(context) ?  Gap(20) : Gap(0);
-                          },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            drawer: _buildDrawer(context, selectedIndex),
             body: ResponsiveLayoutWidget(
-              mobile: _getMobileScreen(state),
-              tablet: _getTabletScreen(state),
+              mobile: _getMobileScreen(selectedIndex),
+              tablet: _getTabletScreen(selectedIndex),
             ),
           ),
         );
@@ -319,72 +65,172 @@ class DeviceDeciderScreen extends StatelessWidget {
     );
   }
 
-  String _getTitle(DeviceDeciderState state) {
-    if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return 'Dashboard';
-    } else if (state.selectedIndex == AppConstants.checkInsIndex) {
-      return 'Check-Ins';
-    } else if (state.selectedIndex == AppConstants.eServicesIndex) {
-      return 'All E-Services Requests';
-    } else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-      return 'Work Order / RFPs';
-    } else if (state.selectedIndex == AppConstants.messagesIndex) {
-      return 'Messages';
-    } else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-      return 'Check-Outs';
-    } else if (state.selectedIndex == AppConstants.directoryIndex) {
-      return 'Directory';
-    }
-    return '';
+  Future<bool> _showLogoutDialog(BuildContext context) async {
+    return await showDialog<bool>(
+          barrierDismissible: false,
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(AppImages.logout, height: 35, width: 35, colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn)),
+                const Gap(16),
+                const Text('Are you sure you want to logout?', style: AppTextStyles.style16DarkGrey600),
+                const Gap(20),
+                Row(
+                  children: [
+                    Expanded(child: CustomButton(text: 'Cancel', onPressed: () => Navigator.pop(context, false))),
+                    const Gap(10),
+                    Expanded(child: CustomButton(text: 'Logout', invert: true, onPressed: () {
+                      Navigator.pop(context, true);
+                      context.read<AuthCubit>().logout(context);
+                    })),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ) ??
+        false;
   }
 
-  Widget _getMobileScreen(DeviceDeciderState state) {
-    if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  const MobileDashboardScreen();
-    }
-    else if (state.selectedIndex == AppConstants.checkInsIndex) {
-      return const CheckInsScreen();
-    }
-    else if (state.selectedIndex == AppConstants.eServicesIndex) {
-      return const AllServicesScreen();
-    }
-    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-      return const WorkOrderRfpScreen();
-    }
-    else if (state.selectedIndex == AppConstants.messagesIndex) {
-      return const MessageScreen();
-    }else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-      return const CheckOutsScreen() ;
-    }
-    else if (state.selectedIndex == AppConstants.directoryIndex) {
-      return const DirectoryScreen();
-    }
-    return const SizedBox.shrink();
+  Widget _buildDrawer(BuildContext context, int selectedIndex) {
+    final items = drawerItems;
+    return Drawer(
+      width: MediaQuery.of(context).size.width * 0.7,
+      backgroundColor: AppColors.white,
+      child: ListView(
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppImages.drawerBackground),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(AppImages.appLogo, height: 80),
+                const Gap(10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Text('VMS APPLICATION', style: AppTextStyles.style13white500),
+                )
+              ],
+            ),
+          ),
+          ...items.map((item) => DrawerListTile(
+                title: item.title,
+                iconPath: item.iconPath,
+                isSelected: item.index == selectedIndex,
+                onTap: () {
+                  Navigator.of(context).pop();
+                  if (item.index == AppConstants.logoutIndex) {
+                    _showLogoutDialog(context);
+                  } else {
+                    context.read<DeviceDeciderCubit>().onChangeSelectedIndex(item.index);
+
+                    // Optionally trigger specific cubits
+                    switch (item.index) {
+                      case AppConstants.checkInsIndex:
+                        context.read<CheckInsCubit>().getCheckIns();
+                        break;
+                      case AppConstants.eServicesIndex:
+                        context.read<ServiceCubit>().getServices();
+                        break;
+                      case AppConstants.workOrderRfpIndex:
+                        context.read<WorkOrderCubit>().getWorkOrder();
+                        break;
+                      case AppConstants.messagesIndex:
+                        context.read<MessageCubit>().getMessages();
+                        break;
+                      case AppConstants.checkOutsIndex:
+                        context.read<CheckOutCubit>().getCheckOut();
+                        break;
+                    }
+                  }
+                },
+              ))
+        ],
+      ),
+    );
   }
 
-  Widget _getTabletScreen(DeviceDeciderState state) {
-    // print('_getTabletScreen${state.selectedIndex}');
-    if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  const TabletDashboardScreen();
+  String _getTitle(int index) {
+    switch (index) {
+      case AppConstants.dashboardIndex:
+        return 'Dashboard';
+      case AppConstants.checkInsIndex:
+        return 'Check-Ins';
+      case AppConstants.eServicesIndex:
+        return 'All E-Services Requests';
+      case AppConstants.workOrderRfpIndex:
+        return 'Work Order / RFPs';
+      case AppConstants.messagesIndex:
+        return 'Messages';
+      case AppConstants.checkOutsIndex:
+        return 'Check-Outs';
+      case AppConstants.directoryIndex:
+        return 'Directory';
+      default:
+        return '';
     }
-    else if (state.selectedIndex == AppConstants.checkInsIndex) {
-      return const CheckInsScreen();
-     }
-    else if (state.selectedIndex == AppConstants.eServicesIndex) {
-      return const AllServicesScreen();
-    }
-    else if (state.selectedIndex == AppConstants.workOrderRfpIndex) {
-      return const WorkOrderRfpScreen();
-    }
-    else if (state.selectedIndex == AppConstants.messagesIndex) {
-      return const MessageScreen();
-    }
-    else if (state.selectedIndex == AppConstants.checkOutsIndex) {
-      return const CheckOutsScreen() ;
-    }
-    else if (state.selectedIndex == AppConstants.directoryIndex) {
-      return const DirectoryScreen();
-    }
-    return const SizedBox.shrink();
   }
+
+  Widget _getMobileScreen(int index) {
+    switch (index) {
+      case AppConstants.dashboardIndex:
+        return const MobileDashboardScreen();
+      case AppConstants.checkInsIndex:
+        return const CheckInsScreen();
+      case AppConstants.eServicesIndex:
+        return const AllServicesScreen();
+      case AppConstants.workOrderRfpIndex:
+        return const WorkOrderRfpScreen();
+      case AppConstants.messagesIndex:
+        return const MessageScreen();
+      case AppConstants.checkOutsIndex:
+        return const CheckOutsScreen();
+      case AppConstants.directoryIndex:
+        return const DirectoryScreen();
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  Widget _getTabletScreen(int index) {
+    switch (index) {
+      case AppConstants.dashboardIndex:
+        return const TabletDashboardScreen();
+      case AppConstants.checkInsIndex:
+        return const CheckInsScreen();
+      case AppConstants.eServicesIndex:
+        return const AllServicesScreen();
+      case AppConstants.workOrderRfpIndex:
+        return const WorkOrderRfpScreen();
+      case AppConstants.messagesIndex:
+        return const MessageScreen();
+      case AppConstants.checkOutsIndex:
+        return const CheckOutsScreen();
+      case AppConstants.directoryIndex:
+        return const DirectoryScreen();
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+    static final List<DrawerItemModel> drawerItems = [
+    DrawerItemModel(index: AppConstants.dashboardIndex, title: 'Dashboard', iconPath: AppImages.dashboard),
+    DrawerItemModel(index: AppConstants.checkInsIndex, title: 'Check-Ins', iconPath: AppImages.menuCheckIn),
+    DrawerItemModel(index: AppConstants.eServicesIndex, title: 'E-Services', iconPath: AppImages.menuEservices),
+    DrawerItemModel(index: AppConstants.workOrderRfpIndex, title: 'Work Order / RFPs', iconPath: AppImages.menuRFPs),
+    DrawerItemModel(index: AppConstants.messagesIndex, title: 'Messages', iconPath: AppImages.menuMsg),
+    DrawerItemModel(index: AppConstants.checkOutsIndex, title: 'Check-Outs', iconPath: AppImages.menuCheckout),
+    DrawerItemModel(index: AppConstants.directoryIndex, title: 'Directory', iconPath: AppImages.directory),
+    DrawerItemModel(index: AppConstants.logoutIndex, title: 'Logout', iconPath: AppImages.logout),
+  ];
 }

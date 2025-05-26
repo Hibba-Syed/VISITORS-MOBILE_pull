@@ -1,59 +1,17 @@
-// To parse this JSON data, do
-//
-//     final eServicesDetailsResponseModel = eServicesDetailsResponseModelFromJson(jsonString);
+import 'package:visitors/model/service/status_history_model.dart';
 
-import 'dart:convert';
+import '../application_model.dart';
+import '../unit/unit_model.dart';
+import 'document_model.dart';
 
-import 'package:visitors/model/user_model.dart';
-
-EServicesDetailsResponseModel eServicesDetailsResponseModelFromJson(String str) => EServicesDetailsResponseModel.fromJson(json.decode(str));
-
-String eServicesDetailsResponseModelToJson(EServicesDetailsResponseModel data) => json.encode(data.toJson());
-
-class EServicesDetailsResponseModel {
-  String? status;
-  Record? record;
-  int? code;
-  dynamic meta;
-  bool? requestStatus;
-  String? message;
-
-  EServicesDetailsResponseModel({
-    this.status,
-    this.record,
-    this.code,
-    this.meta,
-    this.requestStatus,
-    this.message,
-  });
-
-  factory EServicesDetailsResponseModel.fromJson(Map<String, dynamic> json) => EServicesDetailsResponseModel(
-    status: json["status"],
-    record: json["record"] == null ? null : Record.fromJson(json["record"]),
-    code: json["code"],
-    meta: json["meta"],
-    requestStatus: json["request_status"],
-    message: json["message"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "record": record?.toJson(),
-    "code": code,
-    "meta": meta,
-    "request_status": requestStatus,
-    "message": message,
-  };
-}
-
-class Record {
+class ServiceDetailsModel {
   int? id;
   String? reference;
   int? companyId;
   int? associationId;
   int? unitId;
-  dynamic accountId;
-  String? incomeType;
+  int? accountId;
+  dynamic incomeType;
   int? isCommunityDetailHidden;
   int? assigneeId;
   String? applicationType;
@@ -78,11 +36,11 @@ class Record {
   dynamic description;
   dynamic deletedAt;
   String? status;
-  String? securityNumber;
+  dynamic securityNumber;
   int? allSecurityPersonnel;
-  dynamic payableAmount;
-  dynamic securityDeposit;
-  dynamic paymentStatus;
+  int? payableAmount;
+  int? securityDeposit;
+  String? paymentStatus;
   dynamic paymentRef;
   int? documentsStatus;
   int? securityDepositRefundStatus;
@@ -92,13 +50,13 @@ class Record {
   dynamic tradeLicenseExpiry;
   String? titleDeed;
   String? titleDeedNumber;
-  dynamic tenancyContract;
-  dynamic tenancyContractExpiry;
+  String? tenancyContract;
+  DateTime? tenancyContractExpiry;
   dynamic notifyStatus;
-  dynamic serviceChargeStatus;
+  int? serviceChargeStatus;
   dynamic convenienceFee;
   dynamic convenienceFeeAccount;
-  String? approvalNote;
+  dynamic approvalNote;
   dynamic rejectionNote;
   dynamic holdNote;
   dynamic cancelNote;
@@ -110,7 +68,7 @@ class Record {
   dynamic nocNote;
   dynamic refundNote;
   dynamic paymentNote;
-  String? terms;
+  dynamic terms;
   dynamic rating;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -124,9 +82,10 @@ class Record {
   String? profileImageUrl;
   Application? application;
   List<StatusHistory>? statusHistory;
-  Unit? unit;
+  UnitModel? unit;
+  List<Document>? documents;
 
-  Record({
+  ServiceDetailsModel({
     this.id,
     this.reference,
     this.companyId,
@@ -205,9 +164,10 @@ class Record {
     this.application,
     this.statusHistory,
     this.unit,
+    this.documents,
   });
 
-  factory Record.fromJson(Map<String, dynamic> json) => Record(
+  factory ServiceDetailsModel.fromJson(Map<String, dynamic> json) => ServiceDetailsModel(
     id: json["id"],
     reference: json["reference"],
     companyId: json["company_id"],
@@ -254,7 +214,7 @@ class Record {
     titleDeed: json["title_deed"],
     titleDeedNumber: json["title_deed_number"],
     tenancyContract: json["tenancy_contract"],
-    tenancyContractExpiry: json["tenancy_contract_expiry"],
+    tenancyContractExpiry: json["tenancy_contract_expiry"] == null ? null : DateTime.parse(json["tenancy_contract_expiry"]),
     notifyStatus: json["notify_status"],
     serviceChargeStatus: json["service_charge_status"],
     convenienceFee: json["convenience_fee"],
@@ -285,7 +245,8 @@ class Record {
     profileImageUrl: json["profile_image_url"],
     application: json["application"] == null ? null : Application.fromJson(json["application"]),
     statusHistory: json["status_history"] == null ? [] : List<StatusHistory>.from(json["status_history"]!.map((x) => StatusHistory.fromJson(x))),
-    unit: json["unit"] == null ? null : Unit.fromJson(json["unit"]),
+    unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
+    documents: json["documents"] == null ? [] : List<Document>.from(json["documents"]!.map((x) => Document.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -335,7 +296,7 @@ class Record {
     "title_deed": titleDeed,
     "title_deed_number": titleDeedNumber,
     "tenancy_contract": tenancyContract,
-    "tenancy_contract_expiry": tenancyContractExpiry,
+    "tenancy_contract_expiry": "${tenancyContractExpiry!.year.toString().padLeft(4, '0')}-${tenancyContractExpiry!.month.toString().padLeft(2, '0')}-${tenancyContractExpiry!.day.toString().padLeft(2, '0')}",
     "notify_status": notifyStatus,
     "service_charge_status": serviceChargeStatus,
     "convenience_fee": convenienceFee,
@@ -367,238 +328,6 @@ class Record {
     "application": application?.toJson(),
     "status_history": statusHistory == null ? [] : List<dynamic>.from(statusHistory!.map((x) => x.toJson())),
     "unit": unit?.toJson(),
-  };
-}
-
-class Application {
-  int? id;
-  dynamic clientOldCard;
-  dynamic clientNewCardNumber;
-  String? clientVehicleNumber;
-  String? serviceChargeStatus;
-  String? requesterType;
-  dynamic securityNumber;
-  DateTime? acrDate;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic deletedAt;
-  List<DeviceInfo>? deviceInfo;
-
-  Application({
-    this.id,
-    this.clientOldCard,
-    this.clientNewCardNumber,
-    this.clientVehicleNumber,
-    this.serviceChargeStatus,
-    this.requesterType,
-    this.securityNumber,
-    this.acrDate,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-    this.deviceInfo,
-  });
-
-  factory Application.fromJson(Map<String, dynamic> json) => Application(
-    id: json["id"],
-    clientOldCard: json["client_old_card"],
-    clientNewCardNumber: json["client_new_card_number"],
-    clientVehicleNumber: json["client_vehicle_number"],
-    serviceChargeStatus: json["service_charge_status"],
-    requesterType: json["requester_type"],
-    securityNumber: json["security_number"],
-    acrDate: json["acr_date"] == null ? null : DateTime.parse(json["acr_date"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    deletedAt: json["deleted_at"],
-    deviceInfo: json["device_info"] == null ? [] : List<DeviceInfo>.from(json["device_info"]!.map((x) => DeviceInfo.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "client_old_card": clientOldCard,
-    "client_new_card_number": clientNewCardNumber,
-    "client_vehicle_number": clientVehicleNumber,
-    "service_charge_status": serviceChargeStatus,
-    "requester_type": requesterType,
-    "security_number": securityNumber,
-    "acr_date": acrDate?.toIso8601String(),
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "deleted_at": deletedAt,
-    "device_info": deviceInfo == null ? [] : List<dynamic>.from(deviceInfo!.map((x) => x.toJson())),
-  };
-}
-
-class DeviceInfo {
-  int? id;
-  int? applicationAccessDeviceId;
-  String? deviceType;
-  int? deviceCount;
-  int? cost;
-  int? accountId;
-  String? incomeType;
-  dynamic convenienceFee;
-  dynamic convenienceFeeAccount;
-  int? isCommunityDetailHidden;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic deletedAt;
-
-  DeviceInfo({
-    this.id,
-    this.applicationAccessDeviceId,
-    this.deviceType,
-    this.deviceCount,
-    this.cost,
-    this.accountId,
-    this.incomeType,
-    this.convenienceFee,
-    this.convenienceFeeAccount,
-    this.isCommunityDetailHidden,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-  });
-
-  factory DeviceInfo.fromJson(Map<String, dynamic> json) => DeviceInfo(
-    id: json["id"],
-    applicationAccessDeviceId: json["application_access_device_id"],
-    deviceType: json["device_type"],
-    deviceCount: json["device_count"],
-    cost: json["cost"],
-    accountId: json["account_id"],
-    incomeType: json["income_type"],
-    convenienceFee: json["convenience_fee"],
-    convenienceFeeAccount: json["convenience_fee_account"],
-    isCommunityDetailHidden: json["is_community_detail_hidden"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    deletedAt: json["deleted_at"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "application_access_device_id": applicationAccessDeviceId,
-    "device_type": deviceType,
-    "device_count": deviceCount,
-    "cost": cost,
-    "account_id": accountId,
-    "income_type": incomeType,
-    "convenience_fee": convenienceFee,
-    "convenience_fee_account": convenienceFeeAccount,
-    "is_community_detail_hidden": isCommunityDetailHidden,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "deleted_at": deletedAt,
-  };
-}
-
-class StatusHistory {
-  int? id;
-  int? userId;
-  dynamic type;
-  int? applicationId;
-  dynamic reference;
-  dynamic refferedType;
-  dynamic refferedId;
-  String? status;
-  String? note;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic deletedAt;
-  int? userTo;
-  int? userFrom;
-  User? user;
-
-  StatusHistory({
-    this.id,
-    this.userId,
-    this.type,
-    this.applicationId,
-    this.reference,
-    this.refferedType,
-    this.refferedId,
-    this.status,
-    this.note,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-    this.userTo,
-    this.userFrom,
-    this.user,
-  });
-
-  factory StatusHistory.fromJson(Map<String, dynamic> json) => StatusHistory(
-    id: json["id"],
-    userId: json["user_id"],
-    type: json["type"],
-    applicationId: json["application_id"],
-    reference: json["reference"],
-    refferedType: json["reffered_type"],
-    refferedId: json["reffered_id"],
-    status: json["status"],
-    note: json["note"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    deletedAt: json["deleted_at"],
-    userTo: json["user_to"],
-    userFrom: json["user_from"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "type": type,
-    "application_id": applicationId,
-    "reference": reference,
-    "reffered_type": refferedType,
-    "reffered_id": refferedId,
-    "status": status,
-    "note": note,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "deleted_at": deletedAt,
-    "user_to": userTo,
-    "user_from": userFrom,
-    "user": user?.toJson(),
-  };
-}
-
-
-class Unit {
-  int? id;
-  String? unitNumber;
-  dynamic residentId;
-  bool? isLegalNoticeActive;
-  bool? isRdcActive;
-  String? titleDeedUrl;
-
-  Unit({
-    this.id,
-    this.unitNumber,
-    this.residentId,
-    this.isLegalNoticeActive,
-    this.isRdcActive,
-    this.titleDeedUrl,
-  });
-
-  factory Unit.fromJson(Map<String, dynamic> json) => Unit(
-    id: json["id"],
-    unitNumber: json["unit_number"],
-    residentId: json["resident_id"],
-    isLegalNoticeActive: json["is_legal_notice_active"],
-    isRdcActive: json["is_rdc_active"],
-    titleDeedUrl: json["title_deed_url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "unit_number": unitNumber,
-    "resident_id": residentId,
-    "is_legal_notice_active": isLegalNoticeActive,
-    "is_rdc_active": isRdcActive,
-    "title_deed_url": titleDeedUrl,
+    "documents": documents == null ? [] : List<dynamic>.from(documents!.map((x) => x.toJson())),
   };
 }

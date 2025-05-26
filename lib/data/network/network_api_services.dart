@@ -33,13 +33,14 @@ class NetworkApiServices implements BaseApiServices {
 
   @override
   Future getAuthGetApiResponse(String url) async {
+    final headers = {
+      'Accept': 'application/json, text/plain, */*',
+      'Authorization': 'Bearer ${Globals().token ?? ""}',
+      'User-Agent': 'Windows',
+    };
     dynamic responseJson;
     try {
-      final response = await http.get(Uri.parse(url), headers: {
-        'accept': "application/json",
-        'Content-Type': "application/json",
-        'authorization': 'Bearer ${Globals().token ?? ""}'
-      }).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
+      final response = await http.get(Uri.parse(url), headers: headers).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
         throw FetchDataException(
             "Connection timeout, please check your internet");
       });
@@ -61,6 +62,7 @@ class NetworkApiServices implements BaseApiServices {
               headers: {
                 'accept': "application/json",
                 'Content-Type': "application/json",
+                'Authorization': 'Bearer ${Globals().token ?? ""}',
               },
               body: jsonEncode(data))
           .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
@@ -69,6 +71,7 @@ class NetworkApiServices implements BaseApiServices {
       });
       debugPrint('code: ${response.statusCode}\nbody: ${response.body}');
       responseJson = returnResponse(response);
+      print('add Log ??? ${response.body} status  ${response.statusCode}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     } catch (e) {
@@ -86,8 +89,7 @@ class NetworkApiServices implements BaseApiServices {
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
-          'authorization': 'Bearer '
-          // ${Globals().token}
+          'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
       )
@@ -98,6 +100,7 @@ class NetworkApiServices implements BaseApiServices {
       debugPrint(
           'status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
+      print('response::: ${response.body}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     }
@@ -113,8 +116,7 @@ class NetworkApiServices implements BaseApiServices {
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
-          'authorization': 'Bearer '
-          //${Globals().token}
+          'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
       )
@@ -141,8 +143,7 @@ class NetworkApiServices implements BaseApiServices {
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
-          'authorization': 'Bearer '
-          //${Globals().token}
+          'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
       ).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
@@ -216,10 +217,11 @@ class NetworkApiServices implements BaseApiServices {
       }
       request.files.addAll(files);
       Map<String, String> headers = {
-        "content-type": "multipart/form-data",
+        // "content-type": "multipart/form-data",
+        "content-type": "application/json",
         'Accept': 'application/json',
-        "Authorization": "Bearer "
-//${Globals().token}
+        "Authorization": 'Bearer ${Globals().token}'
+
       };
       request.headers.addAll(headers);
       var streamedResponse = await request
@@ -229,6 +231,7 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
+      print('response::: ${response.body}');
       responseJson = returnResponse(response);
 
       return responseJson;
@@ -255,8 +258,7 @@ class NetworkApiServices implements BaseApiServices {
       Map<String, String> headers = {
         "content-type": "multipart/form-data",
         'Accept': 'application/json',
-        "Authorization": "Bearer "
-        //${Globals().token}
+        "Authorization": 'Bearer ${Globals().token}'
       };
       request.headers.addAll(headers);
       var streamedResponse = await request
@@ -275,6 +277,7 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   dynamic returnResponse(http.Response response) {
+    print('ress:: ${response.body}');
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
     // print('body:: $body');

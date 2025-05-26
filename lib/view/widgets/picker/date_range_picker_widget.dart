@@ -41,16 +41,16 @@ class _CustomDateRangePickerWidgetState
                 ? null
                 : (DateTimeRange(
                 start: DateTime.parse(
-                    selectedDate?.split("/").first ?? "--"),
+                    selectedDate?.split("-").first ?? "--"),
                 end: DateTime.parse(
-                    selectedDate?.split("/").last ?? "--"))),
+                    selectedDate?.split("-").last ?? "--"))),
             firstDate: widget.firstDate?? DateTime(DateTime.now().year-100, 01, 01),
             lastDate: widget.lastDate ?? DateTime((DateTime.now().year + 100), 01, 01))
             .then((value) {
           if (value == null) return;
           setState(() {
             selectedDate =
-            "${DateFormat("yyyy-MM-dd").format(value.start)}/${DateFormat("yyyy-MM-dd").format(value.end)}";
+            "${DateFormat("yyyy-MM-dd").format(value.start)} - ${DateFormat("yyyy-MM-dd").format(value.end)}";
           });
           widget.onChangeDate?.call(selectedDate);
         });

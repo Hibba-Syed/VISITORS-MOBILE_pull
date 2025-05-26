@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
+import 'package:visitors/bloc/visitor_pass/visitor_pass_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
+
+import '../../../../model/unit/unit_model.dart';
+import '../../../widgets/loader/loader_widget.dart';
 
 class VisitorPassesFilterBottomSheet extends StatefulWidget {
   const VisitorPassesFilterBottomSheet({super.key});
@@ -15,7 +20,6 @@ class VisitorPassesFilterBottomSheet extends StatefulWidget {
 }
 
 class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBottomSheet> {
-  String? selectedUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -41,20 +45,39 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
-                SingleSelectedDropdownWidget<String>(
-                    hint: "Units",
-                    fillColor: AppColors.white,
-                    selectedItem: selectedUnit,
-                    itemAsString: (type) => type,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: ['1','2','3'],
-                    onChanged: (value) {
-                      selectedUnit = value;
-                    }),
+                BlocBuilder<VisitorPassCubit, VisitorPassState>(
+                  builder: (context, state) {
+                    if (state.isUnitLoading) {
+                      return LoaderWidget();
+                    }
+
+                    return SingleSelectedDropdownWidget<UnitModel>(
+                        hint: "Unit",
+                        fillColor: AppColors.white,
+                        selectedItem:
+                        context.watch<VisitorPassCubit>().state.selectedUnit,
+                        itemAsString: (unit) => unit.unitNumber ?? "",
+                        compareFn: (unit, item) => unit.id == item.id,
+                        items: state.units ?? [],
+                        onChanged: (value) {
+                          context
+                              .read<VisitorPassCubit>()
+                              .onChangeSelectedUnit(value!);
+                          print('unit$value');
+                        });
+                  },
+                ),
                 const Gap(30),
                 FilterButtonWidget(
-                  applyOnPressed: () {  },
-                  clearOnPressed: () {  },),
+                  applyOnPressed: () {
+                    context.read<VisitorPassCubit>().getVisitorPass();
+                    Navigator.pop(context);
+                  },
+                  clearOnPressed: () {
+                    context.read<VisitorPassCubit>().clearFilterData();
+                    Navigator.pop(context);
+                    context.read<VisitorPassCubit>().getVisitorPass();
+                  },),
               ],
             )),
       ),
