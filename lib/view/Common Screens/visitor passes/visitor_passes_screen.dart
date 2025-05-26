@@ -10,7 +10,7 @@ import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
 import '../../../bloc/check_ins/check_ins_cubit.dart';
-import '../../../bloc/visitor_pass/visitor_pass_cubit.dart';
+import '../../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../../model/visitor_passes/visitor_pass_model.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
@@ -35,7 +35,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<VisitorPassCubit>().getMoreVisitorPass(
+        context.read<VisitorPassCubit>().getMoreVisitorPasses(
         );
       }
     });
@@ -66,13 +66,13 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                              context
                                 .read<VisitorPassCubit>()
                                 .onChangeSearchKeyWord('');
-                            context.read<VisitorPassCubit>().getVisitorPass();
+                            context.read<VisitorPassCubit>().getVisitorPasses();
                           },
                           onFieldSubmitted: (value) {
                             context
                                 .read<VisitorPassCubit>()
                                 .onChangeSearchKeyWord(value);
-                            context.read<VisitorPassCubit>().getVisitorPass();
+                            context.read<VisitorPassCubit>().getVisitorPasses();
                           }
                       )),
                       const Gap(6),
@@ -90,10 +90,10 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                 const Gap(10),
                 Expanded(
                   child: state.isLoading ? LoaderWidget() :
-                      state.visitorPassModel?.isNotEmpty ?? true ?
+                      state.visitorPasses?.isNotEmpty ?? true ?
                   RefreshIndicator(
                     onRefresh: ()async{
-                      context.read<VisitorPassCubit>().getVisitorPass();
+                      context.read<VisitorPassCubit>().getVisitorPasses();
                     },
                     child: ListView.separated(
                       controller: _scrollController,
@@ -101,9 +101,9 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                       padding: const EdgeInsets.only(bottom: 10),
                       shrinkWrap: true,
                       primary: false,
-                      itemCount: state.visitorPassModel?.length?? 0,
+                      itemCount: state.visitorPasses?.length?? 0,
                       itemBuilder: (context, index) {
-                        VisitorPassModel? visitorPass = state.visitorPassModel?[index];
+                        VisitorPasses? visitorPass = state.visitorPasses?[index];
                        // print('visitorPass${visitorPass?.activeCheckInsCount}');
                         return VisitorPassesCardWidget(
                           unit: visitorPass?.ownerUnit?.unit?.unitNumber?.toString() ?? "",

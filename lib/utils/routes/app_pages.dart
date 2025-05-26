@@ -24,7 +24,7 @@ import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
-import '../../bloc/visitor_pass/visitor_pass_cubit.dart';
+import '../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../bloc/work_order/work_order_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
@@ -103,7 +103,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.checkInDetailsScreen,
-      page: const CheckInDetailsScreen(),
+      page:  CheckInDetailsScreen(),
       bloc: BlocProvider(
         create: (context) => CheckInsDetailsCubit(),
       ),
@@ -133,7 +133,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.mobileDashboardScreen,
-      page: const MobileDashboardScreen(),
+      page:  MobileDashboardScreen(),
     ),
     PageEntity(
       route: AppRoutes.tabletDashboardScreen,

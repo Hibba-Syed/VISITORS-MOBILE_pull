@@ -83,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     children: [
                       Align(
                         alignment: Alignment.center,
-                        child: Text('Nice to see you again',
+                        child: Text('Nice to see you',
                           style: AppUtils.isTablet(context) ? AppTextStyles.style25white600 : AppTextStyles.style20white600 ),
                       ),
                       Align(

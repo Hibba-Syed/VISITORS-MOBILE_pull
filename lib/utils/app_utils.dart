@@ -102,11 +102,7 @@ class AppUtils {
     TypeModel(label: 'Visitor Pass', value: Strings.keyVisitorPass),
   ];
 
-  static  List<String> rangList = [
-    'Last 30 Days',
-    'Last 60 Days',
-    'Last 90 Days'
-  ];
+
   static String? getRequestName(String? applicationType) {
     String? requestName;
     if (applicationType == "AD") {

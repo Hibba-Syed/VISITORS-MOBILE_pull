@@ -7,13 +7,15 @@ class DashboardState {
   final bool? isServicesLoading;
   final bool? isWorkOrderLoading;
   final bool? isVisitorPassLoading;
+  final bool? isCheckOutVisitor;
   ProfileRecord? profileRecord;
   final int page;
   List<CheckInModel>? checkInsModel;
   List<ServiceModel>? serviceModel;
   List<WorkOrderModel>? workOrderModel;
-  List<CheckOutModel>? checkOutModel;
-  List<VisitorPassModel>? visitorPassModel;
+  List<CheckOutVisitors>? checkOutModel;
+  List<VisitorPasses>? visitorPassModel;
+  List<CheckOutVisitors>? checkOutVisitors;
   CountModel? countModel;
   DashboardState({
     this.isLoading = false,
@@ -30,6 +32,8 @@ class DashboardState {
     this.workOrderModel,
     this.checkOutModel,
     this.visitorPassModel,
+    this.isCheckOutVisitor,
+    this.checkOutVisitors,
   });
   DashboardState copyWith({
     bool? isLoading,
@@ -38,13 +42,15 @@ class DashboardState {
     bool? isServicesLoading,
     bool? isWorkOrderLoading,
     bool? isVisitorPassLoading,
+    bool? isCheckOutVisitor,
     ProfileRecord? profileRecord,
     int? page,
     List<CheckInModel>? checkInsModel,
     List<ServiceModel>? serviceModel,
     List<WorkOrderModel>? workOrderModel,
-    List<CheckOutModel>? checkOutModel,
-    List<VisitorPassModel>? visitorPassModel,
+    List<CheckOutVisitors>? checkOutModel,
+    List<VisitorPasses>? visitorPassModel,
+    List<CheckOutVisitors>? checkOutVisitors,
     CountModel? countModel,
   }) {
     return DashboardState(
@@ -61,7 +67,9 @@ class DashboardState {
         workOrderModel: workOrderModel ?? this.workOrderModel,
         checkOutModel: checkOutModel ?? this.checkOutModel,
         visitorPassModel: visitorPassModel ?? visitorPassModel,
-        isVisitorPassLoading: isVisitorPassLoading ?? isVisitorPassLoading
+        isVisitorPassLoading: isVisitorPassLoading ?? isVisitorPassLoading,
+        isCheckOutVisitor: isCheckOutVisitor ?? isCheckOutVisitor,
+        checkOutVisitors: checkOutVisitors ?? checkOutVisitors,
     );
   }
 }

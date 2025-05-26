@@ -5,6 +5,7 @@ class CheckInsState {
   final bool isUnitLoading;
   final bool isVendorLoading;
   final bool isCheckOutAllLoading;
+  final bool isCheckOutVisitor;
   final bool loadMore;
   final int page;
   final int? serviceableId;
@@ -17,11 +18,13 @@ class CheckInsState {
   final String? dateRang;
   final String? selectedRang;
   final String? searchKeyword;
+  List<CheckOutVisitors>? checkOutVisitors;
   CheckInsState({
     this.isLoading = false,
     this.loadMore = false,
     this.isUnitLoading = false,
     this.isVendorLoading = false,
+    this.isCheckOutVisitor = false,
     this.page = 1,
     this.checkInModel,
     this.units,
@@ -34,6 +37,7 @@ class CheckInsState {
     this.selectedRang,
     this.searchKeyword,
     this.serviceableId,
+    this.checkOutVisitors,
   });
   CheckInsState copyWith({
     bool? isLoading,
@@ -41,6 +45,7 @@ class CheckInsState {
     bool? isVendorLoading,
     bool? isCheckOutAllLoading,
     bool? loadMore,
+    bool? isCheckOutVisitor,
     int? page,
     List<CheckInModel>? checkInModel,
     List<UnitModel>? units,
@@ -52,6 +57,7 @@ class CheckInsState {
      String? selectedRang,
      String? searchKeyword,
      int? serviceableId,
+    List<CheckOutVisitors>? checkOutVisitors,
   }) {
     return CheckInsState(
         isLoading: isLoading ?? this.isLoading,
@@ -69,7 +75,9 @@ class CheckInsState {
         dateRang: dateRang ?? this.dateRang,
         selectedRang: selectedRang ?? this.selectedRang,
         searchKeyword: searchKeyword ?? this.searchKeyword,
-        serviceableId: serviceableId ?? this.serviceableId
+        serviceableId: serviceableId ?? this.serviceableId,
+        isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
+        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
     );
   }
 }

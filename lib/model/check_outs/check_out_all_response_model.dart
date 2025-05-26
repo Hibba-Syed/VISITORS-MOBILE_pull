@@ -1,24 +1,24 @@
 // To parse this JSON data, do
 //
-//     final visitorPassesResponseModel = visitorPassesResponseModelFromJson(jsonString);
+//     final checkOutsResponseModel = checkOutsResponseModelFromJson(jsonString);
 
 import 'dart:convert';
+import '../check_out/check_out_all_model.dart';
 
-import 'package:visitors/model/visitor_passes/visitor_pass_model.dart';
 
-VisitorPassResponseModel visitorPassesResponseModelFromJson(String str) => VisitorPassResponseModel.fromJson(json.decode(str));
+CheckOutsAllResponseModel checkOutsResponseModelFromJson(String str) => CheckOutsAllResponseModel.fromJson(json.decode(str));
 
-String visitorPassesResponseModelToJson(VisitorPassResponseModel data) => json.encode(data.toJson());
+String checkOutsResponseModelToJson(CheckOutsAllResponseModel data) => json.encode(data.toJson());
 
-class VisitorPassResponseModel {
+class CheckOutsAllResponseModel {
   String? status;
-  List<VisitorPasses>? record;
+  List<CheckOutAllModel>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
   String? message;
 
-  VisitorPassResponseModel({
+  CheckOutsAllResponseModel({
     this.status,
     this.record,
     this.code,
@@ -27,9 +27,9 @@ class VisitorPassResponseModel {
     this.message,
   });
 
-  factory VisitorPassResponseModel.fromJson(Map<String, dynamic> json) => VisitorPassResponseModel(
+  factory CheckOutsAllResponseModel.fromJson(Map<String, dynamic> json) => CheckOutsAllResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<VisitorPasses>.from(json["record"]!.map((x) => VisitorPasses.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckOutAllModel>.from(json["record"]!.map((x) => CheckOutAllModel.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],
@@ -51,7 +51,7 @@ class Meta {
   int? lastPage;
   int? from;
   int? to;
-  String? limit;
+  int? limit;
   int? total;
   bool? hasMorePages;
   bool? isFirstPage;
@@ -89,6 +89,8 @@ class Meta {
     "is_first_page": isFirstPage,
   };
 }
+
+
 
 
 

@@ -32,13 +32,12 @@ class ActivityLogWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding ?? 10, vertical: verticalPadding ?? 0),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
+      // decoration: BoxDecoration(
+      //   color: AppColors.white,
+      //   borderRadius: BorderRadius.circular(10),
+      // ),
       child: Column(
         children: [
-          const Gap(10),
           TimelineTile(
             alignment: TimelineAlign.values.first,
             isLast: isLast ?? false,

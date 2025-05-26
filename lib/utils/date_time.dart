@@ -13,8 +13,9 @@ class DateTimeUtil {
   }
   static String getFormattedDatesTime(DateTime? inputDateTime) {
     if (inputDateTime != null) {
+      final localDateTime = inputDateTime.toLocal(); // Convert from UTC to local
       String formattedDateString =
-      DateFormat("MMMM dd, yyyy hh:mm a").format(inputDateTime);
+      DateFormat("MMMM dd, yyyy hh:mm a").format(localDateTime);
       return formattedDateString;
     }
     return '--';

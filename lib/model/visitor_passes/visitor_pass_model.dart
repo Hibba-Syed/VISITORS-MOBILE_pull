@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'owner_unit_model.dart';
 
-class VisitorPassModel {
+class VisitorPasses {
   int? id;
   int? companyId;
   int? associationId;
@@ -19,7 +19,7 @@ class VisitorPassModel {
   OwnerUnit? ownerUnit;
   int? activeCheckInsCount;
 
-  VisitorPassModel({
+  VisitorPasses({
     this.id,
     this.companyId,
     this.associationId,
@@ -37,9 +37,9 @@ class VisitorPassModel {
     this.activeCheckInsCount,
   });
 
-  factory VisitorPassModel.fromJson(Map<String, dynamic> json) {
+  factory VisitorPasses.fromJson(Map<String, dynamic> json) {
   log("Visitor Passes response::::: ${json.toString()}");
-    return VisitorPassModel(
+    return VisitorPasses(
   id: json["id"],
   companyId: json["company_id"],
   associationId: json["association_id"],

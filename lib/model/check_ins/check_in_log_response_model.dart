@@ -12,7 +12,7 @@ String checkInLogModelToJson(CheckInLogResponseModel data) => json.encode(data.t
 
 class CheckInLogResponseModel {
   String? status;
-  List<CheckInLogModel>? record;
+  List<CheckInLogs>? record;
   int? code;
   dynamic meta;
   bool? requestStatus;
@@ -29,7 +29,7 @@ class CheckInLogResponseModel {
 
   factory CheckInLogResponseModel.fromJson(Map<String, dynamic> json) => CheckInLogResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<CheckInLogModel>.from(json["record"]!.map((x) => CheckInLogModel.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckInLogs>.from(json["record"]!.map((x) => CheckInLogs.fromJson(x))),
     code: json["code"],
     meta: json["meta"],
     requestStatus: json["request_status"],

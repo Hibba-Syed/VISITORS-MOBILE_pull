@@ -88,7 +88,7 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                   Navigator.pop(context);
                 },
                 clearOnPressed: () {
-                  context.read<ServiceCubit>().clearFilterData();
+                  context.read<ServiceCubit>().resetFilterData();
                   Navigator.pop(context);
                   context.read<ServiceCubit>().getServices();
                 },

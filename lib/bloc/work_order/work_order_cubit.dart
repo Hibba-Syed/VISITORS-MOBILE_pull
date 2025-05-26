@@ -30,7 +30,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
       selectedType: type,
     ));
   }
-  clearFilterData() {
+  resetFilterData() {
     emit(WorkOrderState(
       workOrderModel: state.workOrderModel,
       isLoading: state.isLoading,

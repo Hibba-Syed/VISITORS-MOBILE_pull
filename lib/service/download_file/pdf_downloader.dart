@@ -65,13 +65,21 @@ class FileDownloader {
 
   /// Get the download URL based on the file type
   static Uri _getDownloadUrl() {
-    final filter = {"date_range":"2025-04-23 - 2025-05-23","export":true,"timezone":"Asia/Karachi"};
-    print("FILTER:::: ${filter.toString()}");
-    print(EncryptionHelper.encryptPayload(filter));
-    var url = Uri.parse(
-       '${ApiUrl.checkOuts}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}');
+    final dateRange = AppUtils.getDateRangeStringFromLabel('Last 30 Days');
+    final filter = {
+      "date_range": dateRange,
+      "export": true,
+      "timezone": "Asia/Karachi"
+    };
+    // print("FILTER:::: ${filter.toString()}");
+    // print(EncryptionHelper.encryptPayload(filter));
+
+    final encryptedPayload = Uri.encodeComponent(EncryptionHelper.encryptPayload(filter));
+    final url = Uri.parse('${ApiUrl.checkOuts}?xyz=$encryptedPayload');
+
     return url;
   }
+
 
   /// Get authentication token
   static String _getAuthToken(BuildContext context) {

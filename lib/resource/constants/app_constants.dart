@@ -15,4 +15,11 @@ class AppConstants {
 
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
+
+  static  const List<String> rangList = [
+    'Last 30 Days',
+    'Last 60 Days',
+    'Last 90 Days'
+  ];
+
 }

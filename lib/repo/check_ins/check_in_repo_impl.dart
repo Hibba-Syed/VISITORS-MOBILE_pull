@@ -5,6 +5,7 @@ import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/check_ins/check_in_log_response_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
+import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_in_repo.dart';
 
@@ -35,7 +36,7 @@ class CheckInRepoImpl implements CheckInRepo {
   }
 
   @override
-  Future<CheckInLogResponseModel?> getCheckInLogs({required int? id}) async {
+  Future<CheckInLogResponseModel?> getCheckInDetailsLogs({required int? id}) async {
     try {
       String url = '${ApiUrl.checkInLogs}/$id';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
@@ -55,4 +56,20 @@ class CheckInRepoImpl implements CheckInRepo {
       rethrow;
     }
   }
+  @override
+  Future<CheckOutVisitorResponseModel?> checkOutVisitors({
+    required int? id,
+    required Map<String, dynamic> data,
+  }) async {
+    print('checkout visitor^^^: ${ApiUrl.checkOutVisitor}/$id');
+    try {
+      String url = '${ApiUrl.checkOutVisitor}/$id';
+      dynamic response =
+      await _apiService.getAuthPutApiResponse(url, data: data);
+      return CheckOutVisitorResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

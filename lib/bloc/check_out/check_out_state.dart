@@ -8,7 +8,7 @@ class CheckOutState {
   final bool loadMore;
   final bool isCheckOutLoading;
   final int page;
-  List<CheckOutModel>? checkOutModel;
+  List<CheckOutVisitors>? checkOutVisitors;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final String? dateRang;
@@ -23,7 +23,7 @@ class CheckOutState {
     this.isUnitLoading = false,
     this.isVendorLoading = false,
     this.page = 1,
-    this.checkOutModel,
+    this.checkOutVisitors,
     this.units,
     this.vendors,
     this.isCheckOutAllLoading = false,
@@ -43,7 +43,7 @@ class CheckOutState {
     bool? isCheckOutLoading,
     bool? loadMore,
     int? page,
-    List<CheckOutModel>? checkOutModel,
+    List<CheckOutVisitors>? checkOutVisitors,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
     String? dateRang,
@@ -64,7 +64,7 @@ class CheckOutState {
         dateRang: dateRang ?? this.dateRang,
         vendors: vendors ?? this.vendors,
         units: units ?? this.units,
-        checkOutModel: checkOutModel ?? this.checkOutModel,
+        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
         selectedRang: selectedRang ?? this.selectedRang,
         selectedType: selectedType ?? this.selectedType,
         selectedUnit: selectedUnit ?? this.selectedUnit,

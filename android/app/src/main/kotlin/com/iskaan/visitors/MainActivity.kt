@@ -17,8 +17,9 @@ import android.database.Cursor
 import java.io.File
 import io.flutter.embedding.android.FlutterFragmentActivity
 
-// adding this for biomatric
+// FlutterFragmentActivity added for biomatric
 class MainActivity: FlutterFragmentActivity() {
+    // adding CHANNEL for file download
     private val CHANNEL = "com.iskaan.visitors/openFile"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {

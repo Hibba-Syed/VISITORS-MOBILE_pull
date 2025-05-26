@@ -82,7 +82,7 @@ class _WorkOrderFilterBottomSheetState
                   Navigator.pop(context);
                 },
                 clearOnPressed: () {
-                  context.read<WorkOrderCubit>().clearFilterData();
+                  context.read<WorkOrderCubit>().resetFilterData();
                   Navigator.pop(context);
                   context.read<WorkOrderCubit>().getWorkOrder();
                 },

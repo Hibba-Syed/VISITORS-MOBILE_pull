@@ -1,32 +1,28 @@
-import '../unit/unit_model.dart';
-import '../visitor_model.dart';
-
-class CheckOutVisitors {
+class CheckOutModel {
   int? id;
   int? associationId;
-  int? unitId;
+  dynamic unitId;
   dynamic vendorId;
   int? visitorId;
-  int? serviceableId;
-  String? serviceableType;
+  dynamic serviceableId;
+  dynamic serviceableType;
   String? checkinGate;
   DateTime? checkinTime;
   String? checkoutGate;
   DateTime? checkoutTime;
   String? type;
-  String? purpose;
+  dynamic purpose;
   String? visitorCount;
   dynamic idExpiry;
   String? entryCardNumber;
   String? name;
   String? phone;
   String? email;
-  dynamic description;
-  UnitModel? unit;
-  Visitor? visitor;
-  dynamic vendor;
+  String? description;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-  CheckOutVisitors({
+  CheckOutModel({
     this.id,
     this.associationId,
     this.unitId,
@@ -47,12 +43,11 @@ class CheckOutVisitors {
     this.phone,
     this.email,
     this.description,
-    this.unit,
-    this.visitor,
-    this.vendor,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  factory CheckOutVisitors.fromJson(Map<String, dynamic> json) => CheckOutVisitors(
+  factory CheckOutModel.fromJson(Map<String, dynamic> json) => CheckOutModel(
     id: json["id"],
     associationId: json["association_id"],
     unitId: json["unit_id"],
@@ -66,16 +61,15 @@ class CheckOutVisitors {
     checkoutTime: json["checkout_time"] == null ? null : DateTime.parse(json["checkout_time"]),
     type: json["type"],
     purpose: json["purpose"],
-    visitorCount: json["visitor_count"].toString(),
+    visitorCount: json["visitor_count"],
     idExpiry: json["id_expiry"],
     entryCardNumber: json["entry_card_number"],
     name: json["name"],
     phone: json["phone"],
     email: json["email"],
     description: json["description"],
-    unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
-    visitor: json["visitor"] == null ? null : Visitor.fromJson(json["visitor"]),
-    vendor: json["vendor"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -99,8 +93,7 @@ class CheckOutVisitors {
     "phone": phone,
     "email": email,
     "description": description,
-    "unit": unit?.toJson(),
-    "visitor": visitor?.toJson(),
-    "vendor": vendor,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
   };
 }

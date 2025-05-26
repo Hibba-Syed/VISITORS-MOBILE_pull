@@ -159,7 +159,7 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                                 msg: "Please type note first.");
                             return false;
                           }
-                          print('add##${noteController.text}');
+                          // print('add##${noteController.text}');
                           final result = await context
                               .read<WorkOrderDetailsCubit>()
                               .addWorkOrderLog(

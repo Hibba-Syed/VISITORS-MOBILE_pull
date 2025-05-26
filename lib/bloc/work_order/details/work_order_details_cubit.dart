@@ -40,42 +40,6 @@ class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
     emit(state.copyWith(isLoading: false));
     return null;
   }
-  ///
-  //  Future<void> addWorkOrderLog(
-  //   BuildContext context, {
-  //   required Map<String, dynamic> data,
-  // }) async {
-  //   emit(state.copyWith(
-  //     isAddLogLoading: true,
-  //   ));
-  //   try {
-  //
-  //     AddLogWorkOrderResponseModel? response = await _workOrderRFPRepo
-  //         .addWorkOrderLog(
-  //       data: data,
-  //     ).onError(
-  //       (error, stackTrace) {
-  //         emit(state.copyWith(isAddLogLoading: false));
-  //         Fluttertoast.showToast(
-  //           msg: error.toString(),
-  //         );
-  //         throw error!;
-  //       },
-  //     );
-  //     emit(state.copyWith(isAddLogLoading: false));
-  //     if (response != null || response?.status == 'success') {
-  //       Fluttertoast.showToast(msg: 'log added successfully');
-  //       Navigator.pop(context);
-  //     } else {
-  //       Fluttertoast.showToast(
-  //           msg: 'Something went wrong while adding log ');
-  //     }
-  //   } catch (e) {
-  //     emit(state.copyWith(isAddLogLoading: false));
-  //     Fluttertoast.showToast(msg: e.toString());
-  //     rethrow;
-  //   }
-  // }
   Future<bool> addWorkOrderLog(
       BuildContext context, {
         required Map<String, dynamic> data,

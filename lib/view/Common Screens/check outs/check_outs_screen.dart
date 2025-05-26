@@ -96,7 +96,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                     child:
                     state.isCheckOutLoading
                         ? const LoaderWidget()
-                        : state.checkOutModel?.isNotEmpty ?? false
+                        : state.checkOutVisitors?.isNotEmpty ?? false
                         ?
                     RefreshIndicator(
                       onRefresh: () async{
@@ -107,9 +107,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                         padding: const EdgeInsets.only(bottom: 10),
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: state.checkOutModel?.length ?? 0,
+                        itemCount: state.checkOutVisitors?.length ?? 0,
                         itemBuilder: (context, index) {
-                          CheckOutModel? checkOutModel = state.checkOutModel?[index];
+                          CheckOutVisitors? checkOutModel = state.checkOutVisitors?[index];
                           return CheckOutsCardWidget(
                             visitorCount: checkOutModel?.visitorCount ?? "",
                             typeText: checkOutModel?.unit?.unitNumber ?? "",
