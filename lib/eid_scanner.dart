@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_ml_kit/google_ml_kit.dart' show InputImage, RecognizedText, TextRecognitionScript, TextRecognizer;
 import 'package:intl/intl.dart';
 
 class EIDScanner {
@@ -44,7 +44,7 @@ class EIDScanner {
     String? nationality;
     String? sex;
 
-    listText.forEach((element) {
+    for (var element in listText) {
       if (_isDate(text: element.trim())) {
         eIdDates.add(element.trim());
       } else if (_isName(text: element.trim()) != null) {
@@ -56,7 +56,7 @@ class EIDScanner {
       } else if (_isNumberID(text: element.trim())) {
         number = element.trim();
       }
-    });
+    }
 
     eIdDates = _sortDateList(dates: eIdDates);
 

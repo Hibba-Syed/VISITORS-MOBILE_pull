@@ -1,5 +1,6 @@
 package com.iskaan.visitors
 
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity()
+// adding this for biomatric
+import io.flutter.embedding.android.FlutterFragmentActivity
+class MainActivity: FlutterFragmentActivity() {
+}

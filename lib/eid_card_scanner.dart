@@ -1,9 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:visitors/image_view_screen.dart';
 
 class EmiratesIDScanner extends StatefulWidget {
@@ -86,7 +83,7 @@ class _EmiratesIDScannerState extends State<EmiratesIDScanner> {
       final picture = await _cameraController?.takePicture();
       _capturedImage = picture;
       setState(() {});
-      print('pic::: ${picture?.path}');
+      // print('pic::: ${picture?.path}');
       if (picture != null) {
         analyzeImage(picture.path);
       }
@@ -112,11 +109,11 @@ class _EmiratesIDScannerState extends State<EmiratesIDScanner> {
 
       bool isAligned = false;
 
-      print('objects:: $objects');
+      // print('objects:: $objects');
       for (DetectedObject object in objects) {
         // Check if the detected object matches the ID card's approximate size and position
         final boundingBox = object.boundingBox;
-        print('bounding box:: ${boundingBox.width}, ${boundingBox.height}');
+        // print('bounding box:: ${boundingBox.width}, ${boundingBox.height}');
 
         // Define acceptable size and alignment thresholds
         const double cardWidth = 539;

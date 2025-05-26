@@ -1,0 +1,48 @@
+
+import 'package:visitors/model/service/service_details_response_model.dart';
+import 'package:visitors/model/service/service_response_model.dart';
+import 'package:visitors/repo/services/services_repo.dart';
+
+import '../../data/network/base_api_services.dart';
+import '../../data/network/network_api_services.dart';
+import '../../resource/constants/api_url.dart';
+import '../encrption/encryption_helper.dart';
+
+class ServiceRepoImpl implements ServiceRepo {
+  final BaseApiServices _apiService = NetworkApiServices();
+
+  @override
+  Future<ServiceResponseModel?> getServices({
+    int? page,
+    int? limit,
+    String? keyword,
+    int? unitId,
+    String? serviceType,
+  }) async {
+    try {
+      String url =
+          '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
+          10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}';
+      print('services^^ $url');
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
+      return ServiceResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId}) async {
+    print('service details URL: $serviceId');
+    try {
+      final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
+      print(filter);
+      String url = '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
+
+       print('service details URL: ${Uri.parse(url)}');
+      dynamic response = await _apiService.getAuthGetApiResponse((url));
+      return ServiceDetailsResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }}
+
