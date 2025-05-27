@@ -94,7 +94,7 @@ class MobileDashboardScreen extends StatelessWidget {
               },
             ),
           ];
-          final totalCheckIns = (state.visitorPassModel ?? [])
+          final totalCheckIns = (state.visitorPasses ?? [])
               .map((e) => e.activeCheckInsCount ?? 0)
               .fold<int>(0, (prev, curr) => prev + curr);
 
@@ -361,11 +361,13 @@ class MobileDashboardScreen extends StatelessWidget {
                                     context, AppRoutes.serviceableCheckInsScreen);
                               },
                               detailsOnPressed: () {
-                                context
-                                    .read<ServiceDetailsCubit>()
-                                    .getServiceDetails(serviceId: service?.id);
-                                Navigator.pushNamed(
-                                    context, AppRoutes.servicesDetailsScreen);
+                                context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppUtils.getRouteName(service),
+                                    ));
                               },
                             );
                           },

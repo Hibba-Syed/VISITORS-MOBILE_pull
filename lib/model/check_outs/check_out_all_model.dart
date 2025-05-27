@@ -1,7 +1,7 @@
 import '../unit/unit_model.dart';
 import '../visitor_model.dart';
 
-class CheckOutAllModel {
+class CheckOutAll {
   int? id;
   int? associationId;
   int? unitId;
@@ -26,7 +26,7 @@ class CheckOutAllModel {
   Visitor? visitor;
   dynamic vendor;
 
-  CheckOutAllModel({
+  CheckOutAll({
     this.id,
     this.associationId,
     this.unitId,
@@ -52,7 +52,7 @@ class CheckOutAllModel {
     this.vendor,
   });
 
-  factory CheckOutAllModel.fromJson(Map<String, dynamic> json) => CheckOutAllModel(
+  factory CheckOutAll.fromJson(Map<String, dynamic> json) => CheckOutAll(
     id: json["id"],
     associationId: json["association_id"],
     unitId: json["unit_id"],

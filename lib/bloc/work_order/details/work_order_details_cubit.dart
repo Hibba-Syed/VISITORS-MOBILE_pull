@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/model/work_order/work_order_details_model.dart';
 import 'package:visitors/repo/work_order_rfp/work_order_impl.dart';
@@ -60,7 +61,7 @@ class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
 
       if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: 'Log added successfully');
-        Navigator.pop(context);
+        getWorkOrderDetails(workOrderId: context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.id);
         return true;
       } else {
         Fluttertoast.showToast(

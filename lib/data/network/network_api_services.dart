@@ -71,7 +71,7 @@ class NetworkApiServices implements BaseApiServices {
       });
       debugPrint('code: ${response.statusCode}\nbody: ${response.body}');
       responseJson = returnResponse(response);
-      print('add Log ??? ${response.body} status  ${response.statusCode}');
+      //print('add Log ??? ${response.body} status  ${response.statusCode}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     } catch (e) {

@@ -5,6 +5,7 @@ import 'package:visitors/repo/services/services_repo.dart';
 
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
+import '../../model/service/add_service_log_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import '../encrption/encryption_helper.dart';
 
@@ -44,5 +45,17 @@ class ServiceRepoImpl implements ServiceRepo {
     } catch (e) {
       rethrow;
     }
-  }}
+  }
+  @override
+  Future<AddServiceLogResponseModel?> addServiceLog({required Map<String, dynamic> data}) async {
+    try {
+      print('add log: ${ApiUrl.addServiceLog}');
+      dynamic response =
+      await _apiService.getPostApiResponse(ApiUrl.addServiceLog, data);
+      return AddServiceLogResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
 

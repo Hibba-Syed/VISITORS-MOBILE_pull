@@ -148,10 +148,10 @@ class CheckInDetailsScreen extends StatelessWidget {
                             //physics: AlwaysScrollableScrollPhysics(),
                             shrinkWrap: true,
                             primary: false,
-                            itemCount: state.checkInLogModel?.length ?? 0,
+                            itemCount: state.checkInLogs?.length ?? 0,
                             itemBuilder: (BuildContext context, int index) {
-                              CheckInLogs? checkInLogRecord = state.checkInLogModel?[index];
-                              bool isLast = (state.checkInLogModel?.length ?? 0) - 1 == index;
+                              CheckInLogs? checkInLogRecord = state.checkInLogs?[index];
+                              bool isLast = (state.checkInLogs?.length ?? 0) - 1 == index;
                               return ActivityLogWidget(
                                 isLast: isLast ?  true : false,
                                 status: checkInLogRecord?.status ?? "",

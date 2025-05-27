@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
 import '../../../model/check_ins/check_in_log_response_model.dart';
@@ -32,7 +31,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     );
     if (response != null && response.status == 'success') {
       emit(state.copyWith(isLoading: false));
-       emit(state.copyWith(checkInLogModel: response.record,isLoading: false));
+       emit(state.copyWith(checkInLogs: response.record,isLoading: false));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching check in log details');

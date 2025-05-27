@@ -3,23 +3,23 @@ part of 'check_ins_details_cubit.dart';
 class CheckInsDetailsState {
   final bool isLoading;
   final bool isCheckOutVisitor;
-  List<CheckInLogs>? checkInLogModel;
+  List<CheckInLogs>? checkInLogs;
   List<CheckOutVisitors>? checkOutVisitors;
   CheckInsDetailsState({
     this.isLoading = false,
-    this.checkInLogModel,
+    this.checkInLogs,
     this.isCheckOutVisitor = false,
     this.checkOutVisitors,
   });
   CheckInsDetailsState copyWith({
     bool? isLoading,
     bool? isCheckOutVisitor,
-    List<CheckInLogs>? checkInLogModel,
+    List<CheckInLogs>? checkInLogs,
     List<CheckOutVisitors>? checkOutVisitors,
   }) {
     return CheckInsDetailsState(
       isLoading: isLoading ?? this.isLoading,
-      checkInLogModel: checkInLogModel ?? this.checkInLogModel,
+      checkInLogs: checkInLogs ?? this.checkInLogs,
       isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
       checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
     );

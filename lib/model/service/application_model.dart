@@ -1,5 +1,7 @@
 
 
+import '../deviceInfo_model.dart';
+
 class Application {
   int? id;
   String? contractorName;
@@ -61,6 +63,50 @@ class Application {
   String? finalNocPaymentStatusLbl;
   List<dynamic>? addons;
   List<dynamic>? dewanoc;
+  // type move out and type move in are same
+  String? requestType;
+  dynamic emergencyNumber;
+  DateTime? moveDate;
+  String? moveTimeFrom;
+  String? moveTimeTo;
+  dynamic refundAmount;
+  dynamic nationality;
+  dynamic handoverMoveout;
+  dynamic noteForSecurity;
+  dynamic applicantDamageNote;
+  dynamic completeChecklist;
+  dynamic dubaiSiliconOasisPermit;
+  dynamic serviceChargeStatus;
+  dynamic residentRequestId;
+  dynamic mcEmiratesId;
+  dynamic mcContactPerson;
+  dynamic mcTradeLicense;
+  dynamic mcCompanyName;
+  String? mcEmiratesPathUrl;
+  String? mcTradeLicensePathUrl;
+  // type delivery permit
+  DateTime? datetime;
+  String? deliveryCompany;
+  String? description;
+  // type facility booking
+  String? natureOfFunction;
+  String? facility;
+  int? expectedGuests;
+  DateTime? bookingDate;
+  String? startTime;
+  String? endTime;
+  // type work permit
+  dynamic requiredDocCas;
+  String? tradelicenseContractorUrl;
+  // type access device
+  dynamic clientOldCard;
+  dynamic clientNewCardNumber;
+  String? clientVehicleNumber;
+  String? requesterType;
+  DateTime? acrDate;
+  List<DeviceInfo>? deviceInfo;
+
+
 
   Application({
     this.id,
@@ -123,6 +169,48 @@ class Application {
     this.finalNocPaymentStatusLbl,
     this.addons,
     this.dewanoc,
+    ///
+    this.requestType,
+    this.emergencyNumber,
+    this.moveDate,
+    this.moveTimeFrom,
+    this.moveTimeTo,
+    this.refundAmount,
+    this.nationality,
+    this.handoverMoveout,
+    this.noteForSecurity,
+    this.applicantDamageNote,
+    this.completeChecklist,
+    this.dubaiSiliconOasisPermit,
+    this.serviceChargeStatus,
+    this.residentRequestId,
+    this.mcEmiratesId,
+    this.mcContactPerson,
+    this.mcTradeLicense,
+    this.mcCompanyName,
+    this.mcEmiratesPathUrl,
+    this.mcTradeLicensePathUrl,
+    //
+    this.datetime,
+    this.deliveryCompany,
+    this.description,
+    //
+    this.natureOfFunction,
+    this.facility,
+    this.expectedGuests,
+    this.bookingDate,
+    this.startTime,
+    this.endTime,
+    //
+    this.requiredDocCas,
+    this.tradelicenseContractorUrl,
+    //
+    this.clientOldCard,
+    this.clientNewCardNumber,
+    this.clientVehicleNumber,
+    this.requesterType,
+    this.acrDate,
+    this.deviceInfo,
   });
 
   factory Application.fromJson(Map<String, dynamic> json) => Application(
@@ -186,6 +274,48 @@ class Application {
     finalNocPaymentStatusLbl: json["final_noc_payment_status_lbl"],
     addons: json["addons"] == null ? [] : List<dynamic>.from(json["addons"]!.map((x) => x)),
     dewanoc: json["dewanoc"] == null ? [] : List<dynamic>.from(json["dewanoc"]!.map((x) => x)),
+    ///
+    requestType: json["request_type"],
+    emergencyNumber: json["emergency_number"],
+    moveDate: json["move_date"] == null ? null : DateTime.parse(json["move_date"]),
+    moveTimeFrom: json["move_time_from"],
+    moveTimeTo: json["move_time_to"],
+    refundAmount: json["refund_amount"],
+    nationality: json["nationality"],
+    handoverMoveout: json["handover_moveout"],
+    noteForSecurity: json["note_for_security"],
+    applicantDamageNote: json["applicant_damage_note"],
+    completeChecklist: json["complete_checklist"],
+    dubaiSiliconOasisPermit: json["dubai_silicon_oasis_permit"],
+    serviceChargeStatus: json["service_charge_status"],
+    residentRequestId: json["resident_request_id"],
+    mcEmiratesId: json["mc_emirates_id"],
+    mcContactPerson: json["mc_contact_person"],
+    mcTradeLicense: json["mc_trade_license"],
+    mcCompanyName: json["mc_company_name"],
+    mcEmiratesPathUrl: json["mc_emirates_path_url"],
+    mcTradeLicensePathUrl: json["mc_trade_license_path_url"],
+    ///
+    datetime: json["datetime"] == null ? null : DateTime.parse(json["datetime"]),
+    deliveryCompany: json["delivery_company"],
+    description: json["description"],
+    //
+    natureOfFunction: json["nature_of_function"],
+    facility: json["facility"],
+    expectedGuests: json["expected_guests"],
+    bookingDate: json["booking_date"] == null ? null : DateTime.parse(json["booking_date"]),
+    startTime: json["start_time"],
+    endTime: json["end_time"],
+    //
+    requiredDocCas: json["required_doc_cas"],
+    tradelicenseContractorUrl: json["tradelicense_contractor_url"],
+    //
+    clientOldCard: json["client_old_card"],
+    clientNewCardNumber: json["client_new_card_number"],
+    clientVehicleNumber: json["client_vehicle_number"],
+    requesterType: json["requester_type"],
+    acrDate: json["acr_date"] == null ? null : DateTime.parse(json["acr_date"]),
+    deviceInfo: json["device_info"] == null ? [] : List<DeviceInfo>.from(json["device_info"]!.map((x) => DeviceInfo.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -249,5 +379,48 @@ class Application {
     "final_noc_payment_status_lbl": finalNocPaymentStatusLbl,
     "addons": addons == null ? [] : List<dynamic>.from(addons!.map((x) => x)),
     "dewanoc": dewanoc == null ? [] : List<dynamic>.from(dewanoc!.map((x) => x)),
+    ///
+    "request_type": requestType,
+    "emergency_number": emergencyNumber,
+    "move_date": "${moveDate!.year.toString().padLeft(4, '0')}-${moveDate!.month.toString().padLeft(2, '0')}-${moveDate!.day.toString().padLeft(2, '0')}",
+    "move_time_from": moveTimeFrom,
+    "move_time_to": moveTimeTo,
+    "refund_amount": refundAmount,
+    "nationality": nationality,
+    "handover_moveout": handoverMoveout,
+    "note_for_security": noteForSecurity,
+    "applicant_damage_note": applicantDamageNote,
+    "complete_checklist": completeChecklist,
+    "dubai_silicon_oasis_permit": dubaiSiliconOasisPermit,
+    "service_charge_status": serviceChargeStatus,
+    "resident_request_id": residentRequestId,
+    "mc_emirates_id": mcEmiratesId,
+    "mc_contact_person": mcContactPerson,
+    "mc_trade_license": mcTradeLicense,
+    "mc_company_name": mcCompanyName,
+    "mc_emirates_path_url": mcEmiratesPathUrl,
+    "mc_trade_license_path_url": mcTradeLicensePathUrl,
+    ///
+    "datetime": "${datetime!.year.toString().padLeft(4, '0')}-${datetime!.month.toString().padLeft(2, '0')}-${datetime!.day.toString().padLeft(2, '0')}",
+    "delivery_company": deliveryCompany,
+    "description": description,
+    //
+    "nature_of_function": natureOfFunction,
+    "facility": facility,
+    "expected_guests": expectedGuests,
+    "booking_date": "${bookingDate!.year.toString().padLeft(4, '0')}-${bookingDate!.month.toString().padLeft(2, '0')}-${bookingDate!.day.toString().padLeft(2, '0')}",
+    "start_time": startTime,
+    "end_time": endTime,
+    //
+    "required_doc_cas": requiredDocCas,
+    "tradelicense_contractor_url": tradelicenseContractorUrl,
+    //
+    "client_old_card": clientOldCard,
+    "client_new_card_number": clientNewCardNumber,
+    "client_vehicle_number": clientVehicleNumber,
+    "requester_type": requesterType,
+    "acr_date": acrDate?.toIso8601String(),
+    "device_info": deviceInfo == null ? [] : List<dynamic>.from(deviceInfo!.map((x) => x.toJson())),
+
   };
 }

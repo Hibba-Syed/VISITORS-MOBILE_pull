@@ -157,7 +157,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isVisitorPassLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(visitorPassModel: response.record));
+      emit(state.copyWith(visitorPasses: response.record));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching visitor pass');

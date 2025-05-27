@@ -91,7 +91,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
       emit(state.copyWith(checkInModel: response.record));
-      print('response${response.record?.length}');
+      //print('response${response.record?.length}');
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching visitors check-ins');
@@ -143,7 +143,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   Future<bool> checkOutAll(BuildContext context) async {
     emit(state.copyWith(isCheckOutAllLoading: true));
 
-    CheckOutAllModel? response =
+    CheckOutAll? response =
         await _checkInRepo.checkOutAll().onError((error, stackTrace) {
       emit(state.copyWith(isCheckOutAllLoading: false));
       return null;

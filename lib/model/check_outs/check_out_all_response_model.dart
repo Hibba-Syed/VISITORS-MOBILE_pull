@@ -6,19 +6,19 @@ import 'dart:convert';
 import '../check_out/check_out_all_model.dart';
 
 
-CheckOutsAllResponseModel checkOutsResponseModelFromJson(String str) => CheckOutsAllResponseModel.fromJson(json.decode(str));
+CheckOutAllResponseModel checkOutsResponseModelFromJson(String str) => CheckOutAllResponseModel.fromJson(json.decode(str));
 
-String checkOutsResponseModelToJson(CheckOutsAllResponseModel data) => json.encode(data.toJson());
+String checkOutsResponseModelToJson(CheckOutAllResponseModel data) => json.encode(data.toJson());
 
-class CheckOutsAllResponseModel {
+class CheckOutAllResponseModel {
   String? status;
-  List<CheckOutAllModel>? record;
+  List<CheckOutAll>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
   String? message;
 
-  CheckOutsAllResponseModel({
+  CheckOutAllResponseModel({
     this.status,
     this.record,
     this.code,
@@ -27,9 +27,9 @@ class CheckOutsAllResponseModel {
     this.message,
   });
 
-  factory CheckOutsAllResponseModel.fromJson(Map<String, dynamic> json) => CheckOutsAllResponseModel(
+  factory CheckOutAllResponseModel.fromJson(Map<String, dynamic> json) => CheckOutAllResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<CheckOutAllModel>.from(json["record"]!.map((x) => CheckOutAllModel.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckOutAll>.from(json["record"]!.map((x) => CheckOutAll.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],

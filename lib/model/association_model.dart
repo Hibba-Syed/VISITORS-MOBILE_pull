@@ -26,7 +26,7 @@ class Association {
   int? applicableArea;
   int? suiteArea;
   int? balconyArea;
-  int? filledParkings;
+  String? filledParkings;
   dynamic subdomain;
   String? contractUrl;
   dynamic gmap;

@@ -48,7 +48,7 @@ class WorkOrderRFPImpl implements WorkOrderRFPRepo{
   @override
   Future<AddLogWorkOrderResponseModel?> addWorkOrderLog({required Map<String, dynamic> data}) async {
     try {
-      print('add log: ${ApiUrl.addWorkOrderLog}');
+      // print('add log: ${ApiUrl.addWorkOrderLog}');
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.addWorkOrderLog, data);
       return AddLogWorkOrderResponseModel.fromJson(response);

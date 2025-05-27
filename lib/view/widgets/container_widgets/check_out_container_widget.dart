@@ -113,16 +113,16 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
               if(state.isLoading ) {
                 return LoaderWidget();
               }
-              if(state.checkInLogModel?.isEmpty ?? true){
+              if(state.checkInLogs?.isEmpty ?? true){
                 EmptyWidget(text: 'No data available',);
               }
               return ListView.builder(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: state.checkInLogModel?.length,
+                itemCount: state.checkInLogs?.length,
                 itemBuilder: (context, index) {
-                  CheckInLogs? checkInLog = state.checkInLogModel?[index];
-                  bool isLast = (state.checkInLogModel?.length ?? 0) - 1 == index;
+                  CheckInLogs? checkInLog = state.checkInLogs?[index];
+                  bool isLast = (state.checkInLogs?.length ?? 0) - 1 == index;
                   return ActivityLogWidget(
                       horizontalPadding: 0,
                       isLast: isLast ? true : false,

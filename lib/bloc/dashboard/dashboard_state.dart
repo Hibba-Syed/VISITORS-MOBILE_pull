@@ -14,7 +14,7 @@ class DashboardState {
   List<ServiceModel>? serviceModel;
   List<WorkOrderModel>? workOrderModel;
   List<CheckOutVisitors>? checkOutModel;
-  List<VisitorPasses>? visitorPassModel;
+  List<VisitorPasses>? visitorPasses;
   List<CheckOutVisitors>? checkOutVisitors;
   CountModel? countModel;
   DashboardState({
@@ -31,7 +31,7 @@ class DashboardState {
     this.isWorkOrderLoading,
     this.workOrderModel,
     this.checkOutModel,
-    this.visitorPassModel,
+    this.visitorPasses,
     this.isCheckOutVisitor,
     this.checkOutVisitors,
   });
@@ -49,7 +49,7 @@ class DashboardState {
     List<ServiceModel>? serviceModel,
     List<WorkOrderModel>? workOrderModel,
     List<CheckOutVisitors>? checkOutModel,
-    List<VisitorPasses>? visitorPassModel,
+    List<VisitorPasses>? visitorPasses,
     List<CheckOutVisitors>? checkOutVisitors,
     CountModel? countModel,
   }) {
@@ -66,7 +66,7 @@ class DashboardState {
         serviceModel: serviceModel ?? this.serviceModel,
         workOrderModel: workOrderModel ?? this.workOrderModel,
         checkOutModel: checkOutModel ?? this.checkOutModel,
-        visitorPassModel: visitorPassModel ?? visitorPassModel,
+        visitorPasses: visitorPasses ?? visitorPasses,
         isVisitorPassLoading: isVisitorPassLoading ?? isVisitorPassLoading,
         isCheckOutVisitor: isCheckOutVisitor ?? isCheckOutVisitor,
         checkOutVisitors: checkOutVisitors ?? checkOutVisitors,

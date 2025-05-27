@@ -29,7 +29,7 @@ class ServiceResponseModel {
 
   factory ServiceResponseModel.fromJson(Map<String, dynamic> json) => ServiceResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<ServiceModel>.from(json["record"]!.map((x) => ServiceModel.fromJson(x))),
+     record: json["record"] == null ? [] : List<ServiceModel>.from(json["record"]!.map((x) => ServiceModel.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],

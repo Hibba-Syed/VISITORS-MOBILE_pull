@@ -47,11 +47,11 @@ class CheckInRepoImpl implements CheckInRepo {
   }
 
   @override
-  Future<CheckOutAllModel?> checkOutAll() async {
+  Future<CheckOutAll?> checkOutAll() async {
     try {
       dynamic response = await _apiService
           .getAuthPutApiResponse(ApiUrl.checkOutAll);
-      return CheckOutAllModel.fromJson(response);
+      return CheckOutAll.fromJson(response);
     } catch (e) {
       rethrow;
     }
