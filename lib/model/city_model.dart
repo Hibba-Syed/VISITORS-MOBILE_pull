@@ -3,12 +3,20 @@ class City {
   String? name;
   String? label;
   String? value;
+  int? stateId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
 
   City({
     this.id,
     this.name,
     this.label,
     this.value,
+    this.stateId,
+    this.createdAt,
+    this.updatedAt,
+
   });
 
   factory City.fromJson(Map<String, dynamic> json) => City(
@@ -16,6 +24,9 @@ class City {
     name: json["name"],
     label: json["label"],
     value: json["value"],
+    stateId: json["state_id"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -23,5 +34,8 @@ class City {
     "name": name,
     "label": label,
     "value": value,
+    "state_id": stateId,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
   };
 }

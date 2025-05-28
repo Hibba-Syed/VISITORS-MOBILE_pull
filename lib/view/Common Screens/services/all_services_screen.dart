@@ -18,13 +18,6 @@ import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import 'components/services_card_widget.dart';
-import 'detail/access_device_service_details_sceen.dart';
-import 'detail/delivery_permit_service_details_screen.dart';
-import 'detail/facility_booking_service_details_screen.dart';
-import 'detail/fit_out_service_details_screen.dart';
-import 'detail/move_in_service_details_screen.dart';
-import 'detail/move_out_service_details_screen.dart';
-import 'detail/work_permit_service_details_screen.dart';
 
 class AllServicesScreen extends StatefulWidget {
   const AllServicesScreen({super.key});

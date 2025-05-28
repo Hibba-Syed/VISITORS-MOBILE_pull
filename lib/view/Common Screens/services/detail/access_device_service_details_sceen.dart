@@ -33,8 +33,9 @@ class AccessDeviceServiceDetailsScreen extends StatefulWidget {
 }
 
 class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDetailsScreen> {
-  TextEditingController noteController =
-  TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController idController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +278,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                                print('add^^^${noteController.text}');
+                                // print('add^^^${noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(
@@ -330,12 +331,6 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
-                            TextEditingController noteController =
-                            TextEditingController();
-                            TextEditingController nameController =
-                            TextEditingController();
-                            TextEditingController idController =
-                            TextEditingController();
                             return CustomAlertDialogBox(
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
@@ -349,6 +344,34 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                               confirmButtonColor: AppColors.primary,
                               onConfirm: () async {
                                 return false;
+                              },
+                              onCancel: () async{
+                                if (nameController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please type name first.");
+                                  return false;
+                                }
+                                if (idController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please type id first.");
+                                  return false;
+                                }
+
+                                final result = await context
+                                    .read<ServiceDetailsCubit>()
+                                    .serviceCompleted(
+                                  context,
+                                  data: {
+                                    'requester_name': nameController.text,
+                                    'id_number': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                    'note': noteController.text,
+                                  },
+                                );
+                                noteController.clear();
+                                idController.clear();
+                                nameController.clear();
+
+                                return result;
                               },
                               contentBuilder: (context, setState) {
                                 return Column(

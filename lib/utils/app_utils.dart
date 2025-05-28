@@ -4,6 +4,7 @@ import 'package:visitors/resource/constants/app_constants.dart';
 
 import '../model/service/service_model.dart';
 import '../resource/constants/strings.dart';
+import '../resource/styles/styles.dart';
 import '../view/Common Screens/services/detail/access_device_service_details_sceen.dart';
 import '../view/Common Screens/services/detail/delivery_permit_service_details_screen.dart';
 import '../view/Common Screens/services/detail/facility_booking_service_details_screen.dart';
@@ -113,35 +114,31 @@ class AppUtils {
     TypeModel(label: 'Visitor Pass', value: Strings.keyVisitorPass),
   ];
 
- static getRouteName(ServiceModel? service) {
-    String? type = service?.applicationTitle;
-    print("THE TYPE::: ${type}");
-    if (type?.toLowerCase() == "ad") {
-      return AccessDeviceServiceDetailsScreen(
-        service: service,);
-    }
-    if (type?.toLowerCase() == "hb") {
-      return FacilityBookingServiceDetailsScreen(service: service);
-    }
-    if (type?.toLowerCase() == "dp") {
-      return DeliveryPermitServiceDetailsScreen(service: service);
-    }
-    if (type?.toLowerCase() == "FO") {
-      return FitOutServiceDetailsScreen(service: service);
-    }
-    if (type?.toLowerCase() == "mi") {
-      return MoveInServiceDetailsScreen(service: service);
-    }
-    if (type?.toLowerCase() == "mo") {
-      return MoveOutServiceDetailsScreen(service: service,
-      );
-    }
-    if (type?.toLowerCase() == "wp") {
-      return WorkPermitServiceDetailsScreen(service: service);
-    }
+  static Widget getRouteName(ServiceModel? service) {
+    String? type = service?.applicationTitle?.toLowerCase();
 
-    return null;
+    switch (type) {
+      case "ad":
+        return AccessDeviceServiceDetailsScreen(service: service);
+      case "hb":
+        return FacilityBookingServiceDetailsScreen(service: service);
+      case "dp":
+        return DeliveryPermitServiceDetailsScreen(service: service);
+      case "fo":
+        return FitOutServiceDetailsScreen(service: service);
+      case "mi":
+        return MoveInServiceDetailsScreen(service: service);
+      case "mo":
+        return MoveOutServiceDetailsScreen(service: service);
+      case "wp":
+        return WorkPermitServiceDetailsScreen(service: service);
+      default:
+        return const Scaffold(
+          body: Center(child: Text("No service details available",style: AppTextStyles.style13DarkGrey600,)),
+        );
+    }
   }
+
   static String? getRequestName(String? applicationType) {
     String? requestName;
     if (applicationType == "AD") {

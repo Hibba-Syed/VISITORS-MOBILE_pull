@@ -285,6 +285,7 @@ class NetworkApiServices implements BaseApiServices {
     switch (statusCode) {
       // Add your own status code errors or message
       case 200:
+      case 201:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:

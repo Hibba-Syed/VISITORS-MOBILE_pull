@@ -105,9 +105,6 @@ class Application {
   String? requesterType;
   DateTime? acrDate;
   List<DeviceInfo>? deviceInfo;
-
-
-
   Application({
     this.id,
     this.contractorName,

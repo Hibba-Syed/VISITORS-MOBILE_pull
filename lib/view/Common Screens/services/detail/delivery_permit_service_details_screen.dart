@@ -33,7 +33,9 @@ class DeliveryPermitServiceDetailsScreen extends StatefulWidget {
 }
 
 class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServiceDetailsScreen> {
-  TextEditingController noteController =
+  TextEditingController noteController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController idController =
   TextEditingController();
 
   @override
@@ -289,25 +291,44 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
-                            TextEditingController noteController =
-                            TextEditingController();
-                            TextEditingController nameController =
-                            TextEditingController();
-                            TextEditingController idController =
-                            TextEditingController();
                             return CustomAlertDialogBox(
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Complete HB2024080725',
+                              title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
                               disableCancelButtonBorder: true,
                               cancelButtonTextColor: AppColors.white,
-                              cancelButtonColor: AppColors.green,
-                              cancelButtonText: 'Complete',
-                              confirmButtonText: 'Scan ID',
-                              confirmButtonColor: AppColors.primary,
+                              cancelButtonColor: AppColors.primary,
+                              cancelButtonText: 'Scan ID',
+                              confirmButtonText: 'Complete',
+                              confirmButtonColor: AppColors.green,
                               onConfirm: () async {
-                                return false;
+                                if (nameController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please type name first.");
+                                  return false;
+                                }
+                                if (idController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please type id first.");
+                                  return false;
+                                }
+                                final result = await context
+                                    .read<ServiceDetailsCubit>()
+                                    .serviceCompleted(
+                                  context,
+                                  data: {
+                                    'id':'${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                    'requester_name': nameController.text,
+                                    'id_number': idController.text,
+                                    'note': noteController.text,
+                                  },
+                                );
+                                // noteController.clear();
+                                // idController.clear();
+                                // nameController.clear();
+                                 print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
+                                return result;
                               },
                               contentBuilder: (context, setState) {
                                 return Column(
