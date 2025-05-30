@@ -94,9 +94,9 @@ class MobileDashboardScreen extends StatelessWidget {
               },
             ),
           ];
-          final totalCheckIns = (state.visitorPasses ?? [])
-              .map((e) => e.activeCheckInsCount ?? 0)
-              .fold<int>(0, (prev, curr) => prev + curr);
+          // final totalCheckIns = (state.visitorPasses ?? [])
+          //     .map((e) => e.activeCheckInsCount ?? 0)
+          //     .fold<int>(0, (prev, curr) => prev + curr);
 
           return RefreshIndicator(
             onRefresh: ()async{
@@ -290,8 +290,8 @@ class MobileDashboardScreen extends StatelessWidget {
                         children: [
                           VisitorPassesButton(
                             horizontalPadding: 6,
-                            count:
-                            totalCheckIns,
+                            count: 1,
+                            // totalCheckIns,
                             //state.visitorPassModel?.fold<int?>(0, (previousValue, element) => ((previousValue??0)+ (element.activeCheckInsCount??0))),
                             onPressed: () {
                               context.read<VisitorPassCubit>().getVisitorPasses();

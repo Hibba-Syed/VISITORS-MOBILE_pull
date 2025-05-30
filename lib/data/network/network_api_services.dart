@@ -217,8 +217,8 @@ class NetworkApiServices implements BaseApiServices {
       }
       request.files.addAll(files);
       Map<String, String> headers = {
-        // "content-type": "multipart/form-data",
-        "content-type": "application/json",
+         "content-type": "multipart/form-data",
+       // "content-type": "application/json",
         'Accept': 'application/json',
         "Authorization": 'Bearer ${Globals().token}'
 

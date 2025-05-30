@@ -1,6 +1,7 @@
 
 
 import '../deviceInfo_model.dart';
+import 'guest_model.dart';
 
 class Application {
   int? id;
@@ -105,6 +106,33 @@ class Application {
   String? requesterType;
   DateTime? acrDate;
   List<DeviceInfo>? deviceInfo;
+  // short stay
+  dynamic terminationDate;
+  dynamic terminationNote;
+  int? numberOfPeople;
+  String? peoples;
+  dynamic companyName;
+  dynamic tourismLicense;
+  dynamic tourismLicenseExpiry;
+  dynamic companyRiskInsurance;
+  dynamic companyRiskInsuranceExpiry;
+  dynamic reraId;
+  dynamic reraIdExpiry;
+  dynamic visaCopy;
+  dynamic visaCopyExpiry;
+  String? dtcmPermit;
+  DateTime? dtcmPermitExpiry;
+  String? tourismLicenseUrl;
+  String? companyRiskInsuranceUrl;
+  String? visaCopyUrl;
+  String? reraIdUrl;
+  String? dtcmPermitUrl;
+  bool? isTourismLicenseExpired;
+  bool? isCompanyRiskInsuranceExpired;
+  bool? isVisaCopyExpired;
+  bool? isReraIdExpired;
+  bool? isDtcmPermitExpired;
+  List<Guest>? guests;
   Application({
     this.id,
     this.contractorName,
@@ -208,6 +236,33 @@ class Application {
     this.requesterType,
     this.acrDate,
     this.deviceInfo,
+    //
+    this.terminationDate,
+    this.terminationNote,
+    this.numberOfPeople,
+    this.peoples,
+    this.companyName,
+    this.tourismLicense,
+    this.tourismLicenseExpiry,
+    this.companyRiskInsurance,
+    this.companyRiskInsuranceExpiry,
+    this.reraId,
+    this.reraIdExpiry,
+    this.visaCopy,
+    this.visaCopyExpiry,
+    this.dtcmPermit,
+    this.dtcmPermitExpiry,
+    this.tourismLicenseUrl,
+    this.companyRiskInsuranceUrl,
+    this.visaCopyUrl,
+    this.reraIdUrl,
+    this.dtcmPermitUrl,
+    this.isTourismLicenseExpired,
+    this.isCompanyRiskInsuranceExpired,
+    this.isVisaCopyExpired,
+    this.isReraIdExpired,
+    this.isDtcmPermitExpired,
+    this.guests,
   });
 
   factory Application.fromJson(Map<String, dynamic> json) => Application(
@@ -271,6 +326,33 @@ class Application {
     finalNocPaymentStatusLbl: json["final_noc_payment_status_lbl"],
     addons: json["addons"] == null ? [] : List<dynamic>.from(json["addons"]!.map((x) => x)),
     dewanoc: json["dewanoc"] == null ? [] : List<dynamic>.from(json["dewanoc"]!.map((x) => x)),
+    terminationDate: json["termination_date"],
+    terminationNote: json["termination_note"],
+    numberOfPeople: json["number_of_people"],
+    peoples: json["peoples"],
+    description: json["description"],
+    companyName: json["company_name"],
+    tourismLicense: json["tourism_license"],
+    tourismLicenseExpiry: json["tourism_license_expiry"],
+    companyRiskInsurance: json["company_risk_insurance"],
+    companyRiskInsuranceExpiry: json["company_risk_insurance_expiry"],
+    reraId: json["rera_id"],
+    reraIdExpiry: json["rera_id_expiry"],
+    visaCopy: json["visa_copy"],
+    visaCopyExpiry: json["visa_copy_expiry"],
+    dtcmPermit: json["dtcm_permit"],
+    dtcmPermitExpiry: json["dtcm_permit_expiry"] == null ? null : DateTime.parse(json["dtcm_permit_expiry"]),
+    tourismLicenseUrl: json["tourism_license_url"],
+    companyRiskInsuranceUrl: json["company_risk_insurance_url"],
+    visaCopyUrl: json["visa_copy_url"],
+    reraIdUrl: json["rera_id_url"],
+    dtcmPermitUrl: json["dtcm_permit_url"],
+    isTourismLicenseExpired: json["is_tourism_license_expired"],
+    isCompanyRiskInsuranceExpired: json["is_company_risk_insurance_expired"],
+    isVisaCopyExpired: json["is_visa_copy_expired"],
+    isReraIdExpired: json["is_rera_id_expired"],
+    isDtcmPermitExpired: json["is_dtcm_permit_expired"],
+    guests: json["guests"] == null ? [] : List<Guest>.from(json["guests"]!.map((x) => Guest.fromJson(x))),
     ///
     requestType: json["request_type"],
     emergencyNumber: json["emergency_number"],
@@ -295,7 +377,6 @@ class Application {
     ///
     datetime: json["datetime"] == null ? null : DateTime.parse(json["datetime"]),
     deliveryCompany: json["delivery_company"],
-    description: json["description"],
     //
     natureOfFunction: json["nature_of_function"],
     facility: json["facility"],
@@ -418,6 +499,33 @@ class Application {
     "requester_type": requesterType,
     "acr_date": acrDate?.toIso8601String(),
     "device_info": deviceInfo == null ? [] : List<dynamic>.from(deviceInfo!.map((x) => x.toJson())),
+    //
+    "termination_date": terminationDate,
+    "termination_note": terminationNote,
+    "number_of_people": numberOfPeople,
+    "peoples": peoples,
+    "company_name": companyName,
+    "tourism_license": tourismLicense,
+    "tourism_license_expiry": tourismLicenseExpiry,
+    "company_risk_insurance": companyRiskInsurance,
+    "company_risk_insurance_expiry": companyRiskInsuranceExpiry,
+    "rera_id": reraId,
+    "rera_id_expiry": reraIdExpiry,
+    "visa_copy": visaCopy,
+    "visa_copy_expiry": visaCopyExpiry,
+    "dtcm_permit": dtcmPermit,
+    "dtcm_permit_expiry": "${dtcmPermitExpiry!.year.toString().padLeft(4, '0')}-${dtcmPermitExpiry!.month.toString().padLeft(2, '0')}-${dtcmPermitExpiry!.day.toString().padLeft(2, '0')}",
+    "tourism_license_url": tourismLicenseUrl,
+    "company_risk_insurance_url": companyRiskInsuranceUrl,
+    "visa_copy_url": visaCopyUrl,
+    "rera_id_url": reraIdUrl,
+    "dtcm_permit_url": dtcmPermitUrl,
+    "is_tourism_license_expired": isTourismLicenseExpired,
+    "is_company_risk_insurance_expired": isCompanyRiskInsuranceExpired,
+    "is_visa_copy_expired": isVisaCopyExpired,
+    "is_rera_id_expired": isReraIdExpired,
+    "is_dtcm_permit_expired": isDtcmPermitExpired,
+    "guests": guests == null ? [] : List<dynamic>.from(guests!.map((x) => x.toJson())),
 
   };
 }

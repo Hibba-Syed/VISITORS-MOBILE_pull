@@ -9,7 +9,6 @@ import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/date_time.dart';
-import 'package:visitors/view/Common%20Screens/services/components/services_documents_card_widget.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
@@ -21,22 +20,22 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../widgets/empty_widget.dart';
 
-class FitOutServiceDetailsScreen extends StatefulWidget {
+class ShortStayServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
- const  FitOutServiceDetailsScreen({super.key, this.service});
+  const  ShortStayServiceDetailsScreen({super.key,required this.service});
 
   @override
-  State<FitOutServiceDetailsScreen> createState() => _FitOutServiceDetailsScreenState();
+  State<ShortStayServiceDetailsScreen> createState() => _ShortStayServiceDetailsScreenState();
 }
 
-class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen> {
-  TextEditingController noteController =
-  TextEditingController();
+class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsScreen> {
+  TextEditingController noteController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController idController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,6 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       style: AppTextStyles.style14Black600,
                     ),
                     const Gap(10),
-
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 10),
@@ -93,88 +91,64 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Contractor Name',
-                              value: state.serviceDetails?.application
-                                      ?.contractorName ??
-                                  ""),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Contractor Phone',
-                            value: state.serviceDetails?.application
-                                    ?.contractorPhone ??
-                                "",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Start Date',
-                              value: DateTimeUtil.getFormattedDatesTime(state
-                                  .serviceDetails?.application?.startDate)),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Contractor Contact Person',
-                            value: state.serviceDetails?.application
-                                    ?.contactPerson ??
-                                "",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'No. of Staff Expected',
-                            value: state.serviceDetails?.application
-                                    ?.noOfStaffExpected
-                                    ?.toString() ??
-                                "",
+                            title: 'Start Date',
+                            value:
+                            DateTimeUtil.getFormattedDatesTime(
+                                state.serviceDetails?.application?.startDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'End Date',
-                            value: DateTimeUtil.getFormattedDatesTime(
+                            value:  DateTimeUtil.getFormattedDatesTime(
                                 state.serviceDetails?.application?.endDate),
+
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: '	Security Deposit',
-                            value: state.serviceDetails?.securityDeposit
-                                    ?.toString() ??
-                                "",
+                              title: 'Number of guests',
+                              value: state.serviceDetails?.application?.numberOfPeople?.toString()  ?? ''
+                          ),TitleValueRowDividerDetailsContainerWidget(
+                              isLast: true,
+                              title: 'Description',
+                              value: state.serviceDetails?.application?.description ?? ''
                           ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            isLast: true,
-                            title: 'Temporary Electricity Required',
-                            valueIcon: Icons.clear,
-                          ),
+
                         ],
                       ),
                     ),
                     const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Documents',
+                    HeadingWidget(
+                      heading:  "Expected Guests",
                     ),
                     const Gap(10),
                     Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child:
-                            state.serviceDetails?.documents?.isNotEmpty ?? true ?
-                            ListView.separated(
-                                shrinkWrap: true,
-                                primary: false,
-                                itemCount:
-                                    state.serviceDetails?.documents?.length ??
-                                        0,
-                                itemBuilder: (context, index) {
-                                  Document? document =
-                                      state.serviceDetails?.documents?[index];
-                                  return ServicesDocumentsCardWidget(
-                                    name: document?.name,
-                                    url: document?.pathUrl ?? "",
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return Divider(
-                                    color: AppColors.gray,
-                                  );
-                                },
-                              )
-                      : EmptyWidget(text: 'No data available',) ,
-                        ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: state.serviceDetails?.application?.guests?.map((guest) =>
+                            Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: 'Name',
+                                  value:guest.name ?? "",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: 'Phone',
+                                  value: guest.phone ?? "",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  isLast: true,
+                                  title: 'Passport / ID',
+                                   value:  "Download",
+                                  url: guest.fileUrl ?? "",
+                                ),
+                              ],
+                            ),
+                        ).toList()  ?? [],
+                      )
+                    ),
                     const Gap(20),
                     const HeadingWidget(
                       heading: 'Applicant Details',
@@ -201,30 +175,9 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                             value: state.serviceDetails?.clientPhone ?? "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
+                            isLast: true,
                             title: 'Email',
                             value: state.serviceDetails?.clientEmail ?? "",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Passport Number',
-                              value: state.serviceDetails?.passportNumber
-                                      ?.toString() ??
-                                  ""),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Passport Expiry',
-                            value: DateTimeUtil.getFormattedDate(
-                                state.serviceDetails?.clientIdExpiry),
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'ID Number',
-                            value: state.serviceDetails?.clientIdNumber
-                                    ?.toString() ??
-                                "",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            isLast: true,
-                            title: 'ID Expiry',
-                            value: DateTimeUtil.getFormattedDate(
-                                state.serviceDetails?.clientIdExpiry),
                           ),
                         ],
                       ),
@@ -235,10 +188,10 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
-                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
+                    state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
                     Container(
                       decoration: BoxDecoration(
-                          color: AppColors.white,
+                        color: AppColors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ListView.builder(
@@ -246,7 +199,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                         shrinkWrap: true,
                         primary: false,
                         itemCount:
-                            state.serviceDetails?.statusHistory?.length ?? 0,
+                        state.serviceDetails?.statusHistory?.length ?? 0,
                         itemBuilder: (context, index) {
                           StatusHistory? statusHistory = state.serviceDetails?.statusHistory?[index];
                           bool isLast = (state.serviceDetails?.statusHistory?.length ?? 0) - 1 == index;
@@ -255,7 +208,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                             isLast: isLast,
                             status: statusHistory?.status ?? "",
                             byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
-                                ?  statusHistory.user?.fullName ?? ""
+                                ? ' ${statusHistory.user?.fullName ?? ""}'
                                 : " System",
                             description: statusHistory?.note
                                 ?.replaceAll('\n\n', ' ')
@@ -306,7 +259,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                                // print('add^^^${noteController.text}');
+                               // print('add^^^${noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(
@@ -317,7 +270,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                     'note': noteController.text,
                                   },
                                 );
-                                  noteController.clear();
+                                noteController.clear();
 
                                 return result;
                               },
@@ -359,23 +312,15 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
-                            TextEditingController noteController =
-                                TextEditingController();
-                            TextEditingController nameController =
-                                TextEditingController();
-                            TextEditingController idController =
-                                TextEditingController();
                             return CustomAlertDialogBox(
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Complete HB2024080725',
+                              isCancelButtonDisable: true,
+                              title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
                               disableCancelButtonBorder: true,
-                              cancelButtonTextColor: AppColors.white,
-                              cancelButtonColor: AppColors.green,
-                              cancelButtonText: 'Complete',
-                              confirmButtonText: 'Scan ID',
-                              confirmButtonColor: AppColors.primary,
+                              confirmButtonText: 'Complete',
+                              confirmButtonColor: AppColors.green,
                               onConfirm: () async {
                                 if (nameController.text.isEmpty) {
                                   Fluttertoast.showToast(
@@ -398,9 +343,9 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                     'note': noteController.text,
                                   },
                                 );
-                                noteController.clear();
-                                idController.clear();
-                                nameController.clear();
+                                // noteController.clear();
+                                // idController.clear();
+                                // nameController.clear();
 
                                 return result;
                               },
@@ -418,16 +363,6 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                         AppColors.green,
                                         BlendMode.srcIn,
                                       ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'Requester Name',
-                                      controller: nameController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'ID Number',
-                                      controller: idController,
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(

@@ -1,4 +1,5 @@
 
+import 'package:http/http.dart' as http;
 import 'package:visitors/model/service/service_details_response_model.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 import 'package:visitors/repo/services/services_repo.dart';
@@ -6,6 +7,7 @@ import 'package:visitors/repo/services/services_repo.dart';
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/service/add_service_log_response_model.dart';
+import '../../model/service/move_out_service_clear_payment_response_model.dart';
 import '../../model/service/vIsitors_service_complete_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import '../encrption/encryption_helper.dart';
@@ -62,11 +64,43 @@ class ServiceRepoImpl implements ServiceRepo {
   @override
   Future<VisitorsServiceCompleteResponseModel?> serviceCompleted({required Map<String, dynamic> data}) async {
     try {
-      print('service complete: ${ApiUrl.serviceComplete}');
+     // print('service complete: ${ApiUrl.serviceComplete}');
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
-       print('Raw API Response: $response');
+      // print('Raw API Response: $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  // @override
+  // Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({int? id, required Map<String, dynamic> data}) async {
+  //   try {
+  //     print('clear Payment: ${ApiUrl.clearPayment}/$id');
+  //     dynamic response =
+  //     await _apiService.getAuthPostApiMultipartResponse('${ApiUrl.clearPayment}/$id', data);
+  //      print('Raw API Response: $response');
+  //     return MoveOutServiceClearPaymentResponseModel.fromJson(response);
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+  //
+  @override
+  Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({
+    required int? id,
+    required Map<String, dynamic> data,
+     required List<http.MultipartFile> files,
+  }) async {
+    try {
+      String url = '${ApiUrl.clearPayment}/$id';
+      print('clearPayment^^ $url');
+      dynamic response = await _apiService.getAuthPostApiMultipartResponse(
+        url,
+        data,
+         files,
+      );
+      return MoveOutServiceClearPaymentResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

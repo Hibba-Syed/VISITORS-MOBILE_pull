@@ -1,8 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import '../../../model/service/add_service_log_response_model.dart';
 import '../../../model/service/service_details_model.dart';
 import '../../../model/service/service_details_response_model.dart';
@@ -96,10 +96,9 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       });
 
       emit(state.copyWith(isCompleteServiceLoading: false));
-      log("Service model RESPONSES:::: ${response?.toJson()}");
+      // log("Service model RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: 'service completed successfully');
-        Navigator.pop(context);
         getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
         return true;
       } else {
@@ -108,13 +107,60 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
         return false;
       }
     } catch (e) {
-      emit(state.copyWith(isAddLogLoading: false));
+      emit(state.copyWith(isCompleteServiceLoading: false));
       Fluttertoast.showToast(msg: e.toString());
-      log('cubit call ${e.toString()}');
+      // log('cubit call ${e.toString()}');
       return false;
     }
   }
+  Future<bool> clearPayment(
+      BuildContext context, {
+        required int? id,
+        required Map<String, dynamic> data,
+        required List<String>? file,
+      }) async {
+    emit(state.copyWith(isClearPaymentLoading: true));
 
+    if (file?.isEmpty??true) {
+      Fluttertoast.showToast(msg: 'Please select a file');
+      emit(state.copyWith(isClearPaymentLoading: false));
+      return false;
+    }
+    List<http.MultipartFile> multipartFiles = [];
+    if (file?.isNotEmpty??false) {
+      for (int i = 0; i < (file?.length??0); i++) {
+        if (file?[i].isNotEmpty??false) {
+          multipartFiles.add(
+            await http.MultipartFile.fromPath('file', file?[i]??""),
+          );
+        }
+      }
+    }
+
+    final response = await _serviceRepo.clearPayment(
+      id: id,
+      data: data,
+      files: multipartFiles,
+    ).onError((error, stackTrace) {
+      emit(state.copyWith(isClearPaymentLoading: false));
+      Fluttertoast.showToast(msg: error.toString());
+      return null;
+    });
+
+    emit(state.copyWith(isClearPaymentLoading: false));
+
+    if (response != null && response.status == 'success') {
+      Fluttertoast.showToast(msg: 'Payment cleared successfully');
+      getServiceDetails(
+        serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id,
+      );
+
+      return true;
+    }
+
+    Fluttertoast.showToast(msg: 'Something went wrong');
+    return false;
   }
+}
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/view/Common%20Screens/services/detail/short_stay_service_details_screen.dart';
 
 import '../model/service/service_model.dart';
 import '../resource/constants/strings.dart';
@@ -132,6 +133,8 @@ class AppUtils {
         return MoveOutServiceDetailsScreen(service: service);
       case "wp":
         return WorkPermitServiceDetailsScreen(service: service);
+        case "ss":
+        return ShortStayServiceDetailsScreen(service: service);
       default:
         return const Scaffold(
           body: Center(child: Text("No service details available",style: AppTextStyles.style13DarkGrey600,)),

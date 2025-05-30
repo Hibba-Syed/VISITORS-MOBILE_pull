@@ -261,7 +261,7 @@ class _FacilityBookingServiceDetailsScreenState
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                                print('add^^^${noteController.text}');
+                                // print('add^^^${noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(
@@ -332,7 +332,32 @@ class _FacilityBookingServiceDetailsScreenState
                               confirmButtonText: 'Scan ID',
                               confirmButtonColor: AppColors.primary,
                               onConfirm: () async {
-                                return false;
+                                if (nameController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please type name first.");
+                                  return false;
+                                }
+                                if (idController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please type id first.");
+                                  return false;
+                                }
+                                final result = await context
+                                    .read<ServiceDetailsCubit>()
+                                    .serviceCompleted(
+                                  context,
+                                  data: {
+                                    'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                    'requester_name': nameController.text,
+                                    'id_number': idController.text,
+                                    'note': noteController.text,
+                                  },
+                                );
+                                noteController.clear();
+                                idController.clear();
+                                nameController.clear();
+
+                                return result;
                               },
                               contentBuilder: (context, setState) {
                                 return Column(

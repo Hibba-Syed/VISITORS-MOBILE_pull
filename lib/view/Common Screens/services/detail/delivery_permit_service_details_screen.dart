@@ -324,10 +324,10 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                                     'note': noteController.text,
                                   },
                                 );
-                                // noteController.clear();
-                                // idController.clear();
-                                // nameController.clear();
-                                 print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
+                                noteController.clear();
+                                idController.clear();
+                                nameController.clear();
+                                 //print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
                                 return result;
                               },
                               contentBuilder: (context, setState) {
