@@ -20,8 +20,7 @@ import 'package:visitors/view/Common%20Screens/directory/directory_screen.dart';
 import 'package:visitors/view/Common%20Screens/messages/message_screen.dart';
 import 'package:visitors/view/Common%20Screens/services/all_services_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/work_order_rfp_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen.dart';
-import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
+import 'package:visitors/view/Mobile%20Screens/dashboard/dashboard_screen.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/drawer/drawer_list_tile.dart';
@@ -186,7 +185,7 @@ class DeviceDeciderScreen extends StatelessWidget {
     switch (index) {
       case
       AppConstants.dashboardIndex:
-        return  MobileDashboardScreen();
+        return  DashboardScreen();
       case AppConstants.checkInsIndex:
         return const CheckInsScreen();
       case AppConstants.eServicesIndex:
@@ -207,7 +206,7 @@ class DeviceDeciderScreen extends StatelessWidget {
   Widget _getTabletScreen(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:
-        return const TabletDashboardScreen();
+        return  DashboardScreen();
       case AppConstants.checkInsIndex:
         return const CheckInsScreen();
       case AppConstants.eServicesIndex:

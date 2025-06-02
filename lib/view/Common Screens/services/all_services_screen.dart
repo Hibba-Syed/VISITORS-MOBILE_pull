@@ -13,7 +13,6 @@ import '../../../bloc/e_service/service_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/strings.dart';
-import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
@@ -63,39 +62,31 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: SearchTextField(
-                              controller: _searchController,
-                              onClearPressed: () async {
-                                _searchController.clear();
-                                context
-                                    .read<ServiceCubit>()
-                                    .onChangeSearchKeyWord('');
-                                await context
-                                    .read<ServiceCubit>()
-                                    .getServices();
-                              },
-                              onFieldSubmitted: (value) {
-                                context
-                                    .read<ServiceCubit>()
-                                    .onChangeSearchKeyWord(value);
-                                context.read<ServiceCubit>().getServices();
-                              }),
-                        ),
-                        const Gap(6),
-                        FilterContainerWidget(
-                          isFilterApplied: (state.selectedUnit != null) ||
-                                  (state.selectedType?.value.isNotEmpty ??
-                                      false)
-                              ? true
-                              : false,
-                          onPressed: () {
-                            _servicesFilterBottomSheet(context);
-                          },
-                        )
-                      ],
+                    child: SearchTextField(
+                        controller: _searchController,
+                        onClearPressed: () async {
+                          _searchController.clear();
+                          context
+                              .read<ServiceCubit>()
+                              .onChangeSearchKeyWord('');
+                          await context
+                              .read<ServiceCubit>()
+                              .getServices();
+                        },
+                        onFieldSubmitted: (value) {
+                          context
+                              .read<ServiceCubit>()
+                              .onChangeSearchKeyWord(value);
+                          context.read<ServiceCubit>().getServices();
+                        },
+                      isFilterApplied: (state.selectedUnit != null) ||
+                          (state.selectedType?.value.isNotEmpty ??
+                              false)
+                          ? true
+                          : false,
+                      onFilterPressed: () {
+                        _servicesFilterBottomSheet(context);
+                      },
                     ),
                   ),
                   const Gap(10),

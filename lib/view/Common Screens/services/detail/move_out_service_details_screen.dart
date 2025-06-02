@@ -35,7 +35,7 @@ class MoveOutServiceDetailsScreen extends StatefulWidget {
 }
 
 class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScreen> {
-  TextEditingController noteController = TextEditingController();
+ final TextEditingController _noteController = TextEditingController();
   List<XFile>? selectedImages = [];
   String? filePath;
   bool? isPaymentReceived;
@@ -219,7 +219,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                               confirmButtonText: 'Add Log',
                               onConfirm: () async {
-                                if (noteController.text.isEmpty) {
+                                if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: "Please type note first.");
                                   return false;
@@ -232,10 +232,10 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                   data: {
                                     'application_id':
                                     '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': noteController.text,
+                                    'note': _noteController.text,
                                   },
                                 );
-                                noteController.clear();
+                                _noteController.clear();
 
                                 return result;
                               },
@@ -255,7 +255,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      controller: noteController,
+                                      controller: _noteController,
                                       label: 'Note*',
                                     ),
                                   ],
@@ -309,7 +309,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                   file: filePaths,
                                   data: {
                                    'payment_received': isPaymentReceived,
-                                    'note': noteController.text,
+                                    'note': _noteController.text,
                                   },
                                 );
                                 // noteController.clear();
@@ -334,7 +334,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      controller: noteController,
+                                      controller: _noteController,
                                       label: 'Note*',
                                     ),
                                     const Gap(5),

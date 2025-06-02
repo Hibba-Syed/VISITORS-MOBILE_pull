@@ -33,10 +33,9 @@ class DeliveryPermitServiceDetailsScreen extends StatefulWidget {
 }
 
 class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServiceDetailsScreen> {
-  TextEditingController noteController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController idController =
-  TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -233,12 +232,12 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                               confirmButtonText: 'Add Log',
                               onConfirm: () async {
-                                if (noteController.text.isEmpty) {
+                                if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                                print('add^^^${noteController.text}');
+                                print('add^^^${_noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(
@@ -246,10 +245,10 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                                   data: {
                                     'application_id':
                                     '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': noteController.text,
+                                    'note': _noteController.text,
                                   },
                                 );
-                                noteController.clear();
+                                _noteController.clear();
 
                                 return result;
                               },
@@ -269,7 +268,7 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      controller: noteController,
+                                      controller: _noteController,
                                       label: 'Note*',
                                     ),
                                   ],
@@ -303,30 +302,30 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                               confirmButtonText: 'Complete',
                               confirmButtonColor: AppColors.green,
                               onConfirm: () async {
-                                if (nameController.text.isEmpty) {
+                                if (_nameController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: "Please type name first.");
                                   return false;
                                 }
-                                if (idController.text.isEmpty) {
+                                if (_idController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: "Please type id first.");
                                   return false;
                                 }
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
-                                    .serviceCompleted(
+                                    .completeService(
                                   context,
                                   data: {
                                     'id':'${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'requester_name': nameController.text,
-                                    'id_number': idController.text,
-                                    'note': noteController.text,
+                                    'requester_name': _nameController.text,
+                                    'id_number': _idController.text,
+                                    'note': _noteController.text,
                                   },
                                 );
-                                noteController.clear();
-                                idController.clear();
-                                nameController.clear();
+                                _noteController.clear();
+                                _idController.clear();
+                                _nameController.clear();
                                  //print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
                                 return result;
                               },
@@ -348,16 +347,16 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                                     const Gap(5),
                                     TextFieldWidget(
                                       label: 'Requester Name',
-                                      controller: nameController,
+                                      controller: _nameController,
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
                                       label: 'ID Number',
-                                      controller: idController,
+                                      controller: _idController,
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      controller: noteController,
+                                      controller: _noteController,
                                       label: 'Note*',
                                     ),
                                   ],

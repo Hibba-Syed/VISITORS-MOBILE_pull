@@ -19,7 +19,7 @@ abstract class ServiceRepo{
   Future<AddServiceLogResponseModel?> addServiceLog(
       {required Map<String, dynamic> data,
       });
-  Future<VisitorsServiceCompleteResponseModel?> serviceCompleted(
+  Future<VisitorsServiceCompleteResponseModel?> completeService(
       {required Map<String, dynamic> data,
       });
   Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({

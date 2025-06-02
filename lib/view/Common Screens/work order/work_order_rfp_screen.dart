@@ -13,7 +13,6 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/strings.dart';
-import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
@@ -60,36 +59,28 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        children: [
-                           Flexible(child: SearchTextField(
-                              controller: _searchController,
-                              onClearPressed: () async {
-                                _searchController.clear();
-                                 context
-                                    .read<WorkOrderCubit>()
-                                    .onChangeSearchKeyWord('');
-                                 context.read<WorkOrderCubit>().getWorkOrder();
-                              },
-                              onFieldSubmitted: (value) {
-                                context
-                                    .read<WorkOrderCubit>()
-                                    .onChangeSearchKeyWord(value);
-                                context.read<WorkOrderCubit>().getWorkOrder();
-                              }
-                          )),
-                          const Gap(6),
-                          FilterContainerWidget(
-                            isFilterApplied: (state.selectedVendor != null) ||
-                                (state.selectedType?.value.isNotEmpty ?? false)
-                                ? true
-                                : false,
-                            onPressed: () {
-                              _workOrderFilterBottomSheet(context);
-                            },
-                          )
-                        ],
-                      ),
+                      child: SearchTextField(
+                         controller: _searchController,
+                         onClearPressed: () async {
+                           _searchController.clear();
+                            context
+                               .read<WorkOrderCubit>()
+                               .onChangeSearchKeyWord('');
+                            context.read<WorkOrderCubit>().getWorkOrder();
+                         },
+                         onFieldSubmitted: (value) {
+                           context
+                               .read<WorkOrderCubit>()
+                               .onChangeSearchKeyWord(value);
+                           context.read<WorkOrderCubit>().getWorkOrder();
+                         },
+                        isFilterApplied: (state.selectedVendor != null) ||
+                            (state.selectedType?.value.isNotEmpty ?? false)
+                            ? true
+                            : false,
+                        onFilterPressed: () {
+                          _workOrderFilterBottomSheet(context);
+                        }),
                     ),
                     const Gap(10),
                     Expanded(

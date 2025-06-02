@@ -62,7 +62,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }
 
   @override
-  Future<VisitorsServiceCompleteResponseModel?> serviceCompleted({required Map<String, dynamic> data}) async {
+  Future<VisitorsServiceCompleteResponseModel?> completeService({required Map<String, dynamic> data}) async {
     try {
      // print('service complete: ${ApiUrl.serviceComplete}');
       dynamic response =
@@ -73,19 +73,6 @@ class ServiceRepoImpl implements ServiceRepo {
       rethrow;
     }
   }
-  // @override
-  // Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({int? id, required Map<String, dynamic> data}) async {
-  //   try {
-  //     print('clear Payment: ${ApiUrl.clearPayment}/$id');
-  //     dynamic response =
-  //     await _apiService.getAuthPostApiMultipartResponse('${ApiUrl.clearPayment}/$id', data);
-  //      print('Raw API Response: $response');
-  //     return MoveOutServiceClearPaymentResponseModel.fromJson(response);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-  //
   @override
   Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({
     required int? id,
@@ -94,7 +81,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }) async {
     try {
       String url = '${ApiUrl.clearPayment}/$id';
-      print('clearPayment^^ $url');
+      // print('clearPayment^^ $url');
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,

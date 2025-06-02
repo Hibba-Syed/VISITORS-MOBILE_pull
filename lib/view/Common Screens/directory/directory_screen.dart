@@ -5,6 +5,7 @@ import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/directory/directory_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
@@ -58,6 +59,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                       }
                     },
                   ),
+                selectedUnit == null ?  Expanded(child: EmptyWidget(text: 'Select a unit to view details')) : SizedBox.shrink(),
                   if (state.primaryOwner != null) ...[
                     const Gap(20),
                     const HeadingWidget(heading: 'OWNER INFORMATION'),

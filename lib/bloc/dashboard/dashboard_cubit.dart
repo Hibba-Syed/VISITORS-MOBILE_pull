@@ -204,7 +204,9 @@ class DashboardCubit extends Cubit<DashboardState> {
       return false;
     }
   }
-  Future<void> getData(BuildContext context,{bool isNavigationAllow = true}) async {
+  Future<void> getData(BuildContext context,
+      {bool isNavigationAllow = true}
+      ) async {
     final dashboardCubit = context.read<DashboardCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
@@ -218,15 +220,16 @@ class DashboardCubit extends Cubit<DashboardState> {
         context.read<VisitorPassCubit>().getVisitorPasses(),
         context.read<DirectoryCubit>().getUnits(),
       ]);
+    }
 
-      if (isNavigationAllow) {
-        if (context.mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.deviceDeciderScreen,
-                (route) => false,
-          );
-        }
-       else {
+    if (isNavigationAllow) {
+      if (context.mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.deviceDeciderScreen,
+              (route) => false,
+        );
+      }
+      else {
         if (context.mounted) {
           Navigator.of(context).pushNamedAndRemoveUntil(
             AppRoutes.loginScreen,
@@ -234,9 +237,18 @@ class DashboardCubit extends Cubit<DashboardState> {
           );
         }
       }
+    }}
+    Future<void> refreshData(BuildContext context) async {
+      final dashboardCubit = context.read<DashboardCubit>();
+      await dashboardCubit.getDashboardCheckIns(limit: 3);
+      await dashboardCubit.getDashboardCount();
+      await dashboardCubit.getDashboardServices(limit: 3);
+      await dashboardCubit.getDashboardWorkOrder(limit: 3);
+
+      await context.read<VisitorPassCubit>().getVisitorPasses();
+      await context.read<DirectoryCubit>().getUnits();
     }
-    }
-  }
 
 
 }
+

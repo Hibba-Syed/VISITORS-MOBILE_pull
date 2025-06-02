@@ -15,7 +15,6 @@ import '../../../model/visitor_passes/visitor_pass_model.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/strings.dart';
-import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
@@ -57,34 +56,27 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    children: [
-                       Flexible(child: SearchTextField(
-                          controller: _searchController,
-                          onClearPressed: () async {
-                            _searchController.clear();
-                             context
-                                .read<VisitorPassCubit>()
-                                .onChangeSearchKeyWord('');
-                            context.read<VisitorPassCubit>().getVisitorPasses();
-                          },
-                          onFieldSubmitted: (value) {
-                            context
-                                .read<VisitorPassCubit>()
-                                .onChangeSearchKeyWord(value);
-                            context.read<VisitorPassCubit>().getVisitorPasses();
-                          }
-                      )),
-                      const Gap(6),
-                      FilterContainerWidget(
-                        isFilterApplied: (state.selectedUnit != null)
-                            ? true
-                            : false,
-                        onPressed: () {
-                          _visitorPassesFilterBottomSheet(context);
-                        },
-                      )
-                    ],
+                  child: SearchTextField(
+                     controller: _searchController,
+                     onClearPressed: () async {
+                       _searchController.clear();
+                        context
+                           .read<VisitorPassCubit>()
+                           .onChangeSearchKeyWord('');
+                       context.read<VisitorPassCubit>().getVisitorPasses();
+                     },
+                     onFieldSubmitted: (value) {
+                       context
+                           .read<VisitorPassCubit>()
+                           .onChangeSearchKeyWord(value);
+                       context.read<VisitorPassCubit>().getVisitorPasses();
+                     },
+                    isFilterApplied: (state.selectedUnit != null)
+                        ? true
+                        : false,
+                    onFilterPressed: () {
+                      _visitorPassesFilterBottomSheet(context);
+                    },
                   ),
                 ),
                 const Gap(10),

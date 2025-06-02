@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../../../resource/constants/app_colors.dart';
+import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
 
 class SearchTextField extends StatelessWidget {
@@ -112,22 +114,28 @@ class SearchTextField extends StatelessWidget {
             ),
           ),
         ),
-        if (onFilterPressed != null) const Gap(10),
+        if (onFilterPressed != null) const Gap(8),
         if (onFilterPressed != null)
           Stack(
             children: [
               InkWell(
                 onTap: onFilterPressed,
                 child: Container(
+                  padding: EdgeInsets.all(10),
                   width: 48.0,
                   height: getHeight(context),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: const Icon(
-                    Icons.filter_alt_outlined,
-                    color: AppColors.lightGrey,
+                  child: SvgPicture.asset(
+                    AppImages.filter,
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),

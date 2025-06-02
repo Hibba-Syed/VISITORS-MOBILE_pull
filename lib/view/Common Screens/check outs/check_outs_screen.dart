@@ -7,7 +7,6 @@ import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/components/check_outs_card_widget.dart';
 import 'package:visitors/view/Common%20Screens/check%20outs/components/check_outs_filter_bottom_sheet.dart';
-import 'package:visitors/view/widgets/Filter/filter_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
@@ -45,38 +44,31 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
               child: Column(
                 children: [
                   const Gap(10),
-                  Row(
-                    children: [
-                       Flexible(child: SearchTextField(
-                          controller: _searchController,
-                          onClearPressed: () async {
-                            _searchController.clear();
-                             context
-                                .read<CheckOutCubit>()
-                                .onChangeSearchKeyWord('');
-                            context.read<CheckOutCubit>().getCheckOut();
-                          },
-                          onFieldSubmitted: (value) {
-                            context
-                                .read<CheckOutCubit>().
-                            onChangeSearchKeyWord(value);
-                            context.read<CheckOutCubit>().getCheckOut();
-                          }
-                      )),
-                      const Gap(6),
-                      FilterContainerWidget(
-                        isFilterApplied: (state.selectedUnit != null) ||
-                            (state.selectedType?.value.isNotEmpty ??
-                                false) ||
-                            (state.selectedVendor != null) ||
-                            (state.dateRang != null) || (state.selectedRang != null)
-                            ? true
-                            : false,
-                        onPressed: () {
-                          _checkOutFilterBottomSheet(context);
-                        },
-                      )
-                    ],
+                  SearchTextField(
+                     controller: _searchController,
+                     onClearPressed: () async {
+                       _searchController.clear();
+                        context
+                           .read<CheckOutCubit>()
+                           .onChangeSearchKeyWord('');
+                       context.read<CheckOutCubit>().getCheckOut();
+                     },
+                     onFieldSubmitted: (value) {
+                       context
+                           .read<CheckOutCubit>().
+                       onChangeSearchKeyWord(value);
+                       context.read<CheckOutCubit>().getCheckOut();
+                     },
+                    isFilterApplied: (state.selectedUnit != null) ||
+                        (state.selectedType?.value.isNotEmpty ??
+                            false) ||
+                        (state.selectedVendor != null) ||
+                        (state.dateRang != null) || (state.selectedRang != null)
+                        ? true
+                        : false,
+                    onFilterPressed: (){
+                      _checkOutFilterBottomSheet(context);
+                    },
                   ),
                   const Gap(10),
                   Align(

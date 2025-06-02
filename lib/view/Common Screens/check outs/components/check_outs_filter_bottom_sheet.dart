@@ -66,7 +66,7 @@ class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet>
                     if (value != null) {
                       final dateRangeString = AppUtils.getDateRangeStringFromLabel(value);
                       context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
-                      context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
+
                     }
                   },
                 ),

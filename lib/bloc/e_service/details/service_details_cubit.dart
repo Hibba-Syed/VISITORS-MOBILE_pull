@@ -79,14 +79,14 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return false;
     }
   }
-  Future<bool> serviceCompleted(
+  Future<bool> completeService(
       BuildContext context, {
         required Map<String, dynamic> data,
       }) async {
     emit(state.copyWith(isCompleteServiceLoading: true));
     try {
       VisitorsServiceCompleteResponseModel? response = await _serviceRepo
-          .serviceCompleted(data: data)
+          .completeService(data: data)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCompleteServiceLoading: false));
         Fluttertoast.showToast(
