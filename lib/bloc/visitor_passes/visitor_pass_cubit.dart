@@ -26,21 +26,21 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     emit(state.copyWith(selectedUnit: unit));
   }
 
-  clearFilterData() {
+  resetFilterData() {
     emit(VisitorPassState(
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,
       loadMore: state.loadMore,
       page: state.page,
       units: state.units,
-      visitorPassModel: state.visitorPassModel,
+      visitorPasses: state.visitorPasses,
     ));
   }
 
-  Future<void> getVisitorPass() async {
+  Future<void> getVisitorPasses() async {
     emit(state.copyWith(isLoading: true, page: 1));
     VisitorPassResponseModel? response = await _visitorPassRepo
-        .getVisitorPass(
+        .getVisitorPasses(
       keyword: state.searchKeyword,
       unitId: state.selectedUnit?.id,
     )
@@ -55,7 +55,7 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(visitorPassModel: response.record));
+      emit(state.copyWith(visitorPasses: response.record));
       //print('response${response.record?.length}');
     } else {
       Fluttertoast.showToast(
@@ -63,11 +63,11 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     }
   }
 
-  Future<void> getMoreVisitorPass() async {
+  Future<void> getMoreVisitorPasses() async {
     int page = state.page + 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     VisitorPassResponseModel? response = await _visitorPassRepo
-        .getVisitorPass(
+        .getVisitorPasses(
             page: state.page,
             unitId: state.selectedUnit?.id,
             keyword: state.searchKeyword)
@@ -83,9 +83,9 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<VisitorPassModel> checkIns = state.visitorPassModel ?? [];
-        checkIns.addAll(response.record as Iterable<VisitorPassModel>);
-        emit(state.copyWith(visitorPassModel: checkIns));
+        List<VisitorPasses> checkIns = state.visitorPasses ?? [];
+        checkIns.addAll(response.record as Iterable<VisitorPasses>);
+        emit(state.copyWith(visitorPasses: checkIns));
       } else {
         Fluttertoast.showToast(msg: 'No more visitor pass ');
         page = state.page - 1;

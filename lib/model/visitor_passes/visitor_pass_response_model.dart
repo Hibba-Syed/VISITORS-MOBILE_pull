@@ -12,7 +12,7 @@ String visitorPassesResponseModelToJson(VisitorPassResponseModel data) => json.e
 
 class VisitorPassResponseModel {
   String? status;
-  List<VisitorPassModel>? record;
+  List<VisitorPasses>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
@@ -29,7 +29,7 @@ class VisitorPassResponseModel {
 
   factory VisitorPassResponseModel.fromJson(Map<String, dynamic> json) => VisitorPassResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<VisitorPassModel>.from(json["record"]!.map((x) => VisitorPassModel.fromJson(x))),
+    record: json["record"] == null ? [] : List<VisitorPasses>.from(json["record"]!.map((x) => VisitorPasses.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],

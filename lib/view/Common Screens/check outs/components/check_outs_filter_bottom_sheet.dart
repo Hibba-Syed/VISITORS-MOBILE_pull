@@ -11,6 +11,7 @@ import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import '../../../../bloc/check_out/check_out_cubit.dart';
 import '../../../../model/unit/unit_model.dart';
 import '../../../../model/vendor/vendor_model.dart';
+import '../../../../resource/constants/app_constants.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../widgets/loader/loader_widget.dart';
 class CheckOutsFilterBottomSheet extends StatefulWidget {
@@ -60,7 +61,7 @@ class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet>
                   selectedItem: context.watch<CheckOutCubit>().state.selectedRang,
                   itemAsString: (rang) => rang,
                   compareFn: (p0, p1) => p0 == p1,
-                  items: AppUtils.rangList,
+                  items: AppConstants.rangList,
                   onChanged: (value) {
                     if (value != null) {
                       final dateRangeString = AppUtils.getDateRangeStringFromLabel(value);
@@ -127,7 +128,7 @@ class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet>
                     Navigator.pop(context);
                   },
                   clearOnPressed: () {
-                    context.read<CheckOutCubit>().clearFilterData();
+                    context.read<CheckOutCubit>().resetFilterData();
                     Navigator.pop(context);
                     context.read<CheckOutCubit>().getCheckOut();
                   },

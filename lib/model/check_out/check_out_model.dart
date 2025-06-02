@@ -1,7 +1,7 @@
 import '../unit/unit_model.dart';
 import '../visitor_model.dart';
 
-class CheckOutModel {
+class CheckOutVisitors {
   int? id;
   int? associationId;
   int? unitId;
@@ -26,7 +26,7 @@ class CheckOutModel {
   Visitor? visitor;
   dynamic vendor;
 
-  CheckOutModel({
+  CheckOutVisitors({
     this.id,
     this.associationId,
     this.unitId,
@@ -52,7 +52,7 @@ class CheckOutModel {
     this.vendor,
   });
 
-  factory CheckOutModel.fromJson(Map<String, dynamic> json) => CheckOutModel(
+  factory CheckOutVisitors.fromJson(Map<String, dynamic> json) => CheckOutVisitors(
     id: json["id"],
     associationId: json["association_id"],
     unitId: json["unit_id"],
@@ -66,7 +66,7 @@ class CheckOutModel {
     checkoutTime: json["checkout_time"] == null ? null : DateTime.parse(json["checkout_time"]),
     type: json["type"],
     purpose: json["purpose"],
-    visitorCount: json["visitor_count"],
+    visitorCount: json["visitor_count"].toString(),
     idExpiry: json["id_expiry"],
     entryCardNumber: json["entry_card_number"],
     name: json["name"],

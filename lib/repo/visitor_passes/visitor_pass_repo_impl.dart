@@ -8,7 +8,7 @@ class VisitorPassRepoImpl implements VisitorPassRepo {
   final BaseApiServices _apiService = NetworkApiServices();
 
   @override
-  Future<VisitorPassResponseModel?> getVisitorPass({
+  Future<VisitorPassResponseModel?> getVisitorPasses({
     int? page,
     int? limit,
     String? keyword,

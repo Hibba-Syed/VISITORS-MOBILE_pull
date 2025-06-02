@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart' show Fluttertoast;
@@ -5,9 +7,10 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/repo/filter/general_filter_impl.dart';
-
+import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
+import '../../model/check_out/check_out_model.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
 import '../../model/vendor/vendor_model.dart';
@@ -49,7 +52,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
-  clearFilterData() {
+  resetFilterData() {
     emit(CheckInsState(
       checkInModel: state.checkInModel,
       isCheckOutAllLoading: state.isCheckOutAllLoading,
@@ -88,7 +91,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
       emit(state.copyWith(checkInModel: response.record));
-      print('response${response.record?.length}');
+      //print('response${response.record?.length}');
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching visitors check-ins');
@@ -140,11 +143,9 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   Future<bool> checkOutAll(BuildContext context) async {
     emit(state.copyWith(isCheckOutAllLoading: true));
 
-    CheckOutAllModel? response =
+    CheckOutAll? response =
         await _checkInRepo.checkOutAll().onError((error, stackTrace) {
       emit(state.copyWith(isCheckOutAllLoading: false));
-      Fluttertoast.showToast(msg: error.toString());
-      ///
       return null;
     });
     emit(state.copyWith(isCheckOutAllLoading: false));
@@ -156,6 +157,46 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong, please try again later');
+      return false;
+    }
+  }
+  Future<bool> checkOutVisitors(
+      BuildContext context, {
+        required int? id,
+        required Map<String, dynamic> data,
+      }) async {
+    emit(state.copyWith(isCheckOutVisitor: true));
+    try {
+      CheckOutVisitorResponseModel? response = await _checkInRepo
+          .checkOutVisitors(
+          data: data,
+         id: id
+      )
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isCheckOutVisitor: false));
+        log( error.toString());
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        return null;
+      });
+      emit(state.copyWith(isCheckOutVisitor: false));
+      // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
+      if (response != null && response.status == 'success') {
+        emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
+        Navigator.pop(context);
+        getCheckIns();
+        Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while checking out visitor');
+        return false;
+      }
+    } catch (e) {
+      emit(state.copyWith(isCheckOutVisitor: false));
+      Fluttertoast.showToast(msg: e.toString());
+      // log('cubit call ${e.toString()}');
       return false;
     }
   }
@@ -199,4 +240,5 @@ class CheckInsCubit extends Cubit<CheckInsState> {
           msg: 'Something went wrong while fetching vendors');
     }
   }
+
 }

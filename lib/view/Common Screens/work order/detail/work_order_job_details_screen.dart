@@ -20,8 +20,16 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-class WorkOrderJobDetailsScreen extends StatelessWidget {
+class WorkOrderJobDetailsScreen extends StatefulWidget {
   const WorkOrderJobDetailsScreen({super.key});
+
+  @override
+  State<WorkOrderJobDetailsScreen> createState() => _WorkOrderJobDetailsScreenState();
+}
+
+class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
+  TextEditingController noteController =
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -145,13 +153,11 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                     barrierDismissible: false,
                     context: context,
                     builder: (context) {
-                      TextEditingController noteController =
-                          TextEditingController();
                       return CustomAlertDialogBox(
                         isCancelButtonDisable: true,
                         insetPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
-                        title: 'Add Log to JB001-24-00102',
+                        title: 'Add Log to ${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.reference ?? ""}',
                         confirmButtonText: 'Add Log',
                         onConfirm: () async {
                           if (noteController.text.isEmpty) {
@@ -159,7 +165,7 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                                 msg: "Please type note first.");
                             return false;
                           }
-                          print('add##${noteController.text}');
+                          // print('add##${noteController.text}');
                           final result = await context
                               .read<WorkOrderDetailsCubit>()
                               .addWorkOrderLog(
@@ -170,9 +176,10 @@ class WorkOrderJobDetailsScreen extends StatelessWidget {
                               'note': noteController.text,
                             },
                           );
-
+                          noteController.clear();
                           return result;
                         },
+
                         contentBuilder: (context, setState) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,

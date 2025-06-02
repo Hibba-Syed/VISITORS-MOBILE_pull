@@ -8,7 +8,7 @@ import 'package:visitors/view/Common%20Screens/auth/biometric_auth_screen.dart';
 import 'package:visitors/view/Common%20Screens/auth/login_screen.dart';
 import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/detail/service_details_screen.dart';
+import 'package:visitors/view/Common%20Screens/services/detail/fit_out_service_details_screen.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_check_ins_screen.dart';
 import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
 import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
@@ -24,7 +24,7 @@ import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
-import '../../bloc/visitor_pass/visitor_pass_cubit.dart';
+import '../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../bloc/work_order/work_order_cubit.dart';
 import '../../view/Common Screens/auth/loading_screen.dart';
@@ -92,7 +92,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.servicesDetailsScreen,
-      page: const ServiceDetailsScreen(),
+      page:  FitOutServiceDetailsScreen(),
         bloc: BlocProvider(
           create: (context) => ServiceDetailsCubit(),
         )
@@ -103,7 +103,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.checkInDetailsScreen,
-      page: const CheckInDetailsScreen(),
+      page:  CheckInDetailsScreen(),
       bloc: BlocProvider(
         create: (context) => CheckInsDetailsCubit(),
       ),
@@ -133,7 +133,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.mobileDashboardScreen,
-      page: const MobileDashboardScreen(),
+      page:  MobileDashboardScreen(),
     ),
     PageEntity(
       route: AppRoutes.tabletDashboardScreen,

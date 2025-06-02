@@ -1,8 +1,13 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
 import '../../../model/check_ins/check_in_log_response_model.dart';
+import '../../../model/check_out/check_out_model.dart';
+import '../../../model/check_outs/check_out_visitor_response_model.dart';
 import '../../../repo/check_ins/check_in_repo.dart';
 import '../../../repo/check_ins/check_in_repo_impl.dart';
 
@@ -15,7 +20,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
   Future<CheckInLogResponseModel?> getCheckInDetailsLog({required int? id}) async {
     emit(state.copyWith(isLoading: true));
     CheckInLogResponseModel? response =
-    await _checkInRepo.getCheckInLogs(id: id).onError(
+    await _checkInRepo.getCheckInDetailsLogs(id: id).onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
@@ -26,12 +31,54 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     );
     if (response != null && response.status == 'success') {
       emit(state.copyWith(isLoading: false));
-       emit(state.copyWith(checkInLogModel: response.record,isLoading: false));
+       emit(state.copyWith(checkInLogs: response.record,isLoading: false));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching check in log details');
     }
     emit(state.copyWith(isLoading: false));
     return null;
+  }
+  Future<bool> checkOutVisitors(
+      BuildContext context, {
+        required int? id,
+        required Map<String, dynamic> data,
+      }) async {
+    emit(state.copyWith(isCheckOutVisitor: true));
+    try {
+      CheckOutVisitorResponseModel? response = await _checkInRepo
+          .checkOutVisitors(
+          data: data,
+          id: id
+      )
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isCheckOutVisitor: false));
+        // log( error.toString());
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        return null;
+      });
+      emit(state.copyWith(isCheckOutVisitor: false));
+      log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
+      if (response != null && response.status == 'success') {
+        emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
+        Navigator.pop(context);
+        if (context.mounted) {
+         getCheckInDetailsLog(id: id);
+        }
+        Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while checking out visitor');
+        return false;
+      }
+    } catch (e) {
+      emit(state.copyWith(isCheckOutVisitor: false));
+      Fluttertoast.showToast(msg: e.toString());
+      log('cubit call ${e.toString()}');
+      return false;
+    }
   }
 }

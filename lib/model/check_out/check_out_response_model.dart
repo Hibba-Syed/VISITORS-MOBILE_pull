@@ -12,7 +12,7 @@ String checkOutResponseModelToJson(CheckOutResponseModel data) => json.encode(da
 
 class CheckOutResponseModel {
   String? status;
-  List<CheckOutModel>? record;
+  List<CheckOutVisitors>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
@@ -29,7 +29,7 @@ class CheckOutResponseModel {
 
   factory CheckOutResponseModel.fromJson(Map<String, dynamic> json) => CheckOutResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<CheckOutModel>.from(json["record"]!.map((x) => CheckOutModel.fromJson(x))),
+    record: json["record"] == null ? [] : List<CheckOutVisitors>.from(json["record"]!.map((x) => CheckOutVisitors.fromJson(x))),
     code: json["code"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
     requestStatus: json["request_status"],

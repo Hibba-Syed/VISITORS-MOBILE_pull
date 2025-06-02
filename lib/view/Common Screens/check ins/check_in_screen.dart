@@ -33,6 +33,7 @@ class CheckInsScreen extends StatefulWidget {
 class _CheckInsScreenState extends State<CheckInsScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController visitorsNoController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -161,42 +162,43 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                   primary: false,
                                   itemCount: state.checkInModel?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    CheckInModel? checkInsRecord =
+                                    CheckInModel? checkIns =
                                         state.checkInModel?[index];
                                     return CheckInCardWidget(
-                                      count: checkInsRecord?.visitorCount ?? "",
+                                      count: checkIns?.visitorCount ?? "",
                                       typeImage:
-                                          (checkInsRecord?.type?.toLowerCase() ==
+                                          (checkIns?.type?.toLowerCase() ==
                                                       'community visit' ||
-                                                  checkInsRecord?.type
+                                                  checkIns?.type
                                                           ?.toLowerCase() ==
                                                       'community service')
                                               ? AppImages.community
                                               : "",
                                       typeText:
-                                          (checkInsRecord?.type?.toLowerCase() ==
+                                          (checkIns?.type?.toLowerCase() ==
                                                       'unit visit' ||
-                                                  checkInsRecord?.type
+                                                  checkIns?.type
                                                           ?.toLowerCase() ==
                                                       'unit service')
-                                              ? checkInsRecord?.unit?.unitNumber
-                                              : checkInsRecord?.type ?? "",
-                                      name: checkInsRecord?.name ?? "",
+                                              ? checkIns?.unit?.unitNumber
+                                              : checkIns?.type ?? "",
+                                      name: checkIns?.name ?? "",
                                       profileImageUrl:
-                                          checkInsRecord?.visitor?.imageUrl ?? "",
+                                          checkIns?.visitor?.imageUrl ?? "",
                                       type: AppUtils.getServiceableType(
-                                              checkInsRecord?.serviceableType)
+                                              checkIns?.serviceableType)
                                           .value,
                                       date: DateTimeUtil.getFormattedDatesTime(
-                                          checkInsRecord?.visitor?.createdAt),
+                                          checkIns?.visitor?.createdAt),
                                       checkOutOnPressed: () {
-                                        _showCheckoutDialog(context);
+                                        context.read<CheckInsDetailsCubit>().getCheckInDetailsLog(id: checkIns?.id);
+                                        _showCheckoutDialog(context,checkIns);
                                       },
                                       detailsOnPressed: () {
                                         context
                                             .read<CheckInsDetailsCubit>()
                                             .getCheckInDetailsLog(
-                                                id: checkInsRecord?.id);
+                                                id: checkIns?.id);
                                         Navigator.pushNamed(context,
                                             AppRoutes.checkInDetailsScreen,
                                             arguments:
@@ -224,9 +226,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
     );
   }
 
-  void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController visitorsNoController = TextEditingController();
-
+  void _showCheckoutDialog(BuildContext context,CheckInModel? checkIns) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -234,50 +234,64 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
         return CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: 'Checkout for Ahmed',
+          title: 'Checkout for ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
+              visitorsCount: checkIns?.visitorCount ?? "",
+              controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
                   barrierDismissible: false,
                   context: context,
                   builder: (context) {
                     return CustomAlertDialogBox(
-                      insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+                      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isCancelButtonDisable: true,
                       confirmButtonColor: AppColors.red,
                       confirmButtonText: 'Checkout All',
                       title: 'Checkout for All Check-Ins',
-                      onConfirm: (){
-                        return context
-                            .read<CheckInsCubit>()
-                            .checkOutAll(context);
-                      },
-                      contentBuilder: (context, setState) {
-                        return const Align(
-                          alignment: Alignment.center,
-                          child: AllCheckOutDesignWidget(),
-                        );
+                      onConfirm: ()async{
+                        final result = await context.read<CheckInsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
+                          "checkout_count": visitorsNoController.text.isNotEmpty
+                          ? {"checkout_count": visitorsNoController.text}
+                            : {}
+                        });
+                        visitorsNoController.clear();
+                        return result;
+                       },
+                    );
+                  },
+                );
+              },
+              checkOutOnPress: ()async{
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) {
+                    return CustomAlertDialogBox(
+                      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+                      isCancelButtonDisable: true,
+                      confirmButtonColor: AppColors.red,
+                      confirmButtonText: 'Checkout',
+                      title: 'Checkout For Visitors',
+                      onConfirm: ()async{
+                        final result = await
+                        context.read<CheckInsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
+                          "checkout_count": visitorsNoController.text
+                        });
+                        visitorsNoController.clear();
+                        return result;
+                        });
+
                       },
                     );
                   },
                 );
               },
-              checkOutOnPress: () {},
-              logIsLast: true,
-              horizontalPadding: 0,
-              logDate: "2025-04-04T05:33:36.000000Z",
-              controller: visitorsNoController,
-              logStatus: 'Check-In',
-              logByValue: '',
-              visitorsCount: 5,
-              logDescription:
-                  '6 visitor(s) checked-in from gate ‘The W Residences',
             );
           },
         );
-      },
-    );
+
   }
 
   _checkInFilterBottomSheet(context) {

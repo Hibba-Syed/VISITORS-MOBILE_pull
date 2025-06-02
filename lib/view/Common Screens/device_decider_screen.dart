@@ -184,8 +184,9 @@ class DeviceDeciderScreen extends StatelessWidget {
 
   Widget _getMobileScreen(int index) {
     switch (index) {
-      case AppConstants.dashboardIndex:
-        return const MobileDashboardScreen();
+      case
+      AppConstants.dashboardIndex:
+        return  MobileDashboardScreen();
       case AppConstants.checkInsIndex:
         return const CheckInsScreen();
       case AppConstants.eServicesIndex:

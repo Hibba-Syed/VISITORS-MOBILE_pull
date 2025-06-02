@@ -29,7 +29,7 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(state.copyWith(selectedUnit: unit));
   }
 
-  clearFilterData() {
+  resetFilterData() {
     emit(ServiceState(
       serviceModel: state.serviceModel,
       isServicesDetailsLoading: state.isServicesDetailsLoading,

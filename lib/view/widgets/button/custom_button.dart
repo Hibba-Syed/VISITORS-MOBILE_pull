@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final TextAlign? textAlign;
   final double? borderRadius;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final int maxLines;
   final bool invert;
   final double? width;
@@ -33,7 +33,7 @@ class CustomButton extends StatelessWidget {
     this.maxLines = 1,
     this.padding = const EdgeInsets.all(10),
     this.textColor,
-    required this.onPressed,
+     this.onPressed,
     this.invert = false,
     this.fontWeight,
     this.borderRadius,

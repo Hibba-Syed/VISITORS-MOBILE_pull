@@ -71,7 +71,7 @@ class NetworkApiServices implements BaseApiServices {
       });
       debugPrint('code: ${response.statusCode}\nbody: ${response.body}');
       responseJson = returnResponse(response);
-      print('add Log ??? ${response.body} status  ${response.statusCode}');
+      //print('add Log ??? ${response.body} status  ${response.statusCode}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     } catch (e) {
@@ -217,8 +217,8 @@ class NetworkApiServices implements BaseApiServices {
       }
       request.files.addAll(files);
       Map<String, String> headers = {
-        // "content-type": "multipart/form-data",
-        "content-type": "application/json",
+         "content-type": "multipart/form-data",
+       // "content-type": "application/json",
         'Accept': 'application/json',
         "Authorization": 'Bearer ${Globals().token}'
 
@@ -285,6 +285,7 @@ class NetworkApiServices implements BaseApiServices {
     switch (statusCode) {
       // Add your own status code errors or message
       case 200:
+      case 201:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:

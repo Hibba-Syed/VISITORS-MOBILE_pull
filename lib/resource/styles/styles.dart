@@ -229,4 +229,9 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static const TextStyle style13DarkGrey500 = TextStyle(
+    color: AppColors.darkGrey,
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
+  );
 }

@@ -1,6 +1,6 @@
 import 'package:visitors/model/service/status_history_model.dart';
 
-import '../application_model.dart';
+import 'application_model.dart';
 import '../unit/unit_model.dart';
 import 'document_model.dart';
 

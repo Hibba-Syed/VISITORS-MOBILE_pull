@@ -42,9 +42,9 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-  clearFilterData() {
+  resetFilterData() {
     emit(CheckOutState(
-      checkOutModel: state.checkOutModel,
+      checkOutVisitors: state.checkOutVisitors,
       isCheckOutAllLoading: state.isCheckOutAllLoading,
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,
@@ -60,7 +60,6 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   }
 
   Future<void> getCheckOut(
-
       ) async {
     emit(state.copyWith(isCheckOutLoading: true));
     CheckOutResponseModel? response =
@@ -81,7 +80,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     );
     emit(state.copyWith(isCheckOutLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(checkOutModel: response.record));
+      emit(state.copyWith(checkOutVisitors: response.record));
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching check out');
     }

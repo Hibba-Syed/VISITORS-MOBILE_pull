@@ -12,6 +12,7 @@ import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/unit/unit_model.dart';
 import '../../../../model/vendor/vendor_model.dart';
+import '../../../../resource/constants/app_constants.dart';
 import '../../../widgets/loader/loader_widget.dart';
 
 class CheckInFilterBottomSheet extends StatefulWidget {
@@ -68,7 +69,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
               selectedItem: context.watch<CheckInsCubit>().state.selectedRang,
               itemAsString: (rang) => rang,
               compareFn: (p0, p1) => p0 == p1,
-              items: AppUtils.rangList,
+              items: AppConstants.rangList,
               onChanged: (value) {
                 // selectedRang = value;
                 final dateRangeString =
@@ -140,7 +141,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 Navigator.pop(context);
               },
               clearOnPressed: () {
-                context.read<CheckInsCubit>().clearFilterData();
+                context.read<CheckInsCubit>().resetFilterData();
                 Navigator.pop(context);
                 context.read<CheckInsCubit>().getCheckIns();
               },

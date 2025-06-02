@@ -32,13 +32,12 @@ class ActivityLogWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding ?? 10, vertical: verticalPadding ?? 0),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
+      // decoration: BoxDecoration(
+      //   color: AppColors.white,
+      //   borderRadius: BorderRadius.circular(10),
+      // ),
       child: Column(
         children: [
-          const Gap(10),
           TimelineTile(
             alignment: TimelineAlign.values.first,
             isLast: isLast ?? false,
@@ -92,7 +91,7 @@ class ActivityLogWidget extends StatelessWidget {
                                 ? AppTextStyles.style16black600
                                 : AppTextStyles.style14Black600),
                         Flexible(
-                          child: Text(  byValue ?? "",
+                          child: Text(byValue ?? ""  ,
                               style: AppUtils.isTablet(context)
                                   ? AppTextStyles.style16Primary600
                                   : AppTextStyles.style14Primary600),
@@ -104,7 +103,7 @@ class ActivityLogWidget extends StatelessWidget {
                       description ?? "",
                       style: AppUtils.isTablet(context)
                           ? AppTextStyles.style14DarkGrey600
-                          : AppTextStyles.style12DarkGrey600,
+                          : AppTextStyles.style13DarkGrey500,
                     ),
                     const Gap(10),
                     IconTextContainerWidget(

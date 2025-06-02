@@ -120,7 +120,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                             profileImageUrl: checkInModel?.visitor?.imageUrl ?? "",
                             type:  AppUtils.getServiceableType(checkInModel?.type).label,
                             date: DateTimeUtil.getFormattedDateTime(checkInModel?.createdAt.toString()),
-                            purpose: checkInModel?.serviceableType == "visitor_pass" ? checkInModel?.purpose :
+                            purpose: checkInModel?.serviceableType == "visitor_passes" ? checkInModel?.purpose :
                             checkInModel?.description ?? "",
                             checkOutOnPressed: () {
                               _showCheckoutDialog(context);
@@ -163,10 +163,10 @@ class ServiceableCheckInsScreen extends StatelessWidget {
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
               checkOutAllOnPress: () {},
-              checkOutOnPress: () {},
+              // checkOutOnPress: () {},
               controller: visitorsNoController,
               logIsLast: true,
-              visitorsCount: 2,
+              visitorsCount: '2',
               horizontalPadding: 0,
               logDate: '2025-04-04T05:33:36.000000Z',
               logStatus: 'Check-In',

@@ -355,9 +355,9 @@ class TabletDashboardScreen extends StatelessWidget {
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
               checkOutAllOnPress: () {  },
-              checkOutOnPress: () {  },
+              // checkOutOnPress: () {  },
               horizontalPadding: 0,
-              visitorsCount: 2,
+              visitorsCount: '2',
               logIsLast: true,
               logDate: '2025-04-04T05:33:36.000000Z',
               controller: visitorsNoController,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/bloc/visitor_pass/visitor_pass_cubit.dart';
 import 'package:visitors/model/check_ins/check_in_model.dart';
 import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
@@ -22,7 +21,9 @@ import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../bloc/e_service/details/service_details_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
+import '../../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../../bloc/work_order/details/work_order_details_cubit.dart';
+import '../../../bloc/work_order/work_order_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/app_colors.dart';
@@ -35,10 +36,10 @@ import '../../widgets/container_widgets/check_out_container_widget.dart';
 import '../../widgets/empty_widget.dart';
 
 class MobileDashboardScreen extends StatelessWidget {
-  const MobileDashboardScreen({
+   MobileDashboardScreen({
     super.key,
   });
-
+  final TextEditingController visitorsNoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
@@ -93,9 +94,9 @@ class MobileDashboardScreen extends StatelessWidget {
               },
             ),
           ];
-          final totalCheckIns = (state.visitorPassModel ?? [])
-              .map((e) => e.activeCheckInsCount ?? 0)
-              .fold<int>(0, (prev, curr) => prev + curr);
+          // final totalCheckIns = (state.visitorPasses ?? [])
+          //     .map((e) => e.activeCheckInsCount ?? 0)
+          //     .fold<int>(0, (prev, curr) => prev + curr);
 
           return RefreshIndicator(
             onRefresh: ()async{
@@ -200,6 +201,7 @@ class MobileDashboardScreen extends StatelessWidget {
                               borderRadius: 6,
                               image: AppImages.view,
                               onPressed: () {
+                                context.read<CheckInsCubit>().getCheckIns();
                                 context
                                     .read<DeviceDeciderCubit>()
                                     .onChangeSelectedIndex(
@@ -223,37 +225,38 @@ class MobileDashboardScreen extends StatelessWidget {
                           primary: false,
                           itemCount: state.checkInsModel?.length ?? 0,
                           itemBuilder: (context, index) {
-                            CheckInModel? checkInsRecord =
+                            CheckInModel? checkIns =
                                 state.checkInsModel?[index];
                             return CheckInCardWidget(
-                              count: checkInsRecord?.visitorCount ?? "",
-                              typeImage: (checkInsRecord?.type?.toLowerCase() ==
+                              count: checkIns?.visitorCount ?? "",
+                              typeImage: (checkIns?.type?.toLowerCase() ==
                                           'community visit' ||
-                                      checkInsRecord?.type?.toLowerCase() ==
+                                      checkIns?.type?.toLowerCase() ==
                                           'community service')
                                   ? AppImages.community
                                   : "",
-                              typeText: (checkInsRecord?.type?.toLowerCase() ==
+                              typeText: (checkIns?.type?.toLowerCase() ==
                                           'unit visit' ||
-                                      checkInsRecord?.type?.toLowerCase() ==
+                                      checkIns?.type?.toLowerCase() ==
                                           'unit service')
-                                  ? checkInsRecord?.unit?.unitNumber
-                                  : checkInsRecord?.type ?? "",
-                              name: checkInsRecord?.name ?? "",
+                                  ? checkIns?.unit?.unitNumber
+                                  : checkIns?.type ?? "",
+                              name: checkIns?.name ?? "",
                               profileImageUrl:
-                                  checkInsRecord?.visitor?.imageUrl ?? "",
+                                  checkIns?.visitor?.imageUrl ?? "",
                               type:AppUtils.getServiceableType(
-                                  checkInsRecord?.serviceableType)
+                                  checkIns?.serviceableType)
                                   .label,
                               date: DateTimeUtil.getFormattedDatesTime(
-                                  checkInsRecord?.visitor?.createdAt),
+                                  checkIns?.visitor?.createdAt),
                               checkOutOnPressed: () {
-                                _showCheckoutDialog(context);
+                                context.read<CheckInsDetailsCubit>().getCheckInDetailsLog(id:checkIns?.id);
+                                _showCheckoutDialog(context,checkIns);
                               },
                               detailsOnPressed: () {
                                 context
                                     .read<CheckInsDetailsCubit>()
-                                    .getCheckInDetailsLog(id: checkInsRecord?.id);
+                                    .getCheckInDetailsLog(id: checkIns?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.checkInDetailsScreen,
                                     arguments: state.checkInsModel?[index]);
@@ -287,12 +290,11 @@ class MobileDashboardScreen extends StatelessWidget {
                         children: [
                           VisitorPassesButton(
                             horizontalPadding: 6,
-                            count:
-                            totalCheckIns,
-
+                            count: 1,
+                            // totalCheckIns,
                             //state.visitorPassModel?.fold<int?>(0, (previousValue, element) => ((previousValue??0)+ (element.activeCheckInsCount??0))),
                             onPressed: () {
-                              context.read<VisitorPassCubit>().getVisitorPass();
+                              context.read<VisitorPassCubit>().getVisitorPasses();
                               Navigator.pushNamed(
                                   context, AppRoutes.visitorPassesScreen);
                             },
@@ -359,11 +361,13 @@ class MobileDashboardScreen extends StatelessWidget {
                                     context, AppRoutes.serviceableCheckInsScreen);
                               },
                               detailsOnPressed: () {
-                                context
-                                    .read<ServiceDetailsCubit>()
-                                    .getServiceDetails(serviceId: service?.id);
-                                Navigator.pushNamed(
-                                    context, AppRoutes.servicesDetailsScreen);
+                                context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppUtils.getRouteName(service),
+                                    ));
                               },
                             );
                           },
@@ -388,6 +392,7 @@ class MobileDashboardScreen extends StatelessWidget {
                           borderRadius: 6,
                           image: AppImages.view,
                           onPressed: () {
+                            context.read<WorkOrderCubit>().getWorkOrder();
                             context
                                 .read<DeviceDeciderCubit>()
                                 .onChangeSelectedIndex(
@@ -476,8 +481,7 @@ class MobileDashboardScreen extends StatelessWidget {
     );
   }
 
-  void _showCheckoutDialog(BuildContext context) {
-    final TextEditingController visitorsNoController = TextEditingController();
+  void _showCheckoutDialog(BuildContext context, CheckInModel? checkIns) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -485,21 +489,60 @@ class MobileDashboardScreen extends StatelessWidget {
         return CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: 'Checkout for Ahmed',
+          title: 'Checkout for ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
-            return CheckOutContainerWidget(
-              checkOutAllOnPress: () {},
-              checkOutOnPress: () {},
-              controller: visitorsNoController,
-              logIsLast: true,
-              visitorsCount: 4,
-              horizontalPadding: 0,
-              logDate: '2025-04-04T05:33:36.000000Z',
-              logStatus: 'Check-In',
-              logByValue: '',
-              logDescription:
-                  '6 visitor(s) checked-in from gate ‘The W Residences',
-            );
+            return
+              CheckOutContainerWidget(
+                visitorsCount: checkIns?.visitorCount ?? "",
+                controller: visitorsNoController,
+                checkOutAllOnPress: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return CustomAlertDialogBox(
+                        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+                        isCancelButtonDisable: true,
+                        confirmButtonColor: AppColors.red,
+                        confirmButtonText: 'Checkout All',
+                        title: 'Checkout for All Check-Ins',
+                        onConfirm: ()async{
+                          final result = await context.read<DashboardCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
+                            "checkout_count": visitorsNoController.text.isNotEmpty
+                                ? {"checkout_count": visitorsNoController.text}
+                                : {}
+                          });
+                          visitorsNoController.clear();
+                          return result;
+                        },
+                      );
+                    },
+                  );
+                },
+                checkOutOnPress: ()async{
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return CustomAlertDialogBox(
+                          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+                          isCancelButtonDisable: true,
+                          confirmButtonColor: AppColors.red,
+                          confirmButtonText: 'Checkout',
+                          title: 'Checkout For Visitors',
+                          onConfirm: ()async{
+                            final result = await
+                            context.read<DashboardCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
+                              "checkout_count": visitorsNoController.text
+                            });
+                            visitorsNoController.clear();
+                            return result;
+                          });
+
+                    },
+                  );
+                },
+              );
           },
         );
       },

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:visitors/bloc/visitor_pass/visitor_pass_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
+import '../../../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../../../model/unit/unit_model.dart';
 import '../../../widgets/loader/loader_widget.dart';
 
@@ -70,13 +70,13 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
                 const Gap(30),
                 FilterButtonWidget(
                   applyOnPressed: () {
-                    context.read<VisitorPassCubit>().getVisitorPass();
+                    context.read<VisitorPassCubit>().getVisitorPasses();
                     Navigator.pop(context);
                   },
                   clearOnPressed: () {
-                    context.read<VisitorPassCubit>().clearFilterData();
+                    context.read<VisitorPassCubit>().resetFilterData();
                     Navigator.pop(context);
-                    context.read<VisitorPassCubit>().getVisitorPass();
+                    context.read<VisitorPassCubit>().getVisitorPasses();
                   },),
               ],
             )),

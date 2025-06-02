@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/view/Common%20Screens/services/detail/short_stay_service_details_screen.dart';
 
+import '../model/service/service_model.dart';
 import '../resource/constants/strings.dart';
+import '../resource/styles/styles.dart';
+import '../view/Common Screens/services/detail/access_device_service_details_sceen.dart';
+import '../view/Common Screens/services/detail/delivery_permit_service_details_screen.dart';
+import '../view/Common Screens/services/detail/facility_booking_service_details_screen.dart';
+import '../view/Common Screens/services/detail/fit_out_service_details_screen.dart';
+import '../view/Common Screens/services/detail/move_in_service_details_screen.dart';
+import '../view/Common Screens/services/detail/move_out_service_details_screen.dart';
+import '../view/Common Screens/services/detail/work_permit_service_details_screen.dart';
 
 class AppUtils {
   // Status colors
@@ -15,6 +25,9 @@ class AppUtils {
     }
     if (status?.toLowerCase() == "notified") {
       return AppColors.primary;
+    }
+    if (status?.toLowerCase() == "waiting for payment") {
+      return Colors.grey;
     }
 
     return AppColors.red;
@@ -102,11 +115,33 @@ class AppUtils {
     TypeModel(label: 'Visitor Pass', value: Strings.keyVisitorPass),
   ];
 
-  static  List<String> rangList = [
-    'Last 30 Days',
-    'Last 60 Days',
-    'Last 90 Days'
-  ];
+  static Widget getRouteName(ServiceModel? service) {
+    String? type = service?.applicationTitle?.toLowerCase();
+
+    switch (type) {
+      case "ad":
+        return AccessDeviceServiceDetailsScreen(service: service);
+      case "hb":
+        return FacilityBookingServiceDetailsScreen(service: service);
+      case "dp":
+        return DeliveryPermitServiceDetailsScreen(service: service);
+      case "fo":
+        return FitOutServiceDetailsScreen(service: service);
+      case "mi":
+        return MoveInServiceDetailsScreen(service: service);
+      case "mo":
+        return MoveOutServiceDetailsScreen(service: service);
+      case "wp":
+        return WorkPermitServiceDetailsScreen(service: service);
+        case "ss":
+        return ShortStayServiceDetailsScreen(service: service);
+      default:
+        return const Scaffold(
+          body: Center(child: Text("No service details available",style: AppTextStyles.style13DarkGrey600,)),
+        );
+    }
+  }
+
   static String? getRequestName(String? applicationType) {
     String? requestName;
     if (applicationType == "AD") {

@@ -4,8 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
-import 'package:visitors/view/Common%20Screens/services/components/services_card_widget.dart'
-    show ServicesCardWidget;
 import 'package:visitors/view/Common%20Screens/services/components/services_filter_bottom_sheet.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
@@ -18,6 +16,8 @@ import '../../../resource/constants/strings.dart';
 import '../../widgets/Filter/filter_widget.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
+
+import 'components/services_card_widget.dart';
 
 class AllServicesScreen extends StatefulWidget {
   const AllServicesScreen({super.key});
@@ -159,12 +159,19 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                 .serviceableCheckInsScreen);
                                       },
                                       detailsOnPressed: () {
-                                        print('service move: ${service?.toJson()
-                                        }');
-
+                                        // print("TAPPED");
+                                        // print('service move: ${service?.toJson()
+                                        // }
+                                        // );
                                         context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
-                                        Navigator.pushNamed(context,
-                                            AppRoutes.servicesDetailsScreen);
+                                        // print("ROUTE::: ${AppUtils.getRouteName(service)}");
+                                        // return;
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AppUtils.getRouteName(service),
+                                            ));
                                       },
                                     );
                                   },
@@ -189,7 +196,6 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       ),
     );
   }
-
   _servicesFilterBottomSheet(context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
@@ -203,4 +209,5 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       },
     );
   }
+
 }
