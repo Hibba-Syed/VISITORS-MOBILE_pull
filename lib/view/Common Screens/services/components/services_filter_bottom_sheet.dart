@@ -21,7 +21,6 @@ class ServicesFilterBottomSheet extends StatefulWidget {
 }
 
 class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,9 +53,10 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                   selectedItem:
                       context.watch<ServiceCubit>().state.selectedType,
                   itemAsString: (type) => type.label,
-                   compareFn: (p0, p1) => p0.value == p1.value,
+                  compareFn: (type, item) => type.value == item.value,
                   items: AppUtils.serviceTypeList,
                   onChanged: (value) {
+                    // print(' Type***${value?.value}');
                     context.read<ServiceCubit>().onChangeSelectedType(value);
                   }),
               const Gap(10),

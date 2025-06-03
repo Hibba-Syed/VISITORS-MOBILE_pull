@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -374,14 +373,10 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           VisitorPassesButton(
                             horizontalPadding: 6,
-                            count: 1,
+                            count: state.visitorPassesCount?.count ?? 0,
                             onPressed: () {
                               onViewVisitorPasses(context);
-                              // context
-                              //     .read<VisitorPassCubit>()
-                              //     .getVisitorPasses();
-                              // Navigator.pushNamed(
-                              //     context, AppRoutes.visitorPassesScreen);
+                              print('count##${state.visitorPassesCount?.count}');
                             },
                           ),
                           const Gap(6),
@@ -558,7 +553,7 @@ class DashboardScreen extends StatelessWidget {
       final List<ActionsItemModel> actions = [
         ActionsItemModel(
           title: 'All Check-Ins',
-          count: 10,
+          count: state.countModel?.total ?? 0,
           iconPath: AppImages.checkIn,
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.green,
@@ -568,7 +563,7 @@ class DashboardScreen extends StatelessWidget {
         ),
         ActionsItemModel(
           title: 'Guests',
-          count: 10,
+          count: state.countModel?.guests ?? 0,
           iconPath: AppImages.guests,
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.yellow,
@@ -578,7 +573,7 @@ class DashboardScreen extends StatelessWidget {
         ),
         ActionsItemModel(
           title: 'E-Services',
-          count: 5,
+          count: state.countModel?.service ?? 0,
           iconPath: AppImages.eServices,
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.cyanBlue,
@@ -588,7 +583,7 @@ class DashboardScreen extends StatelessWidget {
         ),
         ActionsItemModel(
           title: 'Work Order / RFPs',
-          count: 2,
+          count: state.countModel?.jobs ?? 0,
           iconPath: AppImages.rfps,
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.primary,
@@ -773,7 +768,7 @@ class DashboardScreen extends StatelessWidget {
                         VisitorPassesButton(
                           horizontalPadding: 35,
                           verticalPadding: 14,
-                          count: 45,
+                          count: state.visitorPassesCount?.count ?? 0,
                           onPressed: () {
                             onViewVisitorPasses(context);
                           },

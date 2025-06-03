@@ -78,7 +78,22 @@ class AppUtils {
 
     return '${format(fromDate)} - ${format(now)}';
   }
-
+//
+  static final List<Map<String, String>> rangList = [
+    {
+      'label': 'Last 30 Days',
+      'dateRange': getDateRangeStringFromLabel('Last 30 Days'),
+    },
+    {
+      'label': 'Last 60 Days',
+      'dateRange': getDateRangeStringFromLabel('Last 60 Days'),
+    },
+    {
+      'label': 'Last 90 Days',
+      'dateRange': getDateRangeStringFromLabel('Last 90 Days'),
+    },
+  ];
+  //
   static TypeModel getServiceableType(String? type) {
     if (type == "job") {
       return TypeModel(label: "Work Order / RFP", value: Strings.keyWorkOrder);
@@ -95,7 +110,7 @@ class AppUtils {
   static List<TypeModel> serviceTypeList = [
     TypeModel(label: 'Access device', value: 'AD'),
     TypeModel(label: 'Delivery Permit', value: 'DP'),
-    TypeModel(label: 'Facility Booking', value: 'FB'),
+    TypeModel(label: 'Facility Booking', value: 'HB'),
     TypeModel(label: 'Fit Out', value: 'FO'),
     TypeModel(label: 'Move In', value: 'MI'),
     TypeModel(label: 'Move Out', value: 'MO'),
@@ -188,4 +203,10 @@ class TypeModel {
   final String value;
 
   TypeModel({required this.label, required this.value});
+}
+class RangeOption {
+  final String label;
+  final String value;
+
+  RangeOption(this.label, this.value);
 }

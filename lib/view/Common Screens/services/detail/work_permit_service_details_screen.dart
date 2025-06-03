@@ -210,9 +210,9 @@ final  TextEditingController _idController = TextEditingController();
                           return ActivityLogWidget(
                             horizontalPadding: 8,
                             isLast: isLast,
-                            status: statusHistory?.status ?? "",
+                            status: (statusHistory?.status != 'Pending') ? statusHistory?.status ?? "" : "Request Received",
                             byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
-                                ?  statusHistory.user?.fullName ?? ""
+                                ?   ' ${statusHistory.user?.fullName ?? ""}'
                                 : " System",
                             description: statusHistory?.note
                                 ?.replaceAll('\n\n', ' ')

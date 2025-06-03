@@ -150,7 +150,6 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                 .serviceableCheckInsScreen);
                                       },
                                       detailsOnPressed: () {
-                                        // print("TAPPED");
                                         // print('service move: ${service?.toJson()
                                         // }
                                         // );

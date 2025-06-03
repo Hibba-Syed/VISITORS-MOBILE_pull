@@ -50,7 +50,8 @@ class ServiceCubit extends Cubit<ServiceState> {
           page: state.page,
           keyword: state.searchKeyword,
           unitId: state.selectedUnit?.id,
-          serviceType: state.selectedType?.value,
+          serviceType: state.selectCheckInTypeList?.value,
+          type: state.selectedType?.value
         ).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));

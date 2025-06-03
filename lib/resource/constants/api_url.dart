@@ -25,4 +25,5 @@ class ApiUrl {
   static const String addServiceLog = '$baseUrl/visitor/log-application';
   static const String serviceComplete = '$baseUrl/visitor/service-complete';
   static const String clearPayment = '$baseUrl/visitor/clear-payment';
+  static const String visitorPassesCount = '$baseUrl/visitor/visitor-passes/counts';
 }

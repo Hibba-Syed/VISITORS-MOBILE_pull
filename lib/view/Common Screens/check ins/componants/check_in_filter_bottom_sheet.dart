@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
@@ -12,7 +13,6 @@ import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/unit/unit_model.dart';
 import '../../../../model/vendor/vendor_model.dart';
-import '../../../../resource/constants/app_constants.dart';
 import '../../../widgets/loader/loader_widget.dart';
 
 class CheckInFilterBottomSheet extends StatefulWidget {
@@ -66,7 +66,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
             SingleSelectedDropdownWidget<String>(
               hint: "Range",
               fillColor: AppColors.white,
-              selectedItem: context.watch<CheckInsCubit>().state.selectedRang,
+              selectedItem: context.watch<CheckInsCubit>().state.dateRang,
               itemAsString: (rang) => rang,
               compareFn: (p0, p1) => p0 == p1,
               items: AppConstants.rangList,
@@ -74,9 +74,6 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 // selectedRang = value;
                 final dateRangeString =
                     AppUtils.getDateRangeStringFromLabel(value!);
-                context
-                    .read<CheckInsCubit>()
-                    .onChangeDateRange(dateRangeString);
                 context
                     .read<CheckInsCubit>()
                     .onChangeDateRange(dateRangeString);

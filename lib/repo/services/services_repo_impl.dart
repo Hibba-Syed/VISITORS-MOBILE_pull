@@ -22,11 +22,12 @@ class ServiceRepoImpl implements ServiceRepo {
     String? keyword,
     int? unitId,
     String? serviceType,
+    String? type,
   }) async {
     try {
       String url =
           '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
-          10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}';
+          10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
       print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);

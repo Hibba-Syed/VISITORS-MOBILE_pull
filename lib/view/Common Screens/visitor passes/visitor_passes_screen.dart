@@ -100,7 +100,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                         return VisitorPassesCardWidget(
                           unit: visitorPass?.ownerUnit?.unit?.unitNumber?.toString() ?? "",
                           name: visitorPass?.visitor ?? "",
-                          fromDate: DateTimeUtil.getFormattedDatesTime(visitorPass?.startDate),
+                          fromDate: '${DateTimeUtil.getFormattedDate(visitorPass?.startDate)} - ${DateTimeUtil.getFormattedDate(visitorPass?.endDate)}',
                           phone: visitorPass?.mobile ?? "",
                           email: visitorPass?.email ?? "",
                           profileImageUrl: '',

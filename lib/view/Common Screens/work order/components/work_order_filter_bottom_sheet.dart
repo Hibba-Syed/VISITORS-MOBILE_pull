@@ -73,7 +73,7 @@ class _WorkOrderFilterBottomSheetState
                         .read<WorkOrderCubit>()
                         .onChangeSelectedVendors(value!);
                   },
-              enabled: context.watch<WorkOrderCubit>().state.selectedType != null ? true : false
+              enabled: context.watch<WorkOrderCubit>().state.selectedType?.value == '1' ? true : false
                   ),
               const Gap(30),
               FilterButtonWidget(
