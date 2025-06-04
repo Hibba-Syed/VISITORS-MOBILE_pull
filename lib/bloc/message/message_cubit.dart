@@ -72,23 +72,23 @@ class MessageCubit extends Cubit<MessageState> {
   Future<void> sendMessage(
     BuildContext context, {
     required Map<String, dynamic> data,
-    required List<String> filesPaths,
+     List<String>? filesPaths,
   }) async {
     emit(state.copyWith(
       isSendMessageLoading: true,
     ));
     try {
       List<http.MultipartFile> multipartFiles = [];
-      if (filesPaths.isNotEmpty) {
-        for (int i = 0; i < filesPaths.length; i++) {
-          if (filesPaths[i].isNotEmpty) {
+      if (filesPaths?.isNotEmpty ?? false) {
+        for (int i = 0; i < (filesPaths?.length??0); i++) {
+          if (filesPaths?[i].isNotEmpty ?? false) {
             multipartFiles.add(
-              await http.MultipartFile.fromPath('attachments[]', filesPaths[i]),
+              await http.MultipartFile.fromPath('attachments[]', filesPaths?[i] ?? ""),
             );
           }
         }
       } else {
-        data['attachments[]'] = null;
+        // data['attachments[]'] = null;
       }
       SendMessageResponseModel? response = await _messageRepo
           .sendMessage(

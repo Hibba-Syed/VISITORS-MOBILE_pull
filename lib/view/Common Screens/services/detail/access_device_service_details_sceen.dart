@@ -319,7 +319,12 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                           });
                     }),
               ),
-              const Gap(10),
+        if(context
+        .read<ServiceDetailsCubit>()
+        .state
+        .serviceDetails?.application?.securityDeposit ==
+        null)...[
+          const Gap(10),
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.green,
@@ -409,7 +414,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                             );
                           });
                     }),
-              ),
+              )  ],
             ],
           ),
         ),

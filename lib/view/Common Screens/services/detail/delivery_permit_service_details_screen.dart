@@ -26,13 +26,15 @@ import '../../../widgets/empty_widget.dart';
 
 class DeliveryPermitServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
-  const  DeliveryPermitServiceDetailsScreen({super.key,required this.service});
+  const DeliveryPermitServiceDetailsScreen({super.key, required this.service});
 
   @override
-  State<DeliveryPermitServiceDetailsScreen> createState() => _DeliveryPermitServiceDetailsScreenState();
+  State<DeliveryPermitServiceDetailsScreen> createState() =>
+      _DeliveryPermitServiceDetailsScreenState();
 }
 
-class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServiceDetailsScreen> {
+class _DeliveryPermitServiceDetailsScreenState
+    extends State<DeliveryPermitServiceDetailsScreen> {
   final TextEditingController _noteController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
@@ -52,9 +54,10 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
           child: SingleChildScrollView(
             child: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
               builder: (context, state) {
-                if(state.isLoading){
+                if (state.isLoading) {
                   return Padding(
-                    padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height / 3),
                     child: LoaderWidget(),
                   );
                 }
@@ -81,7 +84,6 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                       style: AppTextStyles.style14Black600,
                     ),
                     const Gap(10),
-
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 10),
@@ -93,16 +95,15 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Requested Date',
-                               value:
-                              DateTimeUtil.getFormattedDate(state
-                                  .serviceDetails?.application?.datetime)
-                          ),
+                              value: DateTimeUtil.getFormattedDate(
+                                  state.serviceDetails?.application?.datetime)),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
                             title: 'Delivery Company',
-                            value: state.serviceDetails?.application?.deliveryCompany ?? "",
+                            value: state.serviceDetails?.application
+                                    ?.deliveryCompany ??
+                                "",
                           ),
-
                         ],
                       ),
                     ),
@@ -138,7 +139,7 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Passport Number',
                               value: state.serviceDetails?.passportNumber
-                                  ?.toString() ??
+                                      ?.toString() ??
                                   ""),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Passport Expiry',
@@ -148,7 +149,7 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'ID Number',
                             value: state.serviceDetails?.clientIdNumber
-                                ?.toString() ??
+                                    ?.toString() ??
                                 "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
@@ -166,41 +167,54 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
-                    state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(top: 10),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount:
-                        state.serviceDetails?.statusHistory?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          StatusHistory? statusHistory = state.serviceDetails?.statusHistory?[index];
-                          bool isLast = (state.serviceDetails?.statusHistory?.length ?? 0) - 1 == index;
-                          return ActivityLogWidget(
-                            horizontalPadding: 8,
-                            isLast: isLast,
-                            status: (statusHistory?.status != 'Pending') ? statusHistory?.status ?? "" : "Request Received",
-                            byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
-                                ?  ' ${statusHistory.user?.fullName ?? ""}'
-                                : " System",
-                            description: statusHistory?.note
-                                ?.replaceAll('\n\n', ' ')
-                                .trim()
-                                .split('.')
-                                .first
-                                .trim(),
-
-                            dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
-                          );
-                        },
-
-                      ),
-                    ) : EmptyWidget(text: 'No data available',),
+                    state.serviceDetails?.statusHistory?.isNotEmpty ?? true
+                        ? Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListView.builder(
+                              padding: EdgeInsets.only(top: 10),
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount:
+                                  state.serviceDetails?.statusHistory?.length ??
+                                      0,
+                              itemBuilder: (context, index) {
+                                StatusHistory? statusHistory =
+                                    state.serviceDetails?.statusHistory?[index];
+                                bool isLast = (state.serviceDetails
+                                                ?.statusHistory?.length ??
+                                            0) -
+                                        1 ==
+                                    index;
+                                return ActivityLogWidget(
+                                  horizontalPadding: 8,
+                                  isLast: isLast,
+                                  status: (statusHistory?.status != 'Pending')
+                                      ? statusHistory?.status ?? ""
+                                      : "Request Received",
+                                  byValue: (statusHistory?.user?.fullName !=
+                                              null &&
+                                          statusHistory!
+                                              .user!.fullName!.isNotEmpty)
+                                      ? ' ${statusHistory.user?.fullName ?? ""}'
+                                      : " System",
+                                  description: statusHistory?.note
+                                      ?.replaceAll('\n\n', ' ')
+                                      .trim()
+                                      .split('.')
+                                      .first
+                                      .trim(),
+                                  dateTime: DateTimeUtil.getFormattedDatesTime(
+                                      statusHistory?.createdAt),
+                                );
+                              },
+                            ),
+                          )
+                        : EmptyWidget(
+                            text: 'No data available',
+                          ),
                   ],
                 );
               },
@@ -223,13 +237,13 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
-
                             return CustomAlertDialogBox(
                               isCancelButtonDisable: true,
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                              title:
+                                  'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                               confirmButtonText: 'Add Log',
                               onConfirm: () async {
                                 if (_noteController.text.isEmpty) {
@@ -244,7 +258,7 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                                   context,
                                   data: {
                                     'application_id':
-                                    '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                        '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
                                     'note': _noteController.text,
                                   },
                                 );
@@ -278,94 +292,104 @@ class _DeliveryPermitServiceDetailsScreenState extends State<DeliveryPermitServi
                           });
                     }),
               ),
-              const Gap(10),
-              Expanded(
-                child: CustomButton(
-                    buttonColor: AppColors.green,
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                    text: 'Complete',
-                    onPressed: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return CustomAlertDialogBox(
-                              insetPadding: AppUtils.isTablet(context)
-                                  ? EdgeInsets.symmetric(horizontal: 35)
-                                  : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
-                              disableCancelButtonBorder: true,
-                              cancelButtonTextColor: AppColors.white,
-                              cancelButtonColor: AppColors.primary,
-                              cancelButtonText: 'Scan ID',
-                              confirmButtonText: 'Complete',
-                              confirmButtonColor: AppColors.green,
-                              onConfirm: () async {
-                                if (_nameController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type name first.");
-                                  return false;
-                                }
-                                if (_idController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type id first.");
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .completeService(
-                                  context,
-                                  data: {
-                                    'id':'${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'requester_name': _nameController.text,
-                                    'id_number': _idController.text,
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                _noteController.clear();
-                                _idController.clear();
-                                _nameController.clear();
-                                 //print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
-                                return result;
-                              },
-                              contentBuilder: (context, setState) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.green,
-                                        BlendMode.srcIn,
+              if (context
+                      .read<ServiceDetailsCubit>()
+                      .state
+                      .serviceDetails?.application
+                      ?.securityDeposit ==
+                  null) ...[
+                const Gap(10),
+                Expanded(
+                  child: CustomButton(
+                      buttonColor: AppColors.green,
+                      height: AppUtils.isTablet(context) ? 55 : 42,
+                      fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                      text: 'Complete',
+                      onPressed: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialogBox(
+                                insetPadding: AppUtils.isTablet(context)
+                                    ? EdgeInsets.symmetric(horizontal: 35)
+                                    : EdgeInsets.symmetric(horizontal: 10),
+                                title:
+                                    'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
+                                disableCancelButtonBorder: true,
+                                cancelButtonTextColor: AppColors.white,
+                                cancelButtonColor: AppColors.primary,
+                                cancelButtonText: 'Scan ID',
+                                confirmButtonText: 'Complete',
+                                confirmButtonColor: AppColors.green,
+                                onConfirm: () async {
+                                  if (_nameController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please type name first.");
+                                    return false;
+                                  }
+                                  if (_idController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please type id first.");
+                                    return false;
+                                  }
+                                  final result = await context
+                                      .read<ServiceDetailsCubit>()
+                                      .completeService(
+                                    context,
+                                    data: {
+                                      'id':
+                                          '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                      'requester_name': _nameController.text,
+                                      'id_number': _idController.text,
+                                      'note': _noteController.text,
+                                    },
+                                  );
+                                  _noteController.clear();
+                                  _idController.clear();
+                                  _nameController.clear();
+                                  //print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
+                                  return result;
+                                },
+                                contentBuilder: (context, setState) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Gap(5),
+                                      SvgPicture.asset(
+                                        AppImages.question,
+                                        height: 35,
+                                        width: 35,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.green,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'Requester Name',
-                                      controller: _nameController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'ID Number',
-                                      controller: _idController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: 'Note*',
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          });
-                    }),
-              ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        label: 'Requester Name',
+                                        controller: _nameController,
+                                      ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        label: 'ID Number',
+                                        controller: _idController,
+                                      ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        controller: _noteController,
+                                        label: 'Note*',
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      }),
+                ),
+              ],
             ],
           ),
         ),

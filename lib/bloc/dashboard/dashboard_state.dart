@@ -72,12 +72,12 @@ class DashboardState {
         serviceModel: serviceModel ?? this.serviceModel,
         workOrderModel: workOrderModel ?? this.workOrderModel,
         checkOutModel: checkOutModel ?? this.checkOutModel,
-        visitorPasses: visitorPasses ?? visitorPasses,
-        isVisitorPassLoading: isVisitorPassLoading ?? isVisitorPassLoading,
-        isCheckOutVisitor: isCheckOutVisitor ?? isCheckOutVisitor,
-        checkOutVisitors: checkOutVisitors ?? checkOutVisitors,
-        isVisitorPassesCountLoading: isVisitorPassesCountLoading ?? isVisitorPassesCountLoading,
-        visitorPassesCount: visitorPassesCount ?? visitorPassesCount,
+        visitorPasses: visitorPasses ?? this.visitorPasses,
+        isVisitorPassLoading: isVisitorPassLoading ?? this.isVisitorPassLoading,
+        isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
+        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
+        isVisitorPassesCountLoading: isVisitorPassesCountLoading ?? this.isVisitorPassesCountLoading,
+        visitorPassesCount: visitorPassesCount ?? this.visitorPassesCount,
     );
   }
 }

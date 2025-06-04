@@ -25,6 +25,19 @@ class CheckOutsScreen extends StatefulWidget {
 
 class _CheckOutsScreenState extends State<CheckOutsScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        context.read<CheckOutCubit>().getMoreCheckOut(
+        );
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -35,98 +48,102 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
             .read<DeviceDeciderCubit>()
             .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
-      child: Scaffold(
-        body: BlocBuilder<CheckOutCubit, CheckOutState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalPadding),
-              child: Column(
-                children: [
-                  const Gap(10),
-                  SearchTextField(
-                     controller: _searchController,
-                     onClearPressed: () async {
-                       _searchController.clear();
-                        context
-                           .read<CheckOutCubit>()
-                           .onChangeSearchKeyWord('');
-                       context.read<CheckOutCubit>().getCheckOut();
-                     },
-                     onFieldSubmitted: (value) {
-                       context
-                           .read<CheckOutCubit>().
-                       onChangeSearchKeyWord(value);
-                       context.read<CheckOutCubit>().getCheckOut();
-                     },
-                    isFilterApplied: (state.selectedUnit != null) ||
-                        (state.selectedType?.value.isNotEmpty ??
-                            false) ||
-                        (state.selectedVendor != null) ||
-                        (state.dateRang != null) || (state.selectedRang != null)
-                        ? true
-                        : false,
-                    onFilterPressed: (){
-                      _checkOutFilterBottomSheet(context);
-                    },
-                  ),
-                  const Gap(10),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: CustomButton(
-                        buttonColor: AppColors.primary,
-                        text: 'Export',
-                        height: 41,
-                        width: 90,
-                        borderRadius: 6,
-                        onPressed: () {
-                          FileDownloader.downloadFile(context: context);
-                        }),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child:
-                    state.isCheckOutLoading
-                        ? const LoaderWidget()
-                        : state.checkOutVisitors?.isNotEmpty ?? false
-                        ?
-                    RefreshIndicator(
-                      onRefresh: () async{
-                       await context.read<CheckOutCubit>().getCheckOut();
+      child: SafeArea(
+        child: Scaffold(
+          body: BlocBuilder<CheckOutCubit, CheckOutState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.horizontalPadding),
+                child: Column(
+                  children: [
+                    const Gap(10),
+                    SearchTextField(
+                       controller: _searchController,
+                       onClearPressed: () async {
+                         _searchController.clear();
+                          context
+                             .read<CheckOutCubit>()
+                             .onChangeSearchKeyWord('');
+                         context.read<CheckOutCubit>().getCheckOut();
+                       },
+                       onFieldSubmitted: (value) {
+                         context
+                             .read<CheckOutCubit>().
+                         onChangeSearchKeyWord(value);
+                         context.read<CheckOutCubit>().getCheckOut();
+                       },
+                      isFilterApplied: (state.selectedUnit != null) ||
+                          (state.selectedType?.value.isNotEmpty ??
+                              false) ||
+                          (state.selectedVendor != null) ||
+                          (state.dateRang != null) || (state.selectedRang != null)
+                          ? true
+                          : false,
+                      onFilterPressed: (){
+                        _checkOutFilterBottomSheet(context);
                       },
-                      child: ListView.separated(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 10),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: state.checkOutVisitors?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          CheckOutVisitors? checkOutModel = state.checkOutVisitors?[index];
-                          return CheckOutsCardWidget(
-                            visitorCount: checkOutModel?.visitorCount ?? "",
-                            typeText: checkOutModel?.unit?.unitNumber ?? "",
-                            name: checkOutModel?.name ?? "",
-                            profileImageUrl: checkOutModel?.visitor?.imageUrl ?? "",
-                            type: checkOutModel?.type ?? "",
-                            checkInDate: DateTimeUtil.getFormattedDateTime(checkOutModel?.checkinTime.toString()),
-                            checkOutDate: DateTimeUtil.getFormattedDateTime(checkOutModel?.checkoutTime.toString()),
-                            phone: checkOutModel?.phone ?? "",
-                            checkInGateValue: checkOutModel?.checkinGate ?? "",
-                            checkOutGateValue: checkOutModel?.checkoutGate ?? "",
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Gap(10);
-                        },
-                      ),
-                    ) : const EmptyWidget(
-                      text: 'No data found',
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                    const Gap(10),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: CustomButton(
+                          buttonColor: AppColors.primary,
+                          text: 'Export',
+                          height: 41,
+                          width: 90,
+                          borderRadius: 6,
+                          onPressed: () {
+                            FileDownloader.downloadFile(context: context);
+                          }),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child:
+                      state.isCheckOutLoading
+                          ? const LoaderWidget()
+                          : state.checkOutVisitors?.isNotEmpty ?? false
+                          ?
+                      RefreshIndicator(
+                        onRefresh: () async{
+                         await context.read<CheckOutCubit>().getCheckOut();
+                        },
+                        child: ListView.separated(
+                          controller: _scrollController,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 10),
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: state.checkOutVisitors?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            CheckOutVisitors? checkOutModel = state.checkOutVisitors?[index];
+                            return CheckOutsCardWidget(
+                              visitorCount: checkOutModel?.visitorCount ?? "",
+                              typeText: checkOutModel?.unit?.unitNumber ?? "",
+                              name: checkOutModel?.name ?? "",
+                              profileImageUrl: checkOutModel?.visitor?.imageUrl ?? "",
+                              type: checkOutModel?.type ?? "",
+                              checkInDate: DateTimeUtil.getFormattedDateTime(checkOutModel?.checkinTime.toString()),
+                              checkOutDate: DateTimeUtil.getFormattedDateTime(checkOutModel?.checkoutTime.toString()),
+                              phone: checkOutModel?.phone ?? "",
+                              checkInGateValue: checkOutModel?.checkinGate ?? "",
+                              checkOutGateValue: checkOutModel?.checkoutGate ?? "",
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Gap(10);
+                          },
+                        ),
+                      ) : const EmptyWidget(
+                        text: 'No data found',
+                      ),
+                    ),
+                    if (state.loadMore) const LoaderWidget(),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

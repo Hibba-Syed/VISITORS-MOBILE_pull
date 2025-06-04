@@ -33,11 +33,11 @@ class _MessageScreenState extends State<MessageScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<MessageCubit>().getMoreMessage(
-        );
+        context.read<MessageCubit>().getMoreMessage();
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -54,78 +54,77 @@ class _MessageScreenState extends State<MessageScreen> {
             builder: (context, state) {
               return Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.horizontalPadding,
+                  horizontal: AppConstants.horizontalPadding,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const Gap(10),
-                       state.isLoading
-                           ? Padding(
-                             padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
-                             child: LoaderWidget(),
-                           )
-                           : state.messageModel?.isEmpty ?? true
-                           ? EmptyWidget(
-                         text: 'No data available',
-                       )
-                           : RefreshIndicator(
-                             onRefresh: () async {
-                           context.read<MessageCubit>().getMessages();
-                           },
-                             child: ListView.separated(
-                           physics: AlwaysScrollableScrollPhysics(),
-                           controller: _scrollController,
-                           shrinkWrap: true,
-                           primary: false,
-                           itemCount: state.messageModel?.length ?? 0,
-                           itemBuilder: (context, index) {
-                             MessageModel? message =
-                             state.messageModel?[index];
-                             return
-                               Row(
-                               mainAxisAlignment: message?.by == 'user'
-                                   ? MainAxisAlignment.start
-                                   : MainAxisAlignment.end,
-                               children: [
-                                 message?.by == 'user'
-                                     ?
-                                 MessageReceiverCardWidget(
-                                   message: message?.message ?? "",
-                                   date: message?.createdAt
-                                       .toString(),
-                                   userName:
-                                   message?.user?.fullName ??
-                                       "",
-                                   profileImage: message?.user
-                                       ?.profileImageUrl ??
-                                       "",
-                                   attachments:
-                                   message?.attachments,
-                                 )
-                                     :
-                                 MessageSenderCardWidget(
-                                   message: message?.message ?? "",
-                                   date: message?.createdAt
-                                       .toString(),
-                                   attachments:
-                                   message?.attachments,
-                                 ),
-                               ],
-                             );
-                           },
-                           separatorBuilder:
-                               (BuildContext context, int index) {
-                             return const Padding(
-                                 padding:
-                                 EdgeInsets.symmetric(vertical: 5));
-                           },
-                                                  ),
-                                                ),
-                       if (state.loadMore) const LoaderWidget(),
-                      if (attachmentsList.isNotEmpty) _buildAttachmentSection(),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    if (state.loadMore) const LoaderWidget(),
+                    Expanded(
+                        child: state.isLoading
+                            ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical:
+                              MediaQuery.of(context).size.height / 3),
+                          child: LoaderWidget(),
+                        )
+                            : state.messageModel?.isEmpty ?? true
+                            ? EmptyWidget(
+                          text: 'No data available',
+                        )
+                            : ListView.separated(
+                              reverse: true,
+                              padding: EdgeInsets.only(top: 10,bottom: 10),
+                              physics: AlwaysScrollableScrollPhysics(),
+                              controller: _scrollController,
+                              itemCount: state.messageModel?.length ?? 0,
+                              itemBuilder: (context, index) {
+                                MessageModel? message =
+                                state.messageModel?[index];
+                                return Row(
+                                  mainAxisAlignment: message?.by == 'user'
+                                      ? MainAxisAlignment.start
+                                      : MainAxisAlignment.end,
+                                  children: [
+                                    message?.by == 'user'
+                                        ? MessageReceiverCardWidget(
+                                      message:
+                                      message?.message ?? "",
+                                      date: message?.createdAt
+                                          .toString(),
+                                      userName:
+                                      message?.user?.fullName ??
+                                          "",
+                                      profileImage: message?.user
+                                          ?.profileImageUrl ??
+                                          "",
+                                      attachments:
+                                      message?.attachments,
+                                    )
+                                        : MessageSenderCardWidget(
+                                      message:
+                                      message?.message ?? "",
+                                      date: message?.createdAt
+                                          .toString(),
+                                      attachments:
+                                      message?.attachments,
+                                    ),
+                                  ],
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5));
+                              },
+                            ),
+                    ),
+
+                    attachmentsList.isNotEmpty?
+                    _buildAttachmentSection() : SizedBox.shrink(),
+                    const Gap(10),
+
+                  ],
                 ),
               );
             },
@@ -148,7 +147,7 @@ class _MessageScreenState extends State<MessageScreen> {
               context.read<MessageCubit>().sendMessage(
                     context,
                     data: {'message': messageController.text},
-                    filesPaths: attachmentsList,
+                    filesPaths: attachmentsList.isNotEmpty ? attachmentsList : null,
                   );
               messageController.clear();
               attachmentsList.clear();
@@ -160,6 +159,7 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   Widget _buildAttachmentSection() {
+    print("code print${attachmentsList.length}");
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 250),
       child: Container(
@@ -169,6 +169,7 @@ class _MessageScreenState extends State<MessageScreen> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               ...attachmentsList.map((String? e) => AttachmentCardWidget(
@@ -185,4 +186,3 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 }
-

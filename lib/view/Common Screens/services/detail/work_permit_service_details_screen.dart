@@ -304,94 +304,100 @@ final  TextEditingController _idController = TextEditingController();
                           });
                     }),
               ),
-              const Gap(10),
-              Expanded(
-                child: CustomButton(
-                    buttonColor: AppColors.green,
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                    text: 'Complete',
-                    onPressed: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return CustomAlertDialogBox(
-                              insetPadding: AppUtils.isTablet(context)
-                                  ? EdgeInsets.symmetric(horizontal: 35)
-                                  : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              disableCancelButtonBorder: true,
-                              cancelButtonTextColor: AppColors.white,
-                              cancelButtonColor: AppColors.primary,
-                              cancelButtonText: 'Scan ID',
-                              confirmButtonText: 'Complete',
-                              confirmButtonColor: AppColors.green,
-                              onConfirm: () async {
-                                if (_nameController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type name first.");
-                                  return false;
-                                }
-                                if (_idController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type id first.");
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .completeService(
-                                  context,
-                                  data: {
-                                    'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'requester_name': _nameController.text,
-                                    'id_number': _idController.text,
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                // noteController.clear();
-                                // idController.clear();
-                                // nameController.clear();
+              if(context
+                  .read<ServiceDetailsCubit>()
+                  .state
+                  .serviceDetails?.securityDeposit ==
+                  null )...[
+                const Gap(10),
+                Expanded(
+                  child: CustomButton(
+                      buttonColor: AppColors.green,
+                      height: AppUtils.isTablet(context) ? 55 : 42,
+                      fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                      text: 'Complete',
+                      onPressed: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialogBox(
+                                insetPadding: AppUtils.isTablet(context)
+                                    ? EdgeInsets.symmetric(horizontal: 35)
+                                    : EdgeInsets.symmetric(horizontal: 10),
+                                title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                                disableCancelButtonBorder: true,
+                                cancelButtonTextColor: AppColors.white,
+                                cancelButtonColor: AppColors.primary,
+                                cancelButtonText: 'Scan ID',
+                                confirmButtonText: 'Complete',
+                                confirmButtonColor: AppColors.green,
+                                onConfirm: () async {
+                                  if (_nameController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please type name first.");
+                                    return false;
+                                  }
+                                  if (_idController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please type id first.");
+                                    return false;
+                                  }
+                                  final result = await context
+                                      .read<ServiceDetailsCubit>()
+                                      .completeService(
+                                    context,
+                                    data: {
+                                      'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                      'requester_name': _nameController.text,
+                                      'id_number': _idController.text,
+                                      'note': _noteController.text,
+                                    },
+                                  );
+                                  // noteController.clear();
+                                  // idController.clear();
+                                  // nameController.clear();
 
-                                return result;
-                              },
-                              contentBuilder: (context, setState) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.green,
-                                        BlendMode.srcIn,
+                                  return result;
+                                },
+                                contentBuilder: (context, setState) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Gap(5),
+                                      SvgPicture.asset(
+                                        AppImages.question,
+                                        height: 35,
+                                        width: 35,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.green,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'Requester Name',
-                                      controller: _nameController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'ID Number',
-                                      controller: _idController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: 'Note*',
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          });
-                    }),
-              ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        label: 'Requester Name',
+                                        controller: _nameController,
+                                      ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        label: 'ID Number',
+                                        controller: _idController,
+                                      ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        controller: _noteController,
+                                        label: 'Note*',
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      }),
+                )
+              ]
             ],
           ),
         ),

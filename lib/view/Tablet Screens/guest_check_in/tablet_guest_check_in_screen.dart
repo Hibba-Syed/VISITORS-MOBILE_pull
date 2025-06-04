@@ -88,7 +88,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                           context: context,
                           builder: (context) {
                             return CustomAlertDialogBox(
-                              insetPadding: AppUtils.isTablet(context) ? EdgeInsets.all(90) : EdgeInsets.all(10),
+                              insetPadding: AppUtils.isTablet(context) ? EdgeInsets.all(70) : EdgeInsets.all(10),
                               hideBothButtons: true,
                               title: 'Select Type',
                               contentBuilder: (context, setState) {
@@ -99,7 +99,7 @@ class _TabletGuestCheckInScreenState extends State<TabletGuestCheckInScreen> {
                                     Gap(20),
                                     AppUtils.isTablet(context) ?
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 85,vertical: 20),
+                                      padding: const EdgeInsets.symmetric(horizontal: 0,vertical: 20),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [

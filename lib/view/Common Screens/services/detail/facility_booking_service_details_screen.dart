@@ -26,7 +26,7 @@ import '../../../widgets/text field/text_field_widget.dart';
 
 class FacilityBookingServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
-  const FacilityBookingServiceDetailsScreen({super.key,required this.service});
+  const FacilityBookingServiceDetailsScreen({super.key, required this.service});
 
   @override
   State<FacilityBookingServiceDetailsScreen> createState() =>
@@ -37,7 +37,7 @@ class _FacilityBookingServiceDetailsScreenState
     extends State<FacilityBookingServiceDetailsScreen> {
   final TextEditingController _noteController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
- final  TextEditingController _idController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,28 +95,37 @@ class _FacilityBookingServiceDetailsScreenState
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Facility',
-                              value: state.serviceDetails?.application?.facility ??
-                                  ""),
+                              value:
+                                  state.serviceDetails?.application?.facility ??
+                                      ""),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Nature of function',
-                            value: state.serviceDetails?.application?.natureOfFunction ?? "",
+                            value: state.serviceDetails?.application
+                                    ?.natureOfFunction ??
+                                "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Expected Guests',
-                              value: state.serviceDetails?.application?.expectedGuests?.toString() ?? ''),
+                              value: state.serviceDetails?.application
+                                      ?.expectedGuests
+                                      ?.toString() ??
+                                  ''),
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Booking Date',
-                              value: DateTimeUtil.getFormattedDate(state.serviceDetails?.application?.bookingDate)
-                              ),
+                              value: DateTimeUtil.getFormattedDate(state
+                                  .serviceDetails?.application?.bookingDate)),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Start Time',
-                            value: state.serviceDetails?.application?.startTime ?? "",
+                            value:
+                                state.serviceDetails?.application?.startTime ??
+                                    "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                               isLast: true,
                               title: 'End Time',
-                              value: state.serviceDetails?.application?.endTime ?? ''
-                              ),
+                              value:
+                                  state.serviceDetails?.application?.endTime ??
+                                      ''),
                         ],
                       ),
                     ),
@@ -136,8 +145,7 @@ class _FacilityBookingServiceDetailsScreenState
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Requester Type',
-                              value: state.serviceDetails?.clientType ?? ""
-                          ),
+                              value: state.serviceDetails?.clientType ?? ""),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Name',
                             value: state.serviceDetails?.clientName ?? "",
@@ -205,13 +213,15 @@ class _FacilityBookingServiceDetailsScreenState
                                 return ActivityLogWidget(
                                   horizontalPadding: 8,
                                   isLast: isLast,
-                                  status: (statusHistory?.status != 'Pending') ? statusHistory?.status ?? "" : "Request Received",
-                                  byValue:
-                                      (statusHistory?.user?.fullName != null &&
-                                              statusHistory!
-                                                  .user!.fullName!.isNotEmpty)
-                                          ?  ' ${statusHistory.user?.fullName ?? ""}'
-                                          : " System",
+                                  status: (statusHistory?.status != 'Pending')
+                                      ? statusHistory?.status ?? ""
+                                      : "Request Received",
+                                  byValue: (statusHistory?.user?.fullName !=
+                                              null &&
+                                          statusHistory!
+                                              .user!.fullName!.isNotEmpty)
+                                      ? ' ${statusHistory.user?.fullName ?? ""}'
+                                      : " System",
                                   description: statusHistory?.note
                                       ?.replaceAll('\n\n', ' ')
                                       .trim()
@@ -304,94 +314,103 @@ class _FacilityBookingServiceDetailsScreenState
                           });
                     }),
               ),
-              const Gap(10),
-              Expanded(
-                child: CustomButton(
-                    buttonColor: AppColors.green,
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                    text: 'Complete',
-                    onPressed: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return CustomAlertDialogBox(
-                              insetPadding: AppUtils.isTablet(context)
-                                  ? EdgeInsets.symmetric(horizontal: 35)
-                                  : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Complete HB2024080725',
-                              disableCancelButtonBorder: true,
-                              cancelButtonTextColor: AppColors.white,
-                              cancelButtonColor: AppColors.green,
-                              cancelButtonText: 'Complete',
-                              confirmButtonText: 'Scan ID',
-                              confirmButtonColor: AppColors.primary,
-                              onConfirm: () async {
-                                if (_nameController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type name first.");
-                                  return false;
-                                }
-                                if (_idController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type id first.");
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .completeService(
-                                  context,
-                                  data: {
-                                    'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'requester_name': _nameController.text,
-                                    'id_number': _idController.text,
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                _noteController.clear();
-                                _idController.clear();
-                                _nameController.clear();
+              if (context
+                      .read<ServiceDetailsCubit>()
+                      .state
+                      .serviceDetails?.application
+                      ?.securityDeposit ==
+                  null) ...[
+                const Gap(10),
+                Expanded(
+                  child: CustomButton(
+                      buttonColor: AppColors.green,
+                      height: AppUtils.isTablet(context) ? 55 : 42,
+                      fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                      text: 'Complete',
+                      onPressed: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialogBox(
+                                insetPadding: AppUtils.isTablet(context)
+                                    ? EdgeInsets.symmetric(horizontal: 35)
+                                    : EdgeInsets.symmetric(horizontal: 10),
+                                title: 'Complete HB2024080725',
+                                disableCancelButtonBorder: true,
+                                cancelButtonTextColor: AppColors.white,
+                                cancelButtonColor: AppColors.green,
+                                cancelButtonText: 'Complete',
+                                confirmButtonText: 'Scan ID',
+                                confirmButtonColor: AppColors.primary,
+                                onConfirm: () async {
+                                  if (_nameController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please type name first.");
+                                    return false;
+                                  }
+                                  if (_idController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please type id first.");
+                                    return false;
+                                  }
+                                  final result = await context
+                                      .read<ServiceDetailsCubit>()
+                                      .completeService(
+                                    context,
+                                    data: {
+                                      'id':
+                                          '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                      'requester_name': _nameController.text,
+                                      'id_number': _idController.text,
+                                      'note': _noteController.text,
+                                    },
+                                  );
+                                  _noteController.clear();
+                                  _idController.clear();
+                                  _nameController.clear();
 
-                                return result;
-                              },
-                              contentBuilder: (context, setState) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.green,
-                                        BlendMode.srcIn,
+                                  return result;
+                                },
+                                contentBuilder: (context, setState) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Gap(5),
+                                      SvgPicture.asset(
+                                        AppImages.question,
+                                        height: 35,
+                                        width: 35,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.green,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'Requester Name',
-                                      controller: _nameController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      label: 'ID Number',
-                                      controller: _idController,
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: 'Note*',
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          });
-                    }),
-              ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        label: 'Requester Name',
+                                        controller: _nameController,
+                                      ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        label: 'ID Number',
+                                        controller: _idController,
+                                      ),
+                                      const Gap(5),
+                                      TextFieldWidget(
+                                        controller: _noteController,
+                                        label: 'Note*',
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      }),
+                )
+              ],
             ],
           ),
         ),

@@ -52,136 +52,138 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
             .read<DeviceDeciderCubit>()
             .onChangeSelectedIndex(AppConstants.dashboardIndex);
       },
-      child: Scaffold(
-        body: BlocBuilder<ServiceCubit, ServiceState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalPadding),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: SearchTextField(
-                        controller: _searchController,
-                        onClearPressed: () async {
-                          _searchController.clear();
-                          context
-                              .read<ServiceCubit>()
-                              .onChangeSearchKeyWord('');
-                          await context
-                              .read<ServiceCubit>()
-                              .getServices();
+      child: SafeArea(
+        child: Scaffold(
+          body: BlocBuilder<ServiceCubit, ServiceState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.horizontalPadding),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: SearchTextField(
+                          controller: _searchController,
+                          onClearPressed: () async {
+                            _searchController.clear();
+                            context
+                                .read<ServiceCubit>()
+                                .onChangeSearchKeyWord('');
+                            await context
+                                .read<ServiceCubit>()
+                                .getServices();
+                          },
+                          onFieldSubmitted: (value) {
+                            context
+                                .read<ServiceCubit>()
+                                .onChangeSearchKeyWord(value);
+                            context.read<ServiceCubit>().getServices();
+                          },
+                        isFilterApplied: (state.selectedUnit != null) ||
+                            (state.selectedType?.value.isNotEmpty ??
+                                false)
+                            ? true
+                            : false,
+                        onFilterPressed: () {
+                          _servicesFilterBottomSheet(context);
                         },
-                        onFieldSubmitted: (value) {
-                          context
-                              .read<ServiceCubit>()
-                              .onChangeSearchKeyWord(value);
-                          context.read<ServiceCubit>().getServices();
-                        },
-                      isFilterApplied: (state.selectedUnit != null) ||
-                          (state.selectedType?.value.isNotEmpty ??
-                              false)
-                          ? true
-                          : false,
-                      onFilterPressed: () {
-                        _servicesFilterBottomSheet(context);
-                      },
+                      ),
                     ),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: state.isLoading
-                        ? LoaderWidget()
-                        : state.serviceModel?.isNotEmpty ?? true
-                            ? RefreshIndicator(
-                                onRefresh: () async {
-                                  context.read<ServiceCubit>().getServices(
-                                      keyword: _searchController.text);
-                                },
-                                child: ListView.separated(
-                                  controller: _scrollController,
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: state.serviceModel?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    ServiceModel? service =
-                                        state.serviceModel?[index];
-                                    return ServicesCardWidget(
-                                      isActiveCheckins: (service
-                                                  ?.activeCheckIns
-                                                  ?.isNotEmpty ??
-                                              true)
-                                          ? true
-                                          : false,
-                                      unit:
-                                          service?.unit?.unitNumber ?? "",
-                                      title:
-                                          service?.applicationType ?? "",
-                                      reference: service?.reference ?? "",
-                                      status: service?.status ?? "",
-                                      serviceType:
-                                          service?.applicationTitle ?? "",
-                                      name: service?.clientName ?? "",
-                                      checkInOnPressed: () {
-                                        AppUtils.isTablet(context)
-                                            ? Navigator.pushNamed(
-                                                context,
-                                                AppRoutes
-                                                    .tabletGuestCheckInScreen)
-                                            : Navigator.pushNamed(
-                                                context,
-                                                AppRoutes
-                                                    .mobileGuestCheckInScreen);
-                                      },
-                                      serviceableCheckInOnPressed: () {
-                                        context
-                                            .read<CheckInsCubit>()
-                                            .onChangeSelectedType(
-                                            AppUtils.getServiceableType(
-                                                Strings.keyServices));
-                                        context.read<CheckInsCubit>().onChangeSelectedServiceableId(service?.id);
-                                        context.read<CheckInsCubit>().getCheckIns();
-                                        Navigator.pushNamed(
-                                            context,
-                                            AppRoutes
-                                                .serviceableCheckInsScreen);
-                                      },
-                                      detailsOnPressed: () {
-                                        // print('service move: ${service?.toJson()
-                                        // }
-                                        // );
-                                        context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
-                                        // print("ROUTE::: ${AppUtils.getRouteName(service)}");
-                                        // return;
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AppUtils.getRouteName(service),
-                                            ));
-                                      },
-                                    );
+                    const Gap(10),
+                    Expanded(
+                      child: state.isLoading
+                          ? LoaderWidget()
+                          : state.serviceModel?.isNotEmpty ?? true
+                              ? RefreshIndicator(
+                                  onRefresh: () async {
+                                    context.read<ServiceCubit>().getServices(
+                                        keyword: _searchController.text);
                                   },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 5));
-                                  },
+                                  child: ListView.separated(
+                                    controller: _scrollController,
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: state.serviceModel?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      ServiceModel? service =
+                                          state.serviceModel?[index];
+                                      return ServicesCardWidget(
+                                        isActiveCheckins: (service
+                                                    ?.activeCheckIns
+                                                    ?.isNotEmpty ??
+                                                true)
+                                            ? true
+                                            : false,
+                                        unit:
+                                            service?.unit?.unitNumber ?? "",
+                                        title:
+                                            service?.applicationType ?? "",
+                                        reference: service?.reference ?? "",
+                                        status: service?.status ?? "",
+                                        serviceType:
+                                            service?.applicationTitle ?? "",
+                                        name: service?.clientName ?? "",
+                                        checkInOnPressed: () {
+                                          AppUtils.isTablet(context)
+                                              ? Navigator.pushNamed(
+                                                  context,
+                                                  AppRoutes
+                                                      .tabletGuestCheckInScreen)
+                                              : Navigator.pushNamed(
+                                                  context,
+                                                  AppRoutes
+                                                      .mobileGuestCheckInScreen);
+                                        },
+                                        serviceableCheckInOnPressed: () {
+                                          context
+                                              .read<CheckInsCubit>()
+                                              .onChangeSelectedType(
+                                              AppUtils.getServiceableType(
+                                                  Strings.keyServices));
+                                          context.read<CheckInsCubit>().onChangeSelectedServiceableId(service?.id);
+                                          context.read<CheckInsCubit>().getCheckIns();
+                                          Navigator.pushNamed(
+                                              context,
+                                              AppRoutes
+                                                  .serviceableCheckInsScreen);
+                                        },
+                                        detailsOnPressed: () {
+                                          // print('service move: ${service?.toJson()
+                                          // }
+                                          // );
+                                          context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
+                                          // print("ROUTE::: ${AppUtils.getRouteName(service)}");
+                                          // return;
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AppUtils.getRouteName(service),
+                                              ));
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return const Padding(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 5));
+                                    },
+                                  ),
+                                )
+                              : EmptyWidget(
+                                  text: 'No data available',
                                 ),
-                              )
-                            : EmptyWidget(
-                                text: 'No data available',
-                              ),
-                  ),
-                  if (state.loadMore) const LoaderWidget(),
-                ],
-              ),
-            );
-          },
+                    ),
+                    if (state.loadMore) const LoaderWidget(),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

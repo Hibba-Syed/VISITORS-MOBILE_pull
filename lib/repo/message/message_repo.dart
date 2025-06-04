@@ -10,6 +10,6 @@ Future<MessagesResponseModel?> getMessages({
 });
 Future<SendMessageResponseModel?> sendMessage({
   required Map<String, dynamic> data,
-  required List<http.MultipartFile> files,
+   List<http.MultipartFile>? files,
 });
 }

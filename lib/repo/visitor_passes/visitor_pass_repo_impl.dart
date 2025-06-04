@@ -31,6 +31,7 @@ class VisitorPassRepoImpl implements VisitorPassRepo {
       String url = ApiUrl.visitorPassesCount;
       print('Visitor Pass count^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
+      print('Visitor Pass count response^^ $response');
       return VisitorPassesCountResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

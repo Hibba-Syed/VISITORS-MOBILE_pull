@@ -64,6 +64,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     emit(state.copyWith(isCheckOutLoading: true));
     CheckOutResponseModel? response =
     await _checkOutRepo.getCheckOuts(
+       page: state.page,
         keyword: state.searchKeyword,
         unitId: state.selectedUnit?.id,
         dateRange: state.dateRang,
@@ -83,6 +84,46 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       emit(state.copyWith(checkOutVisitors: response.record));
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching check out');
+    }
+  }
+  Future<void> getMoreCheckOut({
+    String? keyword,
+  }) async {
+    int page = state.page + 1;
+    emit(state.copyWith(loadMore: true, isLoading: false, page: page));
+    CheckOutResponseModel? response = await _checkOutRepo
+        .getCheckOuts(
+      page: state.page,
+      keyword: state.searchKeyword,
+      unitId: state.selectedUnit?.id,
+      dateRange: state.dateRang,
+      serviceableType: state.selectedType?.value,
+      vendorId: state.selectedVendor?.id,
+
+    )
+        .onError(
+          (error, stackTrace) {
+        emit(state.copyWith(loadMore: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(loadMore: false));
+    if (response != null && response.status == 'success') {
+      if (response.record?.isNotEmpty ?? false) {
+        List<CheckOutVisitors> checkIns = state.checkOutVisitors ?? [];
+        checkIns.addAll(response.record as Iterable<CheckOutVisitors>);
+        emit(state.copyWith(checkOutVisitors: checkIns));
+      } else {
+        Fluttertoast.showToast(msg: 'No more check-outs');
+        page = state.page - 1;
+        emit(state.copyWith(page: page));
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching check-outs');
     }
   }
 
