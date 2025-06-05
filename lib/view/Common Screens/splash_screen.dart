@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(
-      3.seconds,
+      5.seconds,
       () async {
         if (!mounted) return;
         if (Globals().token?.isNotEmpty??false) {

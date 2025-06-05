@@ -7,8 +7,6 @@ import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
-import 'package:visitors/view/widgets/button/custom_button.dart'
-    show CustomButton;
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
@@ -27,6 +25,7 @@ import 'package:image/image.dart' as img; // For image processing
 import 'package:path/path.dart' as path;
 
 import '../../Tablet Screens/guest_check_in/tablet_guest_check_in_screen.dart';
+import '../../widgets/button/custom_button.dart';
 import '../../widgets/container_widgets/type_container_widget.dart';
 import '../../widgets/picker/custom_date_time_picker.dart';
 
@@ -668,6 +667,7 @@ class _MobileGuestCheckInScreenState extends State<MobileGuestCheckInScreen> {
             horizontal: AppConstants.horizontalPadding,
             vertical: AppConstants.verticalPadding),
         child: CustomButton(
+          height: 39,
           image: AppImages.checkInButton,
           buttonColor: AppColors.green,
           text: 'Check-In',

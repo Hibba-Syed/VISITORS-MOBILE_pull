@@ -115,7 +115,7 @@ class JobCheckInsScreen extends StatelessWidget {
                         name: checkInModel?.name ?? "",
                         profileImageUrl: checkInModel?.visitor?.imageUrl ?? "",
                         type:  AppUtils.getServiceableType(checkInModel?.type).label,
-                        date: DateTimeUtil.getFormattedDateTime(checkInModel?.createdAt.toString()),
+                        createdDate: DateTimeUtil.getFormattedDateTime(checkInModel?.createdAt.toString()),
                         purpose: checkInModel?.description ?? "",
                         checkOutOnPressed: () {
                           _showCheckoutDialog(context);

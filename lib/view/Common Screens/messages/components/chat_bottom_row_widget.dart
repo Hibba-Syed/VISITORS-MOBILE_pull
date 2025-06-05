@@ -8,6 +8,7 @@ import '../../../widgets/loader/loader_widget.dart';
 
 class ChatBottomRowWidget extends StatefulWidget {
   final VoidCallback onAttach;
+ // final Future<void> Function() onSend;
   final VoidCallback onSend;
   final TextEditingController messageController;
   const ChatBottomRowWidget({

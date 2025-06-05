@@ -119,7 +119,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                             name: checkInModel?.name ?? "",
                             profileImageUrl: checkInModel?.visitor?.imageUrl ?? "",
                             type:  AppUtils.getServiceableType(checkInModel?.type).label,
-                            date: DateTimeUtil.getFormattedDateTime(checkInModel?.createdAt.toString()),
+                            createdDate: DateTimeUtil.getFormattedDateTime(checkInModel?.createdAt.toString()),
                             purpose: checkInModel?.serviceableType == "visitor_passes" ? checkInModel?.purpose :
                             checkInModel?.description ?? "",
                             checkOutOnPressed: () {

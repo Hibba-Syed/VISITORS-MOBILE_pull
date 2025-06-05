@@ -256,8 +256,6 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
             children: [
               Expanded(
                 child: CustomButton(
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -328,8 +326,6 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.green,
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
                     text: 'Complete',
                     onPressed: () {
                       showDialog(

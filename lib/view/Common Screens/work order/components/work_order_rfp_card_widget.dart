@@ -52,6 +52,9 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
             OverlapContainerWidget(
               text: (isAwarded == 1) ? 'Work Order' : 'RFP',
               image: (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard ,
+              backgroundColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
+              // imagedColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
+              // textColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
             ),
             OverlapContainerWidget(
               text: reference,
@@ -108,9 +111,9 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: CustomButton(
-                              height: AppUtils.isTablet(context) ? 55 : 42,
-                              fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                              imageHeight: AppUtils.isTablet(context) ?25 :18,
+                              height:  AppUtils.isTablet(context)  ? 39 : 36,
+                              fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+                              imageHeight: AppUtils.isTablet(context) ?22 :18,
                               buttonColor: AppColors.green,
                               image: AppImages.checkInButton,
                               text: 'Check-In',
@@ -120,9 +123,9 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                           const Gap(8),
                           Expanded(
                             child: CustomButton(
-                                height:  AppUtils.isTablet(context)  ? 55 : 42,
-                                fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                                imageHeight: AppUtils.isTablet(context) ?25 :18,
+                                height:  AppUtils.isTablet(context)  ? 39 : 36,
+                                fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+                                imageHeight: AppUtils.isTablet(context) ?22 :18,
                                 buttonColor: AppColors.cyanBlue,
                                 image: AppImages.serviceable,
                                 text: 'Job Check - Ins', onPressed: jobCheckInOnPressed

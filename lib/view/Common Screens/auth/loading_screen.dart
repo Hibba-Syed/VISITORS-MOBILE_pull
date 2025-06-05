@@ -28,7 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             SizedBox(height: 70, width: 70, child: LoaderWidget()),
             Gap(60),
             Text(
-              'Setting up the Dashboard',
+              'Wait while setting up the Dashboard',
               style: TextStyle(
                 fontSize: 15,
                 color: AppColors.darkGrey,

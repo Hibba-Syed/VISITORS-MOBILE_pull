@@ -188,7 +188,7 @@ class TabletDashboardScreen extends StatelessWidget {
                   name: 'John Henry',
                   typeText: '1234',
                   type: 'Guest',
-                  date: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
+                  createdDate: DateTimeUtil.getFormattedDateTime('2025-04-04T05:33:36.000000Z'),
                   checkOutOnPressed: (){
                     _showCheckoutDialog(context);
                   },

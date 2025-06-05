@@ -328,7 +328,7 @@ class DashboardScreen extends StatelessWidget {
                               type: AppUtils.getServiceableType(
                                       checkIns?.serviceableType)
                                   .label,
-                              date: DateTimeUtil.getFormattedDatesTime(
+                              createdDate: DateTimeUtil.getFormattedDatesTime(
                                   checkIns?.visitor?.createdAt),
                               checkOutOnPressed: () {
                                 context
@@ -651,15 +651,9 @@ class DashboardScreen extends StatelessWidget {
                 const Gap(10),
                 Row(
                   children: [
-                    const Expanded(
-                      child: Row(
-                        children: [
-                          Text(
-                            'Check-Ins',
-                            style: AppTextStyles.style19Primary600,
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'Check-Ins',
+                      style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
                     Expanded(
@@ -669,7 +663,7 @@ class DashboardScreen extends StatelessWidget {
                             child: CustomButton(
                                 buttonColor: AppColors.red,
                                 text: 'Check-Outs',
-                                height: 50,
+                                height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
                                 image: AppImages.checkout,
@@ -682,7 +676,7 @@ class DashboardScreen extends StatelessWidget {
                             child: CustomButton(
                                 buttonColor: AppColors.primary,
                                 text: 'View All',
-                                height: 50,
+                                height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
                                 image: AppImages.view,
@@ -729,8 +723,10 @@ class DashboardScreen extends StatelessWidget {
                             type: AppUtils.getServiceableType(
                                     checkIns?.serviceableType)
                                 .label,
-                            date: DateTimeUtil.getFormattedDatesTime(
+                            createdDate: DateTimeUtil.getFormattedDatesTime(
                                 checkIns?.visitor?.createdAt),
+                            updatedDate: DateTimeUtil.getFormattedDatesTime(
+                                checkIns?.visitor?.updatedAt),
                             checkOutOnPressed: () {
                               context
                                   .read<CheckInsDetailsCubit>()
@@ -753,39 +749,41 @@ class DashboardScreen extends StatelessWidget {
                       ),
                 const Gap(10),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
-                      children: [
-                        Text(
-                          'E-Services',
-                          style: AppTextStyles.style19Primary600,
-                        ),
-                      ],
+                    Text(
+                      'E-Services',
+                      style: AppTextStyles.style19Primary600,
                     ),
-                    Row(
-                      children: [
-                        VisitorPassesButton(
-                          horizontalPadding: 35,
-                          verticalPadding: 14,
-                          count: state.visitorPassesCount?.count ?? 0,
-                          onPressed: () {
-                            onViewVisitorPasses(context);
-                          },
-                        ),
-                        const Gap(10),
-                        CustomButton(
-                            buttonColor: AppColors.primary,
-                            text: 'View All',
-                            height: 50,
-                            width: 185,
-                            borderRadius: 6,
-                            imageHeight: 22,
-                            image: AppImages.view,
-                            onPressed: () {
-                              onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
-                            }),
-                      ],
+                    const Gap(20),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: VisitorPassesButton(
+                              horizontalPadding: 35,
+                              verticalPadding: 10,
+                              count: state.visitorPassesCount?.count ?? 0,
+                              onPressed: () {
+                                onViewVisitorPasses(context);
+                              },
+                            ),
+                          ),
+                          const Gap(10),
+                          Expanded(
+                            child: CustomButton(
+                                buttonColor: AppColors.primary,
+                                text: 'View All',
+                                height: 42,
+                                borderRadius: 6,
+                                imageHeight: 22,
+                                image: AppImages.view,
+                                onPressed: () {
+                                  onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
+                                }),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -816,8 +814,12 @@ class DashboardScreen extends StatelessWidget {
                             serviceType: service?.applicationType ?? "",
                             name: service?.clientName ?? "",
                             checkInOnPressed: () {
+                              AppUtils.isTablet(context) ?
+                              Navigator.pushNamed(
+                                  context, AppRoutes.tabletGuestCheckInScreen) :
                               Navigator.pushNamed(
                                   context, AppRoutes.mobileGuestCheckInScreen);
+
                             },
                             serviceableCheckInOnPressed: () {
                               context.read<CheckInsCubit>().onChangeSelectedType(
@@ -859,8 +861,8 @@ class DashboardScreen extends StatelessWidget {
                     CustomButton(
                         buttonColor: AppColors.primary,
                         text: 'View All',
-                        height: 50,
-                        width: 185,
+                        height: 42,
+                         width: 230,
                         imageHeight: 22,
                         borderRadius: 6,
                         image: AppImages.view,
@@ -898,6 +900,9 @@ class DashboardScreen extends StatelessWidget {
                             vendorName: workOrder?.newVendor?.companyName ?? "",
                             date: workOrder?.startDate?.toString(),
                             checkInPressed: () {
+                              AppUtils.isTablet(context) ?
+                              Navigator.pushNamed(
+                                  context, AppRoutes.tabletGuestCheckInScreen) :
                               Navigator.pushNamed(
                                   context, AppRoutes.mobileGuestCheckInScreen);
                             },

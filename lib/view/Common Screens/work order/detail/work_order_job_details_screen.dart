@@ -91,9 +91,11 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Assets',
                             value: state.workOrderDetailsModel?.assets
-                                    ?.toString() ??
-                                "",
+                                ?.map((e) => e.name)
+                                .where((name) => name != null && name.isNotEmpty)
+                                .join(', '),
                           ),
+
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Start Date',
                             value: DateTimeUtil.getFormattedDate(
@@ -146,7 +148,6 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.horizontalPadding),
           child: CustomButton(
-              height: AppUtils.isTablet(context) ? 55 : 42,
               text: 'Add Log',
               onPressed: () {
                 showDialog(

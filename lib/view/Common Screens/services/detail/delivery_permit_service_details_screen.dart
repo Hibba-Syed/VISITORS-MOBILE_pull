@@ -229,8 +229,6 @@ class _DeliveryPermitServiceDetailsScreenState
             children: [
               Expanded(
                 child: CustomButton(
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -302,8 +300,6 @@ class _DeliveryPermitServiceDetailsScreenState
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.green,
-                      height: AppUtils.isTablet(context) ? 55 : 42,
-                      fontSize: AppUtils.isTablet(context) ? 20 : 15,
                       text: 'Complete',
                       onPressed: () {
                         showDialog(

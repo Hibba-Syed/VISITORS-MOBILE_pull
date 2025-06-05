@@ -175,9 +175,7 @@ class CheckInDetailsScreen extends StatelessWidget {
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.horizontalPadding),
           child: CustomButton(
-              fontSize: AppUtils.isTablet(context) ? 20 : 15,
-              height: AppUtils.isTablet(context) ? 55 : 42,
-              imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+              imageHeight: AppUtils.isTablet(context) ? 22 : 18,
               image: AppImages.logoutCard,
               buttonColor: AppColors.red,
               text: 'Check Out',

@@ -16,7 +16,8 @@ class CheckInCardWidget extends StatelessWidget {
   final String? reference;
   final String? type;
   final String? purpose;
-  final String? date;
+  final String? createdDate;
+  final String? updatedDate;
   final String? count;
   final String? typeText;
   final String? typeImage;
@@ -30,7 +31,7 @@ class CheckInCardWidget extends StatelessWidget {
     this.name,
     this.type,
     this.typeText,
-    this.date,
+    this.createdDate,
     this.typeImage,
     this.count,
     this.reference,
@@ -38,6 +39,7 @@ class CheckInCardWidget extends StatelessWidget {
     this.typeBackgroundColor,
     required this.checkOutOnPressed,
     this.detailsOnPressed,
+    this.updatedDate,
     this.isServiceable = false,
   });
 
@@ -111,9 +113,22 @@ class CheckInCardWidget extends StatelessWidget {
                             AppTextStyles.style14Black600
                           ),
                           const Gap(6),
-                          IconTextContainerWidget(
-                            image: AppImages.date,
-                            text: date ?? "",
+                          Row(
+                            children: [
+                              Expanded(
+                                child: IconTextContainerWidget(
+                                  image: AppImages.date,
+                                  text: createdDate ?? "",
+                                ),
+                              ),
+                              Gap(10),
+                              Expanded(
+                                child: IconTextContainerWidget(
+                                  image: AppImages.date,
+                                  text: updatedDate ?? "",
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -136,9 +151,7 @@ class CheckInCardWidget extends StatelessWidget {
                 ): SizedBox.shrink(),
                 const Gap(5),
                 CustomButton(
-                    height:  AppUtils.isTablet(context)  ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context)  ? 20 : 15,
-                    imageHeight: AppUtils.isTablet(context) ?25 :18,
+                    imageHeight: AppUtils.isTablet(context) ?22 :18,
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
                     text: 'Check Out',

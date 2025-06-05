@@ -28,7 +28,7 @@ class CustomButton extends StatelessWidget {
     this.textAlign,
     this.width,
     this.image,
-    this.height = 42,
+    this.height,
     this.fontSize = 15,
     this.maxLines = 1,
     this.padding = const EdgeInsets.all(10),
@@ -38,17 +38,21 @@ class CustomButton extends StatelessWidget {
     this.fontWeight,
     this.borderRadius,
     this.imageHeight,
+    // fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+    // imageHeight: AppUtils.isTablet(context) ?22 :18,
   });
 
   @override
   Widget build(BuildContext context) {
+    final double bothHeight = height ?? (AppUtils.isTablet(context) ? 39 : 36);
+    final double imageSize = imageHeight ?? (AppUtils.isTablet(context) ?22 :18);
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         alignment: Alignment.center,
         padding: padding,
         width: width,
-        height: height,
+        height: bothHeight,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius ?? 7),
             border: invert == true
@@ -62,7 +66,8 @@ class CustomButton extends StatelessWidget {
             if (image != null)
               SvgPicture.asset(
                 '$image',
-                height: imageHeight ?? 18,
+                height: imageSize,
+                //imageHeight ?? 18,
                 colorFilter: const ColorFilter.mode(
                   AppColors.white,
                   BlendMode.srcIn,

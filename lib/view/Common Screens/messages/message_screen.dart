@@ -27,17 +27,37 @@ class _MessageScreenState extends State<MessageScreen> {
   final TextEditingController messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   List<String> attachmentsList = [];
+
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
-        context.read<MessageCubit>().getMoreMessage();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.addListener(_scrollListener);
     });
   }
+  //
+  // void _onScroll() {
+  //   if (_scrollController.hasClients &&
+  //       _scrollController.position.pixels >=
+  //           _scrollController.position.maxScrollExtent - 80) {
+  //     if (context.read<MessageCubit>().state.loadMore ==
+  //         false) {
+  //         context.read<MessageCubit>().getMoreMessage();
+  //   }
+  //   }
+  // }
 
+  void _scrollListener() {
+    if (!_scrollController.hasClients) return;
+
+    final position = _scrollController.position;
+
+    if (position.pixels >= position.maxScrollExtent - 100) {
+      if (!context.read<MessageCubit>().state.loadMore) {
+        context.read<MessageCubit>().getMoreMessage();
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -58,7 +78,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
                 child: Column(
                   children: [
-                    if (state.loadMore) const LoaderWidget(),
+                     if (state.loadMore) const LoaderWidget(),
                     Expanded(
                         child: state.isLoading
                             ? Padding(
@@ -71,7 +91,8 @@ class _MessageScreenState extends State<MessageScreen> {
                             ? EmptyWidget(
                           text: 'No data available',
                         )
-                            : ListView.separated(
+                            :
+                        ListView.separated(
                               reverse: true,
                               padding: EdgeInsets.only(top: 10,bottom: 10),
                               physics: AlwaysScrollableScrollPhysics(),
@@ -80,13 +101,14 @@ class _MessageScreenState extends State<MessageScreen> {
                               itemBuilder: (context, index) {
                                 MessageModel? message =
                                 state.messageModel?[index];
-                                return Row(
+                                return
+                                  Row(
                                   mainAxisAlignment: message?.by == 'user'
                                       ? MainAxisAlignment.start
                                       : MainAxisAlignment.end,
                                   children: [
-                                    message?.by == 'user'
-                                        ? MessageReceiverCardWidget(
+                                    message?.by == 'user' ?
+                                         MessageReceiverCardWidget(
                                       message:
                                       message?.message ?? "",
                                       date: message?.createdAt
@@ -100,7 +122,9 @@ class _MessageScreenState extends State<MessageScreen> {
                                       attachments:
                                       message?.attachments,
                                     )
-                                        : MessageSenderCardWidget(
+                                        :
+                                 // Text('hibba'):
+                                    MessageSenderCardWidget(
                                       message:
                                       message?.message ?? "",
                                       date: message?.createdAt
@@ -184,5 +208,11 @@ class _MessageScreenState extends State<MessageScreen> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
   }
 }

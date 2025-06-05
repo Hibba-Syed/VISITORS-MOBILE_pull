@@ -204,8 +204,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.cyanBlue,
-                    height: AppUtils.isTablet(context) ? 55 : 42,
-                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -282,8 +280,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                 Expanded(
                     child: CustomButton(
                         buttonColor: AppColors.green,
-                        height: AppUtils.isTablet(context) ? 55 : 42,
-                        fontSize: AppUtils.isTablet(context) ? 20 : 15,
                         text: 'Complete',
                         onPressed: () {
                           showDialog(
@@ -377,8 +373,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.yellow,
-                      height: AppUtils.isTablet(context) ? 55 : 42,
-                      fontSize: AppUtils.isTablet(context) ? 20 : 15,
                       text: 'Clear Payment',
                       onPressed: () {
                         showDialog(

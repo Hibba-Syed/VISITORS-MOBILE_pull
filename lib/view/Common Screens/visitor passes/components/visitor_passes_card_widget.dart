@@ -124,9 +124,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                        height: AppUtils.isTablet(context) ? 55 : 42,
-                        fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                        imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+                        imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                         buttonColor: AppColors.green,
                         image: AppImages.checkInButton,
                         text: 'Check-In',
@@ -136,9 +134,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                     const Gap(10),
                     Expanded(
                       child: CustomButton(
-                          height: AppUtils.isTablet(context) ? 55 : 42,
-                          fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                          imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+                          imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                           buttonColor: AppColors.cyanBlue,
                           image: AppImages.serviceable,
                           text: 'Visitor Pass Check - Ins',

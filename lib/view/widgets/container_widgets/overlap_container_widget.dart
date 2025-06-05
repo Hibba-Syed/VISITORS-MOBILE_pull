@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 class OverlapContainerWidget extends StatelessWidget {
   final String? text;
   final Color? backgroundColor;
+  final Color? imagedColor;
+  final Color? textColor;
   final String? image;
   const OverlapContainerWidget({
     super.key,
     this.text,
     this.backgroundColor,
+    this.imagedColor,
+    this.textColor,
     this.image,
 
   });
@@ -37,8 +40,8 @@ class OverlapContainerWidget extends StatelessWidget {
                 image ?? "",
                 height: 13,
                 width: 13,
-                colorFilter:  const ColorFilter.mode(
-                  AppColors.white,
+                colorFilter:   ColorFilter.mode(
+                  imagedColor ??  AppColors.white,
                   BlendMode.srcIn,
                 ),
               ),
@@ -46,7 +49,20 @@ class OverlapContainerWidget extends StatelessWidget {
           ],
               Text(
                 text ?? "",
-                style:  AppUtils.isTablet(context) ?  AppTextStyles.style15white500 :AppTextStyles.style13white500,
+                style:  AppUtils.isTablet(context) ? TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: textColor ?? AppColors.white
+                )
+
+               // AppTextStyles.style15white500
+                    :
+                TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: textColor ?? AppColors.white
+                )
+               // AppTextStyles.style13white500,
               ),
             ],
           ),

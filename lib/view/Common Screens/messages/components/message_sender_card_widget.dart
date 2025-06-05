@@ -67,7 +67,7 @@ class MessageSenderCardWidget extends StatelessWidget {
             Padding(
               padding:  const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
               child: Column(
-                children:  (attachments?.isNotEmpty ?? true) ?List.generate(
+                children: (attachments?.isNotEmpty ?? false) ?List.generate(
                   attachments?.length ?? 0,
                       (index) => InkWell(
                     overlayColor: const WidgetStatePropertyAll(

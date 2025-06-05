@@ -100,9 +100,9 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                     child: CustomButton(
                       buttonColor: AppColors.red,
                       text: 'Check-Outs All',
-                      height: AppUtils.isTablet(context) ? 50 : 42,
+                      height: AppUtils.isTablet(context) ? 42 : 41,
                       width: AppUtils.isTablet(context) ? 200 : 170,
-                      imageHeight: AppUtils.isTablet(context) ? 25 : 18,
+                      imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                       borderRadius: 6,
                       image: AppImages.logoutCard,
                       onPressed: () {
@@ -176,7 +176,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                       type: AppUtils.getServiceableType(
                                               checkIns?.serviceableType)
                                           .value,
-                                      date: DateTimeUtil.getFormattedDatesTime(
+                                      createdDate: DateTimeUtil.getFormattedDatesTime(
                                           checkIns?.visitor?.createdAt),
                                       checkOutOnPressed: () {
                                         context
