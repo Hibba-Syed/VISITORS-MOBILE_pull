@@ -75,7 +75,7 @@ class TextFieldWidget extends StatelessWidget {
             label!,
             style: AppUtils.isTablet(context)
                 ? AppTextStyles.style15Black600
-                : AppTextStyles.style14Black600,
+                : AppTextStyles.style13Black600,
           ),
         if (label?.isNotEmpty ?? false) const Gap(8.0),
         TextFormField(
@@ -102,7 +102,7 @@ class TextFieldWidget extends StatelessWidget {
             hintText: hint,
             hintStyle: AppUtils.isTablet(context)
                 ? AppTextStyles.style15black400
-                : AppTextStyles.style14darkGray400,
+                : AppTextStyles.style13darkGray400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: prefix,
             suffixIcon: suffix,

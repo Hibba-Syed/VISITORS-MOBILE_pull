@@ -32,10 +32,6 @@ class ActivityLogWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding ?? 10, vertical: verticalPadding ?? 0),
-      // decoration: BoxDecoration(
-      //   color: AppColors.white,
-      //   borderRadius: BorderRadius.circular(10),
-      // ),
       child: Column(
         children: [
           TimelineTile(
@@ -90,6 +86,7 @@ class ActivityLogWidget extends StatelessWidget {
                             style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style16black600
                                 : AppTextStyles.style14Black600),
+                        if(byValue?.isNotEmpty ?? false)
                         Flexible(
                           child: Row(
                             children: [

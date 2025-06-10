@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-import 'package:visitors/view/Common%20Screens/services/detail/short_stay_service_details_screen.dart';
 
 import '../model/service/service_model.dart';
 import '../resource/constants/strings.dart';
 import '../resource/styles/styles.dart';
-import '../view/Common Screens/services/detail/access_device_service_details_sceen.dart';
-import '../view/Common Screens/services/detail/delivery_permit_service_details_screen.dart';
-import '../view/Common Screens/services/detail/facility_booking_service_details_screen.dart';
-import '../view/Common Screens/services/detail/fit_out_service_details_screen.dart';
-import '../view/Common Screens/services/detail/move_in_service_details_screen.dart';
-import '../view/Common Screens/services/detail/move_out_service_details_screen.dart';
-import '../view/Common Screens/services/detail/work_permit_service_details_screen.dart';
+import '../view/screens/services/detail/access_device_service_details_sceen.dart';
+import '../view/screens/services/detail/delivery_permit_service_details_screen.dart';
+import '../view/screens/services/detail/facility_booking_service_details_screen.dart';
+import '../view/screens/services/detail/fit_out_service_details_screen.dart';
+import '../view/screens/services/detail/move_in_service_details_screen.dart';
+import '../view/screens/services/detail/move_out_service_details_screen.dart';
+import '../view/screens/services/detail/short_stay_service_details_screen.dart';
+import '../view/screens/services/detail/work_permit_service_details_screen.dart';
 
 class AppUtils {
   // Status colors

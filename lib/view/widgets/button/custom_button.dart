@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final EdgeInsets padding;
   final FontWeight? fontWeight;
-  final double fontSize;
+  final double? fontSize;
   const CustomButton({
     super.key,
     this.buttonColor,
@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.image,
     this.height,
-    this.fontSize = 15,
+    this.fontSize,
     this.maxLines = 1,
     this.padding = const EdgeInsets.all(10),
     this.textColor,
@@ -38,7 +38,6 @@ class CustomButton extends StatelessWidget {
     this.fontWeight,
     this.borderRadius,
     this.imageHeight,
-    // fontSize: AppUtils.isTablet(context)  ? 15 : 15,
     // imageHeight: AppUtils.isTablet(context) ?22 :18,
   });
 
@@ -46,6 +45,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final double bothHeight = height ?? (AppUtils.isTablet(context) ? 39 : 36);
     final double imageSize = imageHeight ?? (AppUtils.isTablet(context) ?22 :18);
+    final double bothFontSize = fontSize ?? (AppUtils.isTablet(context) ?15 :13);
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -86,7 +86,7 @@ class CustomButton extends StatelessWidget {
                       )
                     : TextStyle(
                         color: AppColors.white,
-                        fontSize: fontSize,
+                        fontSize: bothFontSize,
                         fontWeight: fontWeight ?? FontWeight.w600,
                       ),
                 textAlign: textAlign,
