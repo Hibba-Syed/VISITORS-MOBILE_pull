@@ -163,7 +163,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                               checkIns?.type?.toLowerCase() ==
                                                   'community service')
                                           ? AppImages.community
-                                          : "--",
+                                          : "",
                                       typeText: (checkIns?.type
                                                       ?.toLowerCase() ==
                                                   'unit visit' ||

@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
-import '../../repo/filter/general_filter_impl.dart';
-import '../../repo/filter/general_filter_repo.dart';
+import '../../repo/units/units_repo.dart';
+import '../../repo/units/units_repo_impl.dart';
 
 part 'directory_state.dart';
 
 class DirectoryCubit extends Cubit<DirectoryState> {
   DirectoryCubit() : super(DirectoryState());
 
-  final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
+  final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
   onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
@@ -31,7 +31,7 @@ class DirectoryCubit extends Cubit<DirectoryState> {
   }
   Future<void> getUnits() async {
     emit(state.copyWith(isLoading: true));
-    UnitsResponseModel? response = await _generalFilterRepo.getUnits().onError(
+    UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(

@@ -5,7 +5,7 @@ import '../../model/check_out/check_out_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_out_repo.dart';
 
-class CheckOutImpl implements CheckOutRepo{
+class CheckOutRepoImpl implements CheckOutRepo{
   final BaseApiServices _apiService = NetworkApiServices();
   @override
   Future<CheckOutResponseModel?> getCheckOuts({

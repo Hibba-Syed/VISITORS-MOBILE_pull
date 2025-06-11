@@ -9,7 +9,7 @@ class CheckInsState {
   final bool loadMore;
   final int page;
   final int? serviceableId;
-  List<CheckInModel>? checkInModel;
+  final List<CheckInModel>? checkInModel;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final TypeModel? selectedType;
@@ -51,7 +51,7 @@ class CheckInsState {
     List<UnitModel>? units,
     List<VendorModel>? vendors,
     TypeModel? selectedType,
-    UnitModel?selectedUnit,
+    UnitModel? selectedUnit,
     VendorModel? selectedVendor,
     String? dateRang,
     String? selectedRang,

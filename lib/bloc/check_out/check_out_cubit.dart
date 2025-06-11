@@ -6,10 +6,12 @@ import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
 import '../../model/vendor/vendor_model.dart';
 import '../../model/vendor/vendor_response_model.dart';
-import '../../repo/check_outs/check_out_impl.dart';
+import '../../repo/check_outs/check_out_repo_impl.dart';
 import '../../repo/check_outs/check_out_repo.dart';
-import '../../repo/filter/general_filter_impl.dart';
-import '../../repo/filter/general_filter_repo.dart';
+import '../../repo/units/units_repo.dart';
+import '../../repo/units/units_repo_impl.dart';
+import '../../repo/vendors/vendors_repo.dart';
+import '../../repo/vendors/vendors_repo_impl.dart';
 import '../../utils/app_utils.dart';
 
 part 'check_out_state.dart';
@@ -17,8 +19,9 @@ part 'check_out_state.dart';
 class CheckOutCubit extends Cubit<CheckOutState> {
   CheckOutCubit() : super(CheckOutState());
 
-  final CheckOutRepo _checkOutRepo = CheckOutImpl();
-  final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
+  final CheckOutRepo _checkOutRepo = CheckOutRepoImpl();
+  final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
+  final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
 
   // onChangeRange(String? range) {
@@ -129,7 +132,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
 
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
-    UnitsResponseModel? response = await _generalFilterRepo.getUnits().onError(
+    UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
           (error, stackTrace) {
         emit(state.copyWith(isUnitLoading: false));
         Fluttertoast.showToast(

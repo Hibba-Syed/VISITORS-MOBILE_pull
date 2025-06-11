@@ -8,7 +8,7 @@ import '../../model/work_order/add_log_work_order_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import '../encrption/encryption_helper.dart';
 
-class WorkOrderRFPImpl implements WorkOrderRFPRepo{
+class WorkOrderRFPRepoImpl implements WorkOrderRFPRepo{
   final BaseApiServices _apiService = NetworkApiServices();
 
   @override
@@ -34,8 +34,8 @@ class WorkOrderRFPImpl implements WorkOrderRFPRepo{
   Future<WorkOrderDetailsResponseModel?> getWorkOrderDetails({required int? workOrderId}) async {
     // print('work order URL: $workOrderId');
     try {
-      final filter = {"filter":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
-      // print(filter);
+      final filter = {"vendors":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
+      // print(vendors);
       String url = '${ApiUrl.workOrderDetails}/$workOrderId?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
       //
       // print('work order details URL: ${Uri.parse(url)}');

@@ -257,6 +257,9 @@ class DashboardScreen extends StatelessWidget {
                         image: AppImages.guestCheckIn,
                         onPressed: () {
                           context.read<GuestCheckInCubit>().getCountries();
+                          context.read<GuestCheckInCubit>().getProfile();
+                          context.read<GuestCheckInCubit>().getUnits();
+                         // context.read<GuestCheckInCubit>().getNumberInfo();
                           Navigator.pushNamed(
                               context, AppRoutes.guestCheckInScreen);
                         }),
@@ -314,7 +317,7 @@ class DashboardScreen extends StatelessWidget {
                               CheckInModel? checkIns =
                                   state.checkInsModel?[index];
                               return CheckInCardWidget(
-                                phone: checkIns?.phone ?? "",
+                                phone: checkIns?.phone ?? "--",
                                 count: checkIns?.visitorCount ?? "",
                                 typeImage: (checkIns?.type?.toLowerCase() ==
                                             'community visit' ||
@@ -327,8 +330,8 @@ class DashboardScreen extends StatelessWidget {
                                         checkIns?.type?.toLowerCase() ==
                                             'unit service')
                                     ? checkIns?.unit?.unitNumber
-                                    : checkIns?.type ?? "",
-                                name: checkIns?.name ?? "",
+                                    : checkIns?.type ?? "--",
+                                name: checkIns?.name ?? "--",
                                 profileImageUrl:
                                     checkIns?.visitor?.imageUrl ?? "",
                                 type: AppUtils.getServiceableType(
@@ -419,12 +422,12 @@ class DashboardScreen extends StatelessWidget {
                                     (service?.activeCheckIns?.isNotEmpty ?? true)
                                         ? true
                                         : false,
-                                unit: service?.unit?.unitNumber ?? "",
-                                title: service?.applicationType ?? "",
-                                reference: service?.reference ?? "",
-                                status: service?.status ?? "",
-                                serviceType: service?.applicationType ?? "",
-                                name: service?.clientName ?? "",
+                                unit: service?.unit?.unitNumber ?? "--",
+                                title: service?.applicationType ?? "--",
+                                reference: service?.reference ?? "--",
+                                status: service?.status ?? "--",
+                                serviceType: service?.applicationType ?? "--",
+                                name: service?.clientName ?? "--",
                                 checkInOnPressed: () {
                                   Navigator.pushNamed(context,
                                       AppRoutes.guestCheckInScreen);
@@ -895,12 +898,12 @@ class DashboardScreen extends StatelessWidget {
                                     : false,
                             typeText: 'Work Order',
                             typeAssetImage: AppImages.hammer,
-                            status: workOrder?.status ?? "",
-                            title: workOrder?.title ?? "",
-                            reference: workOrder?.reference ?? "",
-                            vendorName: workOrder?.newVendor?.companyName ?? "",
-                            createdDate: workOrder?.startDate?.toString(),
-                            updatedDate: workOrder?.expiry ?? "",
+                            status: workOrder?.status ?? "--",
+                            title: workOrder?.title ?? "--",
+                            reference: workOrder?.reference ?? "--",
+                            vendorName: workOrder?.newVendor?.companyName ?? "--",
+                             createdDate: DateTimeUtil.getFormattedDateTime(workOrder?.startDate.toString()),
+                             updatedDate: DateTimeUtil.getFormattedDateTime(workOrder?.finishDate.toString()),
                             checkInPressed: () {
                               Navigator.pushNamed(
                                   context, AppRoutes.guestCheckInScreen);

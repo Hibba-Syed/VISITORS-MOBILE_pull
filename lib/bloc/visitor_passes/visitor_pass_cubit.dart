@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/repo/units/units_repo.dart';
+import 'package:visitors/repo/units/units_repo_impl.dart';
 
 
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
 import '../../model/visitor_passes/visitor_pass_model.dart';
 import '../../model/visitor_passes/visitor_pass_response_model.dart';
-import '../../repo/filter/general_filter_impl.dart';
-import '../../repo/filter/general_filter_repo.dart';
 import '../../repo/visitor_passes/visitor_pass_repo.dart';
 import '../../repo/visitor_passes/visitor_pass_repo_impl.dart';
 
@@ -16,7 +16,7 @@ part 'visitor_pass_state.dart';
 class VisitorPassCubit extends Cubit<VisitorPassState> {
   VisitorPassCubit() : super(VisitorPassState());
   final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
-  final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
+  final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
   onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
@@ -99,7 +99,7 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
 
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
-    UnitsResponseModel? response = await _generalFilterRepo.getUnits().onError(
+    UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
       (error, stackTrace) {
         emit(state.copyWith(isUnitLoading: false));
         Fluttertoast.showToast(

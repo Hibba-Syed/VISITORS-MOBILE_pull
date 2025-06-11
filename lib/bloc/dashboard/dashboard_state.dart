@@ -9,16 +9,16 @@ class DashboardState {
   final bool? isVisitorPassLoading;
   final bool? isCheckOutVisitor;
   final bool? isVisitorPassesCountLoading;
-  ProfileRecord? profileRecord;
+  final ProfileRecord? profileRecord;
   final int page;
-  List<CheckInModel>? checkInsModel;
-  List<ServiceModel>? serviceModel;
-  List<WorkOrderModel>? workOrderModel;
-  List<CheckOutVisitors>? checkOutModel;
-  List<VisitorPasses>? visitorPasses;
-  List<CheckOutVisitors>? checkOutVisitors;
-  VisitorPassesCount? visitorPassesCount;
-  CountModel? countModel;
+  final List<CheckInModel>? checkInsModel;
+  final List<ServiceModel>? serviceModel;
+  final List<WorkOrderModel>? workOrderModel;
+  final List<CheckOutVisitors>? checkOutModel;
+  final List<VisitorPasses>? visitorPasses;
+  final List<CheckOutVisitors>? checkOutVisitors;
+  final VisitorPassesCount? visitorPassesCount;
+  final CountModel? countModel;
   DashboardState({
     this.isLoading = false,
     this.isCheckInLoading = false,

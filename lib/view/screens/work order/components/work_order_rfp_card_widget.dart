@@ -11,7 +11,6 @@ import '../../../../resource/styles/styles.dart';
 import '../../../widgets/status/status_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-
 class WorkOrderRFPCardWidget extends StatelessWidget {
   final String? title;
   final String? vendorName;
@@ -109,14 +108,14 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                     Expanded(
                       child: IconTextContainerWidget(
                         image: AppImages.date,
-                        text: DateTimeUtil.getFormattedDateTime(createdDate),
+                        text: createdDate,
                       ),
                     ),
                     const Gap(10),
                     Expanded(
                       child: IconTextContainerWidget(
                         image: AppImages.date,
-                        text: DateTimeUtil.getFormattedDateTime(updatedDate),
+                        text: updatedDate,
                       ),
                     ),
                   ],

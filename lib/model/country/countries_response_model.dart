@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'countries_model.dart';
+import 'country_model.dart';
 
 CountriesResponseModel countriesResponseModelFromJson(String str) => CountriesResponseModel.fromJson(json.decode(str));
 
@@ -12,7 +12,7 @@ String countriesResponseModelToJson(CountriesResponseModel data) => json.encode(
 
 class CountriesResponseModel {
   String? status;
-  List<Countries>? record;
+  List<Country>? record;
   int? code;
   dynamic meta;
   bool? requestStatus;
@@ -29,7 +29,7 @@ class CountriesResponseModel {
 
   factory CountriesResponseModel.fromJson(Map<String, dynamic> json) => CountriesResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<Countries>.from(json["record"]!.map((x) => Countries.fromJson(x))),
+    record: json["record"] == null ? [] : List<Country>.from(json["record"]!.map((x) => Country.fromJson(x))),
     code: json["code"],
     meta: json["meta"],
     requestStatus: json["request_status"],

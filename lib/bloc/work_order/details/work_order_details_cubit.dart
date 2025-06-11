@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/model/work_order/work_order_details_model.dart';
-import 'package:visitors/repo/work_order_rfp/work_order_impl.dart';
+import 'package:visitors/repo/work_order_rfp/work_order_repo_impl.dart';
 import 'package:visitors/repo/work_order_rfp/work_order_repo.dart';
 
 import '../../../model/work_order/add_log_work_order_response_model.dart';
@@ -14,7 +14,7 @@ part 'work_order_details_state.dart';
 class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
   WorkOrderDetailsCubit() : super(WorkOrderDetailsState());
 
-  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
+  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPRepoImpl();
 
   Future<WorkOrderDetailsResponseModel?> getWorkOrderDetails({required int? workOrderId}) async {
     emit(state.copyWith(isLoading: true));

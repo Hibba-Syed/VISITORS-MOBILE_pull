@@ -1,4 +1,4 @@
-class Countries {
+class Country {
   int? id;
   String? sortname;
   String? name;
@@ -12,7 +12,7 @@ class Countries {
   String? label;
   String? value;
 
-  Countries({
+  Country({
     this.id,
     this.sortname,
     this.name,
@@ -27,7 +27,7 @@ class Countries {
     this.value,
   });
 
-  factory Countries.fromJson(Map<String, dynamic> json) => Countries(
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
     id: json["id"],
     sortname: json["sortname"],
     name: json["name"],

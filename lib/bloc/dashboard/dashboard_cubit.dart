@@ -28,7 +28,7 @@ import '../../repo/services/services_repo.dart';
 import '../../repo/services/services_repo_impl.dart';
 import '../../repo/visitor_passes/visitor_pass_repo.dart';
 import '../../repo/visitor_passes/visitor_pass_repo_impl.dart';
-import '../../repo/work_order_rfp/work_order_impl.dart';
+import '../../repo/work_order_rfp/work_order_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
 import '../../utils/routes/app_routes.dart';
@@ -41,7 +41,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
   final DashboardRepo _dashboardRepo = DashboardRepoImpl();
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
-  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
+  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPRepoImpl();
   final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
 
   Future<bool> getProfile() async {

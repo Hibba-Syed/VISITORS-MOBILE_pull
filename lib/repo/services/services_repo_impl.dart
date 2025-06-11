@@ -39,7 +39,7 @@ class ServiceRepoImpl implements ServiceRepo {
   Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId}) async {
     print('service details URL: $serviceId');
     try {
-      final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
+      final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
       print(filter);
       String url = '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
 
