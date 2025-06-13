@@ -44,12 +44,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _cardNumberController = TextEditingController();
+  final TextEditingController _entryCardNumberController = TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
-  final TextEditingController _passportExpiryController =
-      TextEditingController();
-  final TextEditingController _passportNumberController =
-      TextEditingController();
+  final TextEditingController _passportExpiryController = TextEditingController();
+  final TextEditingController _passportNumberController = TextEditingController();
   String? _selectedItemType;
   String? _selectedIssueDate;
   String? _selectedExpiryDate;
@@ -99,7 +97,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         images.add(_cropImage(originalImage, boundingBox, index: i));
       }
       for (var element in images) {
-         print(element?.path);
+        print(element?.path);
       }
       return images;
     }
@@ -162,7 +160,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       // Auto-fill form fields
       _nameController.text = parsedData['Name'] ?? '';
-       _selectedItemNationality = parsedData['Nationality'];
+      _selectedItemNationality = parsedData['Nationality'];
       _idNumberController.text = parsedData['ID Number'] ?? '';
       _selectedIssueDate = parsedData['Issuing Date'] ?? '';
       _selectedExpiryDate = parsedData['Expiry Date'] ?? '';
@@ -261,24 +259,43 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.verticalPadding),
-          child: CustomButton(
-              imageHeight: AppUtils.isTablet(context) ? 22 : 18,
-              image: AppImages.checkInButton,
-              buttonColor: AppColors.green,
-              text: 'Check-In',
-              onPressed: () {
-                if (_formKey.currentState!.validate() ) {
-                  // print("Form is valid. Proceeding with check-in...");
-                } else {
-                  // print("Form validation failed.");
-                }
-                if (_phoneNumberKey.currentState!.validate() ) {
-                  // print("Form is valid. Proceeding with check-in...");
-                } else {
-                  // print("Form validation failed.");
-                }
+          child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
+            builder: (context, state) {
+              return CustomButton(
+                  imageHeight: AppUtils.isTablet(context) ? 22 : 18,
+                  image: AppImages.checkInButton,
+                  buttonColor: AppColors.green,
+                  text: 'Check-In',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      context.read<CheckInsCubit>().guestCheckIn(context,
+                          data: {
+                            'type': _selectedItemType,
+                            'name': _nameController.text,
+                            'purpose': state.selectedPurpose,
+                            'unit_id':  state.selectedUnit?.id,
+                            'unit_number': state.selectedUnit,
+                            'visitor_count': _visitorCountController.text,
+                            'phone': _phoneNumberController.text,
+                            'email': _emailController.text,
+                            'entry_card_number': _entryCardNumberController.text,
+                            'nationality': state.selectedCountry,
+                            'description': _descriptionController.text,
+                            'serviceable_id': '',
+                            'serviceable_type': '',
+                            'sms': false,
+                            'visitor_id': ''
+                          });
 
-              }),
+                      if (_phoneNumberKey.currentState!.validate()) {
+                        // print("Form is valid. Proceeding with check-in...");
+                      } else {
+                        // print("Form validation failed.");
+                      }
+                    }
+                  });
+            },
+          ),
         ),
       ),
     );
@@ -433,12 +450,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 label: 'ID Number',
                                 hint: 'Enter ID Number',
                                 keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'required';
-                                  }
-                                  return null;
-                                },
+                                // validator: (value) {
+                                //   if (value == null || value.isEmpty) {
+                                //     return 'required';
+                                //   }
+                                //   return null;
+                                // },
                               ),
                             ),
                             const Gap(8),
@@ -590,47 +607,42 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         Row(
                           children: [
                             Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "Purpose*",
-                                          style: AppTextStyles.style12Black600,
-                                        ),
-                                        const Gap(8),
-                                        SingleSelectedDropdownWidget<
-                                            VisitorsPurpose>(
-                                          hint: "Select Purpose",
-                                          fillColor: AppColors.white,
-                                          selectedItem: context
-                                              .watch<GuestCheckInCubit>()
-                                              .state
-                                              .selectedPurpose,
-                                          itemAsString: (purpose) =>
-                                              purpose.purpose ?? "",
-                                          compareFn: (p0, p1) => p0.id == p1.id,
-                                          items: state
-                                                  .profileRecord
-                                                  ?.association
-                                                  ?.visitorsPurposes ??
-                                              [],
-                                          onChanged: (value) {
-                                            context
-                                                .read<GuestCheckInCubit>()
-                                                .onChangeSelectedPurpose(value);
-                                          },
-                                          validator: (value) {
-                                            if (value?.purpose?.isNotEmpty ??
-                                                false) {
-                                              return 'required';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Purpose*",
+                                    style: AppTextStyles.style12Black600,
                                   ),
+                                  const Gap(8),
+                                  SingleSelectedDropdownWidget<VisitorsPurpose>(
+                                    hint: "Select Purpose",
+                                    fillColor: AppColors.white,
+                                    selectedItem: context
+                                        .watch<GuestCheckInCubit>()
+                                        .state
+                                        .selectedPurpose,
+                                    itemAsString: (purpose) =>
+                                        purpose.purpose ?? "",
+                                    compareFn: (p0, p1) => p0.id == p1.id,
+                                    items: state.profileRecord?.association
+                                            ?.visitorsPurposes ??
+                                        [],
+                                    onChanged: (value) {
+                                      context
+                                          .read<GuestCheckInCubit>()
+                                          .onChangeSelectedPurpose(value);
+                                    },
+                                    // validator: (value) {
+                                    //   if (value?.purpose?.isNotEmpty ?? false) {
+                                    //     return 'required';
+                                    //   }
+                                    //   return null;
+                                    // },
+                                  ),
+                                ],
+                              ),
+                            ),
                             const Gap(10),
                             Expanded(
                               child: Column(
@@ -644,10 +656,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   SingleSelectedDropdownWidget<UnitModel>(
                                     hint: "Unit",
                                     fillColor: AppColors.white,
-                                    selectedItem:
-                                    context.watch<GuestCheckInCubit>().state.selectedUnit,
-                                    itemAsString: (unit) => unit.unitNumber ?? "",
-                                    compareFn: (unit, item) => unit.id == item.id,
+                                    selectedItem: context
+                                        .watch<GuestCheckInCubit>()
+                                        .state
+                                        .selectedUnit,
+                                    itemAsString: (unit) =>
+                                        unit.unitNumber ?? "",
+                                    compareFn: (unit, item) =>
+                                        unit.id == item.id,
                                     items: state.units ?? [],
                                     onChanged: (value) {
                                       context
@@ -682,7 +698,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                     outLineColor: AppColors.gray,
                                     hint: "Select Nationality",
                                     fillColor: AppColors.white,
-                                    selectedItem: context.watch<GuestCheckInCubit>().state.selectedCountry,
+                                    selectedItem: context
+                                        .watch<GuestCheckInCubit>()
+                                        .state
+                                        .selectedCountry,
                                     items: state.countries ?? [],
                                     itemAsString: (country) =>
                                         country.name ?? "",
@@ -708,7 +727,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         TextFieldWidget(
-                          controller: _cardNumberController,
+                          controller: _entryCardNumberController,
                           label: 'Entry Card Number',
                           hint: 'Enter card number',
                         ),
@@ -741,21 +760,26 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   border: Border.all(color: AppColors.primary)),
                               child: TextButton(
                                 style: ButtonStyle(
-                                  overlayColor:
-                                      WidgetStateProperty.all(Colors.transparent),
+                                  overlayColor: WidgetStateProperty.all(
+                                      Colors.transparent),
                                 ),
-                                onPressed: () async{
-                                  final phoneNumber = _phoneNumberController.text.trim();
+                                onPressed: () async {
+                                  final phoneNumber =
+                                      _phoneNumberController.text.trim();
 
                                   if (phoneNumber.isEmpty) {
-                                    Fluttertoast.showToast(msg: "Please type note first.");
+                                    Fluttertoast.showToast(
+                                        msg: "Please type note first.");
                                     return;
                                   }
-                                  if (!_phoneNumberKey.currentState!.validate()) {
+                                  if (!(_phoneNumberKey.currentState
+                                          ?.validate() ??
+                                      false)) {
                                     return;
                                   }
-                                 await context.read<GuestCheckInCubit>().getNumberInfo(
-                                      phoneNumber: phoneNumber);
+                                  await context
+                                      .read<GuestCheckInCubit>()
+                                      .getNumberInfo(phoneNumber: phoneNumber);
                                   showDialog(
                                     barrierDismissible: false,
                                     context: context,
@@ -763,11 +787,23 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       return CustomAlertDialogBox(
                                         hideBothButtons: true,
                                         insetPadding: AppUtils.isTablet(context)
-                                            ? const EdgeInsets.symmetric(horizontal: 35)
-                                            : const EdgeInsets.symmetric(horizontal: 10),
+                                            ? const EdgeInsets.symmetric(
+                                                horizontal: 35)
+                                            : const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                         title: 'Select Visitor',
                                         contentBuilder: (context, setState) {
-                                          return visitorNumberWidget();
+                                          return visitorNumberWidget(
+                                            _phoneNumberController.text,
+                                            remainingVisitors: ((context
+                                                        .read<
+                                                            GuestCheckInCubit>()
+                                                        .state
+                                                        .numberInfo
+                                                        ?.length ??
+                                                    0) -
+                                                1),
+                                          );
                                         },
                                       );
                                     },
@@ -963,7 +999,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           fillColor: AppColors.white,
                           selectedItem: context
                               .watch<GuestCheckInCubit>()
-                              .state.selectedCountry,
+                              .state
+                              .selectedCountry,
                           items: state.countries ?? [],
                           itemAsString: (country) => country.name ?? "",
                           compareFn: (p0, p1) => p0.id == p1.id,
@@ -1043,36 +1080,36 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             return null;
                           },
                         ),
-                          const Gap(5),
-                          const Text(
-                            "Purpose*",
-                            style: AppTextStyles.style12Black600,
-                          ),
-                          const Gap(5),
-                          SingleSelectedDropdownWidget<VisitorsPurpose>(
-                            hint: "Select Purpose",
-                            fillColor: AppColors.white,
-                            selectedItem: context
-                                .watch<GuestCheckInCubit>()
-                                .state
-                                .selectedPurpose,
-                            itemAsString: (purpose) => purpose.purpose ?? "",
-                            compareFn: (p0, p1) => p0.id == p1.id,
-                            items: state.profileRecord?.association
-                                    ?.visitorsPurposes ??
-                                [],
-                            onChanged: (value) {
-                              context
-                                  .read<GuestCheckInCubit>()
-                                  .onChangeSelectedPurpose(value);
-                            },
-                            validator: (value) {
-                              if (value?.purpose?.isNotEmpty ?? false) {
-                                return 'required';
-                              }
-                              return null;
-                            },
-                          ),
+                        const Gap(5),
+                        const Text(
+                          "Purpose*",
+                          style: AppTextStyles.style12Black600,
+                        ),
+                        const Gap(5),
+                        SingleSelectedDropdownWidget<VisitorsPurpose>(
+                          hint: "Select Purpose",
+                          fillColor: AppColors.white,
+                          selectedItem: context
+                              .watch<GuestCheckInCubit>()
+                              .state
+                              .selectedPurpose,
+                          itemAsString: (purpose) => purpose.purpose ?? "",
+                          compareFn: (p0, p1) => p0.id == p1.id,
+                          items: state.profileRecord?.association
+                                  ?.visitorsPurposes ??
+                              [],
+                          onChanged: (value) {
+                            context
+                                .read<GuestCheckInCubit>()
+                                .onChangeSelectedPurpose(value);
+                          },
+                          validator: (value) {
+                            if (value?.purpose?.isNotEmpty ?? false) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
                         const Gap(5),
                         const Text(
                           "Unit Number*",
@@ -1129,23 +1166,27 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   border: Border.all(color: AppColors.primary)),
                               child: TextButton(
                                 style: ButtonStyle(
-                                  overlayColor:
-                                      WidgetStateProperty.all(Colors.transparent),
+                                  overlayColor: WidgetStateProperty.all(
+                                      Colors.transparent),
                                 ),
                                 onPressed: () {
-                                  final phoneNumber = _phoneNumberController.text.trim();
+                                  final phoneNumber =
+                                      _phoneNumberController.text.trim();
 
                                   if (phoneNumber.isEmpty) {
-                                    Fluttertoast.showToast(msg: "Please type note first.");
+                                    Fluttertoast.showToast(
+                                        msg: "Please type note first.");
                                     return;
                                   }
 
-                                  if (!_phoneNumberKey.currentState!.validate()) {
+                                  if (!_phoneNumberKey.currentState!
+                                      .validate()) {
                                     return;
                                   }
 
-                                  context.read<GuestCheckInCubit>().getNumberInfo(
-                                      phoneNumber: phoneNumber);
+                                  context
+                                      .read<GuestCheckInCubit>()
+                                      .getNumberInfo(phoneNumber: phoneNumber);
 
                                   showDialog(
                                     barrierDismissible: false,
@@ -1154,11 +1195,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       return CustomAlertDialogBox(
                                         hideBothButtons: true,
                                         insetPadding: AppUtils.isTablet(context)
-                                            ? const EdgeInsets.symmetric(horizontal: 35)
-                                            : const EdgeInsets.symmetric(horizontal: 10),
+                                            ? const EdgeInsets.symmetric(
+                                                horizontal: 35)
+                                            : const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                         title: 'Select Visitor',
                                         contentBuilder: (context, setState) {
-                                          return visitorNumberWidget();
+                                          return visitorNumberWidget(
+                                              _phoneNumberController.text);
                                         },
                                       );
                                     },
@@ -1180,7 +1224,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         TextFieldWidget(
                           outLineColor: AppColors.gray,
-                          controller: _cardNumberController,
+                          controller: _entryCardNumberController,
                           label: 'Entry Card Number',
                           hint: 'Enter card number',
                         ),
@@ -1202,50 +1246,73 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       ),
     );
   }
-  Widget visitorNumberWidget() {
+
+  Widget visitorNumberWidget(String phoneNumber, {int? remainingVisitors}) {
     return BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
-  builder: (context, state) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "${state.numberInfo?.length}",
-          style: AppTextStyles.style36Blue500,
-        ),
-        Text(
-          'Visitor records found for this number',
-          style:  AppUtils.isMobile(context) ? AppTextStyles.style14Black600 :AppTextStyles.style15Black600,
-        ),
-        const Divider(
-          color: AppColors.lightGrey,
-        ),
-        const Gap(5),
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-              maxHeight: 250),
-          child: ListView.separated(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: state.numberInfo?.length ?? 0,
-            itemBuilder: (context, index) {
-              NumberInfo? numberInfo = state.numberInfo?[index];
-              return GetInfoCardWidget(
-                name: numberInfo?.name ?? '',
-                country: numberInfo?.nationality ?? '',
-                profileImageUrl: numberInfo?.imageUrl ?? '',
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const Divider(
-                color: AppColors.lightGrey,
-              );
-            },
-          ),
-        ),
-      ],
+      builder: (context, state) {
+        if (state.isNumberInfoLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state.numberInfo?.isEmpty ?? true) {
+          return Center(
+            child: Text(
+              'No visitor records found for this number',
+              style: AppTextStyles.style14DarkGrey600,
+            ),
+          );
+        }
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "${state.numberInfo?.length}",
+              style: AppTextStyles.style36Blue500,
+            ),
+            Text(
+              'Visitor records found for this number',
+              style: AppUtils.isMobile(context)
+                  ? AppTextStyles.style14Black600
+                  : AppTextStyles.style15Black600,
+            ),
+            const Divider(
+              color: AppColors.lightGrey,
+            ),
+            const Gap(5),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 250),
+              child: ListView.separated(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: state.numberInfo?.length ?? 0,
+                itemBuilder: (context, index) {
+                  NumberInfo? numberInfo = state.numberInfo?[index];
+                  return GetInfoCardWidget(
+                    deleteOnPressed: () async {
+                      return context.read<GuestCheckInCubit>().deleteVisitor(
+                            context,
+                            id: numberInfo?.id,
+                            phoneNumber: phoneNumber,
+                            // remainingVisitors: remainingVisitors,
+                          );
+                    },
+                    name: numberInfo?.name ?? '',
+                    country: numberInfo?.nationality ?? '',
+                    profileImageUrl: numberInfo?.imageUrl ?? '',
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const Divider(
+                    color: AppColors.lightGrey,
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
-  },
-);
   }
 }

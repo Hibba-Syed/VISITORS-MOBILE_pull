@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
 import 'package:visitors/view/screens/messages/components/send_chat_button_contrainer_widget.dart';
 
+import '../../../../bloc/message/message_cubit.dart';
 import '../../../../resource/constants/app_colors.dart';
 import '../../../widgets/loader/loader_widget.dart';
 
 class ChatBottomRowWidget extends StatefulWidget {
   final VoidCallback onAttach;
- // final Future<void> Function() onSend;
-  final VoidCallback onSend;
-  final bool isLoading;
-  final Function(bool) setLoading;
+  final Future<void> Function() onSend;
   final TextEditingController messageController;
   const ChatBottomRowWidget({
     super.key,
     required this.onAttach,
     required this.onSend,
     required this.messageController,
-    required this.isLoading,
-    required this.setLoading,
 
   });
 
@@ -87,24 +84,17 @@ class _ChatBottomRowWidgetState extends State<ChatBottomRowWidget> {
               ),
             ),
             const Gap(6),
-            // (isLoading)
-            //     ? const SizedBox(
-            //         height: 50,
-            //         // width: 35,
-            //         child: Center(child: LoaderWidget()))
-            //     : SendChatButtonContainerWidget(onPressed: widget.onSend),
-            (widget.isLoading)
-                ? const SizedBox(
-                height: 50,
-                child: Center(child: LoaderWidget()))
-                : SendChatButtonContainerWidget(onPressed: () async {
-              widget.setLoading(true);
-              try {
-                 widget.onSend();
-              } finally {
-                widget.setLoading(false);
-              }
-            }),
+            BlocBuilder<MessageCubit, MessageState>(
+              builder: (context, state) {
+                return state.isSendMessageLoading
+                    ? const SizedBox(
+                    height: 50,
+                    child: Center(child: LoaderWidget()))
+                    : SendChatButtonContainerWidget(
+                    onPressed: widget.onSend);
+              },
+            ),
+
           ],
         ),
       ),

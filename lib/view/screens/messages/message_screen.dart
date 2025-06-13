@@ -36,17 +36,6 @@ class _MessageScreenState extends State<MessageScreen> {
       _scrollController.addListener(_scrollListener);
     });
   }
-  //
-  // void _onScroll() {
-  //   if (_scrollController.hasClients &&
-  //       _scrollController.position.pixels >=
-  //           _scrollController.position.maxScrollExtent - 80) {
-  //     if (context.read<MessageCubit>().state.loadMore ==
-  //         false) {
-  //         context.read<MessageCubit>().getMoreMessage();
-  //   }
-  //   }
-  // }
 
   void _scrollListener() {
     if (!_scrollController.hasClients) return;
@@ -166,7 +155,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 setState(() {});
               }
             },
-            onSend: () {
+            onSend: ()async {
               if (messageController.text.isEmpty) {
                 Fluttertoast.showToast(msg: "Please type a message first");
                 return;
@@ -178,12 +167,6 @@ class _MessageScreenState extends State<MessageScreen> {
                   );
               messageController.clear();
               attachmentsList.clear();
-            },
-            isLoading: isSending,
-            setLoading: (loading) {
-              setState(() {
-                isSending = loading;
-              });
             },
           ),
         ),

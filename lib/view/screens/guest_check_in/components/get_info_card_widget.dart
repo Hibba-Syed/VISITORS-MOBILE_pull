@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
@@ -9,13 +8,12 @@ import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.d
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-import '../../../../bloc/guest_check_in/guest_check_in_cubit.dart';
 
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
   final String? country;
-  final VoidCallback? deleteOnPressed;
+  final  Future<bool> Function()? deleteOnPressed;
   const GetInfoCardWidget(
       {super.key,
       this.profileImageUrl,
@@ -25,7 +23,6 @@ class GetInfoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<GuestCheckInCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
@@ -47,14 +44,18 @@ class GetInfoCardWidget extends StatelessWidget {
                     children: [
                       Text(
                         name ?? "",
-                        style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
+                        style: AppUtils.isTablet(context)
+                            ? AppTextStyles.style15Black600
+                            : AppTextStyles.style14Black600,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const Gap(5),
                       Text(
                         country ?? "",
-                        style: AppUtils.isTablet(context) ?  AppTextStyles.style13DarkGrey600 : AppTextStyles.style12DarkGrey600,
+                        style: AppUtils.isTablet(context)
+                            ? AppTextStyles.style13DarkGrey600
+                            : AppTextStyles.style12DarkGrey600,
                       ),
                     ],
                   ),
@@ -69,7 +70,9 @@ class GetInfoCardWidget extends StatelessWidget {
                 SmallButton(
                   icon: Icons.check,
                   backgroundColor: AppColors.green,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
                 const Gap(10),
                 SmallButton(
@@ -84,28 +87,26 @@ class GetInfoCardWidget extends StatelessWidget {
                             isCancelButtonDisable: true,
                             confirmButtonText: 'Delete',
                             confirmButtonColor: AppColors.red,
-                            onConfirm: ()async{
-                            return  context.read<GuestCheckInCubit>().deleteVisitor(id:context.read<GuestCheckInCubit>().state.numberInfo?.firstOrNull?.id);
-
-                            },
-                            insetPadding:
-                            AppUtils.isTablet( context) ?
-                            EdgeInsets.symmetric(horizontal: 50) :
-                            EdgeInsets.all(20),
+                            onConfirm: deleteOnPressed ,
+                            insetPadding: AppUtils.isTablet(context)
+                                ? EdgeInsets.symmetric(horizontal: 50)
+                                : EdgeInsets.all(20),
                             title: 'Delete Visitor Record',
                             contentBuilder: (context, setState) {
-                              return  Align(
+                              return Align(
                                 alignment: Alignment.center,
                                 child: Column(
                                   children: [
                                     Icon(
                                       CupertinoIcons.delete,
                                       color: AppColors.red,
-                                      size: AppUtils.isTablet(context) ? 42 : 22,
+                                      size:
+                                          AppUtils.isTablet(context) ? 42 : 22,
                                     ),
                                     Gap(15),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       child: Text(
                                           'Are you sure you want to delete this visitor record  forever?',
                                           textAlign: TextAlign.center,
@@ -122,7 +123,6 @@ class GetInfoCardWidget extends StatelessWidget {
               ],
             ),
           ),
-
         ],
       ),
     );

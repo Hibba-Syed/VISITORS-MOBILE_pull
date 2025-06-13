@@ -277,6 +277,7 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   dynamic returnResponse(http.Response response) {
+    print('ress Code:: ${response.statusCode}');
     print('ress:: ${response.body}');
     final body = json.decode(response.body);
     final statusCode = response.statusCode;

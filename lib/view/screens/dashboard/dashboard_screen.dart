@@ -653,6 +653,9 @@ class DashboardScreen extends StatelessWidget {
                     textColor: AppColors.white,
                     image: AppImages.guestCheckIn,
                     onPressed: () {
+                      context.read<GuestCheckInCubit>().getUnits();
+                      context.read<GuestCheckInCubit>().getCountries();
+                      context.read<GuestCheckInCubit>().getProfile();
                       Navigator.pushNamed(
                           context, AppRoutes.guestCheckInScreen);
                     }),

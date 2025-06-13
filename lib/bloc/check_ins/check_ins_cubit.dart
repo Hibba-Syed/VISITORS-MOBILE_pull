@@ -8,6 +8,7 @@ import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
 import '../../model/check_ins/check_in_model.dart';
+import '../../model/check_ins/guest_checkin_response_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
 import '../../model/check_out/check_out_model.dart';
 import '../../model/unit/unit_model.dart';
@@ -244,4 +245,40 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     }
   }
 
+  Future<bool> guestCheckIn(
+      BuildContext context, {
+        required Map<String, dynamic> data,
+      }) async {
+    emit(state.copyWith(isGuestCheckInLoading: true));
+    try {
+      GuestCheckInResponseModel? response = await _checkInRepo
+          .guestCheckIn(
+          data: data,
+      )
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isGuestCheckInLoading: false));
+        log( error.toString());
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        return null;
+      });
+      emit(state.copyWith(isGuestCheckInLoading: false));
+      if (response != null && response.status == 'success') {
+        emit(state.copyWith(checkInModel: response.record));
+        Navigator.pop(context);
+        getCheckIns();
+        Fluttertoast.showToast(msg:  'Check in successfully');
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while checking in ');
+        return false;
+      }
+    } catch (e) {
+      emit(state.copyWith(isGuestCheckInLoading: false));
+      Fluttertoast.showToast(msg: e.toString());
+      return false;
+    }
+  }
 }

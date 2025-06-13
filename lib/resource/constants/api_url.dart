@@ -29,4 +29,5 @@ class ApiUrl {
   static const String countries = '$baseUrl/countries';
   static const String visitorQuickInfo = '$baseUrl/visitor/quick-info';
   static const String deleteVisitor = '$baseUrl/visitor/delete-visitor';
+  static const String guestCheckIn = '$baseUrl/visitor/check-in';
 }

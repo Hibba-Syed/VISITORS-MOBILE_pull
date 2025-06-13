@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
@@ -96,7 +97,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     }
   }
 
-  Future<void> getNumberInfo({String? phoneNumber}) async {
+  Future getNumberInfo({String? phoneNumber}) async {
     emit(state.copyWith(isNumberInfoLoading: true));
     VisitorPhoneInfoResponseModel? response = await _checkInRepo.getNumberInfo(
       phoneNumber: phoneNumber
@@ -117,19 +118,29 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     }
   }
 
-  Future<bool> deleteVisitor({required int? id}) async {
+  Future<bool> deleteVisitor(BuildContext context,
+      {required int? id,
+        required String? phoneNumber,
+        int? remainingVisitors}) async {
+    print("remaining Visitors::: $remainingVisitors");
     emit(state.copyWith(isDeleteVisitorLoading: true));
-
     DeleteVisitorResponseModel? response =
     await _checkInRepo.deleteVisitor(id: id).onError((error, stackTrace) {
       emit(state.copyWith(isDeleteVisitorLoading: false));
       return null;
     });
     emit(state.copyWith(isDeleteVisitorLoading: false));
-
     if (response != null && response.status == 'success') {
       Fluttertoast.showToast(msg: 'visitor deleted successfully');
-      getNumberInfo();
+      if ((phoneNumber?.isNotEmpty ?? false) &&
+          (remainingVisitors ?? 0) > 0) {
+        // If there are remaining visitors, fetch the number info again
+        // to update the UI with the latest visitor count.
+        getNumberInfo(phoneNumber: phoneNumber);
+      }
+      if (remainingVisitors == 0) {
+        Navigator.pop(context);
+      }
       return true;
     } else {
       Fluttertoast.showToast(
@@ -137,5 +148,4 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       return false;
     }
   }
-
 }
