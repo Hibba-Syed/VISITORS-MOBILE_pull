@@ -20,6 +20,7 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/drawer/drawer_list_tile.dart';
 import 'package:visitors/view/widgets/responsive_layout_widget.dart';
 
+import '../../utils/app_utils.dart';
 import 'check_ins/check_in_screen.dart';
 import 'check_outs/check_outs_screen.dart';
 import 'components/drawer_item_model.dart';
@@ -141,19 +142,24 @@ class DeviceDeciderScreen extends StatelessWidget {
                     // Optionally trigger specific cubits
                     switch (item.index) {
                       case AppConstants.checkInsIndex:
+                        context.read<CheckInsCubit>().resetFilterData();
                         context.read<CheckInsCubit>().getCheckIns();
                         break;
                       case AppConstants.eServicesIndex:
+                        context.read<ServiceCubit>().resetFilterData();
                         context.read<ServiceCubit>().getServices();
                         break;
                       case AppConstants.workOrderRfpIndex:
+                        context.read<WorkOrderCubit>().resetFilterData();
                         context.read<WorkOrderCubit>().getWorkOrder();
                         break;
                       case AppConstants.messagesIndex:
                         context.read<MessageCubit>().getMessages();
                         break;
                       case AppConstants.checkOutsIndex:
-                        context.read<CheckOutCubit>().getCheckOut();
+                        context.read<CheckOutCubit>().onChangeDateRange(
+                            AppUtils.getDateRangeStringFromLabel(
+                                'Last 30 Days'));
                         break;
                     }
                   }

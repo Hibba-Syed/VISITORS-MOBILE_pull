@@ -11,6 +11,7 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/strings.dart';
+import '../../../utils/date_time.dart';
 import '../../widgets/text field/search_text_field.dart';
 import 'package:visitors/utils/app_utils.dart';
 
@@ -105,12 +106,12 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                               title: workOrder?.title ?? "--",
                               reference: workOrder?.reference ?? "--",
                               vendorName: workOrder?.newVendor?.companyName ?? "--",
-                              createdDate: workOrder?.createdAt.toString() ?? "--",
+                              createdDate: DateTimeUtil.getFormattedDate(workOrder?.startDate),
+                                updatedDate: DateTimeUtil.getFormattedDate(workOrder?.finishDate),
                               isActiveCheckins: (workOrder?.activeCheckIns?.isNotEmpty ??
                                   true)
                                   ? true
                                   : false,
-                              //DateTimeUtil.getFormattedDateTime(workOrder?.createdAt.toString()),
                               checkInPressed: () {
                                 Navigator.pushNamed(context,
                                         AppRoutes.guestCheckInScreen);

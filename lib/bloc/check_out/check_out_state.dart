@@ -8,7 +8,7 @@ class CheckOutState {
   final bool loadMore;
   final bool isCheckOutLoading;
   final int page;
-  List<CheckOutVisitors>? checkOutVisitors;
+  List<CheckOutVisitor>? checkOutVisitors;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final String? dateRang;
@@ -43,7 +43,7 @@ class CheckOutState {
     bool? isCheckOutLoading,
     bool? loadMore,
     int? page,
-    List<CheckOutVisitors>? checkOutVisitors,
+    List<CheckOutVisitor>? checkOutVisitors,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
     String? dateRang,

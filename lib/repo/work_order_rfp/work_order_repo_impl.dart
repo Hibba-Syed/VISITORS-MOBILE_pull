@@ -23,7 +23,7 @@ class WorkOrderRFPRepoImpl implements WorkOrderRFPRepo{
       String url =
           '${ApiUrl.workOrder}?page=${page ?? 1}&limit=${limit ??
           10}&keyword=${keyword ?? ''}&is_awarded=${isAwarded ?? ''}&vendor_id=${vendorId ?? ''}';
-      print('workOrder^^ $url');
+      // print('workOrder^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return WorkOrderResponseModel.fromJson(response);
     } catch (e) {
@@ -34,7 +34,8 @@ class WorkOrderRFPRepoImpl implements WorkOrderRFPRepo{
   Future<WorkOrderDetailsResponseModel?> getWorkOrderDetails({required int? workOrderId}) async {
     // print('work order URL: $workOrderId');
     try {
-      final filter = {"vendors":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
+     // final filter = {"vendors":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
+      final filter = {"filter":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
       // print(vendors);
       String url = '${ApiUrl.workOrderDetails}/$workOrderId?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
       //

@@ -8,7 +8,6 @@ import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
 import '../../model/check_ins/check_in_model.dart';
-import '../../model/check_ins/guest_checkin_response_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
 import '../../model/check_out/check_out_model.dart';
 import '../../model/unit/unit_model.dart';
@@ -27,7 +26,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   CheckInsCubit() : super(CheckInsState());
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
-  final  UnitsRepo _unitsRepo = UnitsRepoImpl();
+  final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
   onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
@@ -35,8 +34,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
 
   onChangeSelectedServiceableId(int? serviceableId) {
     emit(state.copyWith(serviceableId: serviceableId));
-
   }
+
   onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
@@ -56,6 +55,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
+
   resetFilterData() {
     emit(CheckInsState(
       checkInModel: state.checkInModel,
@@ -67,8 +67,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       page: state.page,
       units: state.units,
       vendors: state.vendors,
-    )
-    );
+    ));
   }
 
   Future<void> getCheckIns() async {
@@ -80,9 +79,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
             dateRange: state.dateRang,
             serviceableType: state.selectedType?.value,
             vendorId: state.selectedVendor?.id,
-            serviceableId: state.serviceableId
-
-    )
+            serviceableId: state.serviceableId)
         .onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -109,14 +106,13 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
-            page: state.page,
-            keyword: keyword,
-            unitId: state.selectedUnit?.id,
-            dateRange: state.dateRang,
-            serviceableType: state.selectedType?.value,
-            vendorId: state.selectedVendor?.id,
-           serviceableId: state.serviceableId,
-
+      page: state.page,
+      keyword: keyword,
+      unitId: state.selectedUnit?.id,
+      dateRange: state.dateRang,
+      serviceableType: state.selectedType?.value,
+      vendorId: state.selectedVendor?.id,
+      serviceableId: state.serviceableId,
     )
         .onError(
       (error, stackTrace) {
@@ -164,21 +160,19 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       return false;
     }
   }
+
   Future<bool> checkOutVisitors(
-      BuildContext context, {
-        required int? id,
-        required Map<String, dynamic> data,
-      }) async {
+    BuildContext context, {
+    required int? id,
+    required Map<String, dynamic> data,
+  }) async {
     emit(state.copyWith(isCheckOutVisitor: true));
     try {
       CheckOutVisitorResponseModel? response = await _checkInRepo
-          .checkOutVisitors(
-          data: data,
-         id: id
-      )
+          .checkOutVisitors(data: data, id: id)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCheckOutVisitor: false));
-        log( error.toString());
+        log(error.toString());
         Fluttertoast.showToast(
           msg: error.toString(),
         );
@@ -187,10 +181,18 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       emit(state.copyWith(isCheckOutVisitor: false));
       // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
-        Navigator.pop(context);
+        emit(state.copyWith(
+            checkOutVisitors: (response.record == null)
+                ? state.checkOutVisitors
+                : [response.record!, ...state.checkOutVisitors ?? []]));
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
         getCheckIns();
-        Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
+        Fluttertoast.showToast(
+            msg: (data['checkout'] != null)
+                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
+                : ' Checkout successfully');
         return true;
       } else {
         Fluttertoast.showToast(
@@ -242,43 +244,6 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching vendors');
-    }
-  }
-
-  Future<bool> guestCheckIn(
-      BuildContext context, {
-        required Map<String, dynamic> data,
-      }) async {
-    emit(state.copyWith(isGuestCheckInLoading: true));
-    try {
-      GuestCheckInResponseModel? response = await _checkInRepo
-          .guestCheckIn(
-          data: data,
-      )
-          .onError((error, stackTrace) {
-        emit(state.copyWith(isGuestCheckInLoading: false));
-        log( error.toString());
-        Fluttertoast.showToast(
-          msg: error.toString(),
-        );
-        return null;
-      });
-      emit(state.copyWith(isGuestCheckInLoading: false));
-      if (response != null && response.status == 'success') {
-        emit(state.copyWith(checkInModel: response.record));
-        Navigator.pop(context);
-        getCheckIns();
-        Fluttertoast.showToast(msg:  'Check in successfully');
-        return true;
-      } else {
-        Fluttertoast.showToast(
-            msg: 'Something went wrong while checking in ');
-        return false;
-      }
-    } catch (e) {
-      emit(state.copyWith(isGuestCheckInLoading: false));
-      Fluttertoast.showToast(msg: e.toString());
-      return false;
     }
   }
 }

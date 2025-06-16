@@ -18,7 +18,7 @@ class VisitorPassRepoImpl implements VisitorPassRepo {
     try {
       String url =
           '${ApiUrl.visitorPasses}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&unit_id=${unitId ?? ''}';
-      print('Visitor Pass^^ $url');
+      // print('Visitor Pass^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return VisitorPassResponseModel.fromJson(response);
     } catch (e) {
@@ -29,9 +29,9 @@ class VisitorPassRepoImpl implements VisitorPassRepo {
   Future<VisitorPassesCountResponseModel?> getVisitorPassesCount() async {
     try {
       String url = ApiUrl.visitorPassesCount;
-      print('Visitor Pass count^^ $url');
+      // print('Visitor Pass count^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
-      print('Visitor Pass count response^^ $response');
+      // print('Visitor Pass count response^^ $response');
       return VisitorPassesCountResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

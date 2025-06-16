@@ -6,7 +6,6 @@ class CheckInsState {
   final bool isVendorLoading;
   final bool isCheckOutAllLoading;
   final bool isCheckOutVisitor;
-  final bool isGuestCheckInLoading;
   final bool loadMore;
   final int page;
   final int? serviceableId;
@@ -19,7 +18,7 @@ class CheckInsState {
   final String? dateRang;
   final String? selectedRang;
   final String? searchKeyword;
-  final List<CheckOutVisitors>? checkOutVisitors;
+  final List<CheckOutVisitor>? checkOutVisitors;
 
   CheckInsState({
     this.isLoading = false,
@@ -27,7 +26,6 @@ class CheckInsState {
     this.isUnitLoading = false,
     this.isVendorLoading = false,
     this.isCheckOutVisitor = false,
-    this.isGuestCheckInLoading = false,
     this.page = 1,
     this.checkInModel,
     this.units,
@@ -49,7 +47,6 @@ class CheckInsState {
     bool? isCheckOutAllLoading,
     bool? loadMore,
     bool? isCheckOutVisitor,
-    bool? isGuestCheckInLoading,
     int? page,
     List<CheckInModel>? checkInModel,
     List<UnitModel>? units,
@@ -61,7 +58,7 @@ class CheckInsState {
     String? selectedRang,
      String? searchKeyword,
      int? serviceableId,
-    List<CheckOutVisitors>? checkOutVisitors,
+    List<CheckOutVisitor>? checkOutVisitors,
   }) {
     return CheckInsState(
         isLoading: isLoading ?? this.isLoading,
@@ -82,7 +79,6 @@ class CheckInsState {
         serviceableId: serviceableId ?? this.serviceableId,
         isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
         checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
-        isGuestCheckInLoading: isGuestCheckInLoading ?? this.isGuestCheckInLoading
     );
   }
 }

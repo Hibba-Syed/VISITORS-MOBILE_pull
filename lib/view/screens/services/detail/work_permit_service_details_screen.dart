@@ -262,7 +262,7 @@ final  TextEditingController _idController = TextEditingController();
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                                print('add^^^${_noteController.text}');
+                                // print('add^^^${_noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(

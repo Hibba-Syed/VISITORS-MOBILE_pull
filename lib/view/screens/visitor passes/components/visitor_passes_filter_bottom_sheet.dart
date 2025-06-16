@@ -50,7 +50,6 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
                     if (state.isUnitLoading) {
                       return LoaderWidget();
                     }
-
                     return SingleSelectedDropdownWidget<UnitModel>(
                         hint: "Unit",
                         fillColor: AppColors.white,
@@ -63,8 +62,9 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
                           context
                               .read<VisitorPassCubit>()
                               .onChangeSelectedUnit(value!);
-                          print('unit$value');
+                          // print('unit$value');
                         });
+
                   },
                 ),
                 const Gap(30),

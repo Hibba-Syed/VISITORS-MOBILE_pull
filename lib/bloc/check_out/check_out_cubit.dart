@@ -116,8 +116,8 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<CheckOutVisitors> checkIns = state.checkOutVisitors ?? [];
-        checkIns.addAll(response.record as Iterable<CheckOutVisitors>);
+        List<CheckOutVisitor> checkIns = state.checkOutVisitors ?? [];
+        checkIns.addAll(response.record as Iterable<CheckOutVisitor>);
         emit(state.copyWith(checkOutVisitors: checkIns));
       } else {
         Fluttertoast.showToast(msg: 'No more check-outs');

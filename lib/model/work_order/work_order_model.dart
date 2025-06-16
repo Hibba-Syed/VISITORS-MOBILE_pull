@@ -1,6 +1,6 @@
 
 import '../check_ins/check_in_model.dart';
-import '../new_vendor_model.dart';
+import '../vendor/new_vendor_model.dart';
 
 class WorkOrderModel {
   int? id;

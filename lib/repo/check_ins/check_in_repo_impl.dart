@@ -29,7 +29,7 @@ class CheckInRepoImpl implements CheckInRepo {
     try {
       String url =
           '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}&serviceable_id=${serviceableId ?? ''}';
-      print('url^^ $url');
+      print('url checkin^%^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckInsResponseModel.fromJson(response);
     } catch (e) {
@@ -64,7 +64,7 @@ class CheckInRepoImpl implements CheckInRepo {
     required int? id,
     required Map<String, dynamic> data,
   }) async {
-    print('checkout visitor^^^: ${ApiUrl.checkOutVisitor}/$id');
+    // print('checkout visitor^^^: ${ApiUrl.checkOutVisitor}/$id');
     try {
       String url = '${ApiUrl.checkOutVisitor}/$id';
       dynamic response =
@@ -77,7 +77,7 @@ class CheckInRepoImpl implements CheckInRepo {
 
   @override
   Future<VisitorPhoneInfoResponseModel?> getNumberInfo({required String? phoneNumber}) async {
-    print('visitor Quick Info^^^: ${ApiUrl.visitorQuickInfo}/$phoneNumber');
+    // print('visitor Quick Info^^^: ${ApiUrl.visitorQuickInfo}/$phoneNumber');
     try {
       // String url = '${ApiUrl.visitorQuickInfo}/$phoneNumber';
       String url = '${ApiUrl.visitorQuickInfo}/$phoneNumber';
@@ -90,7 +90,7 @@ class CheckInRepoImpl implements CheckInRepo {
 
   @override
   Future<DeleteVisitorResponseModel?> deleteVisitor({required int? id}) async {
-    print('delete Visitor^^^: ${ApiUrl.deleteVisitor}/$id');
+    // print('delete Visitor^^^: ${ApiUrl.deleteVisitor}/$id');
     try {
       dynamic response = await _apiService
           .getAuthPutApiResponse('${ApiUrl.deleteVisitor}/$id');
@@ -104,7 +104,7 @@ class CheckInRepoImpl implements CheckInRepo {
   Future<GuestCheckInResponseModel?> guestCheckIn({
     required Map<String, dynamic> data,
   }) async {
-    print('guest check in ^^^: ${ApiUrl.guestCheckIn}');
+    print('guest check in &&&: ${ApiUrl.guestCheckIn}');
     try {
       String url = ApiUrl.guestCheckIn;
       dynamic response =

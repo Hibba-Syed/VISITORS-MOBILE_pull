@@ -1,6 +1,6 @@
 import '../serviceable.dart';
 import '../unit/unit_model.dart';
-import '../visitor_model.dart';
+import '../visitor_info/visitor_model.dart';
 import 'check_ins_response_model.dart';
 
 class CheckInModel {
@@ -30,6 +30,7 @@ class CheckInModel {
   Visitor? visitor;
   Serviceable? serviceable;
   Vendor? vendor;
+
   CheckInModel({
     this.id,
     this.associationId,

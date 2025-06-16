@@ -1,5 +1,5 @@
 import 'package:visitors/model/oam_company_model.dart';
-import 'package:visitors/model/visitors_purpose_model.dart';
+import 'package:visitors/model/visitor_info/visitors_purpose_model.dart';
 
 import 'city_model.dart';
 

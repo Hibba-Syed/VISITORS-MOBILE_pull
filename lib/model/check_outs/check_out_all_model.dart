@@ -1,5 +1,5 @@
 import '../unit/unit_model.dart';
-import '../visitor_model.dart';
+import '../visitor_info/visitor_model.dart';
 
 class CheckOutAll {
   int? id;

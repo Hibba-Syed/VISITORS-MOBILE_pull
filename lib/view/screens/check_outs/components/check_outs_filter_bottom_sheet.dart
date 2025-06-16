@@ -22,7 +22,7 @@ class CheckOutsFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet> {
-  // String? selectedRang;
+   String? _selectedRang;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,16 +58,20 @@ class _CheckOutsFilterBottomSheetState extends State<CheckOutsFilterBottomSheet>
                 SingleSelectedDropdownWidget<String>(
                   hint: "Range",
                   fillColor: AppColors.white,
-                  selectedItem: context.watch<CheckOutCubit>().state.selectedRang,
+                  selectedItem: _selectedRang,
+                  //context.watch<CheckOutCubit>().state.selectedRang,
                   itemAsString: (rang) => rang,
                   compareFn: (p0, p1) => p0 == p1,
                   items: AppConstants.rangList,
                   onChanged: (value) {
-                    if (value != null) {
-                      final dateRangeString = AppUtils.getDateRangeStringFromLabel(value);
-                      context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
+                    // if (value != null) {
+                      final dateRangeString = AppUtils.getDateRangeStringFromLabel(value ?? "");
+                      context
+                          .read<CheckOutCubit>()
+                          .onChangeDateRange(dateRangeString);
+                      // print('dateRangeString $dateRangeString');
 
-                    }
+                  //  }
                   },
                 ),
                 const Gap(10),

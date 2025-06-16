@@ -31,7 +31,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
 
   Future<void> _authenticateUser() async {
     bool isAuthenticated = await _localAuthService.authenticate();
-    print('isAuthenticated^^^$isAuthenticated');
+    // print('isAuthenticated^^^$isAuthenticated');
     if (isAuthenticated) {
       _navigateToNextScreen();
     }

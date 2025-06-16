@@ -79,20 +79,20 @@ class AppUtils {
     return '${format(fromDate)} - ${format(now)}';
   }
 //
-  static final List<Map<String, String>> rangList = [
-    {
-      'label': 'Last 30 Days',
-      'dateRange': getDateRangeStringFromLabel('Last 30 Days'),
-    },
-    {
-      'label': 'Last 60 Days',
-      'dateRange': getDateRangeStringFromLabel('Last 60 Days'),
-    },
-    {
-      'label': 'Last 90 Days',
-      'dateRange': getDateRangeStringFromLabel('Last 90 Days'),
-    },
-  ];
+//   static final List<Map<String, String>> rangList = [
+//     {
+//       'label': 'Last 30 Days',
+//       'dateRange': getDateRangeStringFromLabel('Last 30 Days'),
+//     },
+//     {
+//       'label': 'Last 60 Days',
+//       'dateRange': getDateRangeStringFromLabel('Last 60 Days'),
+//     },
+//     {
+//       'label': 'Last 90 Days',
+//       'dateRange': getDateRangeStringFromLabel('Last 90 Days'),
+//     },
+//   ];
   //
   static TypeModel getServiceableType(String? type) {
     if (type == "job") {

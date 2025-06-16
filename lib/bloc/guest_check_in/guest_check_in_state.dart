@@ -3,6 +3,7 @@ part of 'guest_check_in_cubit.dart';
 class GuestCheckInState {
   final bool isLoading;
   final bool isCountriesLoading;
+  final bool isGuestCheckInLoading;
   final bool isUnitLoading;
   final bool isProfileLoading;
   final bool isNumberInfoLoading;
@@ -14,6 +15,7 @@ class GuestCheckInState {
   final List<UnitModel>? units;
   final List<NumberInfo>? numberInfo;
   final UnitModel? selectedUnit;
+  final CheckInModel? checkInModel;
 
   GuestCheckInState({
     this.isLoading = false,
@@ -22,6 +24,7 @@ class GuestCheckInState {
     this.isProfileLoading = false,
     this.isNumberInfoLoading = false,
     this.isDeleteVisitorLoading = false,
+    this.isGuestCheckInLoading = false,
     this.countries,
     this.selectedCountry,
     this.selectedPurpose,
@@ -29,6 +32,7 @@ class GuestCheckInState {
     this.units,
     this.selectedUnit,
     this.numberInfo,
+    this.checkInModel,
   });
   GuestCheckInState copyWith({
     bool? isLoading,
@@ -37,6 +41,7 @@ class GuestCheckInState {
     bool? isProfileLoading,
     bool? isNumberInfoLoading,
     bool? isDeleteVisitorLoading,
+    bool? isGuestCheckInLoading,
     List<Country>? countries,
     Country? selectedCountry,
     VisitorsPurpose? selectedPurpose,
@@ -44,6 +49,7 @@ class GuestCheckInState {
     List<UnitModel>? units,
     UnitModel? selectedUnit,
     List<NumberInfo>? numberInfo,
+    CheckInModel? checkInModel,
   }) {
     return GuestCheckInState(
       isLoading: isLoading ?? this.isLoading,
@@ -58,7 +64,11 @@ class GuestCheckInState {
       isProfileLoading: isProfileLoading ?? this.isProfileLoading,
       isNumberInfoLoading: isNumberInfoLoading ?? this.isNumberInfoLoading,
       numberInfo: numberInfo ?? this.numberInfo,
-        isDeleteVisitorLoading: isDeleteVisitorLoading ?? this.isDeleteVisitorLoading
+      isDeleteVisitorLoading:
+          isDeleteVisitorLoading ?? this.isDeleteVisitorLoading,
+      isGuestCheckInLoading:
+          isGuestCheckInLoading ?? this.isGuestCheckInLoading,
+      checkInModel: checkInModel ?? this.checkInModel,
     );
   }
 }

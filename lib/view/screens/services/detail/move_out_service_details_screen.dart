@@ -501,7 +501,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                           SizedBox(
                                               height: 25,
                                               child: Checkbox(
-                                                  fillColor: MaterialStateProperty.all(AppColors.cyanBlue),
+                                                  fillColor: WidgetStateProperty.all(AppColors.cyanBlue),
                                                   side: BorderSide(color: AppColors.gray, width: 2),
                                                   value: isPaymentReceived??false,
                                                   onChanged: (value) {

@@ -1,6 +1,6 @@
 import 'package:visitors/model/work_order/primary_contact_model.dart';
 
-import '../new_vendor_model.dart';
+import '../vendor/new_vendor_model.dart';
 import 'asset_model.dart';
 import 'category_model.dart';
 

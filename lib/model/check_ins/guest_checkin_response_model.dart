@@ -12,9 +12,9 @@ String guestCheckInResponseModelToJson(GuestCheckInResponseModel data) => json.e
 
 class GuestCheckInResponseModel {
   String? status;
-  List<CheckInModel>? record;
+  CheckInModel? record;
   int? code;
-  Meta? meta;
+  dynamic meta;
   bool? requestStatus;
   String? message;
 
@@ -29,65 +29,19 @@ class GuestCheckInResponseModel {
 
   factory GuestCheckInResponseModel.fromJson(Map<String, dynamic> json) => GuestCheckInResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<CheckInModel>.from(json["record"]!.map((x) => CheckInModel.fromJson(x))),
+    record: json["record"] == null ? null : CheckInModel.fromJson(json["record"]),
     code: json["code"],
-    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+    meta: json["meta"],
     requestStatus: json["request_status"],
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "record": record == null ? [] : List<dynamic>.from(record!.map((x) => x.toJson())),
+    "record": record?.toJson(),
     "code": code,
-    "meta": meta?.toJson(),
+    "meta": meta,
     "request_status": requestStatus,
     "message": message,
   };
 }
-
-class Meta {
-  int? page;
-  int? lastPage;
-  int? from;
-  int? to;
-  int? limit;
-  int? total;
-  bool? hasMorePages;
-  bool? isFirstPage;
-
-  Meta({
-    this.page,
-    this.lastPage,
-    this.from,
-    this.to,
-    this.limit,
-    this.total,
-    this.hasMorePages,
-    this.isFirstPage,
-  });
-
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    page: json["page"],
-    lastPage: json["last_page"],
-    from: json["from"],
-    to: json["to"],
-    limit: json["limit"],
-    total: json["total"],
-    hasMorePages: json["has_more_pages"],
-    isFirstPage: json["is_first_page"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "page": page,
-    "last_page": lastPage,
-    "from": from,
-    "to": to,
-    "limit": limit,
-    "total": total,
-    "has_more_pages": hasMorePages,
-    "is_first_page": isFirstPage,
-  };
-}
-
-

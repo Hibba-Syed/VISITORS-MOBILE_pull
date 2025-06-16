@@ -28,7 +28,7 @@ import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/country/country_model.dart';
 import '../../../model/unit/unit_model.dart';
 import '../../../model/visitor_info/number_info_model.dart';
-import '../../../model/visitors_purpose_model.dart';
+import '../../../model/visitor_info/visitors_purpose_model.dart';
 import '../../widgets/button/custom_button.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
@@ -39,19 +39,24 @@ class GuestCheckInScreen extends StatefulWidget {
 }
 
 class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
-  final TextEditingController _visitorCountController = TextEditingController();
+  final TextEditingController _visitorCountController = TextEditingController(text: '1');
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _phoneNumberController =
+      TextEditingController(text: '971');
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _entryCardNumberController = TextEditingController();
+  final TextEditingController _entryCardNumberController =
+      TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
-  final TextEditingController _passportExpiryController = TextEditingController();
-  final TextEditingController _passportNumberController = TextEditingController();
+  final TextEditingController _passportExpiryController =
+      TextEditingController();
+  final TextEditingController _passportNumberController =
+      TextEditingController();
   String? _selectedItemType;
   String? _selectedIssueDate;
   String? _selectedExpiryDate;
   String? _selectedItemNationality;
+  Country? _selectedNationality;
   Country? countries;
   VisitorsPurpose? visitorsPurpose;
   UnitModel? unitModel;
@@ -97,7 +102,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         images.add(_cropImage(originalImage, boundingBox, index: i));
       }
       for (var element in images) {
-        print(element?.path);
+        // print(element?.path);
       }
       return images;
     }
@@ -119,10 +124,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     final int width = (boundingBox.right - boundingBox.left).toInt();
     final int height = (boundingBox.bottom - boundingBox.top).toInt();
 
-    print('left:: $left');
-    print('top:: $top');
-    print('width:: $width');
-    print('height:: $height');
+    // print('left:: $left');
+    // print('top:: $top');
+    // print('width:: $width');
+    // print('height:: $height');
     // Crop the image
     final img.Image croppedImg = img.copyCrop(originalImg,
         x: left, y: top, width: width, height: height);
@@ -268,24 +273,25 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   text: 'Check-In',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      context.read<CheckInsCubit>().guestCheckIn(context,
-                          data: {
-                            'type': _selectedItemType,
-                            'name': _nameController.text,
-                            'purpose': state.selectedPurpose,
-                            'unit_id':  state.selectedUnit?.id,
-                            'unit_number': state.selectedUnit,
-                            'visitor_count': _visitorCountController.text,
-                            'phone': _phoneNumberController.text,
-                            'email': _emailController.text,
-                            'entry_card_number': _entryCardNumberController.text,
-                            'nationality': state.selectedCountry,
-                            'description': _descriptionController.text,
-                            'serviceable_id': '',
-                            'serviceable_type': '',
-                            'sms': false,
-                            'visitor_id': ''
-                          });
+                      context
+                          .read<GuestCheckInCubit>()
+                          .guestCheckIn(context, data: {
+                        'type': _selectedItemType,
+                        'name': _nameController.text,
+                        'purpose': state.selectedPurpose,
+                        'unit_id': state.selectedUnit?.id,
+                        'unit_number': state.selectedUnit,
+                        'visitor_count': _visitorCountController.text,
+                        'phone': _phoneNumberController.text,
+                        'email': _emailController.text,
+                        'entry_card_number': _entryCardNumberController.text,
+                        'nationality': state.selectedCountry,
+                        'description': _descriptionController.text,
+                        'serviceable_id': '',
+                        'serviceable_type': '',
+                        'sms': false,
+                        'visitor_id': ''
+                      });
 
                       if (_phoneNumberKey.currentState!.validate()) {
                         // print("Form is valid. Proceeding with check-in...");
@@ -444,11 +450,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           children: [
                             Expanded(
                               child: TextFieldWidget(
-                                outLineColor: AppColors.gray,
+                                outLineColor: AppColors.outLineGray,
                                 enabledBorder: InputBorder.none,
                                 controller: _idNumberController,
                                 label: 'ID Number',
-                                hint: 'Enter ID Number',
+                                hint: 'Enter id number',
                                 keyboardType: TextInputType.text,
                                 // validator: (value) {
                                 //   if (value == null || value.isEmpty) {
@@ -464,7 +470,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 enabledBorder: InputBorder.none,
                                 controller: _nameController,
                                 label: 'Name*',
-                                hint: 'Enter Name',
+                                hint: 'Enter name',
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -490,7 +496,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   const Gap(8),
                                   CustomDateTimePickerWidget(
                                     fillColor: AppColors.white,
-                                    hintText: 'Date of Issue',
+                                    hintText: 'Date of issue',
                                     onlyDatePicker: true,
                                     selectedDateTime: _selectedIssueDate,
                                     onChangeDateTime: (value) {
@@ -512,8 +518,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   ),
                                   const Gap(8),
                                   CustomDateTimePickerWidget(
+                                    // outLineColor: AppColors.outLineGray
                                     fillColor: AppColors.white,
-                                    hintText: 'Date of Issue',
+                                    hintText: 'Date of issue',
                                     onlyDatePicker: true,
                                     selectedDateTime: _selectedExpiryDate,
                                     onChangeDateTime: (value) {
@@ -531,22 +538,23 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           children: [
                             Expanded(
                               child: TextFieldWidget(
-                                outLineColor: AppColors.gray,
+                                outLineColor: AppColors.outLineGray,
                                 enabledBorder: InputBorder.none,
                                 controller: _passportNumberController,
                                 label: 'Passport Number',
-                                hint: 'Passport Number',
+                                hint: 'Passport number',
                                 keyboardType: TextInputType.text,
                               ),
                             ),
                             const Gap(10),
                             Expanded(
                               child: TextFieldWidget(
-                                outLineColor: AppColors.gray,
+                                outLineColor: AppColors.outLineGray,
+                                fillColor: AppColors.white,
                                 enabledBorder: InputBorder.none,
                                 controller: _passportExpiryController,
                                 label: 'Passport Expiry',
-                                hint: 'Passport Expiry',
+                                hint: 'Passport expiry',
                                 keyboardType: TextInputType.text,
                               ),
                             ),
@@ -565,7 +573,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   ),
                                   const Gap(8),
                                   SingleSelectedDropdownWidget<String>(
-                                    hint: "Select Type",
+                                    hint: "Select type",
                                     fillColor: AppColors.white,
                                     selectedItem: _selectedItemType,
                                     compareFn: (p0, p1) => p0 == p1,
@@ -574,7 +582,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       'Community Visit',
                                     ],
                                     onChanged: (value) {
-                                      _selectedItemType = value;
+                                      setState(() {
+                                        _selectedItemType = value;
+                                      });
                                     },
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -591,7 +601,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: TextFieldWidget(
                                 controller: _visitorCountController,
                                 label: 'Visitor Count*',
-                                hint: 'Enter count',
+                                hint: 'Enter count ',
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -604,84 +614,88 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ],
                         ),
                         const Gap(5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Purpose*",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  SingleSelectedDropdownWidget<VisitorsPurpose>(
-                                    hint: "Select Purpose",
-                                    fillColor: AppColors.white,
-                                    selectedItem: context
-                                        .watch<GuestCheckInCubit>()
-                                        .state
-                                        .selectedPurpose,
-                                    itemAsString: (purpose) =>
-                                        purpose.purpose ?? "",
-                                    compareFn: (p0, p1) => p0.id == p1.id,
-                                    items: state.profileRecord?.association
-                                            ?.visitorsPurposes ??
-                                        [],
-                                    onChanged: (value) {
-                                      context
-                                          .read<GuestCheckInCubit>()
-                                          .onChangeSelectedPurpose(value);
-                                    },
-                                    // validator: (value) {
-                                    //   if (value?.purpose?.isNotEmpty ?? false) {
-                                    //     return 'required';
-                                    //   }
-                                    //   return null;
-                                    // },
-                                  ),
-                                ],
+                        if (_selectedItemType == 'Unit Visit')
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Purpose*",
+                                      style: AppTextStyles.style12Black600,
+                                    ),
+                                    const Gap(8),
+                                    SingleSelectedDropdownWidget<
+                                        VisitorsPurpose>(
+                                      hint: "Select purpose",
+                                      fillColor: AppColors.white,
+                                      selectedItem: context
+                                          .watch<GuestCheckInCubit>()
+                                          .state
+                                          .selectedPurpose,
+                                      itemAsString: (purpose) =>
+                                          purpose.purpose ?? "",
+                                      compareFn: (p0, p1) => p0.id == p1.id,
+                                      items: state.profileRecord?.association
+                                              ?.visitorsPurposes ??
+                                          [],
+                                      onChanged: (value) {
+                                        context
+                                            .read<GuestCheckInCubit>()
+                                            .onChangeSelectedPurpose(value);
+                                      },
+                                      // validator: (value) {
+                                      //   if (value?.purpose?.isNotEmpty ?? false) {
+                                      //     return 'required';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Unit Number*",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  SingleSelectedDropdownWidget<UnitModel>(
-                                    hint: "Unit",
-                                    fillColor: AppColors.white,
-                                    selectedItem: context
-                                        .watch<GuestCheckInCubit>()
-                                        .state
-                                        .selectedUnit,
-                                    itemAsString: (unit) =>
-                                        unit.unitNumber ?? "",
-                                    compareFn: (unit, item) =>
-                                        unit.id == item.id,
-                                    items: state.units ?? [],
-                                    onChanged: (value) {
-                                      context
-                                          .read<GuestCheckInCubit>()
-                                          .onChangeSelectedUnit(value!);
-                                    },
-                                    validator: (value) {
-                                      if (value?.name?.isNotEmpty ?? false) {
-                                        return 'required';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ],
+                              const Gap(10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Unit Number*",
+                                      style: AppTextStyles.style12Black600,
+                                    ),
+                                    const Gap(8),
+                                    SingleSelectedDropdownWidget<UnitModel>(
+                                      hint: "Unit",
+                                      fillColor: AppColors.white,
+                                      selectedItem: context
+                                          .watch<GuestCheckInCubit>()
+                                          .state
+                                          .selectedUnit,
+                                      itemAsString: (unit) =>
+                                          unit.unitNumber ?? "",
+                                      compareFn: (unit, item) =>
+                                          unit.id == item.id,
+                                      items: state.units ?? [],
+                                      onChanged: (value) {
+                                        context
+                                            .read<GuestCheckInCubit>()
+                                            .onChangeSelectedUnit(value!);
+                                      },
+                                      validator: (value) {
+                                        if (value?.name?.isNotEmpty ?? false) {
+                                          return 'required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          )
+                        else
+                          const SizedBox.shrink(),
                         const Gap(5),
                         Row(
                           children: [
@@ -695,8 +709,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   ),
                                   const Gap(8),
                                   SingleSelectedDropdownWidget<Country>(
-                                    outLineColor: AppColors.gray,
-                                    hint: "Select Nationality",
+                                    outLineColor: AppColors.outLineGray,
+                                    hint: "Select nationality",
                                     fillColor: AppColors.white,
                                     selectedItem: context
                                         .watch<GuestCheckInCubit>()
@@ -720,7 +734,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: TextFieldWidget(
                                 controller: _emailController,
                                 label: 'Email',
-                                hint: 'Enter Email',
+                                hint: 'Enter email',
                               ),
                             ),
                           ],
@@ -780,6 +794,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   await context
                                       .read<GuestCheckInCubit>()
                                       .getNumberInfo(phoneNumber: phoneNumber);
+                                  if (!context.mounted) return;
                                   showDialog(
                                     barrierDismissible: false,
                                     context: context,
@@ -927,11 +942,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       children: [
                         const Gap(20),
                         TextFieldWidget(
-                          outLineColor: AppColors.gray,
+                          outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _nameController,
                           label: 'Name*',
-                          hint: 'Enter Name',
+                          hint: 'Enter name',
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -942,11 +957,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         TextFieldWidget(
-                          outLineColor: AppColors.gray,
+                          outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _idNumberController,
                           label: 'ID Number',
-                          hint: 'Enter ID Number',
+                          hint: 'Enter id number',
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -963,7 +978,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(8),
                         CustomDateTimePickerWidget(
                           fillColor: AppColors.white,
-                          hintText: 'Date of Issue',
+                          hintText: 'Date of issue',
                           onlyDatePicker: true,
                           selectedDateTime: _selectedIssueDate,
                           onChangeDateTime: (value) {
@@ -973,7 +988,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         const Text(
-                          "Date of Expiry",
+                          "Date of expiry",
                           style: AppTextStyles.style13Black600,
                         ),
                         const Gap(8),
@@ -994,29 +1009,28 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         SingleSelectedDropdownWidget<Country>(
-                          outLineColor: AppColors.gray,
-                          hint: "Select Nationality",
+                          outLineColor: AppColors.outLineGray,
+                          hint:"United Arab Emirates",
                           fillColor: AppColors.white,
                           selectedItem: context
-                              .watch<GuestCheckInCubit>()
-                              .state
-                              .selectedCountry,
+                                  .watch<GuestCheckInCubit>()
+                                  .state
+                                  .selectedCountry,
                           items: state.countries ?? [],
                           itemAsString: (country) => country.name ?? "",
-                          compareFn: (p0, p1) => p0.id == p1.id,
+                             compareFn: (p0, p1) => p0.id == p1.id,
                           onChanged: (value) {
-                            context
-                                .read<GuestCheckInCubit>()
-                                .onChangeSelectedCountry(value);
+                            context.read<GuestCheckInCubit>()
+                                    .onChangeSelectedCountry(value);
                           },
                         ),
                         const Gap(5),
                         TextFieldWidget(
-                          outLineColor: AppColors.gray,
+                          outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _passportNumberController,
                           label: 'Passport Number',
-                          hint: 'Passport Number',
+                          hint: 'Passport number',
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -1027,11 +1041,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         TextFieldWidget(
-                          outLineColor: AppColors.gray,
+                          outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _passportExpiryController,
                           label: 'Passport Expiry',
-                          hint: 'Passport Expiry',
+                          hint: 'Passport expiry',
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -1047,8 +1061,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         SingleSelectedDropdownWidget<String>(
-                          outLineColor: AppColors.gray,
-                          hint: "Select Type",
+                          outLineColor: AppColors.outLineGray,
+                          hint: "Select type",
                           fillColor: AppColors.white,
                           selectedItem: _selectedItemType,
                           compareFn: (p0, p1) => p0 == p1,
@@ -1068,7 +1082,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         TextFieldWidget(
-                          outLineColor: AppColors.gray,
+                          outLineColor: AppColors.outLineGray,
                           controller: _visitorCountController,
                           label: 'Visitor Count*',
                           hint: 'Enter count',
@@ -1081,67 +1095,73 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                        const Text(
-                          "Purpose*",
-                          style: AppTextStyles.style12Black600,
-                        ),
-                        const Gap(5),
-                        SingleSelectedDropdownWidget<VisitorsPurpose>(
-                          hint: "Select Purpose",
-                          fillColor: AppColors.white,
-                          selectedItem: context
-                              .watch<GuestCheckInCubit>()
-                              .state
-                              .selectedPurpose,
-                          itemAsString: (purpose) => purpose.purpose ?? "",
-                          compareFn: (p0, p1) => p0.id == p1.id,
-                          items: state.profileRecord?.association
-                                  ?.visitorsPurposes ??
-                              [],
-                          onChanged: (value) {
-                            context
-                                .read<GuestCheckInCubit>()
-                                .onChangeSelectedPurpose(value);
-                          },
-                          validator: (value) {
-                            if (value?.purpose?.isNotEmpty ?? false) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        const Text(
-                          "Unit Number*",
-                          style: AppTextStyles.style12Black600,
-                        ),
-                        const Gap(5),
-                        SingleSelectedDropdownWidget<UnitModel>(
-                          hint: "Unit",
-                          fillColor: AppColors.white,
-                          selectedItem:
-                              context.watch<CheckInsCubit>().state.selectedUnit,
-                          itemAsString: (unit) => unit.unitNumber ?? "",
-                          compareFn: (unit, item) => unit.id == item.id,
-                          items: state.units ?? [],
-                          onChanged: (value) {
-                            context
-                                .read<CheckInsCubit>()
-                                .onChangeSelectedUnit(value!);
-                          },
-                          validator: (value) {
-                            if (value?.name?.isNotEmpty ?? false) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
+                        if (_selectedItemType == 'Unit Visit') ...[
+                          const Text(
+                            "Purpose*",
+                            style: AppTextStyles.style12Black600,
+                          ),
+                          const Gap(5),
+                          SingleSelectedDropdownWidget<VisitorsPurpose>(
+                            hint: "Select purpose",
+                            fillColor: AppColors.white,
+                            outLineColor: AppColors.outLineGray,
+                            selectedItem: context
+                                .watch<GuestCheckInCubit>()
+                                .state
+                                .selectedPurpose,
+                            itemAsString: (purpose) => purpose.purpose ?? "",
+                            compareFn: (p0, p1) => p0.id == p1.id,
+                            items: state.profileRecord?.association
+                                    ?.visitorsPurposes ??
+                                [],
+                            onChanged: (value) {
+                              context
+                                  .read<GuestCheckInCubit>()
+                                  .onChangeSelectedPurpose(value);
+                            },
+                            validator: (value) {
+                              if (value?.purpose?.isNotEmpty ?? false) {
+                                return 'required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const Gap(5),
+                          const Text(
+                            "Unit Number*",
+                            style: AppTextStyles.style12Black600,
+                          ),
+                          const Gap(5),
+                          SingleSelectedDropdownWidget<UnitModel>(
+                            outLineColor: AppColors.outLineGray,
+                            hint: "Unit",
+                            fillColor: AppColors.white,
+                            selectedItem: context
+                                .watch<CheckInsCubit>()
+                                .state
+                                .selectedUnit,
+                            itemAsString: (unit) => unit.unitNumber ?? "",
+                            compareFn: (unit, item) => unit.id == item.id,
+                            items: state.units ?? [],
+                            onChanged: (value) {
+                              context
+                                  .read<CheckInsCubit>()
+                                  .onChangeSelectedUnit(value!);
+                            },
+                            validator: (value) {
+                              if (value?.name?.isNotEmpty ?? false) {
+                                return 'required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
                         const Gap(5),
                         Form(
                           key: _phoneNumberKey,
                           child: TextFieldWidget(
                             outLineColor: AppColors.gray,
-                            label: "Phone Number*",
+                            label: "Phone number*",
                             hint: "+971",
                             controller: _phoneNumberController,
                             validator: (value) {
@@ -1219,7 +1239,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           outLineColor: AppColors.gray,
                           controller: _emailController,
                           label: 'Email',
-                          hint: 'Enter Email',
+                          hint: 'Enter email',
                         ),
                         const Gap(5),
                         TextFieldWidget(

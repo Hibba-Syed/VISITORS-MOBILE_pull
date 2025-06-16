@@ -31,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (Globals().token?.isNotEmpty??false) {
          // print('token^^^${Globals().token}');
          bool result = await LocalAuthService().hasBiometricSupport();
+         if (!mounted) return;
          if(result){
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.biometricAuth, (route) => false);

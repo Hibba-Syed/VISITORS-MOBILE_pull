@@ -26,6 +26,7 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
+  String? _selectedRang;
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -57,7 +58,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
               firstDate: firstDayOfMonth,
               lastDate: lastDayOfMonth,
               hintText: "Date Range",
-              selectedDate: context.watch<CheckInsCubit>().state.selectedRang,
+              selectedDate: context.watch<CheckInsCubit>().state.dateRang,
               onChangeDate: (value) {
                 context.read<CheckInsCubit>().onChangeDateRange(value);
               },
@@ -66,14 +67,15 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
             SingleSelectedDropdownWidget<String>(
               hint: "Range",
               fillColor: AppColors.white,
-              selectedItem: context.watch<CheckInsCubit>().state.dateRang,
+              selectedItem: _selectedRang,
+              //context.watch<CheckInsCubit>().state.selectedRang,
               itemAsString: (rang) => rang,
               compareFn: (p0, p1) => p0 == p1,
               items: AppConstants.rangList,
               onChanged: (value) {
                 // selectedRang = value;
                 final dateRangeString =
-                    AppUtils.getDateRangeStringFromLabel(value!);
+                    AppUtils.getDateRangeStringFromLabel(value ?? "");
                 context
                     .read<CheckInsCubit>()
                     .onChangeDateRange(dateRangeString);

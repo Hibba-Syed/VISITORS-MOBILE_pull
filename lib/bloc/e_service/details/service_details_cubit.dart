@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../../model/service/add_service_log_response_model.dart';
 import '../../../model/service/service_details_model.dart';
 import '../../../model/service/service_details_response_model.dart';
-import '../../../model/service/vIsitors_service_complete_response_model.dart';
+import '../../../model/service/visitors_service_complete_response_model.dart';
 import '../../../repo/services/services_repo.dart';
 import '../../../repo/services/services_repo_impl.dart';
 
@@ -66,7 +66,9 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
 
       if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: 'Log added successfully');
-        getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+        if(context.mounted){
+          getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+        }
         return true;
       } else {
         Fluttertoast.showToast(
@@ -99,7 +101,9 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       // log("Service model RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: 'service completed successfully');
-        getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+        if(context.mounted){
+          getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+        }
         return true;
       } else {
         Fluttertoast.showToast(
@@ -151,10 +155,11 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
 
     if (response != null && response.status == 'success') {
       Fluttertoast.showToast(msg: 'Payment cleared successfully');
-      getServiceDetails(
-        serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id,
-      );
+     if(context.mounted){
+       getServiceDetails(
+           serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
 
+     }
       return true;
     }
 
