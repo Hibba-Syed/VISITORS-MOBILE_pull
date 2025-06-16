@@ -15,6 +15,7 @@ import '../../model/profile/profile_response_model.dart';
 import '../../model/service/service_model.dart';
 import '../../model/visitor_passes/visitor_pass_model.dart';
 import '../../model/visitor_passes/visitor_pass_response_model.dart';
+import '../../model/visitor_passes/visitor_passes_count_response_model.dart';
 import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
 import '../../repo/check_ins/check_in_repo.dart';
@@ -27,7 +28,7 @@ import '../../repo/services/services_repo.dart';
 import '../../repo/services/services_repo_impl.dart';
 import '../../repo/visitor_passes/visitor_pass_repo.dart';
 import '../../repo/visitor_passes/visitor_pass_repo_impl.dart';
-import '../../repo/work_order_rfp/work_order_impl.dart';
+import '../../repo/work_order_rfp/work_order_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
 import '../../utils/routes/app_routes.dart';
@@ -40,7 +41,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
   final DashboardRepo _dashboardRepo = DashboardRepoImpl();
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
-  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
+  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPRepoImpl();
   final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
 
   Future<bool> getProfile() async {
@@ -141,7 +142,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
-  Future<void> getVisitorPass() async {
+  Future<void> getVisitorPasses() async {
     emit(state.copyWith(isVisitorPassLoading: true, page: 1));
     VisitorPassResponseModel? response = await _visitorPassRepo
         .getVisitorPasses(
@@ -204,29 +205,56 @@ class DashboardCubit extends Cubit<DashboardState> {
       return false;
     }
   }
-  Future<void> getData(BuildContext context,{bool isNavigationAllow = true}) async {
+
+  Future<void> getVisitorPassesCount() async {
+    emit(state.copyWith(isVisitorPassesCountLoading: true));
+    VisitorPassesCountResponseModel? response =
+    await _visitorPassRepo.getVisitorPassesCount().onError(
+          (error, stackTrace) {
+        emit(state.copyWith(isVisitorPassesCountLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(isCountLoading: false));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(visitorPassesCount: response.record));
+      print('Visitor Pass Count cubit : ${response.record?.count}');
+    } else {
+      Fluttertoast.showToast(msg: 'Something went wrong while fetching visitor passes count');
+    }
+  }
+
+  Future<void> getData(BuildContext context,
+      //{bool isNavigationAllow = true}
+      ) async {
     final dashboardCubit = context.read<DashboardCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
 
     if (profileSuccess && context.mounted) {
       await Future.wait([
+        dashboardCubit.getVisitorPassesCount(),
         dashboardCubit.getDashboardCheckIns(limit: 3),
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
         context.read<VisitorPassCubit>().getVisitorPasses(),
         context.read<DirectoryCubit>().getUnits(),
-      ]);
 
-      if (isNavigationAllow) {
-        if (context.mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.deviceDeciderScreen,
-                (route) => false,
-          );
-        }
-       else {
+      ]);
+    }
+
+   // if (isNavigationAllow) {
+      if (context.mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.deviceDeciderScreen,
+              (route) => false,
+        );
+      }
+      else {
         if (context.mounted) {
           Navigator.of(context).pushNamedAndRemoveUntil(
             AppRoutes.loginScreen,
@@ -234,9 +262,19 @@ class DashboardCubit extends Cubit<DashboardState> {
           );
         }
       }
-    }
-    }
+   // }
   }
+    Future<void> refreshData(BuildContext context) async {
+      final dashboardCubit = context.read<DashboardCubit>();
+      await dashboardCubit.getDashboardCheckIns(limit: 3);
+      await dashboardCubit.getDashboardCount();
+      await dashboardCubit.getDashboardServices(limit: 3);
+      await dashboardCubit.getDashboardWorkOrder(limit: 3);
+      dashboardCubit.getVisitorPassesCount();
+      await context.read<VisitorPassCubit>().getVisitorPasses();
+      await context.read<DirectoryCubit>().getUnits();
+    }
 
 
 }
+

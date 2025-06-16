@@ -4,8 +4,11 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/check_ins/check_in_log_response_model.dart';
+import '../../model/check_ins/guest_checkin_response_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
 import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
+import '../../model/visitor_info/delete_visitor_response_model.dart';
+import '../../model/visitor_info/visitor_phone_info_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_in_repo.dart';
 
@@ -72,4 +75,43 @@ class CheckInRepoImpl implements CheckInRepo {
     }
   }
 
+  @override
+  Future<VisitorPhoneInfoResponseModel?> getNumberInfo({required String? phoneNumber}) async {
+    print('visitor Quick Info^^^: ${ApiUrl.visitorQuickInfo}/$phoneNumber');
+    try {
+      // String url = '${ApiUrl.visitorQuickInfo}/$phoneNumber';
+      String url = '${ApiUrl.visitorQuickInfo}/$phoneNumber';
+      dynamic response =await _apiService.getAuthGetApiResponse(url);
+      return VisitorPhoneInfoResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<DeleteVisitorResponseModel?> deleteVisitor({required int? id}) async {
+    print('delete Visitor^^^: ${ApiUrl.deleteVisitor}/$id');
+    try {
+      dynamic response = await _apiService
+          .getAuthPutApiResponse('${ApiUrl.deleteVisitor}/$id');
+      return DeleteVisitorResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<GuestCheckInResponseModel?> guestCheckIn({
+    required Map<String, dynamic> data,
+  }) async {
+    print('guest check in ^^^: ${ApiUrl.guestCheckIn}');
+    try {
+      String url = ApiUrl.guestCheckIn;
+      dynamic response =
+      await _apiService.getAuthPostApiResponse(url, data);
+      return GuestCheckInResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

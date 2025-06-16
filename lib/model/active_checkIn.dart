@@ -23,6 +23,7 @@ class ActiveCheckIn {
   DateTime? createdAt;
   DateTime? updatedAt;
 
+
   ActiveCheckIn({
     this.id,
     this.associationId,

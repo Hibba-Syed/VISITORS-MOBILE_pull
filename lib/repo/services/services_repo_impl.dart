@@ -22,11 +22,12 @@ class ServiceRepoImpl implements ServiceRepo {
     String? keyword,
     int? unitId,
     String? serviceType,
+    String? type,
   }) async {
     try {
       String url =
           '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
-          10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}';
+          10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
       print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);
@@ -38,7 +39,7 @@ class ServiceRepoImpl implements ServiceRepo {
   Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId}) async {
     print('service details URL: $serviceId');
     try {
-      final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
+      final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
       print(filter);
       String url = '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
 
@@ -62,7 +63,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }
 
   @override
-  Future<VisitorsServiceCompleteResponseModel?> serviceCompleted({required Map<String, dynamic> data}) async {
+  Future<VisitorsServiceCompleteResponseModel?> completeService({required Map<String, dynamic> data}) async {
     try {
      // print('service complete: ${ApiUrl.serviceComplete}');
       dynamic response =
@@ -73,19 +74,6 @@ class ServiceRepoImpl implements ServiceRepo {
       rethrow;
     }
   }
-  // @override
-  // Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({int? id, required Map<String, dynamic> data}) async {
-  //   try {
-  //     print('clear Payment: ${ApiUrl.clearPayment}/$id');
-  //     dynamic response =
-  //     await _apiService.getAuthPostApiMultipartResponse('${ApiUrl.clearPayment}/$id', data);
-  //      print('Raw API Response: $response');
-  //     return MoveOutServiceClearPaymentResponseModel.fromJson(response);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-  //
   @override
   Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({
     required int? id,
@@ -94,7 +82,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }) async {
     try {
       String url = '${ApiUrl.clearPayment}/$id';
-      print('clearPayment^^ $url');
+      // print('clearPayment^^ $url');
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,

@@ -71,8 +71,8 @@ class FileDownloader {
       "export": true,
       "timezone": "Asia/Karachi"
     };
-    // print("FILTER:::: ${filter.toString()}");
-    // print(EncryptionHelper.encryptPayload(filter));
+    // print("FILTER:::: ${vendors.toString()}");
+    // print(EncryptionHelper.encryptPayload(vendors));
 
     final encryptedPayload = Uri.encodeComponent(EncryptionHelper.encryptPayload(filter));
     final url = Uri.parse('${ApiUrl.checkOuts}?xyz=$encryptedPayload');

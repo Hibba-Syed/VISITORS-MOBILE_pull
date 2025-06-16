@@ -51,15 +51,17 @@ class ActionsContainerWidget extends StatelessWidget {
                   ),
                   //AppTextStyles.style14white600,
                 ),
-              Text( title ?? "",
-                style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15,
-                    color: forGroundColor,
-                    fontWeight: FontWeight.w600
-
+              FittedBox(
+                child: Text( title ?? "",
+                  style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15,
+                      color: forGroundColor,
+                      fontWeight: FontWeight.w600
+                
+                  ),
+                  //AppTextStyles.style14white500
                 ),
-                //AppTextStyles.style14white500
               ),
 
             ]),

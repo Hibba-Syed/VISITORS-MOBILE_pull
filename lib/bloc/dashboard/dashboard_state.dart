@@ -8,21 +8,24 @@ class DashboardState {
   final bool? isWorkOrderLoading;
   final bool? isVisitorPassLoading;
   final bool? isCheckOutVisitor;
-  ProfileRecord? profileRecord;
+  final bool? isVisitorPassesCountLoading;
+  final ProfileRecord? profileRecord;
   final int page;
-  List<CheckInModel>? checkInsModel;
-  List<ServiceModel>? serviceModel;
-  List<WorkOrderModel>? workOrderModel;
-  List<CheckOutVisitors>? checkOutModel;
-  List<VisitorPasses>? visitorPasses;
-  List<CheckOutVisitors>? checkOutVisitors;
-  CountModel? countModel;
+  final List<CheckInModel>? checkInsModel;
+  final List<ServiceModel>? serviceModel;
+  final List<WorkOrderModel>? workOrderModel;
+  final List<CheckOutVisitors>? checkOutModel;
+  final List<VisitorPasses>? visitorPasses;
+  final List<CheckOutVisitors>? checkOutVisitors;
+  final VisitorPassesCount? visitorPassesCount;
+  final CountModel? countModel;
   DashboardState({
     this.isLoading = false,
     this.isCheckInLoading = false,
     this.isCountLoading = false,
     this.isServicesLoading = false,
     this.isVisitorPassLoading = false,
+    this.isVisitorPassesCountLoading = false,
     this.profileRecord,
     this.page = 1,
     this.checkInsModel,
@@ -34,6 +37,7 @@ class DashboardState {
     this.visitorPasses,
     this.isCheckOutVisitor,
     this.checkOutVisitors,
+    this.visitorPassesCount,
   });
   DashboardState copyWith({
     bool? isLoading,
@@ -43,6 +47,7 @@ class DashboardState {
     bool? isWorkOrderLoading,
     bool? isVisitorPassLoading,
     bool? isCheckOutVisitor,
+    bool? isVisitorPassesCountLoading,
     ProfileRecord? profileRecord,
     int? page,
     List<CheckInModel>? checkInsModel,
@@ -50,6 +55,7 @@ class DashboardState {
     List<WorkOrderModel>? workOrderModel,
     List<CheckOutVisitors>? checkOutModel,
     List<VisitorPasses>? visitorPasses,
+    VisitorPassesCount? visitorPassesCount,
     List<CheckOutVisitors>? checkOutVisitors,
     CountModel? countModel,
   }) {
@@ -66,10 +72,12 @@ class DashboardState {
         serviceModel: serviceModel ?? this.serviceModel,
         workOrderModel: workOrderModel ?? this.workOrderModel,
         checkOutModel: checkOutModel ?? this.checkOutModel,
-        visitorPasses: visitorPasses ?? visitorPasses,
-        isVisitorPassLoading: isVisitorPassLoading ?? isVisitorPassLoading,
-        isCheckOutVisitor: isCheckOutVisitor ?? isCheckOutVisitor,
-        checkOutVisitors: checkOutVisitors ?? checkOutVisitors,
+        visitorPasses: visitorPasses ?? this.visitorPasses,
+        isVisitorPassLoading: isVisitorPassLoading ?? this.isVisitorPassLoading,
+        isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
+        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
+        isVisitorPassesCountLoading: isVisitorPassesCountLoading ?? this.isVisitorPassesCountLoading,
+        visitorPassesCount: visitorPassesCount ?? this.visitorPassesCount,
     );
   }
 }

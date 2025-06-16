@@ -5,18 +5,17 @@ import '../../model/service/service_model.dart';
 import '../../model/service/service_response_model.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
-import '../../repo/filter/general_filter_impl.dart';
-import '../../repo/filter/general_filter_repo.dart';
 import '../../repo/services/services_repo.dart';
 import '../../repo/services/services_repo_impl.dart';
+import '../../repo/units/units_repo.dart';
+import '../../repo/units/units_repo_impl.dart';
 import '../../utils/app_utils.dart';
 part 'service_state.dart';
 
 class ServiceCubit extends Cubit<ServiceState> {
   ServiceCubit() : super(ServiceState());
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
-  final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
-
+  final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
   onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
@@ -50,7 +49,8 @@ class ServiceCubit extends Cubit<ServiceState> {
           page: state.page,
           keyword: state.searchKeyword,
           unitId: state.selectedUnit?.id,
-          serviceType: state.selectedType?.value,
+          serviceType: state.selectCheckInTypeList?.value,
+          type: state.selectedType?.value
         ).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -109,7 +109,7 @@ class ServiceCubit extends Cubit<ServiceState> {
 
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
-    UnitsResponseModel? response = await _generalFilterRepo.getUnits().onError(
+    UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
           (error, stackTrace) {
         emit(state.copyWith(isUnitLoading: false));
         Fluttertoast.showToast(

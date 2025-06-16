@@ -13,13 +13,14 @@ abstract class ServiceRepo{
     String? keyword,
     int? unitId,
     String? serviceType,
+    String? type,
 
   });
   Future<ServiceDetailsResponseModel?> getServiceDetails( {int? serviceId});
   Future<AddServiceLogResponseModel?> addServiceLog(
       {required Map<String, dynamic> data,
       });
-  Future<VisitorsServiceCompleteResponseModel?> serviceCompleted(
+  Future<VisitorsServiceCompleteResponseModel?> completeService(
       {required Map<String, dynamic> data,
       });
   Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({

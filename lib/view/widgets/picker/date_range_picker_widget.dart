@@ -76,7 +76,6 @@ class _CustomDateRangePickerWidgetState
                 color: AppColors.darkGrey,
                 fontSize: 13
               ),
-
               ),
               SvgPicture.asset(
                 AppImages.date,

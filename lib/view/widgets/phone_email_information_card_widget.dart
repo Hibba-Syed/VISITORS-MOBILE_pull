@@ -37,6 +37,7 @@ class PhoneEmailInformationCardWidget extends StatelessWidget {
             color: AppColors.gray,
             thickness: 1,
           ),
+
           IconTextContainerWidget(
             textColor: AppColors.darkGrey,
             backgroundColor: AppColors.white,

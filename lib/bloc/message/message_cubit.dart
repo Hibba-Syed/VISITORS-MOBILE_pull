@@ -69,53 +69,54 @@ class MessageCubit extends Cubit<MessageState> {
           msg: 'Something went wrong while fetching message');
     }
   }
-  Future<void> sendMessage(
-    BuildContext context, {
-    required Map<String, dynamic> data,
-    required List<String> filesPaths,
-  }) async {
+  Future<bool> sendMessage(
+      BuildContext context, {
+        required Map<String, dynamic> data,
+        List<String>? filesPaths,
+      }) async {
     emit(state.copyWith(
       isSendMessageLoading: true,
     ));
+
     try {
       List<http.MultipartFile> multipartFiles = [];
-      if (filesPaths.isNotEmpty) {
-        for (int i = 0; i < filesPaths.length; i++) {
-          if (filesPaths[i].isNotEmpty) {
+      if (filesPaths?.isNotEmpty ?? false) {
+        for (int i = 0; i < (filesPaths?.length ?? 0); i++) {
+          if (filesPaths?[i].isNotEmpty ?? false) {
             multipartFiles.add(
-              await http.MultipartFile.fromPath('attachments[]', filesPaths[i]),
+              await http.MultipartFile.fromPath('attachments[]', filesPaths?[i] ?? ""),
             );
           }
         }
-      } else {
-        data['attachments[]'] = null;
       }
+
       SendMessageResponseModel? response = await _messageRepo
           .sendMessage(
         data: data,
         files: multipartFiles,
       )
-          .onError(
-        (error, stackTrace) {
-          emit(state.copyWith(isSendMessageLoading: false));
-          Fluttertoast.showToast(
-            msg: error.toString(),
-          );
-          throw error!;
-        },
-      );
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isSendMessageLoading: false));
+        Fluttertoast.showToast(msg: error.toString());
+        return null;
+      });
+
       emit(state.copyWith(isSendMessageLoading: false));
-      if (response != null || response?.status == 'success') {
+
+      if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: 'Message sent successfully');
         getMessages();
+        return true;
       } else {
         Fluttertoast.showToast(
             msg: 'Something went wrong while sending message');
+        return false;
       }
     } catch (e) {
       emit(state.copyWith(isSendMessageLoading: false));
       Fluttertoast.showToast(msg: e.toString());
-      rethrow;
+      return false;
     }
   }
+
 }

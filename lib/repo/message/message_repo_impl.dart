@@ -28,7 +28,7 @@ class MessageImpl implements MessageRepo {
   @override
   Future<SendMessageResponseModel?> sendMessage({
     required Map<String, dynamic> data,
-    required List<http.MultipartFile> files,
+     List<http.MultipartFile>? files,
   }) async {
     try {
       String url = ApiUrl.sendMessage;
@@ -36,7 +36,7 @@ class MessageImpl implements MessageRepo {
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,
-        files,
+        files ?? [],
       );
       return SendMessageResponseModel.fromJson(response);
     } catch (e) {

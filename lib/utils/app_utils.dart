@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-import 'package:visitors/view/Common%20Screens/services/detail/short_stay_service_details_screen.dart';
 
 import '../model/service/service_model.dart';
 import '../resource/constants/strings.dart';
 import '../resource/styles/styles.dart';
-import '../view/Common Screens/services/detail/access_device_service_details_sceen.dart';
-import '../view/Common Screens/services/detail/delivery_permit_service_details_screen.dart';
-import '../view/Common Screens/services/detail/facility_booking_service_details_screen.dart';
-import '../view/Common Screens/services/detail/fit_out_service_details_screen.dart';
-import '../view/Common Screens/services/detail/move_in_service_details_screen.dart';
-import '../view/Common Screens/services/detail/move_out_service_details_screen.dart';
-import '../view/Common Screens/services/detail/work_permit_service_details_screen.dart';
+import '../view/screens/services/detail/access_device_service_details_sceen.dart';
+import '../view/screens/services/detail/delivery_permit_service_details_screen.dart';
+import '../view/screens/services/detail/facility_booking_service_details_screen.dart';
+import '../view/screens/services/detail/fit_out_service_details_screen.dart';
+import '../view/screens/services/detail/move_in_service_details_screen.dart';
+import '../view/screens/services/detail/move_out_service_details_screen.dart';
+import '../view/screens/services/detail/short_stay_service_details_screen.dart';
+import '../view/screens/services/detail/work_permit_service_details_screen.dart';
 
 class AppUtils {
   // Status colors
@@ -78,7 +78,22 @@ class AppUtils {
 
     return '${format(fromDate)} - ${format(now)}';
   }
-
+//
+  static final List<Map<String, String>> rangList = [
+    {
+      'label': 'Last 30 Days',
+      'dateRange': getDateRangeStringFromLabel('Last 30 Days'),
+    },
+    {
+      'label': 'Last 60 Days',
+      'dateRange': getDateRangeStringFromLabel('Last 60 Days'),
+    },
+    {
+      'label': 'Last 90 Days',
+      'dateRange': getDateRangeStringFromLabel('Last 90 Days'),
+    },
+  ];
+  //
   static TypeModel getServiceableType(String? type) {
     if (type == "job") {
       return TypeModel(label: "Work Order / RFP", value: Strings.keyWorkOrder);
@@ -95,7 +110,7 @@ class AppUtils {
   static List<TypeModel> serviceTypeList = [
     TypeModel(label: 'Access device', value: 'AD'),
     TypeModel(label: 'Delivery Permit', value: 'DP'),
-    TypeModel(label: 'Facility Booking', value: 'FB'),
+    TypeModel(label: 'Facility Booking', value: 'HB'),
     TypeModel(label: 'Fit Out', value: 'FO'),
     TypeModel(label: 'Move In', value: 'MI'),
     TypeModel(label: 'Move Out', value: 'MO'),
@@ -188,4 +203,10 @@ class TypeModel {
   final String value;
 
   TypeModel({required this.label, required this.value});
+}
+class RangeOption {
+  final String label;
+  final String value;
+
+  RangeOption(this.label, this.value);
 }

@@ -6,16 +6,19 @@ import 'package:fluttertoast/fluttertoast.dart' show Fluttertoast;
 import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
-import 'package:visitors/repo/filter/general_filter_impl.dart';
 import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
 import '../../model/check_ins/check_in_model.dart';
+import '../../model/check_ins/guest_checkin_response_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
 import '../../model/check_out/check_out_model.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
 import '../../model/vendor/vendor_model.dart';
 import '../../model/vendor/vendor_response_model.dart';
-import '../../repo/filter/general_filter_repo.dart';
+import '../../repo/units/units_repo.dart';
+import '../../repo/units/units_repo_impl.dart';
+import '../../repo/vendors/vendors_repo.dart';
+import '../../repo/vendors/vendors_repo_impl.dart';
 import '../../utils/app_utils.dart';
 
 part 'check_ins_state.dart';
@@ -23,7 +26,8 @@ part 'check_ins_state.dart';
 class CheckInsCubit extends Cubit<CheckInsState> {
   CheckInsCubit() : super(CheckInsState());
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
-  final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
+  final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
+  final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
   onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
@@ -203,7 +207,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
 
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
-    UnitsResponseModel? response = await _generalFilterRepo.getUnits().onError(
+    UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
       (error, stackTrace) {
         emit(state.copyWith(isUnitLoading: false));
         Fluttertoast.showToast(
@@ -241,4 +245,40 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     }
   }
 
+  Future<bool> guestCheckIn(
+      BuildContext context, {
+        required Map<String, dynamic> data,
+      }) async {
+    emit(state.copyWith(isGuestCheckInLoading: true));
+    try {
+      GuestCheckInResponseModel? response = await _checkInRepo
+          .guestCheckIn(
+          data: data,
+      )
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isGuestCheckInLoading: false));
+        log( error.toString());
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        return null;
+      });
+      emit(state.copyWith(isGuestCheckInLoading: false));
+      if (response != null && response.status == 'success') {
+        emit(state.copyWith(checkInModel: response.record));
+        Navigator.pop(context);
+        getCheckIns();
+        Fluttertoast.showToast(msg:  'Check in successfully');
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while checking in ');
+        return false;
+      }
+    } catch (e) {
+      emit(state.copyWith(isGuestCheckInLoading: false));
+      Fluttertoast.showToast(msg: e.toString());
+      return false;
+    }
+  }
 }

@@ -30,9 +30,6 @@ class CheckInModel {
   Visitor? visitor;
   Serviceable? serviceable;
   Vendor? vendor;
-
-
-
   CheckInModel({
     this.id,
     this.associationId,
