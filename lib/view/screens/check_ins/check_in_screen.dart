@@ -44,6 +44,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
             );
       }
     });
+    context.read<CheckInsCubit>().getUnits();
+    context.read<CheckInsCubit>().getVendors();
   }
 
   @override
@@ -177,7 +179,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                       type: AppUtils.getServiceableType(
                                               checkIns?.serviceableType)
                                           .value,
-                                      createdDate: DateTimeUtil.getFormattedDatesTime(
+                                      createdDate: DateTimeUtil.getFormattedDateTime(
                                           checkIns?.visitor?.createdAt),
                                       checkOutOnPressed: () {
                                         context
@@ -298,8 +300,6 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<CheckInsCubit>().getVendors();
-         context.read<CheckInsCubit>().getUnits();
         return const CheckInFilterBottomSheet();
       },
     );

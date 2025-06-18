@@ -106,7 +106,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Start Date',
-                              value: DateTimeUtil.getFormattedDatesTime(state
+                              value: DateTimeUtil.getFormattedDateTime(state
                                   .serviceDetails?.application?.startDate)),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Contractor Contact Person',
@@ -123,7 +123,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'End Date',
-                            value: DateTimeUtil.getFormattedDatesTime(
+                            value: DateTimeUtil.getFormattedDateTime(
                                 state.serviceDetails?.application?.endDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
@@ -265,7 +265,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                 .first
                                 .trim(),
 
-                            dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
+                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
                           );
                         },
 

@@ -29,7 +29,7 @@ class CheckInRepoImpl implements CheckInRepo {
     try {
       String url =
           '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}&serviceable_id=${serviceableId ?? ''}';
-      print('url checkin^%^ $url');
+      // print('url checkin^%^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckInsResponseModel.fromJson(response);
     } catch (e) {
@@ -104,7 +104,7 @@ class CheckInRepoImpl implements CheckInRepo {
   Future<GuestCheckInResponseModel?> guestCheckIn({
     required Map<String, dynamic> data,
   }) async {
-    print('guest check in &&&: ${ApiUrl.guestCheckIn}');
+    // print('guest check in &&&: ${ApiUrl.guestCheckIn}');
     try {
       String url = ApiUrl.guestCheckIn;
       dynamic response =

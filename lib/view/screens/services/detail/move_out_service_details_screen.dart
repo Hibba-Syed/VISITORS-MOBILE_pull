@@ -98,7 +98,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Requested Date',
                               value:
-                          DateTimeUtil.getFormattedDatesTime(
+                          DateTimeUtil.getFormattedDateTime(
                               state.serviceDetails?.application?.moveDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
@@ -183,7 +183,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                 .first
                                 .trim(),
 
-                            dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
+                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
                           );
                         },
 

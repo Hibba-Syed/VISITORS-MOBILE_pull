@@ -276,6 +276,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       if(context.mounted){
         context.read<VisitorPassCubit>().getVisitorPasses();
         context.read<DirectoryCubit>().getUnits();
+
       }
 
     }

@@ -206,7 +206,7 @@ class _DeliveryPermitServiceDetailsScreenState
                                       .split('.')
                                       .first
                                       .trim(),
-                                  dateTime: DateTimeUtil.getFormattedDatesTime(
+                                  dateTime: DateTimeUtil.getFormattedDateTime(
                                       statusHistory?.createdAt),
                                 );
                               },

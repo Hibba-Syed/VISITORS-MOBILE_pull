@@ -66,13 +66,13 @@ class CheckOutCubit extends Cubit<CheckOutState> {
 
   Future<void> getCheckOut(
       ) async {
-    emit(state.copyWith(isCheckOutLoading: true));
+    emit(state.copyWith(isCheckOutLoading: true,page: 1));
     CheckOutResponseModel? response =
     await _checkOutRepo.getCheckOuts(
        page: state.page,
         keyword: state.searchKeyword,
         unitId: state.selectedUnit?.id,
-        dateRange: DateTimeUtil.getFormatDateRange(state.dateRang),
+        dateRange: state.dateRang == null ? null : DateTimeUtil.getFormatDateRange(state.dateRang),
         serviceableType: state.selectedType?.value,
         vendorId: state.selectedVendor?.id,
     ).onError(
@@ -101,7 +101,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       page: state.page,
       keyword: state.searchKeyword,
       unitId: state.selectedUnit?.id,
-      dateRange: DateTimeUtil.getFormatDateRange(state.dateRang),
+      dateRange:state.dateRang == null ? null : DateTimeUtil.getFormatDateRange(state.dateRang),
       serviceableType: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
 

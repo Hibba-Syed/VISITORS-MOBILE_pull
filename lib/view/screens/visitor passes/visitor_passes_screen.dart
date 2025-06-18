@@ -39,6 +39,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
         );
       }
     });
+    context.read<VisitorPassCubit>().getUnits();
   }
   @override
   Widget build(BuildContext context) {

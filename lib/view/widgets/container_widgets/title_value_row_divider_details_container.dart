@@ -37,10 +37,10 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = (AppUtils.isTablet(context)
-        ? AppTextStyles.style15DarkGrey600
-        : AppTextStyles.style13DarkGrey600)
-        .copyWith(color: valueColor);
+    // final textStyle = (AppUtils.isTablet(context)
+    //     ? AppTextStyles.style15DarkGrey600
+    //     : AppTextStyles.style13DarkGrey600)
+    //     .copyWith(color: valueColor);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -78,20 +78,9 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
                     //AppTextStyles.style10Black400
                   ),
                 ),
-                // Text(
-                //   value ?? "",
-                //   style: textStyle.copyWith(
-                //     color: AppColors.primary,
-                //   ),
-                //   maxLines: 1,
-                //   overflow: TextOverflow.ellipsis,
-                // ),
               )
                   : Text(
                 value ?? "",
-                // style: textStyle,
-                // maxLines: 2,
-                // overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

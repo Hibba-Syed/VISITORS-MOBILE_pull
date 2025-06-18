@@ -107,7 +107,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Check-In Time',
-                            value: DateTimeUtil.getFormattedDatesTime(
+                            value: DateTimeUtil.getFormattedDateTime(
                                 checkIns?.checkinTime),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
@@ -153,7 +153,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                                 status: checkInLogRecord?.status ?? "--",
                                 byValue: '',
                                 description: checkInLogRecord?.description ?? "--",
-                                dateTime: DateTimeUtil.getFormattedDatesTime(checkInLogRecord?.createdAt),
+                                dateTime: DateTimeUtil.getFormattedDateTime(checkInLogRecord?.createdAt),
                               );
                             },
                           ),

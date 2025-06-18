@@ -151,7 +151,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
             floatingActionButton: FloatingActionButton.extended(
               backgroundColor: AppColors.primary,
               onPressed: () {
-                FileDownloader.downloadFile(context: context);
+                FileDownloader.downloadFile(context: context, dateRage: '${context.read<CheckOutCubit>().state.dateRang}');
               },
               icon: SvgPicture.asset(
                 AppImages.export,
@@ -177,8 +177,8 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<CheckOutCubit>().getVendors();
         context.read<CheckOutCubit>().getUnits();
+        context.read<CheckOutCubit>().getVendors();
         return const CheckOutsFilterBottomSheet();
       },
     );

@@ -1,11 +1,10 @@
-
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/check_out/check_out_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_out_repo.dart';
 
-class CheckOutRepoImpl implements CheckOutRepo{
+class CheckOutRepoImpl implements CheckOutRepo {
   final BaseApiServices _apiService = NetworkApiServices();
   @override
   Future<CheckOutResponseModel?> getCheckOuts({
@@ -16,11 +15,11 @@ class CheckOutRepoImpl implements CheckOutRepo{
     String? dateRange,
     String? serviceableType,
     int? vendorId,
-
   }) async {
     try {
-      String url = '${ApiUrl.checkOuts}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}';
-       print('check out^^ $url');
+      String url =
+          '${ApiUrl.checkOuts}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${(dateRange?.isNotEmpty ?? false) ? dateRange : ''}&unit_id=${unitId ?? ''}';
+      // print('check out^^ $url');print('check out^^ $page');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckOutResponseModel.fromJson(response);
     } catch (e) {

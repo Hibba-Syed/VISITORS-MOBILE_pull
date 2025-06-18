@@ -130,7 +130,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                       byValue:  "",
                       description: checkInLog?.description ?? "",
                       dateTime:
-                          DateTimeUtil.getFormattedDatesTime(checkInLog?.updatedAt));
+                          DateTimeUtil.getFormattedDateTime(checkInLog?.updatedAt));
                 },
               );
             },

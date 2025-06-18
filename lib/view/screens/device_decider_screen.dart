@@ -174,6 +174,9 @@ class DeviceDeciderScreen extends StatelessWidget {
                         context.read<CheckOutCubit>().onChangeDateRange(
                             AppUtils.getDateRangeStringFromLabel(
                                 'Last 30 Days'));
+                        context.read<CheckOutCubit>().getCheckOut();
+                        // print('filter checkout ${AppUtils.getDateRangeStringFromLabel(
+                        //         'Last 30 Days')}');
                         break;
                     }
                   }
