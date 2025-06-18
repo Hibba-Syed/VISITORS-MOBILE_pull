@@ -90,7 +90,6 @@ class CheckInCardWidget extends StatelessWidget {
                           imageHeight: 55,
                           imageWidth: 55,
                           count: count ?? "",
-                          countPadding: 6,
                           countTopPositioned: -5,
                           countRightPositioned: -6,
                           backgroundColor: AppColors.primary,

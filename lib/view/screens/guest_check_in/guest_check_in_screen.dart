@@ -56,7 +56,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   String? _selectedIssueDate;
   String? _selectedExpiryDate;
   String? _selectedItemNationality;
-  Country? _selectedNationality;
+  // Country? _selectedNationality;
   Country? countries;
   VisitorsPurpose? visitorsPurpose;
   UnitModel? unitModel;

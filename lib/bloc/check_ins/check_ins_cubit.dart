@@ -19,6 +19,7 @@ import '../../repo/units/units_repo_impl.dart';
 import '../../repo/vendors/vendors_repo.dart';
 import '../../repo/vendors/vendors_repo_impl.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/date_time.dart';
 
 part 'check_ins_state.dart';
 
@@ -44,13 +45,15 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(selectedVendor: vendor));
   }
 
-  onChangeDateRange(String? dateRange) {
-    emit(state.copyWith(dateRang: dateRange));
+  onChangeDateRange(DateTimeRange? dateRange) {
+    // print('on change:::');
+    emit(state.copyWith(dateRange: dateRange));
+    // print('on change date range:: ${state.dateRange}');
   }
 
-  // onChangeRange(String? range) {
-  //   emit(state.copyWith(selectedRang: range));
-  // }
+  onChangeRange(String? range) {
+    emit(state.copyWith(selectedRange: range));
+  }
 
   onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
@@ -76,7 +79,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         .getCheckIns(
             keyword: state.searchKeyword,
             unitId: state.selectedUnit?.id,
-            dateRange: state.dateRang,
+             dateRange: DateTimeUtil.getFormatDateRange(state.dateRange),
             serviceableType: state.selectedType?.value,
             vendorId: state.selectedVendor?.id,
             serviceableId: state.serviceableId)
@@ -109,7 +112,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       page: state.page,
       keyword: keyword,
       unitId: state.selectedUnit?.id,
-      dateRange: state.dateRang,
+      // dateRange: state.dateRang,
       serviceableType: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
       serviceableId: state.serviceableId,

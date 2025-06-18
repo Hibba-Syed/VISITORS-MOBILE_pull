@@ -11,8 +11,8 @@ class CheckOutState {
   List<CheckOutVisitor>? checkOutVisitors;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  final String? dateRang;
-  final String? selectedRang;
+  final DateTimeRange? dateRang;
+  final String? selectedRange;
   final TypeModel? selectedType;
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
@@ -28,7 +28,7 @@ class CheckOutState {
     this.vendors,
     this.isCheckOutAllLoading = false,
     this.dateRang,
-    this.selectedRang,
+    this.selectedRange,
     this.isCheckOutLoading = false,
     this.selectedType,
     this.selectedUnit,
@@ -46,8 +46,8 @@ class CheckOutState {
     List<CheckOutVisitor>? checkOutVisitors,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    String? dateRang,
-    String? selectedRang,
+    DateTimeRange? dateRang,
+    String? selectedRange,
     TypeModel? selectedType,
     UnitModel? selectedUnit,
     VendorModel? selectedVendor,
@@ -65,7 +65,7 @@ class CheckOutState {
         vendors: vendors ?? this.vendors,
         units: units ?? this.units,
         checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
-        selectedRang: selectedRang ?? this.selectedRang,
+        selectedRange: selectedRange ?? this.selectedRange,
         selectedType: selectedType ?? this.selectedType,
         selectedUnit: selectedUnit ?? this.selectedUnit,
         selectedVendor: selectedVendor ?? this.selectedVendor,

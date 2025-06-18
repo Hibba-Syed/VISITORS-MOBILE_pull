@@ -80,7 +80,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                     false) ||
                                 (state.selectedVendor != null) ||
                                 (state.dateRang != null) ||
-                                (state.selectedRang != null)
+                                (state.selectedRange != null)
                             ? true
                             : false,
                         onFilterPressed: () {

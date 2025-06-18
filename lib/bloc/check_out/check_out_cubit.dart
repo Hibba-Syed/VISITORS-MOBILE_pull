@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../model/check_out/check_out_model.dart';
@@ -13,6 +14,7 @@ import '../../repo/units/units_repo_impl.dart';
 import '../../repo/vendors/vendors_repo.dart';
 import '../../repo/vendors/vendors_repo_impl.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/date_time.dart';
 
 part 'check_out_state.dart';
 
@@ -27,7 +29,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   // onChangeRange(String? range) {
   //   emit(state.copyWith(selectedRang: range));
   // }
-  onChangeDateRange(String? dateRange) {
+  onChangeDateRange(DateTimeRange? dateRange) {
     emit(state.copyWith(dateRang: dateRange));
   }
 
@@ -70,7 +72,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
        page: state.page,
         keyword: state.searchKeyword,
         unitId: state.selectedUnit?.id,
-        dateRange: state.dateRang,
+        dateRange: DateTimeUtil.getFormatDateRange(state.dateRang),
         serviceableType: state.selectedType?.value,
         vendorId: state.selectedVendor?.id,
     ).onError(
@@ -99,7 +101,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       page: state.page,
       keyword: state.searchKeyword,
       unitId: state.selectedUnit?.id,
-      dateRange: state.dateRang,
+      dateRange: DateTimeUtil.getFormatDateRange(state.dateRang),
       serviceableType: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
 

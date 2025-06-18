@@ -15,8 +15,8 @@ class CheckInsState {
   final TypeModel? selectedType;
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
-  final String? dateRang;
-  final String? selectedRang;
+  final DateTimeRange? dateRange;
+  final String? selectedRange;
   final String? searchKeyword;
   final List<CheckOutVisitor>? checkOutVisitors;
 
@@ -34,8 +34,8 @@ class CheckInsState {
     this.selectedUnit,
     this.selectedVendor,
     this.isCheckOutAllLoading = false,
-    this.dateRang,
-    this.selectedRang,
+    this.dateRange,
+    this.selectedRange,
     this.searchKeyword,
     this.serviceableId,
     this.checkOutVisitors,
@@ -54,8 +54,8 @@ class CheckInsState {
     TypeModel? selectedType,
     UnitModel? selectedUnit,
     VendorModel? selectedVendor,
-    String? dateRang,
-    String? selectedRang,
+    DateTimeRange? dateRange,
+    String? selectedRange,
      String? searchKeyword,
      int? serviceableId,
     List<CheckOutVisitor>? checkOutVisitors,
@@ -73,8 +73,8 @@ class CheckInsState {
         selectedType: selectedType ?? this.selectedType,
         selectedUnit: selectedUnit ?? this.selectedUnit,
         selectedVendor: selectedVendor ?? this.selectedVendor,
-        dateRang: dateRang ?? this.dateRang,
-        selectedRang: selectedRang ?? this.selectedRang,
+        dateRange: dateRange ?? this.dateRange,
+        selectedRange: selectedRange ?? this.selectedRange,
         searchKeyword: searchKeyword ?? this.searchKeyword,
         serviceableId: serviceableId ?? this.serviceableId,
         isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,

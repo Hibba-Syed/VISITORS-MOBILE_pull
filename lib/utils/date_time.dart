@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 class DateTimeUtil {
 
@@ -11,16 +12,6 @@ class DateTimeUtil {
     }
     return '--';
   }
-  // static String getFormattedDatesTime(DateTime? inputDateTime) {
-  //   if (inputDateTime != null) {
-  //     final localDateTime = inputDateTime.toLocal();
-  //     String formattedDateString =
-  //     DateFormat("MMMM dd, yyyy hh:mm a").format(localDateTime);
-  //     return formattedDateString;
-  //   }
-  //   return '--';
-  // }
-
 
   static String getFormattedDatesTime(dynamic inputDateTime) {
     DateTime? dateTime;
@@ -54,6 +45,11 @@ class DateTimeUtil {
       return formattedDateString;
     }
     return '--';
+  }
+  static String getFormatDateRange(DateTimeRange? range) {
+    if (range == null) return "";
+    final format = DateFormat('yyyy-MM-dd');
+    return '${format.format(range.start)} - ${format.format(range.end)}';
   }
 
 }

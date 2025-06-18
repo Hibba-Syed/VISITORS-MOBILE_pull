@@ -26,12 +26,19 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
-  String? _selectedRang;
+  final now = DateTime.now();
+  late DateTime firstDayOfMonth;
+  late DateTime lastDayOfMonth;
+
+  @override
+  void initState() {
+    super.initState();
+    firstDayOfMonth = DateTime(now.year, now.month, 1);
+    lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final firstDayOfMonth = DateTime(now.year, now.month, 1);
-    final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
@@ -43,110 +50,116 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
             ),
             border: Border.all(color: AppColors.gray)),
         child: SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(10),
-            const Align(
-              alignment: Alignment.center,
-              child: HeadingWidget(
-                  heading: 'Check-In Filter',
-                  style: AppTextStyles.style16black600),
-            ),
-            const Gap(15),
-            CustomDateRangePickerWidget(
-              firstDate: firstDayOfMonth,
-              lastDate: lastDayOfMonth,
-              hintText: "Date Range",
-              selectedDate: context.watch<CheckInsCubit>().state.dateRang,
-              onChangeDate: (value) {
-                context.read<CheckInsCubit>().onChangeDateRange(value);
-              },
-            ),
-            const Gap(10),
-            SingleSelectedDropdownWidget<String>(
-              hint: "Range",
-              fillColor: AppColors.white,
-              selectedItem: _selectedRang,
-              //context.watch<CheckInsCubit>().state.selectedRang,
-              itemAsString: (rang) => rang,
-              compareFn: (p0, p1) => p0 == p1,
-              items: AppConstants.rangList,
-              onChanged: (value) {
-                // selectedRang = value;
-                final dateRangeString =
-                    AppUtils.getDateRangeStringFromLabel(value ?? "");
-                context
-                    .read<CheckInsCubit>()
-                    .onChangeDateRange(dateRangeString);
-                // print('dateRange $dateRangeString');
-              },
-            ),
-            const Gap(10),
-            SingleSelectedDropdownWidget<TypeModel>(
-                hint: "Type",
-                fillColor: AppColors.white,
-                selectedItem: context.watch<CheckInsCubit>().state.selectedType,
-                itemAsString: (type) => type.label,
-                compareFn: (p0, p1) => p0.value == p1.value,
-                items: AppUtils.checkInTypeList,
-                onChanged: (value) {
-                  context.read<CheckInsCubit>().onChangeSelectedType(value);
-                }),
-            const Gap(10),
-            BlocBuilder<CheckInsCubit, CheckInsState>(
+          child: BlocBuilder<CheckInsCubit, CheckInsState>(
               builder: (context, state) {
-                if (state.isUnitLoading) {
-                  return LoaderWidget();
-                }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(10),
+                const Align(
+                  alignment: Alignment.center,
+                  child: HeadingWidget(
+                      heading: 'Check-In Filter',
+                      style: AppTextStyles.style16black600),
+                ),
+                const Gap(15),
+                CustomDateRangePickerWidget(
+                  firstDate: firstDayOfMonth,
+                  lastDate: lastDayOfMonth,
+                  hintText: "Date Range",
+                  selectedDateRange: state.dateRange,
+                  onChangeDateRange: (value) {
+                    context.read<CheckInsCubit>().onChangeDateRange(value);
+                    context.read<CheckInsCubit>().onChangeRange('Select Range');
+                  },
+                ),
+                const Gap(10),
+                SingleSelectedDropdownWidget<String>(
+                    hint: "Range",
+                    fillColor: AppColors.white,
+                    selectedItem: state.selectedRange,
+                    itemAsString: (rang) => rang,
+                    compareFn: (p0, p1) => p0 == p1,
+                    items: AppConstants.rangList,
+                    onChanged: (value) {
+                      final dateRangeString =
+                          AppUtils.getDateRangeStringFromLabel(value);
+                      context.read<CheckInsCubit>().onChangeRange(value);
+                      context
+                          .read<CheckInsCubit>()
+                          .onChangeDateRange(dateRangeString);
 
-                return SingleSelectedDropdownWidget<UnitModel>(
-                    hint: "Unit",
+                      print('dateRange $dateRangeString $value ');
+                      print('state:: ${state.dateRange} ');
+                    }),
+                const Gap(10),
+                SingleSelectedDropdownWidget<TypeModel>(
+                    hint: "Type",
                     fillColor: AppColors.white,
                     selectedItem:
-                        context.watch<CheckInsCubit>().state.selectedUnit,
-                    itemAsString: (unit) => unit.unitNumber ?? "",
-                    compareFn: (unit, item) => unit.id == item.id,
-                    items: state.units ?? [],
+                        context.watch<CheckInsCubit>().state.selectedType,
+                    itemAsString: (type) => type.label,
+                    compareFn: (p0, p1) => p0.value == p1.value,
+                    items: AppUtils.checkInTypeList,
                     onChanged: (value) {
-                      context
-                          .read<CheckInsCubit>()
-                          .onChangeSelectedUnit(value!);
-                    });
-              },
-            ),
-            const Gap(10),
-            BlocBuilder<CheckInsCubit, CheckInsState>(
-              builder: (context, state) {
-                return SingleSelectedDropdownWidget<VendorModel>(
-                    hint: "Vendors",
-                    fillColor: AppColors.white,
-                    selectedItem:
-                        context.watch<CheckInsCubit>().state.selectedVendor,
-                    itemAsString: (vendor) => vendor.companyName ?? "",
-                    compareFn: (vendor, item) => vendor.id == item.id,
-                    items: state.vendors ?? [],
-                    onChanged: (value) {
-                      context
-                          .read<CheckInsCubit>()
-                          .onChangeSelectedVendors(value!);
-                    });
-              },
-            ),
-            const Gap(30),
-            FilterButtonWidget(
-              applyOnPressed: () {
-                context.read<CheckInsCubit>().getCheckIns();
-                Navigator.pop(context);
-              },
-              clearOnPressed: () {
-                context.read<CheckInsCubit>().resetFilterData();
-                Navigator.pop(context);
-                context.read<CheckInsCubit>().getCheckIns();
-              },
-            ),
-          ],
-        )),
+                      context.read<CheckInsCubit>().onChangeSelectedType(value);
+                    }),
+                const Gap(10),
+                BlocBuilder<CheckInsCubit, CheckInsState>(
+                  builder: (context, state) {
+                    if (state.isUnitLoading) {
+                      return LoaderWidget();
+                    }
+
+                    return SingleSelectedDropdownWidget<UnitModel>(
+                        hint: "Unit",
+                        fillColor: AppColors.white,
+                        selectedItem:
+                            context.watch<CheckInsCubit>().state.selectedUnit,
+                        itemAsString: (unit) => unit.unitNumber ?? "",
+                        compareFn: (unit, item) => unit.id == item.id,
+                        items: state.units ?? [],
+                        onChanged: (value) {
+                          context
+                              .read<CheckInsCubit>()
+                              .onChangeSelectedUnit(value!);
+                        });
+                  },
+                ),
+                const Gap(10),
+                BlocBuilder<CheckInsCubit, CheckInsState>(
+                  builder: (context, state) {
+                    return SingleSelectedDropdownWidget<VendorModel>(
+                        hint: "Vendors",
+                        fillColor: AppColors.white,
+                        selectedItem:
+                            context.watch<CheckInsCubit>().state.selectedVendor,
+                        itemAsString: (vendor) => vendor.companyName ?? "",
+                        compareFn: (vendor, item) => vendor.id == item.id,
+                        items: state.vendors ?? [],
+                        onChanged: (value) {
+                          context
+                              .read<CheckInsCubit>()
+                              .onChangeSelectedVendors(value!);
+                        });
+                  },
+                ),
+                const Gap(30),
+                FilterButtonWidget(
+                  applyOnPressed: () {
+                    context.read<CheckInsCubit>().getCheckIns();
+                    Navigator.pop(context);
+                  },
+                  clearOnPressed: () {
+                    context.read<CheckInsCubit>().resetFilterData();
+                    Navigator.pop(context);
+                    context.read<CheckInsCubit>().getCheckIns();
+                  },
+                ),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }

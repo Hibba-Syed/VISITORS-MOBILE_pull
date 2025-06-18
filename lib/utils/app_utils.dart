@@ -60,7 +60,7 @@ class AppUtils {
     return AppColors.red;
   }
 
-  static String getDateRangeStringFromLabel(String label) {
+  static DateTimeRange getDateRangeStringFromLabel(String? label) {
     final now = DateTime.now();
     DateTime fromDate;
     if (label == 'Last 30 Days') {
@@ -72,28 +72,9 @@ class AppUtils {
     } else {
       fromDate = now;
     }
-    String format(DateTime date) {
-      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-    }
-
-    return '${format(fromDate)} - ${format(now)}';
+    return DateTimeRange(start: fromDate, end: now);
   }
-//
-//   static final List<Map<String, String>> rangList = [
-//     {
-//       'label': 'Last 30 Days',
-//       'dateRange': getDateRangeStringFromLabel('Last 30 Days'),
-//     },
-//     {
-//       'label': 'Last 60 Days',
-//       'dateRange': getDateRangeStringFromLabel('Last 60 Days'),
-//     },
-//     {
-//       'label': 'Last 90 Days',
-//       'dateRange': getDateRangeStringFromLabel('Last 90 Days'),
-//     },
-//   ];
-  //
+
   static TypeModel getServiceableType(String? type) {
     if (type == "job") {
       return TypeModel(label: "Work Order / RFP", value: Strings.keyWorkOrder);
@@ -107,6 +88,7 @@ class AppUtils {
       return TypeModel(label: "", value: "");
     }
   }
+
   static List<TypeModel> serviceTypeList = [
     TypeModel(label: 'Access device', value: 'AD'),
     TypeModel(label: 'Delivery Permit', value: 'DP'),
@@ -119,11 +101,11 @@ class AppUtils {
   ];
 
   static List<TypeModel> workOrderType = [
-    TypeModel(label: 'Work Order',value: '1'),
-    TypeModel(label: 'RFP',value: '0'),
+    TypeModel(label: 'Work Order', value: '1'),
+    TypeModel(label: 'RFP', value: '0'),
   ];
 
- static  List<TypeModel> checkInTypeList = [
+  static List<TypeModel> checkInTypeList = [
     TypeModel(label: 'Guests', value: Strings.guest),
     TypeModel(label: 'Services', value: Strings.keyServices),
     TypeModel(label: 'Work Order / RFPs', value: Strings.keyWorkOrder),
@@ -148,11 +130,15 @@ class AppUtils {
         return MoveOutServiceDetailsScreen(service: service);
       case "wp":
         return WorkPermitServiceDetailsScreen(service: service);
-        case "ss":
+      case "ss":
         return ShortStayServiceDetailsScreen(service: service);
       default:
         return const Scaffold(
-          body: Center(child: Text("No service details available",style: AppTextStyles.style13DarkGrey600,)),
+          body: Center(
+              child: Text(
+            "No service details available",
+            style: AppTextStyles.style13DarkGrey600,
+          )),
         );
     }
   }
@@ -179,10 +165,8 @@ class AppUtils {
     }
     if (applicationType == "TP") {
       requestName = "Transfer of Property";
-
     }
-    if (applicationType == "CS") {
-    }
+    if (applicationType == "CS") {}
     if (applicationType == "RI") {
       requestName = "Resident Information";
     }
@@ -196,14 +180,13 @@ class AppUtils {
   }
 }
 
-
-
 class TypeModel {
   final String label;
   final String value;
 
   TypeModel({required this.label, required this.value});
 }
+
 class RangeOption {
   final String label;
   final String value;

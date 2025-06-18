@@ -41,10 +41,11 @@ class FileDownloader {
 
     try {
       final response =
-          await http.get(downloadUrl, headers: {"Authorization": token, "User-Agent": "Windows"});
-          // print("Status Code ${response.statusCode}");
-      if (response.statusCode == 200 && context.mounted) {
+      await http.get(downloadUrl, headers: {"Authorization": token, "User-Agent": "Windows"});
+      // print("Status Code ${response.statusCode}");
+      if (response.statusCode == 200) {
         await _handleFileDownload(
+          // if(context.mounted){}
             context, progressDialog, response);
       } else if(response.statusCode== 404){
         progressDialog.hide();
@@ -53,14 +54,14 @@ class FileDownloader {
         }
       } else if (response.statusCode == 500) {
         progressDialog.hide();
-       if(context.mounted){
-         _showErrorDialog(context,
-             "An error occurred while downloading the document. Please try again. If the issue persists, contact our support team for assistance.");
-       }
+        if(context.mounted){
+          _showErrorDialog(context,
+              "An error occurred while downloading the document. Please try again. If the issue persists, contact our support team for assistance.");
+        }
       } else {
-       if(context.mounted){
-         _handleDownloadError(context, progressDialog, response);
-       }
+        if(context.mounted){
+          _handleDownloadError(context, progressDialog, response);
+        }
       }
     } catch (e) {
       if(context.mounted){
@@ -69,10 +70,28 @@ class FileDownloader {
       }
     }
   }
+///
+  static String getDateRangeStringFromLabel(String label) {
+    final now = DateTime.now();
+    DateTime fromDate;
+    if (label == 'Last 30 Days') {
+      fromDate = now.subtract(const Duration(days: 30));
+    } else if (label == 'Last 60 Days') {
+      fromDate = now.subtract(const Duration(days: 60));
+    } else if (label == 'Last 90 Days') {
+      fromDate = now.subtract(const Duration(days: 90));
+    } else {
+      fromDate = now;
+    }
+    String format(DateTime date) {
+      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    }
 
+    return '${format(fromDate)} - ${format(now)}';
+  }
   /// Get the download URL based on the file type
   static Uri _getDownloadUrl() {
-    final dateRange = AppUtils.getDateRangeStringFromLabel('Last 30 Days');
+    final dateRange = getDateRangeStringFromLabel('Last 30 Days');
     final filter = {
       "date_range": dateRange,
       "export": true,
@@ -337,3 +356,4 @@ class SaveFileParams {
     required this.rootIsolateToken,
   });
 }
+

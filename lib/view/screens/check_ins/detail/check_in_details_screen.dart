@@ -52,7 +52,6 @@ class CheckInDetailsScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.center,
                       child: StackCountContainerWidget(
-                        countPadding: 5,
                         count: checkIns?.visitorCount ?? "",
                         imageUrl: checkIns?.visitor?.imageUrl ?? "",
                         imageBackgroundColor: AppColors.darkGrey.withAlpha(25),

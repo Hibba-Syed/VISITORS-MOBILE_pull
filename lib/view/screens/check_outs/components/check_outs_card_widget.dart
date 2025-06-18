@@ -78,7 +78,6 @@ class CheckOutsCardWidget extends StatelessWidget {
                         imageHeight: 55,
                         imageWidth: 55,
                         count: visitorCount,
-                        countPadding: 4 ,
                         countTopPositioned: -10,
                         countRightPositioned: -6,
                         imageUrl: profileImageUrl,
