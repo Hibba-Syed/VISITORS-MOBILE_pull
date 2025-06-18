@@ -1,6 +1,6 @@
 
 
-import '../deviceInfo_model.dart';
+import '../device_info_model.dart';
 import 'guest_model.dart';
 
 class Application {

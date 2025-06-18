@@ -45,6 +45,7 @@ class _CustomDateTimePickerWidgetState
     if (widget.onlyDatePicker) {
       // Pick Date Only
       final DateTime? pickedDate = await showDatePicker(
+
         context: context,
         initialDate: widget.initialDateTime ?? DateTime.now(),
         firstDate: widget.initialDateTime ?? DateTime(2000),
@@ -59,6 +60,7 @@ class _CustomDateTimePickerWidgetState
     } else if (widget.onlyTimePicker) {
       // Pick Time Only
       final TimeOfDay? pickedTime = await showTimePicker(
+
         context: context,
         initialTime: TimeOfDay.now(),
       );
@@ -85,10 +87,10 @@ class _CustomDateTimePickerWidgetState
         firstDate: widget.initialDateTime ?? DateTime(2000),
         lastDate: DateTime(2100),
       );
+      if (!context.mounted) return;
       if (pickedDate != null) {
         final String formattedDate =
             DateFormat("yyyy-MM-dd").format(pickedDate);
-
         // Pick Time
         final TimeOfDay? pickedTime = await showTimePicker(
           context: context,
@@ -126,7 +128,7 @@ class _CustomDateTimePickerWidgetState
           color: widget.fillColor,
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: AppColors.gray,
+            color: AppColors.outLineGray,
           ),
         ),
         child: Row(

@@ -103,13 +103,24 @@ class ActivityLogWidget extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     const Gap(5),
-                    Text(
-                      description ?? "",
-                      style: AppUtils.isTablet(context)
-                          ? AppTextStyles.style14DarkGrey600
-                          : AppTextStyles.style13DarkGrey500,
+                    Text( description ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: AppColors.darkGrey,
+                        fontWeight:  FontWeight.w500,
+                        fontSize: AppUtils.isTablet(context)  ? 15 :  13,
+                        //AppTextStyles.style10Black400
+                      ),
                     ),
+                    // Text(
+                    //   description ?? "",
+                    //   style: AppUtils.isTablet(context)
+                    //       ? AppTextStyles.style14DarkGrey600
+                    //       : AppTextStyles.style13DarkGrey500,
+                    // ),
                     const Gap(10),
                     IconTextContainerWidget(
                       image: AppImages.date,

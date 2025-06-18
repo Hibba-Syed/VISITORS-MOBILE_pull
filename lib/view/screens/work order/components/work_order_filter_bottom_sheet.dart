@@ -62,6 +62,7 @@ class _WorkOrderFilterBottomSheetState
               const Gap(10),
               SingleSelectedDropdownWidget<VendorModel>(
                   hint: "Vendors",
+                  outLineColor: AppColors.outLineGray,
                   fillColor: AppColors.white,
                   selectedItem:
                       context.watch<WorkOrderCubit>().state.selectedVendor,

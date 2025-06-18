@@ -14,9 +14,9 @@ class DashboardState {
   final List<CheckInModel>? checkInsModel;
   final List<ServiceModel>? serviceModel;
   final List<WorkOrderModel>? workOrderModel;
-  final List<CheckOutVisitors>? checkOutModel;
+  final List<CheckOutVisitor>? checkOutModel;
   final List<VisitorPasses>? visitorPasses;
-  final List<CheckOutVisitors>? checkOutVisitors;
+  final List<CheckOutVisitor>? checkOutVisitors;
   final VisitorPassesCount? visitorPassesCount;
   final CountModel? countModel;
   DashboardState({
@@ -53,10 +53,10 @@ class DashboardState {
     List<CheckInModel>? checkInsModel,
     List<ServiceModel>? serviceModel,
     List<WorkOrderModel>? workOrderModel,
-    List<CheckOutVisitors>? checkOutModel,
+    List<CheckOutVisitor>? checkOutModel,
     List<VisitorPasses>? visitorPasses,
     VisitorPassesCount? visitorPassesCount,
-    List<CheckOutVisitors>? checkOutVisitors,
+    List<CheckOutVisitor>? checkOutVisitors,
     CountModel? countModel,
   }) {
     return DashboardState(

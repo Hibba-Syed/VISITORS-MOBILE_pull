@@ -63,8 +63,8 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
       log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
         emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
-        Navigator.pop(context);
         if (context.mounted) {
+          Navigator.pop(context);
          getCheckInDetailsLog(id: id);
         }
         Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');

@@ -48,7 +48,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                     CustomButton(
                         buttonColor: AppColors.red,
                         text: 'Check-Out All',
-                        height: AppUtils.isTablet(context) ? 50 : 42,
+                        height: AppUtils.isTablet(context) ? 43 : 42,
                         width: AppUtils.isTablet(context) ? 200 : 150,
                         borderRadius: 6,
                         image: AppImages.logoutCard,
@@ -97,6 +97,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                           CheckInModel? checkIn = state.checkInModel?[index];
                           return CheckInCardWidget(
                             isServiceable: true,
+                            phone: checkIn?.phone ?? '',
                             count: checkIn?.visitorCount ?? "",
                             reference: checkIn?.purpose ?? "--",
                             typeImage:

@@ -49,7 +49,8 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
           children: [
             Expanded(
               flex: 4,
-              child: Text(
+              child:
+              Text(
                 title,
                 style: AppUtils.isTablet(context)
                     ? AppTextStyles.style15Black600
@@ -67,20 +68,38 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
                   : url != null
                   ? InkWell(
                 onTap: () => _launchUrl(url!),
-                child: Text(
-                  value ?? "",
-                  style: textStyle.copyWith(
-                    color: AppColors.primary,
-                  ),
+                child: Text( title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: textColor ?? AppColors.primary,
+                    fontWeight:  FontWeight.w500,
+                    fontSize: AppUtils.isTablet(context)  ? 15 :  13,
+                    //AppTextStyles.style10Black400
+                  ),
                 ),
+                // Text(
+                //   value ?? "",
+                //   style: textStyle.copyWith(
+                //     color: AppColors.primary,
+                //   ),
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                // ),
               )
                   : Text(
                 value ?? "",
-                style: textStyle,
+                // style: textStyle,
+                // maxLines: 2,
+                // overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: textColor ?? AppColors.darkGrey,
+                  fontWeight:  FontWeight.w500,
+                  fontSize: AppUtils.isTablet(context)  ? 15 :  13,
+                  //AppTextStyles.style10Black400
+                ),
               ),
             ),
           ],

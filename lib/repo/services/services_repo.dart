@@ -4,7 +4,7 @@ import '../../model/service/add_service_log_response_model.dart';
 import '../../model/service/move_out_service_clear_payment_response_model.dart';
 import '../../model/service/service_details_response_model.dart';
 import '../../model/service/service_response_model.dart';
-import '../../model/service/vIsitors_service_complete_response_model.dart';
+import '../../model/service/visitors_service_complete_response_model.dart';
 
 abstract class ServiceRepo{
   Future<ServiceResponseModel?> getServices({

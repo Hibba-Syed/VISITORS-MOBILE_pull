@@ -18,7 +18,7 @@ class MessageImpl implements MessageRepo {
     try {
       String url =
           '${ApiUrl.messages}?page=${page ?? 1}&limit=${limit ??10}';
-      print('message^^ $url');
+      // print('message^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return MessagesResponseModel.fromJson(response);
     } catch (e) {
@@ -32,7 +32,7 @@ class MessageImpl implements MessageRepo {
   }) async {
     try {
       String url = ApiUrl.sendMessage;
-      print('send message^^ $url');
+      // print('send message^^ $url');
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,

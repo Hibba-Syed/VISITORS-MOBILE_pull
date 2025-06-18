@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,7 +60,9 @@ class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
 
       if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: 'Log added successfully');
-        getWorkOrderDetails(workOrderId: context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.id);
+        if(context.mounted){
+          getWorkOrderDetails(workOrderId: context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.id);
+        }
         return true;
       } else {
         Fluttertoast.showToast(

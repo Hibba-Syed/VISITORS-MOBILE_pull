@@ -189,7 +189,9 @@ class DashboardCubit extends Cubit<DashboardState> {
       // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
         emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
-        Navigator.pop(context);
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
         getDashboardCheckIns();
         Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
         return true;
@@ -221,7 +223,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     emit(state.copyWith(isCountLoading: false));
     if (response != null && response.status == 'success') {
       emit(state.copyWith(visitorPassesCount: response.record));
-      print('Visitor Pass Count cubit : ${response.record?.count}');
+      // print('Visitor Pass Count cubit : ${response.record?.count}');
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching visitor passes count');
     }
@@ -271,8 +273,11 @@ class DashboardCubit extends Cubit<DashboardState> {
       await dashboardCubit.getDashboardServices(limit: 3);
       await dashboardCubit.getDashboardWorkOrder(limit: 3);
       dashboardCubit.getVisitorPassesCount();
-      await context.read<VisitorPassCubit>().getVisitorPasses();
-      await context.read<DirectoryCubit>().getUnits();
+      if(context.mounted){
+        context.read<VisitorPassCubit>().getVisitorPasses();
+        context.read<DirectoryCubit>().getUnits();
+      }
+
     }
 
 

@@ -28,7 +28,7 @@ class StackCountContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int? parsedCount = int.tryParse(count ?? "");
-    final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 3.0 : 5.0;
+    final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 4 : 5;
     return Stack(
       clipBehavior: Clip.none,
       children: [

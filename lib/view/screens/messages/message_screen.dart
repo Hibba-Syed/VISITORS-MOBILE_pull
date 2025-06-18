@@ -175,7 +175,7 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   Widget _buildAttachmentSection() {
-    print("code print${attachmentsList.length}");
+    // print("code print${attachmentsList.length}");
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 250),
       child: Container(

@@ -679,6 +679,7 @@ class DashboardScreen extends StatelessWidget {
                                 imageHeight: 22,
                                 image: AppImages.checkout,
                                 onPressed: () {
+
                                   onViewAllDashboardPressed(context, AppConstants.checkOutsIndex);
                                 }),
                           ),
@@ -945,6 +946,7 @@ class DashboardScreen extends StatelessWidget {
   }
 
   void onViewVisitorPasses(BuildContext context) {
+    context.read<VisitorPassCubit>().resetFilterData();
     context.read<VisitorPassCubit>().getVisitorPasses();
     Navigator.pushNamed(
         context, AppRoutes.visitorPassesScreen);
@@ -953,13 +955,16 @@ class DashboardScreen extends StatelessWidget {
     final cubit = context.read<DeviceDeciderCubit>();
 
     if (targetIndex == AppConstants.checkInsIndex) {
+      context.read<CheckInsCubit>().resetFilterData();
       context.read<CheckInsCubit>().getCheckIns();
       cubit.onChangeSelectedIndex(AppConstants.checkInsIndex);
     } else if (targetIndex == AppConstants.eServicesIndex) {
+      context.read<ServiceCubit>().resetFilterData();
       context.read<ServiceCubit>().getServices();
       cubit.onChangeSelectedIndex(AppConstants.eServicesIndex);
     }
     else if (targetIndex == AppConstants.workOrderRfpIndex) {
+      context.read<WorkOrderCubit>().resetFilterData();
       context.read<WorkOrderCubit>().getWorkOrder();
       cubit.onChangeSelectedIndex(AppConstants.workOrderRfpIndex);
     }

@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/images.dart';
 
+import '../../../utils/date_time.dart';
 
 class CustomDateRangePickerWidget extends StatefulWidget {
   final String? hintText;
-  final String? selectedDate;
+  final DateTimeRange? selectedDateRange;
   final DateTime? firstDate;
   final DateTime? lastDate;
-  final Function(String? value)? onChangeDate;
+  final Function(DateTimeRange? value)? onChangeDateRange;
   const CustomDateRangePickerWidget(
-      {super.key, this.hintText, this.selectedDate, this.onChangeDate,this.firstDate, this.lastDate});
+      {super.key,
+      this.hintText,
+      this.selectedDateRange,
+      this.onChangeDateRange,
+      this.firstDate,
+      this.lastDate});
 
   @override
   State<CustomDateRangePickerWidget> createState() =>
@@ -21,10 +26,12 @@ class CustomDateRangePickerWidget extends StatefulWidget {
 
 class _CustomDateRangePickerWidgetState
     extends State<CustomDateRangePickerWidget> {
-  String? selectedDate;
+  DateTimeRange? _selectedDateRange;
   @override
   void initState() {
-    selectedDate = widget.selectedDate;
+    setState(() {
+      _selectedDateRange = widget.selectedDateRange;
+    });
     super.initState();
   }
 
@@ -34,62 +41,56 @@ class _CustomDateRangePickerWidgetState
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: () async {
         await showDateRangePicker(
-          barrierColor: AppColors.primary,
-            context: context,
-            currentDate: DateTime.now(),
-            initialDateRange: (selectedDate?.isEmpty ?? true)
-                ? null
-                : (DateTimeRange(
-                start: DateTime.parse(
-                    selectedDate?.split("-").first ?? "--"),
-                end: DateTime.parse(
-                    selectedDate?.split("-").last ?? "--"))),
-            firstDate: widget.firstDate?? DateTime(DateTime.now().year-100, 01, 01),
-            lastDate: widget.lastDate ?? DateTime((DateTime.now().year + 100), 01, 01))
+                barrierColor: AppColors.primary,
+                context: context,
+                currentDate: DateTime.now(),
+                initialDateRange: widget.selectedDateRange,
+                firstDate: widget.firstDate ??
+                    DateTime(DateTime.now().year - 100, 01, 01),
+                lastDate: widget.lastDate ??
+                    DateTime((DateTime.now().year + 100), 01, 01))
             .then((value) {
           if (value == null) return;
           setState(() {
-            selectedDate =
-            "${DateFormat("yyyy-MM-dd").format(value.start)} - ${DateFormat("yyyy-MM-dd").format(value.end)}";
+            _selectedDateRange = value;
           });
-          widget.onChangeDate?.call(selectedDate);
+          widget.onChangeDateRange?.call(_selectedDateRange);
         });
       },
       child: Container(
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          width: double.maxFinite,
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              border: Border.all(
-                color: AppColors.outLineGray,
-              )),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                textAlign: TextAlign.left,
-                 selectedDate?.toString() ??
-                    widget.hintText?.toString() ??
-                    "Select",style: const TextStyle(
-                color: AppColors.darkGrey,
-                fontSize: 13
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        width: double.maxFinite,
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            border: Border.all(
+              color: AppColors.outLineGray,
+            )),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              textAlign: TextAlign.left,
+            _selectedDateRange != null  ? DateTimeUtil.getFormatDateRange(_selectedDateRange) : widget.hintText?.toString() ?? "Select",
+              // _selectedDateRange?.toString() ??
+              //     widget.hintText?.toString() ??
+              //     "Select",
+              style: const TextStyle(color: AppColors.darkGrey, fontSize: 13),
+            ),
+            SvgPicture.asset(
+              AppImages.date,
+              height: 22,
+              width: 22,
+              fit: BoxFit.fill,
+              colorFilter: const ColorFilter.mode(
+                AppColors.darkGrey,
+                BlendMode.srcIn,
               ),
-              ),
-              SvgPicture.asset(
-                AppImages.date,
-                height: 22,
-                width: 22,
-                fit: BoxFit.fill,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.darkGrey,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-

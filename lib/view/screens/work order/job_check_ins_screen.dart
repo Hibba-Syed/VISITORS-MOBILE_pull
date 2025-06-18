@@ -43,7 +43,7 @@ class JobCheckInsScreen extends StatelessWidget {
                     child: CustomButton(
                         buttonColor: AppColors.red,
                         text: 'Check-Out All',
-                        height: AppUtils.isTablet(context) ? 50 : 42,
+                        height: AppUtils.isTablet(context) ? 43 : 42,
                         width: AppUtils.isTablet(context) ? 200 : 150,
                         borderRadius: 6,
                         image: AppImages.logoutCard,

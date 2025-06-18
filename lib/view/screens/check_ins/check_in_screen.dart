@@ -86,7 +86,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                               (state.selectedType?.value.isNotEmpty ??
                                   false) ||
                               (state.selectedVendor != null) ||
-                              (state.dateRang != null)
+                              (state.dateRange != null)
                           ? true
                           : false,
                       onFilterPressed: () {
@@ -299,7 +299,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
       barrierColor: Colors.transparent,
       builder: (context) {
         context.read<CheckInsCubit>().getVendors();
-        context.read<CheckInsCubit>().getUnits();
+         context.read<CheckInsCubit>().getUnits();
         return const CheckInFilterBottomSheet();
       },
     );

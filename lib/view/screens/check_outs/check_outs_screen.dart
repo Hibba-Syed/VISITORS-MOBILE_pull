@@ -80,7 +80,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                     false) ||
                                 (state.selectedVendor != null) ||
                                 (state.dateRang != null) ||
-                                (state.selectedRang != null)
+                                (state.selectedRange != null)
                             ? true
                             : false,
                         onFilterPressed: () {
@@ -108,7 +108,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                       itemCount:
                                           state.checkOutVisitors?.length ?? 0,
                                       itemBuilder: (context, index) {
-                                        CheckOutVisitors? checkOutModel =
+                                        CheckOutVisitor? checkOutModel =
                                             state.checkOutVisitors?[index];
                                         return CheckOutsCardWidget(
                                           visitorCount:

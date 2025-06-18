@@ -19,11 +19,8 @@ class CheckOutRepoImpl implements CheckOutRepo{
 
   }) async {
     try {
-      String url =
-      // dateRange != null ? Uri.encodeComponent(dateRange) : ''
-          '${ApiUrl.checkOuts}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}'
-          '&unit_id=${unitId ?? ''}';
-      print('check out^^ $url');
+      String url = '${ApiUrl.checkOuts}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}';
+       print('check out^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckOutResponseModel.fromJson(response);
     } catch (e) {

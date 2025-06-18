@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/auth/auth_cubit.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
-import 'package:visitors/bloc/check_out/check_out_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
@@ -20,6 +19,8 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/drawer/drawer_list_tile.dart';
 import 'package:visitors/view/widgets/responsive_layout_widget.dart';
 
+import '../../bloc/check_out/check_out_cubit.dart';
+import '../../utils/app_utils.dart';
 import 'check_ins/check_in_screen.dart';
 import 'check_outs/check_outs_screen.dart';
 import 'components/drawer_item_model.dart';
@@ -73,21 +74,31 @@ class DeviceDeciderScreen extends StatelessWidget {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset(AppImages.logout, height: 35, width: 35, colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn)),
+                SvgPicture.asset(AppImages.logout,
+                    height: 35,
+                    width: 35,
+                    colorFilter: const ColorFilter.mode(
+                        AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                const Text('Are you sure you want to logout?', style: AppTextStyles.style16DarkGrey600),
+                const Text('Are you sure you want to logout?',
+                    style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
                   children: [
-                    Expanded(child: CustomButton(text: 'Cancel', onPressed: () => Navigator.pop(context, false))),
+                    Expanded(
+                        child: CustomButton(
+                            text: 'Cancel',
+                            onPressed: () => Navigator.pop(context, false))),
                     const Gap(10),
                     Expanded(
                         child: CustomButton(
-                       padding: EdgeInsets.symmetric(vertical: 2),
-                        text: 'Logout', invert: true, onPressed: () {
-                      Navigator.pop(context, true);
-                      context.read<AuthCubit>().logout(context);
-                    })),
+                            padding: EdgeInsets.symmetric(vertical: 2),
+                            text: 'Logout',
+                            invert: true,
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                              context.read<AuthCubit>().logout(context);
+                            })),
                   ],
                 )
               ],
@@ -117,12 +128,14 @@ class DeviceDeciderScreen extends StatelessWidget {
                 Image.asset(AppImages.appLogo, height: 80),
                 const Gap(10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text('VMS APPLICATION', style: AppTextStyles.style13white500),
+                  child: const Text('VMS APPLICATION',
+                      style: AppTextStyles.style13white500),
                 )
               ],
             ),
@@ -136,24 +149,31 @@ class DeviceDeciderScreen extends StatelessWidget {
                   if (item.index == AppConstants.logoutIndex) {
                     _showLogoutDialog(context);
                   } else {
-                    context.read<DeviceDeciderCubit>().onChangeSelectedIndex(item.index);
+                    context
+                        .read<DeviceDeciderCubit>()
+                        .onChangeSelectedIndex(item.index);
 
                     // Optionally trigger specific cubits
                     switch (item.index) {
                       case AppConstants.checkInsIndex:
+                        context.read<CheckInsCubit>().resetFilterData();
                         context.read<CheckInsCubit>().getCheckIns();
                         break;
                       case AppConstants.eServicesIndex:
+                        context.read<ServiceCubit>().resetFilterData();
                         context.read<ServiceCubit>().getServices();
                         break;
                       case AppConstants.workOrderRfpIndex:
+                        context.read<WorkOrderCubit>().resetFilterData();
                         context.read<WorkOrderCubit>().getWorkOrder();
                         break;
                       case AppConstants.messagesIndex:
                         context.read<MessageCubit>().getMessages();
                         break;
                       case AppConstants.checkOutsIndex:
-                        context.read<CheckOutCubit>().getCheckOut();
+                        context.read<CheckOutCubit>().onChangeDateRange(
+                            AppUtils.getDateRangeStringFromLabel(
+                                'Last 30 Days'));
                         break;
                     }
                   }
@@ -187,9 +207,8 @@ class DeviceDeciderScreen extends StatelessWidget {
 
   Widget _getMobileScreen(int index) {
     switch (index) {
-      case
-      AppConstants.dashboardIndex:
-        return  DashboardScreen();
+      case AppConstants.dashboardIndex:
+        return DashboardScreen();
       case AppConstants.checkInsIndex:
         return const CheckInsScreen();
       case AppConstants.eServicesIndex:
@@ -210,7 +229,7 @@ class DeviceDeciderScreen extends StatelessWidget {
   Widget _getTabletScreen(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:
-        return  DashboardScreen();
+        return DashboardScreen();
       case AppConstants.checkInsIndex:
         return const CheckInsScreen();
       case AppConstants.eServicesIndex:
@@ -227,14 +246,39 @@ class DeviceDeciderScreen extends StatelessWidget {
         return const SizedBox.shrink();
     }
   }
-    static final List<DrawerItemModel> drawerItems = [
-    DrawerItemModel(index: AppConstants.dashboardIndex, title: 'Dashboard', iconPath: AppImages.dashboard),
-    DrawerItemModel(index: AppConstants.checkInsIndex, title: 'Check-Ins', iconPath: AppImages.menuCheckIn),
-    DrawerItemModel(index: AppConstants.eServicesIndex, title: 'E-Services', iconPath: AppImages.menuEservices),
-    DrawerItemModel(index: AppConstants.workOrderRfpIndex, title: 'Work Order / RFPs', iconPath: AppImages.menuRFPs),
-    DrawerItemModel(index: AppConstants.messagesIndex, title: 'Messages', iconPath: AppImages.menuMsg),
-    DrawerItemModel(index: AppConstants.checkOutsIndex, title: 'Check-Outs', iconPath: AppImages.menuCheckout),
-    DrawerItemModel(index: AppConstants.directoryIndex, title: 'Directory', iconPath: AppImages.directory),
-    DrawerItemModel(index: AppConstants.logoutIndex, title: 'Logout', iconPath: AppImages.logout),
+
+  static final List<DrawerItemModel> drawerItems = [
+    DrawerItemModel(
+        index: AppConstants.dashboardIndex,
+        title: 'Dashboard',
+        iconPath: AppImages.dashboard),
+    DrawerItemModel(
+        index: AppConstants.checkInsIndex,
+        title: 'Check-Ins',
+        iconPath: AppImages.menuCheckIn),
+    DrawerItemModel(
+        index: AppConstants.eServicesIndex,
+        title: 'E-Services',
+        iconPath: AppImages.menuEservices),
+    DrawerItemModel(
+        index: AppConstants.workOrderRfpIndex,
+        title: 'Work Order / RFPs',
+        iconPath: AppImages.menuRFPs),
+    DrawerItemModel(
+        index: AppConstants.messagesIndex,
+        title: 'Messages',
+        iconPath: AppImages.menuMsg),
+    DrawerItemModel(
+        index: AppConstants.checkOutsIndex,
+        title: 'Check-Outs',
+        iconPath: AppImages.menuCheckout),
+    DrawerItemModel(
+        index: AppConstants.directoryIndex,
+        title: 'Directory',
+        iconPath: AppImages.directory),
+    DrawerItemModel(
+        index: AppConstants.logoutIndex,
+        title: 'Logout',
+        iconPath: AppImages.logout),
   ];
 }

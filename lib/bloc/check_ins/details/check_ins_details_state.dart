@@ -4,7 +4,7 @@ class CheckInsDetailsState {
   final bool isLoading;
   final bool isCheckOutVisitor;
   List<CheckInLogs>? checkInLogs;
-  List<CheckOutVisitors>? checkOutVisitors;
+  List<CheckOutVisitor>? checkOutVisitors;
   CheckInsDetailsState({
     this.isLoading = false,
     this.checkInLogs,
@@ -15,7 +15,7 @@ class CheckInsDetailsState {
     bool? isLoading,
     bool? isCheckOutVisitor,
     List<CheckInLogs>? checkInLogs,
-    List<CheckOutVisitors>? checkOutVisitors,
+    List<CheckOutVisitor>? checkOutVisitors,
   }) {
     return CheckInsDetailsState(
       isLoading: isLoading ?? this.isLoading,

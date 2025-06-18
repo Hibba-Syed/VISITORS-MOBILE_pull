@@ -151,7 +151,6 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<VisitorPassCubit>().getUnits();
         return const VisitorPassesFilterBottomSheet();
       },
     );
