@@ -18,19 +18,19 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   final WorkOrderRFPRepo _workOrderRFPRepo  = WorkOrderRFPRepoImpl();
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
 
-  onChangeSearchKeyWord(String? keyword) {
+  void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
-  onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 
-   onChangeSelectedType(TypeModel? type) {
+   void onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(
       selectedType: type,
     ));
   }
-  resetFilterData() {
+  void resetFilterData() {
     emit(WorkOrderState(
       workOrderModel: state.workOrderModel,
       isLoading: state.isLoading,

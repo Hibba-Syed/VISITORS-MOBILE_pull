@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
@@ -9,6 +8,7 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
 import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/strings.dart';
@@ -49,8 +49,8 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
         context
-            .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(AppConstants.dashboardIndex);
+            .read<MainDashboardCubit>()
+            .onBackButtonPressed();
       },
       child: SafeArea(
         child: Scaffold(
@@ -130,7 +130,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                        Navigator.pushNamed(
                                                   context,
                                                   AppRoutes
-                                                      .guestCheckInScreen);
+                                                      .guestCheckIn);
                                         },
                                         serviceableCheckInOnPressed: () {
                                           context
@@ -143,7 +143,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                           Navigator.pushNamed(
                                               context,
                                               AppRoutes
-                                                  .serviceableCheckInsScreen);
+                                                  .serviceableCheckIns);
                                         },
                                         detailsOnPressed: () {
                                           // print('service move: ${service?.toJson()
@@ -181,7 +181,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       ),
     );
   }
-  _servicesFilterBottomSheet(context) {
+  void _servicesFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
         minWidth: MediaQuery.of(context).size.width,

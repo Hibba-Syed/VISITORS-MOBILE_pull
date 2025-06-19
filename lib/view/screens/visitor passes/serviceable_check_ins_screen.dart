@@ -130,7 +130,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                                   .read<CheckInsDetailsCubit>()
                                   .getCheckInDetailsLog(id: checkIn?.id);
                               Navigator.pushNamed(
-                                  context, AppRoutes.checkInDetailsScreen,
+                                  context, AppRoutes.checkInDetails,
                                   arguments: state.checkInModel?[index]);
                             },
                           );

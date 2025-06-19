@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/model/check_ins/check_in_model.dart';
@@ -19,6 +20,7 @@ import '../../../bloc/check_out/check_out_cubit.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../../bloc/e_service/details/service_details_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../../bloc/work_order/work_order_cubit.dart';
@@ -47,27 +49,77 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: width >= AppConstants.tabletScreen
-          ? tabletDashboardScreen(context)
-          : mobileDashboardScreen(context),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        shape: const CircleBorder(),
-        onPressed: () {
-          context.read<MessageCubit>().getMessages();
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(AppConstants.messagesIndex);
-        },
-        child:SvgPicture.asset(
-          AppImages.chat,
-          colorFilter:
-          const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-          fit: BoxFit.scaleDown,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        await _showExitDialog(context);
+      },
+      child: Scaffold(
+        body: width >= AppConstants.tabletScreen
+            ? tabletDashboardScreen(context)
+            : mobileDashboardScreen(context),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          shape: const CircleBorder(),
+          onPressed: () {
+            context.read<MessageCubit>().getMessages();
+            context
+                .read<MainDashboardCubit>()
+                .onChangeSelectedIndex(AppConstants.messagesIndex);
+          },
+          child: SvgPicture.asset(
+            AppImages.chat,
+            colorFilter:
+                const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            fit: BoxFit.scaleDown,
+          ),
         ),
       ),
     );
+  }
+
+  Future<bool> _showExitDialog(BuildContext context) async {
+    return await showDialog<bool>(
+          barrierDismissible: false,
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(AppImages.logout,
+                    height: 35,
+                    width: 35,
+                    colorFilter: const ColorFilter.mode(
+                        AppColors.primary, BlendMode.srcIn)),
+                const Gap(16),
+                const Text('Are you sure you want to exit?',
+                    style: AppTextStyles.style16DarkGrey600),
+                const Gap(20),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomButton(
+                            text: 'Cancel',
+                            onPressed: () => Navigator.pop(context, false))),
+                    const Gap(10),
+                    Expanded(
+                      child: CustomButton(
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        text: 'Yes, Exit',
+                        invert: true,
+                        onPressed: () {
+                          exit(0);
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ) ??
+        false;
   }
 
   void showCheckoutDialog(BuildContext context, CheckInModel? checkIns) {
@@ -156,7 +208,8 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.green,
                 onTap: () {
-                  onViewAllDashboardPressed(context,AppConstants.checkInsIndex);
+                  onViewAllDashboardPressed(
+                      context, AppConstants.checkInsIndex);
                 },
               ),
               ActionsItemModel(
@@ -166,7 +219,8 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.yellow,
                 onTap: () {
-                  onViewAllDashboardPressed(context,AppConstants.checkInsIndex);
+                  onViewAllDashboardPressed(
+                      context, AppConstants.checkInsIndex);
                 },
               ),
               ActionsItemModel(
@@ -176,7 +230,8 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.cyanBlue,
                 onTap: () {
-                  onViewAllDashboardPressed(context,AppConstants.eServicesIndex);
+                  onViewAllDashboardPressed(
+                      context, AppConstants.eServicesIndex);
                 },
               ),
               ActionsItemModel(
@@ -186,21 +241,16 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.primary,
                 onTap: () {
-                  onViewAllDashboardPressed(context,AppConstants.workOrderRfpIndex);
+                  onViewAllDashboardPressed(
+                      context, AppConstants.workOrderRfpIndex);
                 },
               ),
             ];
             return RefreshIndicator(
               onRefresh: () async {
                 await context.read<DashboardCubit>().refreshData(context);
-                // context.read<DashboardCubit>().getData(
-                // context, isNavigationAllow: false);
               },
-              // padding: const EdgeInsets.symmetric(
-              //     vertical: AppConstants.verticalPadding,
-              //     horizontal: AppConstants.horizontalPadding),
-              child:
-              SingleChildScrollView(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
                     vertical: AppConstants.verticalPadding,
                     horizontal: AppConstants.horizontalPadding),
@@ -241,7 +291,7 @@ class DashboardScreen extends StatelessWidget {
                           title: actionsItem.title,
                           count: actionsItem.count,
                           backgroundColor: actionsItem.backgroundColor,
-                          forGroundColor: actionsItem.forGroundColor,
+                          foregroundColor: actionsItem.forGroundColor,
                           iconPath: actionsItem.iconPath,
                           actionOnTap: actionsItem.onTap,
                         );
@@ -259,9 +309,8 @@ class DashboardScreen extends StatelessWidget {
                           context.read<GuestCheckInCubit>().getCountries();
                           context.read<GuestCheckInCubit>().getProfile();
                           context.read<GuestCheckInCubit>().getUnits();
-                         // context.read<GuestCheckInCubit>().getNumberInfo();
-                          Navigator.pushNamed(
-                              context, AppRoutes.guestCheckInScreen);
+                          // context.read<GuestCheckInCubit>().getNumberInfo();
+                          Navigator.pushNamed(context, AppRoutes.guestCheckIn);
                         }),
                     const Gap(10),
                     Row(
@@ -282,7 +331,8 @@ class DashboardScreen extends StatelessWidget {
                                 borderRadius: 6,
                                 image: AppImages.checkout,
                                 onPressed: () {
-                                  onViewAllDashboardPressed(context,AppConstants.checkOutsIndex);
+                                  onViewAllDashboardPressed(
+                                      context, AppConstants.checkOutsIndex);
                                 }),
                             const Gap(10),
                             CustomButton(
@@ -294,7 +344,8 @@ class DashboardScreen extends StatelessWidget {
                                 borderRadius: 6,
                                 image: AppImages.view,
                                 onPressed: () {
-                                  onViewAllDashboardPressed(context,AppConstants.checkInsIndex);
+                                  onViewAllDashboardPressed(
+                                      context, AppConstants.checkInsIndex);
                                 }),
                           ],
                         ),
@@ -350,12 +401,13 @@ class DashboardScreen extends StatelessWidget {
                                       .read<CheckInsDetailsCubit>()
                                       .getCheckInDetailsLog(id: checkIns?.id);
                                   Navigator.pushNamed(
-                                      context, AppRoutes.checkInDetailsScreen,
+                                      context, AppRoutes.checkInDetails,
                                       arguments: state.checkInsModel?[index]);
                                 },
                               );
                             },
-                            separatorBuilder: (BuildContext context, int index) {
+                            separatorBuilder:
+                                (BuildContext context, int index) {
                               return const Gap(10);
                             },
                           ),
@@ -396,7 +448,8 @@ class DashboardScreen extends StatelessWidget {
                                 borderRadius: 6,
                                 image: AppImages.view,
                                 onPressed: () {
-                                  onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
+                                  onViewAllDashboardPressed(
+                                      context, AppConstants.eServicesIndex);
                                 }),
                           ],
                         ),
@@ -416,10 +469,12 @@ class DashboardScreen extends StatelessWidget {
                             primary: false,
                             itemCount: state.serviceModel?.length ?? 0,
                             itemBuilder: (context, index) {
-                              ServiceModel? service = state.serviceModel?[index];
+                              ServiceModel? service =
+                                  state.serviceModel?[index];
                               return ServicesCardWidget(
                                 isActiveCheckins:
-                                    (service?.activeCheckIns?.isNotEmpty ?? true)
+                                    (service?.activeCheckIns?.isNotEmpty ??
+                                            true)
                                         ? true
                                         : false,
                                 unit: service?.unit?.unitNumber ?? "--",
@@ -429,8 +484,8 @@ class DashboardScreen extends StatelessWidget {
                                 serviceType: service?.applicationType ?? "--",
                                 name: service?.clientName ?? "--",
                                 checkInOnPressed: () {
-                                  Navigator.pushNamed(context,
-                                      AppRoutes.guestCheckInScreen);
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.guestCheckIn);
                                 },
                                 serviceableCheckInOnPressed: () {
                                   context
@@ -440,15 +495,17 @@ class DashboardScreen extends StatelessWidget {
                                               Strings.keyServices));
                                   context
                                       .read<CheckInsCubit>()
-                                      .onChangeSelectedServiceableId(service?.id);
+                                      .onChangeSelectedServiceableId(
+                                          service?.id);
                                   context.read<CheckInsCubit>().getCheckIns();
-                                  Navigator.pushNamed(context,
-                                      AppRoutes.serviceableCheckInsScreen);
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.serviceableCheckIns);
                                 },
                                 detailsOnPressed: () {
                                   context
                                       .read<ServiceDetailsCubit>()
-                                      .getServiceDetails(serviceId: service?.id);
+                                      .getServiceDetails(
+                                          serviceId: service?.id);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -458,7 +515,8 @@ class DashboardScreen extends StatelessWidget {
                                 },
                               );
                             },
-                            separatorBuilder: (BuildContext context, int index) {
+                            separatorBuilder:
+                                (BuildContext context, int index) {
                               return const Gap(10);
                             },
                           ),
@@ -479,7 +537,8 @@ class DashboardScreen extends StatelessWidget {
                             borderRadius: 6,
                             image: AppImages.view,
                             onPressed: () {
-                             onViewAllDashboardPressed(context, AppConstants.workOrderRfpIndex);
+                              onViewAllDashboardPressed(
+                                  context, AppConstants.workOrderRfpIndex);
                             }),
                       ],
                     ),
@@ -514,16 +573,16 @@ class DashboardScreen extends StatelessWidget {
                                     workOrder?.newVendor?.companyName ?? "",
                                 createdDate: workOrder?.startDate?.toString(),
                                 checkInPressed: () {
-                                  Navigator.pushNamed(context,
-                                      AppRoutes.guestCheckInScreen);
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.guestCheckIn);
                                 },
                                 detailsOnPressed: () {
                                   context
                                       .read<WorkOrderDetailsCubit>()
                                       .getWorkOrderDetails(
                                           workOrderId: workOrder?.id);
-                                  Navigator.pushNamed(context,
-                                      AppRoutes.workOrderJobDetailsScreen);
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.workOrderJobDetails);
                                 },
                                 jobCheckInOnPressed: () {
                                   context
@@ -537,11 +596,12 @@ class DashboardScreen extends StatelessWidget {
                                           workOrder?.id);
                                   context.read<CheckInsCubit>().getCheckIns();
                                   Navigator.pushNamed(
-                                      context, AppRoutes.jobCheckInsScreen);
+                                      context, AppRoutes.jobCheckIns);
                                 },
                               );
                             },
-                            separatorBuilder: (BuildContext context, int index) {
+                            separatorBuilder:
+                                (BuildContext context, int index) {
                               return const Gap(10);
                             },
                           ),
@@ -554,6 +614,7 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
+
 //tab view
   Widget tabletDashboardScreen(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(
@@ -566,7 +627,7 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.green,
           onTap: () {
-            onViewAllDashboardPressed(context,AppConstants.checkInsIndex);
+            onViewAllDashboardPressed(context, AppConstants.checkInsIndex);
           },
         ),
         ActionsItemModel(
@@ -576,7 +637,7 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.yellow,
           onTap: () {
-           onViewAllDashboardPressed(context, AppConstants.checkInsIndex);
+            onViewAllDashboardPressed(context, AppConstants.checkInsIndex);
           },
         ),
         ActionsItemModel(
@@ -586,7 +647,7 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.cyanBlue,
           onTap: () {
-          onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
+            onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
           },
         ),
         ActionsItemModel(
@@ -637,7 +698,7 @@ class DashboardScreen extends StatelessWidget {
                       title: actionsItem.title,
                       count: actionsItem.count,
                       backgroundColor: actionsItem.backgroundColor,
-                      forGroundColor: actionsItem.forGroundColor,
+                      foregroundColor: actionsItem.forGroundColor,
                       iconPath: actionsItem.iconPath,
                       actionOnTap: actionsItem.onTap,
                     );
@@ -656,8 +717,7 @@ class DashboardScreen extends StatelessWidget {
                       context.read<GuestCheckInCubit>().getUnits();
                       context.read<GuestCheckInCubit>().getCountries();
                       context.read<GuestCheckInCubit>().getProfile();
-                      Navigator.pushNamed(
-                          context, AppRoutes.guestCheckInScreen);
+                      Navigator.pushNamed(context, AppRoutes.guestCheckIn);
                     }),
                 const Gap(10),
                 Row(
@@ -679,8 +739,8 @@ class DashboardScreen extends StatelessWidget {
                                 imageHeight: 22,
                                 image: AppImages.checkout,
                                 onPressed: () {
-
-                                  onViewAllDashboardPressed(context, AppConstants.checkOutsIndex);
+                                  onViewAllDashboardPressed(
+                                      context, AppConstants.checkOutsIndex);
                                 }),
                           ),
                           const Gap(10),
@@ -693,7 +753,8 @@ class DashboardScreen extends StatelessWidget {
                                 imageHeight: 22,
                                 image: AppImages.view,
                                 onPressed: () {
-                                onViewAllDashboardPressed(context, AppConstants.checkInsIndex);
+                                  onViewAllDashboardPressed(
+                                      context, AppConstants.checkInsIndex);
                                 }),
                           ),
                         ],
@@ -724,12 +785,12 @@ class DashboardScreen extends StatelessWidget {
                                         'community service')
                                 ? AppImages.community
                                 : "",
-                            typeText:
-                                (checkIns?.type?.toLowerCase() == 'unit visit' ||
-                                        checkIns?.type?.toLowerCase() ==
-                                            'unit service')
-                                    ? checkIns?.unit?.unitNumber
-                                    : checkIns?.type ?? "",
+                            typeText: (checkIns?.type?.toLowerCase() ==
+                                        'unit visit' ||
+                                    checkIns?.type?.toLowerCase() ==
+                                        'unit service')
+                                ? checkIns?.unit?.unitNumber
+                                : checkIns?.type ?? "",
                             name: checkIns?.name ?? "",
                             profileImageUrl: checkIns?.visitor?.imageUrl ?? "",
                             type: AppUtils.getServiceableType(
@@ -749,7 +810,7 @@ class DashboardScreen extends StatelessWidget {
                                   .read<CheckInsDetailsCubit>()
                                   .getCheckInDetailsLog(id: checkIns?.id);
                               Navigator.pushNamed(
-                                  context, AppRoutes.checkInDetailsScreen,
+                                  context, AppRoutes.checkInDetails,
                                   arguments: state.checkInsModel?[index]);
                             },
                           );
@@ -760,7 +821,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                 const Gap(10),
                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'E-Services',
@@ -790,7 +851,8 @@ class DashboardScreen extends StatelessWidget {
                                 imageHeight: 22,
                                 image: AppImages.view,
                                 onPressed: () {
-                                  onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
+                                  onViewAllDashboardPressed(
+                                      context, AppConstants.eServicesIndex);
                                 }),
                           ),
                         ],
@@ -826,19 +888,20 @@ class DashboardScreen extends StatelessWidget {
                             name: service?.clientName ?? "",
                             checkInOnPressed: () {
                               Navigator.pushNamed(
-                                  context, AppRoutes.guestCheckInScreen);
-
+                                  context, AppRoutes.guestCheckIn);
                             },
                             serviceableCheckInOnPressed: () {
-                              context.read<CheckInsCubit>().onChangeSelectedType(
-                                  AppUtils.getServiceableType(
-                                      Strings.keyServices));
+                              context
+                                  .read<CheckInsCubit>()
+                                  .onChangeSelectedType(
+                                      AppUtils.getServiceableType(
+                                          Strings.keyServices));
                               context
                                   .read<CheckInsCubit>()
                                   .onChangeSelectedServiceableId(service?.id);
                               context.read<CheckInsCubit>().getCheckIns();
                               Navigator.pushNamed(
-                                  context, AppRoutes.serviceableCheckInsScreen);
+                                  context, AppRoutes.serviceableCheckIns);
                             },
                             detailsOnPressed: () {
                               context
@@ -870,12 +933,13 @@ class DashboardScreen extends StatelessWidget {
                         buttonColor: AppColors.primary,
                         text: 'View All',
                         height: 42,
-                         width: 230,
+                        width: 230,
                         imageHeight: 22,
                         borderRadius: 6,
                         image: AppImages.view,
                         onPressed: () {
-                         onViewAllDashboardPressed(context, AppConstants.workOrderRfpIndex);
+                          onViewAllDashboardPressed(
+                              context, AppConstants.workOrderRfpIndex);
                         }),
                   ],
                 ),
@@ -905,12 +969,15 @@ class DashboardScreen extends StatelessWidget {
                             status: workOrder?.status ?? "--",
                             title: workOrder?.title ?? "--",
                             reference: workOrder?.reference ?? "--",
-                            vendorName: workOrder?.newVendor?.companyName ?? "--",
-                             createdDate: DateTimeUtil.getFormattedDateTime(workOrder?.startDate.toString()),
-                             updatedDate: DateTimeUtil.getFormattedDateTime(workOrder?.finishDate.toString()),
+                            vendorName:
+                                workOrder?.newVendor?.companyName ?? "--",
+                            createdDate: DateTimeUtil.getFormattedDateTime(
+                                workOrder?.startDate.toString()),
+                            updatedDate: DateTimeUtil.getFormattedDateTime(
+                                workOrder?.finishDate.toString()),
                             checkInPressed: () {
                               Navigator.pushNamed(
-                                  context, AppRoutes.guestCheckInScreen);
+                                  context, AppRoutes.guestCheckIn);
                             },
                             detailsOnPressed: () {
                               context
@@ -918,18 +985,20 @@ class DashboardScreen extends StatelessWidget {
                                   .getWorkOrderDetails(
                                       workOrderId: workOrder?.id);
                               Navigator.pushNamed(
-                                  context, AppRoutes.workOrderJobDetailsScreen);
+                                  context, AppRoutes.workOrderJobDetails);
                             },
                             jobCheckInOnPressed: () {
-                              context.read<CheckInsCubit>().onChangeSelectedType(
-                                  AppUtils.getServiceableType(
-                                      Strings.keyWorkOrder));
+                              context
+                                  .read<CheckInsCubit>()
+                                  .onChangeSelectedType(
+                                      AppUtils.getServiceableType(
+                                          Strings.keyWorkOrder));
                               context
                                   .read<CheckInsCubit>()
                                   .onChangeSelectedServiceableId(workOrder?.id);
                               context.read<CheckInsCubit>().getCheckIns();
                               Navigator.pushNamed(
-                                  context, AppRoutes.jobCheckInsScreen);
+                                  context, AppRoutes.jobCheckIns);
                             },
                           );
                         },
@@ -948,11 +1017,11 @@ class DashboardScreen extends StatelessWidget {
   void onViewVisitorPasses(BuildContext context) {
     context.read<VisitorPassCubit>().resetFilterData();
     context.read<VisitorPassCubit>().getVisitorPasses();
-    Navigator.pushNamed(
-        context, AppRoutes.visitorPassesScreen);
+    Navigator.pushNamed(context, AppRoutes.visitorPasses);
   }
+
   void onViewAllDashboardPressed(BuildContext context, int targetIndex) {
-    final cubit = context.read<DeviceDeciderCubit>();
+    final cubit = context.read<MainDashboardCubit>();
 
     if (targetIndex == AppConstants.checkInsIndex) {
       context.read<CheckInsCubit>().resetFilterData();
@@ -962,26 +1031,15 @@ class DashboardScreen extends StatelessWidget {
       context.read<ServiceCubit>().resetFilterData();
       context.read<ServiceCubit>().getServices();
       cubit.onChangeSelectedIndex(AppConstants.eServicesIndex);
-    }
-    else if (targetIndex == AppConstants.workOrderRfpIndex) {
+    } else if (targetIndex == AppConstants.workOrderRfpIndex) {
       context.read<WorkOrderCubit>().resetFilterData();
       context.read<WorkOrderCubit>().getWorkOrder();
       cubit.onChangeSelectedIndex(AppConstants.workOrderRfpIndex);
-    }
-    else if (targetIndex == AppConstants.checkOutsIndex) {
+    } else if (targetIndex == AppConstants.checkOutsIndex) {
       context.read<CheckOutCubit>().onChangeDateRange(
-          AppUtils.getDateRangeStringFromLabel(
-              'Last 30 Days'));
+          AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
       context.read<CheckOutCubit>().getCheckOuts();
-      context
-          .read<DeviceDeciderCubit>()
-          .onChangeSelectedIndex(
-          AppConstants.checkOutsIndex);
-    }
-    else {
-
-    }
+      cubit.onChangeSelectedIndex(AppConstants.checkOutsIndex);
+    } else {}
   }
-
-
 }

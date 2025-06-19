@@ -49,7 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
       spUtil.loginId = loginId;
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.loadingScreen, (route) => false);
+            AppRoutes.loading, (route) => false);
      }
     } else {
       Fluttertoast.showToast(
@@ -62,7 +62,7 @@ class AuthCubit extends Cubit<AuthState> {
     spUtil.remove(Strings.keyProfile);
     if (context.mounted) {
       Navigator.of(context)
-          .pushNamedAndRemoveUntil(AppRoutes.loginScreen, (route) => false);
+          .pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);
     }
   }
 }

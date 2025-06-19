@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/auth/auth_cubit.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/bloc/work_order/work_order_cubit.dart';
@@ -20,6 +19,7 @@ import 'package:visitors/view/widgets/drawer/drawer_list_tile.dart';
 import 'package:visitors/view/widgets/responsive_layout_widget.dart';
 
 import '../../bloc/check_out/check_out_cubit.dart';
+import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../utils/app_utils.dart';
 import 'check_ins/check_in_screen.dart';
 import 'check_outs/check_outs_screen.dart';
@@ -28,38 +28,28 @@ import 'dashboard/dashboard_screen.dart';
 import 'directory/directory_screen.dart';
 import 'messages/message_screen.dart';
 
-class DeviceDeciderScreen extends StatelessWidget {
-  DeviceDeciderScreen({super.key});
+class MainDashboardScreen extends StatelessWidget {
+  MainDashboardScreen({super.key});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<DeviceDeciderCubit, DeviceDeciderState, int>(
+    return BlocSelector<MainDashboardCubit, MainDashboardState, int>(
       selector: (state) => state.selectedIndex,
       builder: (context, selectedIndex) {
-        return WillPopScope(
-          onWillPop: () async {
-            if (selectedIndex == AppConstants.dashboardIndex) {
-              return await _showLogoutDialog(context);
-            } else {
-              context.read<DeviceDeciderCubit>().onBackButtonPressed();
-              return false;
-            }
-          },
-          child: Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBarWidget(
-              leading: IconButton(
-                icon: const Icon(Icons.menu, color: AppColors.black),
-                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-              ),
-              title: _getTitle(selectedIndex),
+        return Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBarWidget(
+            leading: IconButton(
+              icon: const Icon(Icons.menu, color: AppColors.black),
+              onPressed: () => _scaffoldKey.currentState?.openDrawer(),
             ),
-            drawer: _buildDrawer(context, selectedIndex),
-            body: ResponsiveLayoutWidget(
-              mobile: _getMobileScreen(selectedIndex),
-              tablet: _getTabletScreen(selectedIndex),
-            ),
+            title: _getTitle(selectedIndex),
+          ),
+          drawer: _buildDrawer(context, selectedIndex),
+          body: ResponsiveLayoutWidget(
+            mobile: _getMobileScreen(selectedIndex),
+            tablet: _getTabletScreen(selectedIndex),
           ),
         );
       },
@@ -150,7 +140,7 @@ class DeviceDeciderScreen extends StatelessWidget {
                     _showLogoutDialog(context);
                   } else {
                     context
-                        .read<DeviceDeciderCubit>()
+                        .read<MainDashboardCubit>()
                         .onChangeSelectedIndex(item.index);
 
                     // Optionally trigger specific cubits

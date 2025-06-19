@@ -123,7 +123,7 @@ class JobCheckInsScreen extends StatelessWidget {
                                   .read<CheckInsDetailsCubit>()
                                   .getCheckInDetailsLog(id: checkInModel?.id);
                               Navigator.pushNamed(
-                                  context, AppRoutes.checkInDetailsScreen,
+                                  context, AppRoutes.checkInDetails,
                                   arguments: state.checkInModel?[index]);
                             },
                           );

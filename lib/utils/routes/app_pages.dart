@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:visitors/view/screens/guest_check_in/guest_check_in_screen.dart';
 import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/check_ins/details/check_ins_details_cubit.dart';
@@ -21,7 +21,7 @@ import '../../view/screens/auth/loading_screen.dart';
 import '../../view/screens/auth/login_screen.dart';
 import '../../view/screens/check_ins/detail/check_in_details_screen.dart';
 import '../../view/screens/dashboard/dashboard_screen.dart';
-import '../../view/screens/device_decider_screen.dart';
+import '../../view/screens/main_dashboard_screen.dart';
 import '../../view/screens/services/detail/fit_out_service_details_screen.dart';
 import '../../view/screens/splash_screen.dart';
 import '../../view/screens/visitor passes/serviceable_check_ins_screen.dart';
@@ -38,7 +38,7 @@ class AppPages {
       page: const SplashScreen(),
     ),
     PageEntity(
-      route: AppRoutes.loginScreen,
+      route: AppRoutes.login,
       page: const LoginScreen(),
       bloc: BlocProvider(
         create: (context) => AuthCubit(),
@@ -49,16 +49,16 @@ class AppPages {
       page: const BiometricAuthScreen(),
     ),
     PageEntity(
-      route: AppRoutes.loadingScreen,
+      route: AppRoutes.loading,
       page: const LoadingScreen(),
     ),
     PageEntity(
-      route: AppRoutes.deviceDeciderScreen,
-      page:  DeviceDeciderScreen(),
+      route: AppRoutes.mainDashboard,
+      page:  MainDashboardScreen(),
       bloc: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => DeviceDeciderCubit(),
+            create: (context) => MainDashboardCubit(),
           ),
           BlocProvider(
             create: (context) => DashboardCubit(),
@@ -85,35 +85,35 @@ class AppPages {
       ),
     ),
     PageEntity(
-      route: AppRoutes.workOrderJobDetailsScreen,
+      route: AppRoutes.workOrderJobDetails,
       page: const WorkOrderJobDetailsScreen(),
       bloc: BlocProvider(
           create: (context) => WorkOrderDetailsCubit(),
       )
     ),
     PageEntity(
-      route: AppRoutes.servicesDetailsScreen,
+      route: AppRoutes.servicesDetails,
       page:  FitOutServiceDetailsScreen(),
         bloc: BlocProvider(
           create: (context) => ServiceDetailsCubit(),
         )
     ),
     PageEntity(
-      route: AppRoutes.checkInDetailsScreen,
+      route: AppRoutes.checkInDetails,
       page:  CheckInDetailsScreen(),
       bloc: BlocProvider(
         create: (context) => CheckInsDetailsCubit(),
       ),
     ),
     PageEntity(
-      route: AppRoutes.workOrderScreen,
+      route: AppRoutes.workOrder,
       page: const WorkOrderRfpScreen(),
       bloc: BlocProvider(
         create: (context) => WorkOrderCubit(),
       ),
     ),
     PageEntity(
-      route: AppRoutes.visitorPassesScreen,
+      route: AppRoutes.visitorPasses,
       page: const VisitorPassesScreen(),
       bloc: BlocProvider(
         create: (context) => VisitorPassCubit(),
@@ -121,19 +121,19 @@ class AppPages {
 
     ),
     PageEntity(
-      route: AppRoutes.serviceableCheckInsScreen,
+      route: AppRoutes.serviceableCheckIns,
       page: const ServiceableCheckInsScreen(),
     ),
     PageEntity(
-      route: AppRoutes.guestCheckInScreen,
+      route: AppRoutes.guestCheckIn,
       page: const GuestCheckInScreen(),
     ),
     PageEntity(
-      route: AppRoutes.dashboardScreen,
+      route: AppRoutes.dashboard,
       page:  DashboardScreen(),
     ),
     PageEntity(
-      route: AppRoutes.jobCheckInsScreen,
+      route: AppRoutes.jobCheckIns,
       page: const JobCheckInsScreen(),
     ),
     // PageEntity(

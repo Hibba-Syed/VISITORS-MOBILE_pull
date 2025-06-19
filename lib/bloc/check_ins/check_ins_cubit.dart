@@ -29,37 +29,37 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-  onChangeSelectedType(TypeModel? type) {
+  void onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
   }
 
-  onChangeSelectedServiceableId(int? serviceableId) {
+  void onChangeSelectedServiceableId(int? serviceableId) {
     emit(state.copyWith(serviceableId: serviceableId));
   }
 
-  onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
-  onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 
-  onChangeDateRange(DateTimeRange? dateRange) {
+  void onChangeDateRange(DateTimeRange? dateRange) {
     // print('on change:::');
     emit(state.copyWith(dateRange: dateRange));
     // print('on change date range:: ${state.dateRange}');
   }
 
-  onChangeRange(String? range) {
+  void onChangeRange(String? range) {
     emit(state.copyWith(selectedRange: range));
   }
 
-  onChangeSearchKeyWord(String? keyword) {
+  void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-  resetFilterData() {
+  void resetFilterData() {
     emit(CheckInsState(
       checkInModel: state.checkInModel,
       isCheckOutAllLoading: state.isCheckOutAllLoading,

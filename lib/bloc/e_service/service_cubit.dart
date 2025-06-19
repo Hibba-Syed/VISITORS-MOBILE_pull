@@ -17,18 +17,18 @@ class ServiceCubit extends Cubit<ServiceState> {
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-  onChangeSearchKeyWord(String? keyword) {
+  void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
-  onChangeSelectedType(TypeModel? type) {
+  void onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
   }
 
-  onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
-  resetFilterData() {
+  void resetFilterData() {
     emit(ServiceState(
       serviceModel: state.serviceModel,
       isServicesDetailsLoading: state.isServicesDetailsLoading,
