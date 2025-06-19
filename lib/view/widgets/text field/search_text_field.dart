@@ -119,6 +119,7 @@ class SearchTextField extends StatelessWidget {
           Stack(
             children: [
               InkWell(
+                overlayColor: WidgetStatePropertyAll(Colors.transparent),
                 onTap: onFilterPressed,
                 child: Container(
                   padding: EdgeInsets.all(10),

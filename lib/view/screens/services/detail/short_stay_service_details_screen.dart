@@ -92,12 +92,12 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Start Date',
                             value:
-                            DateTimeUtil.getFormattedDatesTime(
+                            DateTimeUtil.getFormattedDateTime(
                                 state.serviceDetails?.application?.startDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'End Date',
-                            value:  DateTimeUtil.getFormattedDatesTime(
+                            value:  DateTimeUtil.getFormattedDateTime(
                                 state.serviceDetails?.application?.endDate),
 
                           ),
@@ -216,7 +216,7 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                                 .first
                                 .trim(),
 
-                            dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
+                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
                           );
                         },
 

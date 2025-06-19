@@ -8,7 +8,6 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog2/progress_dialog2.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:visitors/utils/app_utils.dart';
 import '../../repo/encrption/encryption_helper.dart';
 import '../../resource/constants/api_url.dart';
 import '../../resource/globals.dart';
@@ -30,11 +29,14 @@ class FileDownloader {
   /// Main entry point for downloading PDF
   static Future<void> downloadFile({
     required BuildContext context,
+    required String dateRage,
   }) async {
 
 
     // Determine download URL based on the type
-    final downloadUrl = _getDownloadUrl();
+    final downloadUrl = _getDownloadUrl(
+        dateRange: dateRage
+    );
 
     final token = _getAuthToken(context);
     final progressDialog = _createProgressDialog(context);
@@ -43,9 +45,8 @@ class FileDownloader {
       final response =
       await http.get(downloadUrl, headers: {"Authorization": token, "User-Agent": "Windows"});
       // print("Status Code ${response.statusCode}");
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && context.mounted) {
         await _handleFileDownload(
-          // if(context.mounted){}
             context, progressDialog, response);
       } else if(response.statusCode== 404){
         progressDialog.hide();
@@ -70,28 +71,9 @@ class FileDownloader {
       }
     }
   }
-///
-  static String getDateRangeStringFromLabel(String label) {
-    final now = DateTime.now();
-    DateTime fromDate;
-    if (label == 'Last 30 Days') {
-      fromDate = now.subtract(const Duration(days: 30));
-    } else if (label == 'Last 60 Days') {
-      fromDate = now.subtract(const Duration(days: 60));
-    } else if (label == 'Last 90 Days') {
-      fromDate = now.subtract(const Duration(days: 90));
-    } else {
-      fromDate = now;
-    }
-    String format(DateTime date) {
-      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-    }
-
-    return '${format(fromDate)} - ${format(now)}';
-  }
   /// Get the download URL based on the file type
-  static Uri _getDownloadUrl() {
-    final dateRange = getDateRangeStringFromLabel('Last 30 Days');
+  static Uri _getDownloadUrl({String? dateRange}) {
+   // final dateRange = getDateRangeStringFromLabel('Last 30 Days');
     final filter = {
       "date_range": dateRange,
       "export": true,

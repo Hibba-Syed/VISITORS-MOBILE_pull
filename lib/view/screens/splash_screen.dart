@@ -69,11 +69,6 @@ class _SplashScreenState extends State<SplashScreen> {
               width: double.infinity,
               decoration:  BoxDecoration(
                 color: AppColors.primary,
-                // image: DecorationImage(
-                //     image: AssetImage(AppImages.splashBg),
-                //     fit: BoxFit.cover,
-                //     alignment: Alignment.topCenter
-                // ),
               ),
             ),
             Column(

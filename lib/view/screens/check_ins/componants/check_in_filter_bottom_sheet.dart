@@ -13,6 +13,7 @@ import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
 import '../../../../model/unit/unit_model.dart';
 import '../../../../model/vendor/vendor_model.dart';
+import '../../../../utils/date_time.dart';
 import '../../../widgets/loader/loader_widget.dart';
 
 class CheckInFilterBottomSheet extends StatefulWidget {
@@ -26,6 +27,8 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 }
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
+  TextEditingController dateRangeController = TextEditingController();
+  DateTimeRange? dateRangeString;
   final now = DateTime.now();
   late DateTime firstDayOfMonth;
   late DateTime lastDayOfMonth;
@@ -63,41 +66,44 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
-                CustomDateRangePickerWidget(
+                DateRangePickerField(
+                  controller: dateRangeController,
                   firstDate: firstDayOfMonth,
                   lastDate: lastDayOfMonth,
-                  hintText: "Date Range",
-                  selectedDateRange: state.dateRange,
-                  onChangeDateRange: (value) {
-                    context.read<CheckInsCubit>().onChangeDateRange(value);
-                    context.read<CheckInsCubit>().onChangeRange('Select Range');
+                  onDateRangeSelected: (range) {
+                    context.read<CheckInsCubit>().onChangeDateRange(range);
+                    // print("SelectedRange: $range ");
                   },
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<String>(
-                    hint: "Range",
-                    fillColor: AppColors.white,
-                    selectedItem: state.selectedRange,
-                    itemAsString: (rang) => rang,
-                    compareFn: (p0, p1) => p0 == p1,
-                    items: AppConstants.rangList,
-                    onChanged: (value) {
-                      final dateRangeString =
+                  hint: "Range",
+                  fillColor: AppColors.white,
+                  selectedItem: state.selectedRange,
+                  itemAsString: (range) => range,
+                  compareFn: (p0, p1) => p0 == p1,
+                  items: AppConstants.rangList,
+                  onChanged: (value) {
+                    if (value == null) {
+                      dateRangeController.clear();
+                      context.read<CheckInsCubit>().onChangeDateRange(null);
+                    } else {
+                      dateRangeString =
                           AppUtils.getDateRangeStringFromLabel(value);
-                      context.read<CheckInsCubit>().onChangeRange(value);
+                      dateRangeController.text =
+                          DateTimeUtil.getFormatDateRange(dateRangeString);
                       context
                           .read<CheckInsCubit>()
                           .onChangeDateRange(dateRangeString);
-
-                      print('dateRange $dateRangeString $value ');
-                      print('state:: ${state.dateRange} ');
-                    }),
+                      // print('dateRangeString $dateRangeString');
+                    }
+                  },
+                ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<TypeModel>(
                     hint: "Type",
                     fillColor: AppColors.white,
-                    selectedItem:
-                        context.watch<CheckInsCubit>().state.selectedType,
+                    selectedItem: state.selectedType,
                     itemAsString: (type) => type.label,
                     compareFn: (p0, p1) => p0.value == p1.value,
                     items: AppUtils.checkInTypeList,
@@ -114,8 +120,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                     return SingleSelectedDropdownWidget<UnitModel>(
                         hint: "Unit",
                         fillColor: AppColors.white,
-                        selectedItem:
-                            context.watch<CheckInsCubit>().state.selectedUnit,
+                        selectedItem: state.selectedUnit,
                         itemAsString: (unit) => unit.unitNumber ?? "",
                         compareFn: (unit, item) => unit.id == item.id,
                         items: state.units ?? [],
@@ -132,8 +137,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                     return SingleSelectedDropdownWidget<VendorModel>(
                         hint: "Vendors",
                         fillColor: AppColors.white,
-                        selectedItem:
-                            context.watch<CheckInsCubit>().state.selectedVendor,
+                        selectedItem: state.selectedVendor,
                         itemAsString: (vendor) => vendor.companyName ?? "",
                         compareFn: (vendor, item) => vendor.id == item.id,
                         items: state.vendors ?? [],

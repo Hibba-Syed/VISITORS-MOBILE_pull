@@ -228,7 +228,7 @@ class _FacilityBookingServiceDetailsScreenState
                                       .split('.')
                                       .first
                                       .trim(),
-                                  dateTime: DateTimeUtil.getFormattedDatesTime(
+                                  dateTime: DateTimeUtil.getFormattedDateTime(
                                       statusHistory?.createdAt),
                                 );
                               },

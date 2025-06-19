@@ -337,7 +337,7 @@ class DashboardScreen extends StatelessWidget {
                                 type: AppUtils.getServiceableType(
                                         checkIns?.serviceableType)
                                     .label,
-                                createdDate: DateTimeUtil.getFormattedDatesTime(
+                                createdDate: DateTimeUtil.getFormattedDateTime(
                                     checkIns?.visitor?.createdAt),
                                 checkOutOnPressed: () {
                                   context
@@ -735,7 +735,7 @@ class DashboardScreen extends StatelessWidget {
                             type: AppUtils.getServiceableType(
                                     checkIns?.serviceableType)
                                 .label,
-                            createdDate: DateTimeUtil.getFormattedDatesTime(
+                            createdDate: DateTimeUtil.getFormattedDateTime(
                                 checkIns?.visitor?.createdAt),
                             phone: checkIns?.phone ?? "",
                             checkOutOnPressed: () {

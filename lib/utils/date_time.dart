@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 class DateTimeUtil {
 
-  static String getFormattedDateTime(String? inputDateTimeString) {
-    if (inputDateTimeString?.isNotEmpty ?? false) {
-      DateTime dateTime = DateTime.parse(inputDateTimeString!);
+  // static String getFormattedDateTime(String? inputDateTimeString) {
+  //   if (inputDateTimeString?.isNotEmpty ?? false) {
+  //     DateTime dateTime = DateTime.parse(inputDateTimeString!);
+  //
+  //     String formattedDateString =
+  //     DateFormat("MMMM dd, yyyy hh:mm a").format(dateTime);
+  //     return formattedDateString;
+  //   }
+  //   return '--';
+  // }
 
-      String formattedDateString =
-      DateFormat("MMMM dd, yyyy hh:mm a").format(dateTime);
-      return formattedDateString;
-    }
-    return '--';
-  }
-
-  static String getFormattedDatesTime(dynamic inputDateTime) {
+  static String getFormattedDateTime(dynamic inputDateTime) {
     DateTime? dateTime;
 
     if (inputDateTime == null) {

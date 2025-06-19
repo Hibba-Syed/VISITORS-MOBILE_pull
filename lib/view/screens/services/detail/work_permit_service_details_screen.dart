@@ -103,7 +103,7 @@ final  TextEditingController _idController = TextEditingController();
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                               title: 'Start Date',
-                              value: DateTimeUtil.getFormattedDatesTime(state
+                              value: DateTimeUtil.getFormattedDateTime(state
                                   .serviceDetails?.application?.startDate)),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'Contractor Contact Person',
@@ -120,7 +120,7 @@ final  TextEditingController _idController = TextEditingController();
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: 'End Date',
-                            value: DateTimeUtil.getFormattedDatesTime(
+                            value: DateTimeUtil.getFormattedDateTime(
                                 state.serviceDetails?.application?.endDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
@@ -221,7 +221,7 @@ final  TextEditingController _idController = TextEditingController();
                                 .first
                                 .trim(),
 
-                            dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
+                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
                           );
                         },
 

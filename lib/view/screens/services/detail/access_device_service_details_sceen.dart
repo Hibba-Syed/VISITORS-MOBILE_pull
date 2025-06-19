@@ -236,7 +236,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                 .first
                                 .trim(),
 
-                            dateTime: DateTimeUtil.getFormattedDatesTime(statusHistory?.createdAt),
+                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
                           );
                         },
 
