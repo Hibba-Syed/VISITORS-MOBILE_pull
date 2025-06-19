@@ -46,7 +46,7 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
                 primary: AppColors.primary,
               ),
               useMaterial3: true,
-              fontFamily: 'Inter',
+              fontFamily: GoogleFonts.inter().fontFamily,
               iconTheme: const IconThemeData(
                 color: AppColors.primary,
               ),

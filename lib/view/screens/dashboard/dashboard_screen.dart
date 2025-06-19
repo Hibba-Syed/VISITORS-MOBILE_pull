@@ -241,7 +241,7 @@ class DashboardScreen extends StatelessWidget {
                           title: actionsItem.title,
                           count: actionsItem.count,
                           backgroundColor: actionsItem.backgroundColor,
-                          forGroundColor: actionsItem.forGroundColor,
+                          foregroundColor: actionsItem.forGroundColor,
                           iconPath: actionsItem.iconPath,
                           actionOnTap: actionsItem.onTap,
                         );
@@ -637,7 +637,7 @@ class DashboardScreen extends StatelessWidget {
                       title: actionsItem.title,
                       count: actionsItem.count,
                       backgroundColor: actionsItem.backgroundColor,
-                      forGroundColor: actionsItem.forGroundColor,
+                      foregroundColor: actionsItem.forGroundColor,
                       iconPath: actionsItem.iconPath,
                       actionOnTap: actionsItem.onTap,
                     );

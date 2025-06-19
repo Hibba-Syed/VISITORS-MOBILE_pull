@@ -17,7 +17,7 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-import 'package:visitors/view/widgets/container_widgets/type_container_widget.dart';
+import 'package:visitors/view/widgets/container_widgets/scan_type_container_widget.dart';
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/picker/custom_date_time_picker.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
@@ -372,7 +372,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    TypeContainerWidget(
+                                                    ScanTypeContainerWidget(
                                                       text: 'Passport',
                                                       textSize: 16,
                                                       iconSize: 30,
@@ -383,7 +383,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                         Navigator.pop(context);
                                                       },
                                                     ),
-                                                    TypeContainerWidget(
+                                                    ScanTypeContainerWidget(
                                                       text: 'Emirates Id',
                                                       textSize: 16,
                                                       iconSize: 30,
@@ -394,7 +394,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                         Navigator.pop(context);
                                                       },
                                                     ),
-                                                    TypeContainerWidget(
+                                                    ScanTypeContainerWidget(
                                                       text: 'Driving license',
                                                       textSize: 16,
                                                       iconSize: 30,
@@ -413,19 +413,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  TypeContainerWidget(
+                                                  ScanTypeContainerWidget(
                                                     text: 'Passport',
                                                     onTap: () {
                                                       Navigator.pop(context);
                                                     },
                                                   ),
-                                                  TypeContainerWidget(
+                                                  ScanTypeContainerWidget(
                                                     text: 'Emirates Id',
                                                     onTap: () {
                                                       Navigator.pop(context);
                                                     },
                                                   ),
-                                                  TypeContainerWidget(
+                                                  ScanTypeContainerWidget(
                                                     text: 'Driving license',
                                                     onTap: () {
                                                       Navigator.pop(context);
@@ -904,21 +904,21 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          TypeContainerWidget(
+                                          ScanTypeContainerWidget(
                                             text: 'Passport',
                                             onTap: () {
                                               _pickImage();
                                               Navigator.pop(context);
                                             },
                                           ),
-                                          TypeContainerWidget(
+                                          ScanTypeContainerWidget(
                                             text: 'Emirates Id',
                                             onTap: () {
                                               _pickImage();
                                               Navigator.pop(context);
                                             },
                                           ),
-                                          TypeContainerWidget(
+                                          ScanTypeContainerWidget(
                                             text: 'Driving license',
                                             onTap: () {
                                               _pickImage();
