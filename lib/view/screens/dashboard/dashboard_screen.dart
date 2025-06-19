@@ -972,7 +972,7 @@ class DashboardScreen extends StatelessWidget {
       context.read<CheckOutCubit>().onChangeDateRange(
           AppUtils.getDateRangeStringFromLabel(
               'Last 30 Days'));
-      context.read<CheckOutCubit>().getCheckOut();
+      context.read<CheckOutCubit>().getCheckOuts();
       context
           .read<DeviceDeciderCubit>()
           .onChangeSelectedIndex(

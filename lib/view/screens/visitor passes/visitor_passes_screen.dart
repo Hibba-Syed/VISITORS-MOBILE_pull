@@ -99,7 +99,6 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                         itemCount: state.visitorPasses?.length?? 0,
                         itemBuilder: (context, index) {
                           VisitorPasses? visitorPass = state.visitorPasses?[index];
-                         // print('visitorPass${visitorPass?.activeCheckInsCount}');
                           return VisitorPassesCardWidget(
                             unit: visitorPass?.ownerUnit?.unit?.unitNumber?.toString() ?? "--",
                             name: visitorPass?.visitor ?? "--",

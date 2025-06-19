@@ -64,7 +64,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     );
   }
 
-  Future<void> getCheckOut(
+  Future<void> getCheckOuts(
       ) async {
     emit(state.copyWith(isCheckOutLoading: true,page: 1));
     CheckOutResponseModel? response =

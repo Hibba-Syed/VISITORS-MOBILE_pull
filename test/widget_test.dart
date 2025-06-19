@@ -7,8 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:visitors/view/screens/iskaan_visitors_mobile.dart';
 
-import 'package:visitors/view/Common%20Screens/iskaan_visitors_mobile.dart' show IskaanVisitorsMobile;
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

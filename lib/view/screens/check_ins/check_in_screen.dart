@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
@@ -101,7 +102,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                     alignment: Alignment.bottomRight,
                     child: CustomButton(
                       buttonColor: AppColors.red,
-                      text: 'Check-Outs All',
+                      text: 'Checkout All',
                       height: AppUtils.isTablet(context) ? 42 : 41,
                       width: AppUtils.isTablet(context) ? 200 : 170,
                       imageHeight: AppUtils.isTablet(context) ? 22 : 18,
@@ -260,6 +261,13 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                 );
               },
               checkOutOnPress: () async {
+                final enteredCount = int.tryParse(visitorsNoController.text.trim());
+                final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
+                if ( (enteredCount??0) > availableCount) {
+                  Fluttertoast.showToast(
+                      msg: "Available count is $availableCount");
+                  return;
+                }
                 showDialog(
                   barrierDismissible: false,
                   context: context,

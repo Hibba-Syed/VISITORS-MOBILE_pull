@@ -40,13 +40,15 @@ class CheckOutContainerWidget extends StatefulWidget {
   });
 
   @override
-  State<CheckOutContainerWidget> createState() =>
-      _CheckOutContainerWidgetState();
+  State<CheckOutContainerWidget> createState() => _CheckOutContainerWidgetState();
 }
 
 class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final enteredCount = int.tryParse(widget.controller.text.trim());
+    final availableCount = int.tryParse(widget.visitorsCount ?? '') ?? 0;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -55,12 +57,23 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
           style: AppTextStyles.style36Red500,
         ),
         const Gap(5),
-        TextFieldWidget(
-          controller: widget.controller,
-          hint: 'No. of visitors checking-out',
-          onChanged: (value) {
-            setState(() {});
-          },
+        Form(
+          key: _formKey,
+          child: TextFieldWidget(
+            controller: widget.controller,
+            keyboardType: TextInputType.number,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            hint: 'No. of visitors checking-out',
+            validator: (value){
+              if ( (enteredCount??0) > availableCount) {
+                return "Enter valid count";
+              }
+              return null;
+            },
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
         ),
         const Gap(20),
         (widget.controller.text.isNotEmpty)
@@ -72,9 +85,12 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                       invert: true,
                       height: 42,
                       buttonColor: AppColors.red,
-                      textColor: AppColors.red,
-                      text: 'Check-Out',
-                      onPressed: widget.checkOutOnPress
+                  textColor: AppColors.red,
+                      text: 'Checkout',
+                      onPressed: (){
+                        print("checkOutOnPress");
+                        widget.checkOutOnPress?.call();
+                      }
                     ),
                   ),
                   const Gap(8),
@@ -83,7 +99,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                       borderRadius: 6,
                       buttonColor: AppColors.red,
                       height: 42,
-                      text: 'Check-Out All',
+                      text: 'Checkout All',
                       onPressed: widget.checkOutAllOnPress,
                     ),
                   ),
@@ -93,7 +109,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                 borderRadius: 6,
                 buttonColor: AppColors.red,
                 height: 42,
-                text: 'Check-Out All',
+                text: 'Checkout All',
                 onPressed: widget.checkOutAllOnPress,
               ),
         const Gap(10),

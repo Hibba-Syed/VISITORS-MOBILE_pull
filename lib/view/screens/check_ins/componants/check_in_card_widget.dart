@@ -152,7 +152,7 @@ class CheckInCardWidget extends StatelessWidget {
                 CustomButton(
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
-                    text: 'Check Out',
+                    text: 'Checkout',
                     onPressed: checkOutOnPressed
                 ),
               ],

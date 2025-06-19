@@ -34,6 +34,7 @@ class TextFieldWidget extends StatelessWidget {
   final InputBorder? focusedErrorBorder;
   final EdgeInsetsGeometry? contentPadding;
   final TextStyle? textStyle;
+  final AutovalidateMode? autovalidateMode;
 
   const TextFieldWidget({
     super.key,
@@ -65,6 +66,7 @@ class TextFieldWidget extends StatelessWidget {
     this.contentPadding,
     this.outLineColor,
     this.textStyle,
+    this.autovalidateMode,
   });
 
   @override
@@ -84,6 +86,7 @@ class TextFieldWidget extends StatelessWidget {
         TextFormField(
           initialValue: initialValue,
           controller: controller,
+          autovalidateMode: autovalidateMode,
           onChanged: onChanged,
           onFieldSubmitted: onFieldSubmitted,
           onEditingComplete: onEditingComplete,

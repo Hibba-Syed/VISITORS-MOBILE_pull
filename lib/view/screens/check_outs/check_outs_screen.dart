@@ -67,13 +67,13 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                           context
                               .read<CheckOutCubit>()
                               .onChangeSearchKeyWord('');
-                          context.read<CheckOutCubit>().getCheckOut();
+                          context.read<CheckOutCubit>().getCheckOuts();
                         },
                         onFieldSubmitted: (value) {
                           context
                               .read<CheckOutCubit>()
                               .onChangeSearchKeyWord(value);
-                          context.read<CheckOutCubit>().getCheckOut();
+                          context.read<CheckOutCubit>().getCheckOuts();
                         },
                         isFilterApplied: (state.selectedUnit != null) ||
                                 (state.selectedType?.value.isNotEmpty ??
@@ -96,7 +96,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                     onRefresh: () async {
                                       await context
                                           .read<CheckOutCubit>()
-                                          .getCheckOut();
+                                          .getCheckOuts();
                                     },
                                     child: ListView.separated(
                                       controller: _scrollController,

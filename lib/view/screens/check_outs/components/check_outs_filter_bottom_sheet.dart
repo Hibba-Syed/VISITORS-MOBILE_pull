@@ -136,13 +136,13 @@ class _CheckOutsFilterBottomSheetState
                 const Gap(30),
                 FilterButtonWidget(
                   applyOnPressed: () {
-                    context.read<CheckOutCubit>().getCheckOut();
+                    context.read<CheckOutCubit>().getCheckOuts();
                     Navigator.pop(context);
                   },
                   clearOnPressed: () {
                     context.read<CheckOutCubit>().resetFilterData();
                     Navigator.pop(context);
-                    context.read<CheckOutCubit>().getCheckOut();
+                    context.read<CheckOutCubit>().getCheckOuts();
                   },
                 ),
               ],

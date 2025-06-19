@@ -150,8 +150,6 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                           // }
                                           // );
                                           context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
-                                          // print("ROUTE::: ${AppUtils.getRouteName(service)}");
-                                          // return;
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

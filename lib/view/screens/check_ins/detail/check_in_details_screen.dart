@@ -173,7 +173,7 @@ class CheckInDetailsScreen extends StatelessWidget {
           child: CustomButton(
               image: AppImages.logoutCard,
               buttonColor: AppColors.red,
-              text: 'Check Out',
+              text: 'Checkout',
               onPressed: () {
                 context.read<CheckInsDetailsCubit>().getCheckInDetailsLog(id: checkIns?.id);
                 _showCheckoutDialog(context,checkIns);
@@ -230,6 +230,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                         isCancelButtonDisable: true,
                         confirmButtonColor: AppColors.red,
                         confirmButtonText: 'Checkout',
+                        confirmButtonTextFontSize: AppUtils.isTablet(context) ? 15 : 13,
                         title: 'Checkout For Visitors',
                         onConfirm: ()async{
                           final result = await

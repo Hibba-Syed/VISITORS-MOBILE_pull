@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
 import '../../../model/check_ins/check_in_log_response_model.dart';
@@ -60,12 +61,13 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         return null;
       });
       emit(state.copyWith(isCheckOutVisitor: false));
-      log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
+      // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
         emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
         if (context.mounted) {
           Navigator.pop(context);
          getCheckInDetailsLog(id: id);
+          context.read<CheckInsCubit>().getCheckIns();
         }
         Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
         return true;
@@ -77,7 +79,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     } catch (e) {
       emit(state.copyWith(isCheckOutVisitor: false));
       Fluttertoast.showToast(msg: e.toString());
-      log('cubit call ${e.toString()}');
+      // log('cubit call ${e.toString()}');
       return false;
     }
   }

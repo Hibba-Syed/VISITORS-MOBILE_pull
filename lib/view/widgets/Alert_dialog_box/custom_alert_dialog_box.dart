@@ -8,11 +8,13 @@ class CustomAlertDialogBox extends StatefulWidget {
   final String? title;
   final String? cancelButtonText;
   final String? confirmButtonText;
-  final Future<bool> Function()?
-  onConfirm;
+  final double? confirmButtonTextFontSize;
+  final FontWeight? confirmButtonTextFontWeight;
+
+  final Future<bool> Function()? onConfirm;
   final Future<bool?> Function()? onCancel;
   final Widget Function(BuildContext, void Function(void Function()))?
-  contentBuilder;
+      contentBuilder;
   final bool showCloseIcon;
   final Color? confirmButtonColor;
   final Color? cancelButtonColor;
@@ -46,6 +48,8 @@ class CustomAlertDialogBox extends StatefulWidget {
     this.isCancelButtonDisable = false,
     this.canPopOnConfirm = true,
     this.customSubTitleText,
+    this.confirmButtonTextFontSize,
+    this.confirmButtonTextFontWeight,
   });
 
   @override
@@ -118,12 +122,12 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.title ?? "--",style:  const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-
+                                widget.title ?? "--",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.black,
+                                ),
                               ),
                               const Gap(5),
                               if (widget.customSubTitleText?.isNotEmpty ??
@@ -131,10 +135,10 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    widget.customSubTitleText ?? "--",style: const TextStyle(
-                                    fontSize: 13,
-                                    color: AppColors.darkGrey
-                                  ),
+                                    widget.customSubTitleText ?? "--",
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        color: AppColors.darkGrey),
                                   ),
                                 ),
                             ],
@@ -146,11 +150,10 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                           alignment: Alignment.topRight,
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).pop(),
-                            child:
-                             Icon(
+                            child: Icon(
                               Icons.close,
                               color: Colors.grey,
-                               size: AppUtils.isTablet(context) ? 30 : 20,
+                              size: AppUtils.isTablet(context) ? 30 : 20,
                             ),
                           ),
                         ),
@@ -168,14 +171,17 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                           ],
                           widget.contentBuilder != null
                               ? widget.contentBuilder!(context, setState)
-                              : const Text(
-                            "Are you sure you want to proceed with this action?",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
+                              : Align(
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    "Are you sure you want to proceed with this action?",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
                           const SizedBox(height: 20),
                           if (widget.hideBothButtons == false)
                             Row(
@@ -186,40 +192,40 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                     child: isCancelLoading
                                         ? const Center(child: LoaderWidget())
                                         : TextButton(
-                                      onPressed: (widget.onCancel != null)
-                                          ? _handleCancel
-                                          : () =>
-                                          Navigator.of(context).pop(),
-                                      style: TextButton.styleFrom(
-                                        backgroundColor:
-                                        widget.cancelButtonColor ??
-                                            Colors.white,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: widget
-                                                .horizontalPadding ??
-                                                24,
-                                            vertical:  12
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(8),
-                                          side: BorderSide(
-                                              color:
-                                              (widget.disableCancelButtonBorder ??
-                                                  false)
-                                                  ? Colors.transparent
-                                                  : AppColors.darkGrey),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        textAlign: TextAlign.center,
-                                        widget.cancelButtonText!,
-                                        style: TextStyle(
-                                            color: widget
-                                                .cancelButtonTextColor ??
-                                                Colors.black),
-                                      ),
-                                    ),
+                                            onPressed: (widget.onCancel != null)
+                                                ? _handleCancel
+                                                : () =>
+                                                    Navigator.of(context).pop(),
+                                            style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  widget.cancelButtonColor ??
+                                                      Colors.white,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: widget
+                                                          .horizontalPadding ??
+                                                      24,
+                                                  vertical: 12),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                side: BorderSide(
+                                                    color:
+                                                        (widget.disableCancelButtonBorder ??
+                                                                false)
+                                                            ? Colors.transparent
+                                                            : AppColors
+                                                                .darkGrey),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              widget.cancelButtonText!,
+                                              style: TextStyle(
+                                                  color: widget
+                                                          .cancelButtonTextColor ??
+                                                      Colors.black),
+                                            ),
+                                          ),
                                   ),
                                   const SizedBox(width: 10),
                                 ],
@@ -227,30 +233,34 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                   child: isLoading
                                       ? const Center(child: LoaderWidget())
                                       : TextButton(
-                                    onPressed: _handleConfirm,
-                                    style: TextButton.styleFrom(
-                                      backgroundColor:
-                                      widget.confirmButtonColor ??
-                                          AppColors.primary,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                          widget.horizontalPadding ??
-                                              24,
-                                          vertical: 12),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      textAlign: TextAlign.center,
-                                      widget.confirmButtonText ?? "Yes",
-                                      style: TextStyle(
-                                          color: widget
-                                              .confirmButtonTextColor ??
-                                              Colors.white),
-                                    ),
-                                  ),
+                                          onPressed: _handleConfirm,
+                                          style: TextButton.styleFrom(
+                                            backgroundColor:
+                                                widget.confirmButtonColor ??
+                                                    AppColors.primary,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    widget.horizontalPadding ??
+                                                        24,
+                                                vertical: 12),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            widget.confirmButtonText ?? "Yes",
+                                            style: TextStyle(
+                                                color: widget
+                                                        .confirmButtonTextColor ??
+                                                    Colors.white,
+                                              fontSize: widget.confirmButtonTextFontSize ?? 13,
+                                              fontWeight: widget.confirmButtonTextFontWeight ?? FontWeight.w600
+
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ],
                             ),
