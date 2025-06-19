@@ -36,15 +36,15 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
 
-  onChangeSelectedCountry(Country? country) {
+  void onChangeSelectedCountry(Country? country) {
     emit(state.copyWith(selectedCountry: country));
   }
 
-  onChangeSelectedPurpose(VisitorsPurpose? purpose) {
+  void onChangeSelectedPurpose(VisitorsPurpose? purpose) {
     emit(state.copyWith(selectedPurpose: purpose));
   }
 
-  onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 

@@ -112,7 +112,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                             isActiveCheckins: visitorPass?.activeCheckInsCount == 1 ? true : false,
                             checkInOnPressed: () {
                               Navigator.pushNamed(
-                                      context, AppRoutes.guestCheckInScreen);
+                                      context, AppRoutes.guestCheckIn);
                             },
                             visitorPassCheckInOnPressed: () {
                               context
@@ -123,7 +123,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                               context.read<CheckInsCubit>().onChangeSelectedServiceableId(visitorPass?.id);
                               context.read<CheckInsCubit>().getCheckIns();
                               Navigator.pushNamed(
-                                  context, AppRoutes.serviceableCheckInsScreen);
+                                  context, AppRoutes.serviceableCheckIns);
                             },
 
                           );
@@ -144,7 +144,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
     );
   }
 
-  _visitorPassesFilterBottomSheet(context) {
+  void _visitorPassesFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
         minWidth: MediaQuery.of(context).size.width,

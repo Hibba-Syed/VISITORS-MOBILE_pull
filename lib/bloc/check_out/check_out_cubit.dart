@@ -29,25 +29,25 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   // onChangeRange(String? range) {
   //   emit(state.copyWith(selectedRang: range));
   // }
-  onChangeDateRange(DateTimeRange? dateRange) {
+  void onChangeDateRange(DateTimeRange? dateRange) {
     emit(state.copyWith(dateRang: dateRange));
   }
 
-  onChangeSelectedType(TypeModel? type) {
+  void onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
   }
-  onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
-  onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 
-  onChangeSearchKeyWord(String? keyword) {
+  void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-  resetFilterData() {
+  void resetFilterData() {
     emit(CheckOutState(
       checkOutVisitors: state.checkOutVisitors,
       isCheckOutAllLoading: state.isCheckOutAllLoading,

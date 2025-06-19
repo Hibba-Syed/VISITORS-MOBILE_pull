@@ -252,14 +252,14 @@ class DashboardCubit extends Cubit<DashboardState> {
    // if (isNavigationAllow) {
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.deviceDeciderScreen,
+          AppRoutes.mainDashboard,
               (route) => false,
         );
       }
       else {
         if (context.mounted) {
           Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.loginScreen,
+            AppRoutes.login,
                 (route) => false,
           );
         }

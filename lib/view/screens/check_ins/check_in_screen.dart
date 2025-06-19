@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
+import 'package:visitors/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -55,8 +55,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
         context
-            .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(AppConstants.dashboardIndex);
+            .read<MainDashboardCubit>()
+            .onBackButtonPressed();
       },
       child: SafeArea(
         child: Scaffold(
@@ -194,7 +194,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                             .getCheckInDetailsLog(
                                                 id: checkIns?.id);
                                         Navigator.pushNamed(context,
-                                            AppRoutes.checkInDetailsScreen,
+                                            AppRoutes.checkInDetails,
                                             arguments:
                                                 state.checkInModel?[index]);
                                       },
@@ -292,7 +292,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
     );
   }
 
-  _checkInFilterBottomSheet(context) {
+  void _checkInFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
         minWidth: MediaQuery.of(context).size.width,

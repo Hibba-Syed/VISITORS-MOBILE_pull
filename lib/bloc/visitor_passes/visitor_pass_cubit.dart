@@ -18,15 +18,15 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
   final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-  onChangeSearchKeyWord(String? keyword) {
+  void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-  onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
-  resetFilterData() {
+  void resetFilterData() {
     emit(VisitorPassState(
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,

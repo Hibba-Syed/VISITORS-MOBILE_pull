@@ -13,7 +13,7 @@ class DirectoryCubit extends Cubit<DirectoryState> {
 
   final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-  onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
   void setOwnerData(PrimaryOwner? owner) {
@@ -22,7 +22,7 @@ class DirectoryCubit extends Cubit<DirectoryState> {
   void setResidentData(Resident? resident) {
     emit(state.copyWith(resident: resident));
   }
-  resetOwnerAndResident() {
+  void resetOwnerAndResident() {
     emit(DirectoryState(
       isLoading: state.isLoading,
       units: state.units,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
@@ -11,6 +10,7 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
 
 import '../../../bloc/check_out/check_out_cubit.dart';
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../model/check_out/check_out_model.dart';
 import '../../../resource/constants/images.dart';
 import '../../../service/download_file/pdf_downloader.dart';
@@ -46,9 +46,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
         canPop: false,
         onPopInvokedWithResult: (bool didPop, dynamic) async {
           if (didPop) return;
-          context
-              .read<DeviceDeciderCubit>()
-              .onChangeSelectedIndex(AppConstants.dashboardIndex);
+          context.read<MainDashboardCubit>().onBackButtonPressed();
         },
         child: SafeArea(
           child: Scaffold(
@@ -151,7 +149,10 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
             floatingActionButton: FloatingActionButton.extended(
               backgroundColor: AppColors.primary,
               onPressed: () {
-                FileDownloader.downloadFile(context: context, dateRage: '${context.read<CheckOutCubit>().state.dateRang}');
+                FileDownloader.downloadFile(
+                    context: context,
+                    dateRage:
+                        '${context.read<CheckOutCubit>().state.dateRang}');
               },
               icon: SvgPicture.asset(
                 AppImages.export,
@@ -169,7 +170,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
         ));
   }
 
-  _checkOutFilterBottomSheet(context) {
+  void _checkOutFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
         minWidth: MediaQuery.of(context).size.width,

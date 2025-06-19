@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/model/message/message_model.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../bloc/message/message_cubit.dart';
 import '../../../resource/constants/app_colors.dart';
 import 'components/attachment_card_widget.dart';
@@ -55,8 +55,8 @@ class _MessageScreenState extends State<MessageScreen> {
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
         context
-            .read<DeviceDeciderCubit>()
-            .onChangeSelectedIndex(AppConstants.dashboardIndex);
+            .read<MainDashboardCubit>()
+            .onBackButtonPressed();
       },
       child: SafeArea(
         child: Scaffold(

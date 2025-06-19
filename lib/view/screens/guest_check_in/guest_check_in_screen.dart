@@ -39,7 +39,10 @@ class GuestCheckInScreen extends StatefulWidget {
 }
 
 class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
-  final TextEditingController _visitorCountController = TextEditingController(text: '1');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _phoneNumberKey = GlobalKey<FormState>();
+  final TextEditingController _visitorCountController =
+      TextEditingController(text: '1');
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController =
@@ -56,14 +59,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   String? _selectedIssueDate;
   String? _selectedExpiryDate;
   String? _selectedItemNationality;
-  // Country? _selectedNationality;
-  Country? countries;
-  VisitorsPurpose? visitorsPurpose;
-  UnitModel? unitModel;
   File? _imageFile;
   List<File?>? _personImageFiles;
   final List<String> _nationalityItems = [
-    'pakistan',
+    'Pakistan',
     'Australia',
     'United Arab Emirates',
     'India'
@@ -82,72 +81,15 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     }
   }
 
-  String _extractValue(String line, List<String> lines, int currentIndex) {
-    if (line.contains(':')) {
-      return line.split(':').last.trim();
-    } else if (currentIndex + 1 < lines.length) {
-      return lines[currentIndex + 1].trim();
-    }
-    return '';
-  }
-
-  List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
-    if (faces.isNotEmpty) {
-      // print('bounding box length:: ${faces.length}');
-
-      List<File?>? images = [];
-      for (int i = 0; i < faces.length; i++) {
-        final face = faces[i];
-        final boundingBox = face.boundingBox;
-        images.add(_cropImage(originalImage, boundingBox, index: i));
-      }
-      for (var element in images) {
-        // print(element?.path);
-      }
-      return images;
-    }
-    return null; // Return null if no image is extracted
-  }
-
-  File? _cropImage(
-    File originalImage,
-    Rect boundingBox, {
-    required int index,
-  }) {
-    // Load the original image
-    final img.Image originalImg =
-        img.decodeImage(originalImage.readAsBytesSync())!;
-
-    // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt();
-    final int top = boundingBox.top.toInt();
-    final int width = (boundingBox.right - boundingBox.left).toInt();
-    final int height = (boundingBox.bottom - boundingBox.top).toInt();
-
-    // print('left:: $left');
-    // print('top:: $top');
-    // print('width:: $width');
-    // print('height:: $height');
-    // Crop the image
-    final img.Image croppedImg = img.copyCrop(originalImg,
-        x: left, y: top, width: width, height: height);
-
-    // Save the cropped image to a new file
-    final String fileName =
-        '${path.basenameWithoutExtension(originalImage.path)}_cropped_$index.jpg';
-    final String dir = path.dirname(originalImage.path);
-    final File croppedFile = File('$dir/$fileName')
-      ..writeAsBytesSync(img.encodeJpg(croppedImg));
-
-    return croppedFile; // Return the cropped image file
-  }
-
   Future<void> _performOCR(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
     TextRecognizer textDetector =
         TextRecognizer(script: TextRecognitionScript.latin);
     FaceDetector faceDetector = FaceDetector(
-      options: FaceDetectorOptions(),
+      options: FaceDetectorOptions(
+        performanceMode: FaceDetectorMode.accurate,
+        minFaceSize: 1,
+      ),
     );
 
     final RecognizedText recognizedText =
@@ -157,7 +99,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     final List<Face> faces = await faceDetector.processImage(inputImage);
 
     ///
-    final parsedData = _parseExtractedText(text);
+    final Map<String, String> parsedData = _parseExtractedText(text);
 
     setState(() {
       // _extractedText = text;
@@ -191,6 +133,57 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       }
     });
     textDetector.close();
+  }
+
+  List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
+    if (faces.isNotEmpty) {
+      // print('bounding box length:: ${faces.length}');
+
+      List<File?>? images = [];
+      for (int i = 0; i < faces.length; i++) {
+        final face = faces[i];
+        final boundingBox = face.boundingBox;
+        images.add(_cropImage(originalImage, boundingBox, index: i));
+      }
+      for (var element in images) {
+        print(element?.path);
+      }
+      return images;
+    }
+    return null; // Return null if no image is extracted
+  }
+
+  File? _cropImage(
+    File originalImage,
+    Rect boundingBox, {
+    required int index,
+  }) {
+    // Load the original image
+    final img.Image originalImg =
+        img.decodeImage(originalImage.readAsBytesSync())!;
+
+    // Calculate the cropping dimensions
+    final int left = boundingBox.left.toInt() - 20;
+    final int top = boundingBox.top.toInt() - 16;
+    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 40;
+    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 46;
+
+    // print('left:: $left');
+    // print('top:: $top');
+    // print('width:: $width');
+    // print('height:: $height');
+    // Crop the image
+    final img.Image croppedImg = img.copyCrop(originalImg,
+        x: left, y: top, width: width, height: height);
+
+    // Save the cropped image to a new file
+    final String fileName =
+        '${path.basenameWithoutExtension(originalImage.path)}_cropped_$index.jpg';
+    final String dir = path.dirname(originalImage.path);
+    final File croppedFile = File('$dir/$fileName')
+      ..writeAsBytesSync(img.encodeJpg(croppedImg));
+
+    return croppedFile; // Return the cropped image file
   }
 
   Map<String, String> _parseExtractedText(String text) {
@@ -245,8 +238,15 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     return parsedData;
   }
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _phoneNumberKey = GlobalKey<FormState>();
+  String _extractValue(String line, List<String> lines, int currentIndex) {
+    if (line.contains(':')) {
+      return line.split(':').last.trim();
+    } else if (currentIndex + 1 < lines.length) {
+      return lines[currentIndex + 1].trim();
+    }
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -862,22 +862,24 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Container(
-                        width: 68,
-                        height: 68,
-                        color: AppColors.darkGrey.withAlpha(25),
-                        child: Column(
-                          children: _personImageFiles?.map((element) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: Image.file(element!),
-                                );
-                              }).toList() ??
-                              [],
-                        ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 4,
+                      height: MediaQuery.of(context).size.width / 4,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.darkGrey),
                       ),
+                      child:
+                          (_personImageFiles?.first?.path.isNotEmpty ?? false)
+                              ? Image.file(
+                                  _personImageFiles!.first!,
+                                  fit: BoxFit.fill,
+                                )
+                              : Icon(
+                                  Icons.person_outline_rounded,
+                                  size: MediaQuery.of(context).size.width / 4,
+                                ),
                     ),
                   ),
                   const Gap(20),
@@ -1010,18 +1012,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         SingleSelectedDropdownWidget<Country>(
                           outLineColor: AppColors.outLineGray,
-                          hint:"United Arab Emirates",
+                          hint: "United Arab Emirates",
                           fillColor: AppColors.white,
                           selectedItem: context
-                                  .watch<GuestCheckInCubit>()
-                                  .state
-                                  .selectedCountry,
+                              .watch<GuestCheckInCubit>()
+                              .state
+                              .selectedCountry,
                           items: state.countries ?? [],
                           itemAsString: (country) => country.name ?? "",
-                             compareFn: (p0, p1) => p0.id == p1.id,
+                          compareFn: (p0, p1) => p0.id == p1.id,
                           onChanged: (value) {
-                            context.read<GuestCheckInCubit>()
-                                    .onChangeSelectedCountry(value);
+                            context
+                                .read<GuestCheckInCubit>()
+                                .onChangeSelectedCountry(value);
                           },
                         ),
                         const Gap(5),

@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _checkBiometricSupport();
   }
 
-  _checkBiometricSupport() async {
+  Future<void> _checkBiometricSupport() async {
     _hasBiometricSupport = await LocalAuthService().hasBiometricSupport();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});

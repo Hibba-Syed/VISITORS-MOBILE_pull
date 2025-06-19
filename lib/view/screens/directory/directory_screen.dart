@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
 import 'package:visitors/bloc/directory/directory_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -9,6 +8,7 @@ import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../model/unit/unit_model.dart';
 import '../../widgets/phone_email_information_card_widget.dart';
 
@@ -26,15 +26,15 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context.read<DeviceDeciderCubit>().onChangeSelectedIndex(
-            AppConstants.dashboardIndex);
+        context.read<MainDashboardCubit>().onBackButtonPressed();
       },
       child: Scaffold(
-        body:BlocBuilder<DirectoryCubit, DirectoryState>(
+        body: BlocBuilder<DirectoryCubit, DirectoryState>(
           builder: (context, state) {
             final selectedUnit = state.selectedUnit;
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppConstants.horizontalPadding),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -48,30 +48,45 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                     items: state.units ?? [],
                     onChanged: (value) {
                       if (value != null) {
-                        context.read<DirectoryCubit>().onChangeSelectedUnit(value);
+                        context
+                            .read<DirectoryCubit>()
+                            .onChangeSelectedUnit(value);
                         final selectedUnit = value;
-                        final primaryOwner = (selectedUnit.primaryOwner?.isNotEmpty ?? false) ? selectedUnit.primaryOwner?.first : null;
+                        final primaryOwner =
+                            (selectedUnit.primaryOwner?.isNotEmpty ?? false)
+                                ? selectedUnit.primaryOwner?.first
+                                : null;
                         final resident = selectedUnit.resident;
-                        context.read<DirectoryCubit>().setOwnerData(primaryOwner);
-                        context.read<DirectoryCubit>().setResidentData(resident);
-                      }else{
+                        context
+                            .read<DirectoryCubit>()
+                            .setOwnerData(primaryOwner);
+                        context
+                            .read<DirectoryCubit>()
+                            .setResidentData(resident);
+                      } else {
                         context.read<DirectoryCubit>().resetOwnerAndResident();
                       }
                     },
                   ),
-                selectedUnit == null ?  Expanded(child: EmptyWidget(text: 'Select a unit to view details')) : SizedBox.shrink(),
+                  selectedUnit == null
+                      ? Expanded(
+                          child: EmptyWidget(
+                              text: 'Select a unit to view details'))
+                      : SizedBox.shrink(),
                   if (state.primaryOwner != null) ...[
                     const Gap(20),
                     const HeadingWidget(heading: 'OWNER INFORMATION'),
                     const Gap(10),
-                      PhoneEmailInformationCardWidget(
-                        name: state.primaryOwner?.fullName ?? "--",
-                        phone:  (state.primaryOwner?.primaryPhone?.isNotEmpty ?? false) ?
-                        state.primaryOwner?.primaryPhone ?? "--" : '--',
-                        email: state.primaryOwner?.primaryEmail ?? "--",
-                      ),
+                    PhoneEmailInformationCardWidget(
+                      name: state.primaryOwner?.fullName ?? "--",
+                      phone: (state.primaryOwner?.primaryPhone?.isNotEmpty ??
+                              false)
+                          ? state.primaryOwner?.primaryPhone ?? "--"
+                          : '--',
+                      email: state.primaryOwner?.primaryEmail ?? "--",
+                    ),
                   ],
-                  if (state.resident != null)...[
+                  if (state.resident != null) ...[
                     const Gap(20),
                     const HeadingWidget(heading: 'RESIDENT INFORMATION'),
                     const Gap(10),
@@ -81,9 +96,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                       email: state.resident?.primaryEmail ?? "--",
                     ),
                   ]
-
-                  ],
-
+                ],
               ),
             );
           },
