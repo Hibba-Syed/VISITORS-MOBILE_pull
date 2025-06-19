@@ -30,7 +30,6 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
         throw error!;
       },
     );
-    // print("Status Code::: ${response?.code}");
     if (response != null && response.status == 'success') {
       emit(state.copyWith(
         isLoading: false,

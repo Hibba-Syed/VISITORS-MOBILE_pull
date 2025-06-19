@@ -137,7 +137,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
   List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
     if (faces.isNotEmpty) {
-      // print('bounding box length:: ${faces.length}');
 
       List<File?>? images = [];
       for (int i = 0; i < faces.length; i++) {

@@ -19,6 +19,7 @@ import 'package:visitors/view/widgets/drawer/drawer_list_tile.dart';
 import 'package:visitors/view/widgets/responsive_layout_widget.dart';
 
 import '../../bloc/check_out/check_out_cubit.dart';
+import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../utils/app_utils.dart';
 import 'check_ins/check_in_screen.dart';
@@ -165,6 +166,9 @@ class MainDashboardScreen extends StatelessWidget {
                             AppUtils.getDateRangeStringFromLabel(
                                 'Last 30 Days'));
                         context.read<CheckOutCubit>().getCheckOuts();
+                        break;
+                      case AppConstants.directoryIndex:
+                     context.read<DirectoryCubit>().getUnits();
                         break;
                     }
                   }

@@ -24,7 +24,7 @@ class EncryptionHelper {
     final encrypted = encrypter.encrypt(jsonStr, iv: iv);
     final xyz = Uri.encodeComponent(encrypted.base64);
 
-    debugPrint('Encrypted (XYZ): $xyz');
+    // debugPrint('Encrypted (XYZ): $xyz');
     return xyz;
   }
 

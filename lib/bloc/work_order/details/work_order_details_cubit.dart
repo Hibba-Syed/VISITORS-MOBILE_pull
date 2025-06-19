@@ -29,7 +29,6 @@ class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
         throw error!;
       },
     );
-    // print("Status Code::: ${response?.code}");
     if (response != null && response.status == 'success') {
       emit(state.copyWith(isLoading: false));
       emit(state.copyWith(workOrderDetailsModel: response.record,isLoading: false));

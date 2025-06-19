@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -221,6 +222,13 @@ class CheckInDetailsScreen extends StatelessWidget {
                 );
               },
               checkOutOnPress: ()async{
+                final enteredCount = int.tryParse(visitorsNoController.text.trim());
+                final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
+                if ( (enteredCount??0) > availableCount) {
+                  Fluttertoast.showToast(
+                      msg: "Available count is $availableCount");
+                  return;
+                }
                 showDialog(
                   barrierDismissible: false,
                   context: context,

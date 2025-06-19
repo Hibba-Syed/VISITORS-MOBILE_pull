@@ -44,7 +44,6 @@ class FileDownloader {
     try {
       final response =
       await http.get(downloadUrl, headers: {"Authorization": token, "User-Agent": "Windows"});
-      // print("Status Code ${response.statusCode}");
       if (response.statusCode == 200 && context.mounted) {
         await _handleFileDownload(
             context, progressDialog, response);
@@ -79,8 +78,6 @@ class FileDownloader {
       "export": true,
       "timezone": "Asia/Karachi"
     };
-    // print("FILTER:::: ${vendors.toString()}");
-    // print(EncryptionHelper.encryptPayload(vendors));
 
     final encryptedPayload = Uri.encodeComponent(EncryptionHelper.encryptPayload(filter));
     final url = Uri.parse('${ApiUrl.checkOuts}?xyz=$encryptedPayload');
@@ -110,8 +107,6 @@ class FileDownloader {
       http.Response response) async {
     String? filename = _extractFileName(
         response.headers['content-disposition']);
-    // print("RESPONSE HEADERS:::: ${response.headers}");
-    // print("RESPONSE HEADERS SPLITTED:::: ${response.headers}");
     String? filePath = await _saveFileInIsolate(SaveFileParams(
       data: response.bodyBytes,
       filename: filename,
@@ -156,8 +151,6 @@ class FileDownloader {
   /// Show success dialog after file is downloaded
   static void _onDownloadSuccess(
       BuildContext context, String filePath, String? contentDisposition) {
-    // print("FILE PATH IS:::: $filePath");
-    // print("FILE TYPE IS:::: $contentDisposition");
     if (contentDisposition?.contains("zip") ?? false) {
       _openFileBasedOnPlatform(filePath);
       Fluttertoast.showToast(msg: "File has been downloaded successfully!");
@@ -181,7 +174,6 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
-      // print("Failed to open file: ${e.message}");
     }
   }
 
@@ -190,10 +182,6 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
-      // print(e.code);
-      // print(e.details);
-      // print(e.stacktrace);
-      // print("Failed to open file: ${e.message}");
     }
   }
 
@@ -209,7 +197,6 @@ class FileDownloader {
         });
         return result as String?;
       } on PlatformException catch (e) {
-        // print("Failed to save file: ${e.message}");
         return null;
       }
     } else {
@@ -229,8 +216,6 @@ class FileDownloader {
 
       final file = File(filePath);
       await file.writeAsBytes(params.data);
-
-      // print("File saved at: $filePath");
       return filePath;
     } catch (e) {
       // print("Error while saving file: $e");
@@ -250,18 +235,7 @@ class FileDownloader {
         confirmButtonText: "Open File",
         cancelButtonText: "No",
         onConfirm: () async {
-          // print(filePath);
-          // bool isGranted = true;
-          // if(Platform.isAndroid){
-          //   isGranted = await requestStoragePermission();
-          // }
-          // if(isGranted){
           openFile(filePath);
-          //   OpenFile.open(filePath).then((value){
-          //   print("TYPE:::: ${value.type}");
-          //   print("MESSAGE::::: ${value.message}");
-          // });
-          // }
           return true;
         },
         contentBuilder: (p0, p1) {
@@ -276,30 +250,18 @@ class FileDownloader {
   }
 
   static Future<void> openFile(String filePath) async {
-    // bool isGranted = true;
-
-    // if (Platform.isAndroid) {
-    //   // isGranted = await requestStoragePermission();
-    // }
-    // print("Path Starts $isGranted");
-
-    // if (isGranted) {
     try {
-      // print("Path Starts::::::::  $filePath");
       if (Platform.isAndroid && filePath.startsWith("/storage/emulated/")) {
         if (await File(filePath).exists()) {
           OpenFile.open(filePath);
         } else {
-          // print("File does not exist: $filePath");
         }
       } else if (Platform.isAndroid && filePath.startsWith("content://")) {
-        // print("CONTENT");
         await launchUrl(Uri.parse(filePath));
       } else {
         OpenFile.open(filePath);
       }
     } catch (e) {
-      // print("Error opening file: $e");
     }
     // }
   }

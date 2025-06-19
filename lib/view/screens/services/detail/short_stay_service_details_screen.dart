@@ -257,7 +257,6 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                               // print('add^^^${noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(

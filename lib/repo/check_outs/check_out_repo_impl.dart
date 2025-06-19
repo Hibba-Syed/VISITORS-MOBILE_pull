@@ -19,7 +19,6 @@ class CheckOutRepoImpl implements CheckOutRepo {
     try {
       String url =
           '${ApiUrl.checkOuts}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${(dateRange?.isNotEmpty ?? false) ? dateRange : ''}&unit_id=${unitId ?? ''}';
-      // print('check out^^ $url');print('check out^^ $page');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckOutResponseModel.fromJson(response);
     } catch (e) {

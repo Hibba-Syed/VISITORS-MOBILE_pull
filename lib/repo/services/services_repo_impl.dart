@@ -28,7 +28,6 @@ class ServiceRepoImpl implements ServiceRepo {
       String url =
           '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
           10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
-      // print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);
     } catch (e) {
@@ -37,14 +36,10 @@ class ServiceRepoImpl implements ServiceRepo {
   }
   @override
   Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId}) async {
-    // print('service details URL: $serviceId');
     try {
      // final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
       final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}]}};
-       // print(filter);
       String url = '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
-
-        // print('service details URL: ${Uri.parse(url)}');
       dynamic response = await _apiService.getAuthGetApiResponse((url));
       return ServiceDetailsResponseModel.fromJson(response);
     } catch (e) {

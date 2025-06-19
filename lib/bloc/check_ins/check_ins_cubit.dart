@@ -46,9 +46,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   }
 
   void onChangeDateRange(DateTimeRange? dateRange) {
-    // print('on change:::');
     emit(state.copyWith(dateRange: dateRange));
-    // print('on change date range:: ${state.dateRange}');
   }
 
   void onChangeRange(String? range) {
@@ -95,7 +93,6 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
       emit(state.copyWith(checkInModel: response.record));
-      //print('response${response.record?.length}');
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching visitors check-ins');

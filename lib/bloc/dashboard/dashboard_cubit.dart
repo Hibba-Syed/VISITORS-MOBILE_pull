@@ -223,7 +223,6 @@ class DashboardCubit extends Cubit<DashboardState> {
     emit(state.copyWith(isCountLoading: false));
     if (response != null && response.status == 'success') {
       emit(state.copyWith(visitorPassesCount: response.record));
-      // print('Visitor Pass Count cubit : ${response.record?.count}');
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching visitor passes count');
     }
@@ -243,9 +242,6 @@ class DashboardCubit extends Cubit<DashboardState> {
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
-        context.read<VisitorPassCubit>().getVisitorPasses(),
-        context.read<DirectoryCubit>().getUnits(),
-
       ]);
     }
 

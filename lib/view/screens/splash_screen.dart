@@ -29,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> {
       () async {
         if (!mounted) return;
         if (Globals().token?.isNotEmpty??false) {
-         // print('token^^^${Globals().token}');
          bool result = await LocalAuthService().hasBiometricSupport();
          if (!mounted) return;
          if(result){

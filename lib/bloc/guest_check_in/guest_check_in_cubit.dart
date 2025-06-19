@@ -133,7 +133,6 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       {required int? id,
       required String? phoneNumber,
       int? remainingVisitors}) async {
-    // print("remaining Visitors::: $remainingVisitors");
     emit(state.copyWith(isDeleteVisitorLoading: true));
     DeleteVisitorResponseModel? response =
         await _checkInRepo.deleteVisitor(id: id).onError((error, stackTrace) {

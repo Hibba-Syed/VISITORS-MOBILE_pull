@@ -72,7 +72,6 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   lastDate: lastDayOfMonth,
                   onDateRangeSelected: (range) {
                     context.read<CheckInsCubit>().onChangeDateRange(range);
-                    // print("SelectedRange: $range ");
                   },
                 ),
                 const Gap(10),
@@ -95,7 +94,6 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                       context
                           .read<CheckInsCubit>()
                           .onChangeDateRange(dateRangeString);
-                      // print('dateRangeString $dateRangeString');
                     }
                   },
                 ),

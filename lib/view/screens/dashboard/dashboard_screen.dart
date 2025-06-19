@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
@@ -162,6 +163,13 @@ class DashboardScreen extends StatelessWidget {
                 );
               },
               checkOutOnPress: () async {
+                final enteredCount = int.tryParse(visitorsNoController.text.trim());
+                final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
+                if ( (enteredCount??0) > availableCount) {
+                  Fluttertoast.showToast(
+                      msg: "Available count is $availableCount");
+                  return;
+                }
                 showDialog(
                   barrierDismissible: false,
                   context: context,
@@ -434,7 +442,6 @@ class DashboardScreen extends StatelessWidget {
                                 count: state.visitorPassesCount?.count ?? 0,
                                 onPressed: () {
                                   onViewVisitorPasses(context);
-                                  // print('count##${state.visitorPassesCount?.count}');
                                 },
                               ),
                             ),

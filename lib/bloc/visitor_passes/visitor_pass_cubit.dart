@@ -56,7 +56,6 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
       emit(state.copyWith(visitorPasses: response.record));
-      //print('response${response.record?.length}');
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching visitor pass');

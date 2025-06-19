@@ -225,7 +225,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                       msg: "Please type note first.");
                                   return false;
                                 }
-                                // print('add^^^${noteController.text}');
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
                                     .addServiceLog(

@@ -71,7 +71,6 @@ class _CheckOutsFilterBottomSheetState
                   lastDate: lastDayOfMonth,
                   onDateRangeSelected: (range) {
                     context.read<CheckOutCubit>().onChangeDateRange(range);
-                    // print("SelectedRange: $range ");
                   },
                 ),
                 const Gap(10),
@@ -92,7 +91,6 @@ class _CheckOutsFilterBottomSheetState
                       dateRangeController.text =
                           DateTimeUtil.getFormatDateRange(dateRangeString);
                       context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
-                      // print('dateRangeString $dateRangeString');
                     }
                   },
                 ),

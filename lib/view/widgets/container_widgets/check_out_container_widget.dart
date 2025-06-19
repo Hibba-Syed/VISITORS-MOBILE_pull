@@ -88,7 +88,6 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                   textColor: AppColors.red,
                       text: 'Checkout',
                       onPressed: (){
-                        print("checkOutOnPress");
                         widget.checkOutOnPress?.call();
                       }
                     ),

@@ -32,14 +32,10 @@ class WorkOrderRFPRepoImpl implements WorkOrderRFPRepo{
   }
   @override
   Future<WorkOrderDetailsResponseModel?> getWorkOrderDetails({required int? workOrderId}) async {
-    // print('work order URL: $workOrderId');
     try {
      // final filter = {"vendors":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
       final filter = {"filter":{"include":[{"relation":"new_vendor","select":["id","company_name","contact_number","contact_email"]},{"relation":"category","select":["name"]},{"relation":"assets","select":["name"]},{"relation":"primary_contact","select":["jp_job_id","name","email","contact_number","is_primary"]}]}};
-      // print(vendors);
       String url = '${ApiUrl.workOrderDetails}/$workOrderId?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
-      //
-      // print('work order details URL: ${Uri.parse(url)}');
       dynamic response = await _apiService.getAuthGetApiResponse((url));
       return WorkOrderDetailsResponseModel.fromJson(response);
     } catch (e) {
@@ -49,7 +45,6 @@ class WorkOrderRFPRepoImpl implements WorkOrderRFPRepo{
   @override
   Future<AddLogWorkOrderResponseModel?> addWorkOrderLog({required Map<String, dynamic> data}) async {
     try {
-      // print('add log: ${ApiUrl.addWorkOrderLog}');
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.addWorkOrderLog, data);
       return AddLogWorkOrderResponseModel.fromJson(response);

@@ -146,9 +146,6 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                   .serviceableCheckIns);
                                         },
                                         detailsOnPressed: () {
-                                          // print('service move: ${service?.toJson()
-                                          // }
-                                          // );
                                           context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
                                           Navigator.push(
                                               context,
