@@ -180,7 +180,7 @@ class FileDownloader {
   static Future<void> openAndroidFile(String filePath) async {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       // print("Failed to open file: ${e.message}");
     }
   }
@@ -189,7 +189,7 @@ class FileDownloader {
   static Future<void> openIosFile(String filePath) async {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       // print(e.code);
       // print(e.details);
       // print(e.stacktrace);
@@ -208,7 +208,7 @@ class FileDownloader {
           'fileContent': params.data,
         });
         return result as String?;
-      } on PlatformException catch (e) {
+      } on PlatformException catch (_) {
         // print("Failed to save file: ${e.message}");
         return null;
       }

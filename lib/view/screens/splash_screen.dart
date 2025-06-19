@@ -10,7 +10,6 @@ import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/preference_utils.dart';
 import '../../resource/constants/images.dart';
 import '../../resource/globals.dart';
-import '../../service/connectivity_service.dart';
 import '../../utils/routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {

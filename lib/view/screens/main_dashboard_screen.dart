@@ -30,7 +30,7 @@ import 'directory/directory_screen.dart';
 import 'messages/message_screen.dart';
 
 class MainDashboardScreen extends StatefulWidget {
-  MainDashboardScreen({super.key});
+  const MainDashboardScreen({super.key});
   @override
   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
 
