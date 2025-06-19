@@ -229,7 +229,6 @@ class _DeliveryPermitServiceDetailsScreenState
             children: [
               Expanded(
                 child: CustomButton(
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -301,7 +300,6 @@ class _DeliveryPermitServiceDetailsScreenState
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.green,
-                      padding: EdgeInsets.symmetric(vertical: 2),
                       text: 'Complete',
                       onPressed: () {
                         showDialog(

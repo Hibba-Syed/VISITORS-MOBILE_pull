@@ -204,7 +204,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.cyanBlue,
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -281,7 +280,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                 Expanded(
                     child: CustomButton(
                         buttonColor: AppColors.green,
-                        padding: EdgeInsets.symmetric(vertical: 2),
                         text: 'Complete',
                         onPressed: () {
                           showDialog(
@@ -375,7 +373,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.yellow,
-                      padding: EdgeInsets.symmetric(vertical: 2),
                       text: 'Clear Payment',
                       onPressed: () {
                         showDialog(

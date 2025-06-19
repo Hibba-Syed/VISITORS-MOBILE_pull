@@ -327,7 +327,6 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                 child: CustomButton(
                     buttonColor: AppColors.green,
                     text: 'Complete',
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,

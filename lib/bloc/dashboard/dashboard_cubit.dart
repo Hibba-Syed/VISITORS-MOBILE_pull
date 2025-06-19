@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -104,7 +103,8 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> getDashboardServices({int? limit}) async {
     emit(state.copyWith(isServicesLoading: true));
-    ServiceResponseModel? response = await _serviceRepo.getServices(limit: limit).onError(
+    ServiceResponseModel? response =
+        await _serviceRepo.getServices(limit: limit).onError(
       (error, stackTrace) {
         emit(state.copyWith(isServicesLoading: false));
         Fluttertoast.showToast(
@@ -117,7 +117,8 @@ class DashboardCubit extends Cubit<DashboardState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(serviceModel: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching service');
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching service');
     }
   }
 
@@ -144,11 +145,9 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> getVisitorPasses() async {
     emit(state.copyWith(isVisitorPassLoading: true, page: 1));
-    VisitorPassResponseModel? response = await _visitorPassRepo
-        .getVisitorPasses(
-    )
-        .onError(
-          (error, stackTrace) {
+    VisitorPassResponseModel? response =
+        await _visitorPassRepo.getVisitorPasses().onError(
+      (error, stackTrace) {
         emit(state.copyWith(isVisitorPassLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -166,17 +165,14 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Future<bool> checkOutVisitors(
-      BuildContext context, {
-        required int? id,
-        required Map<String, dynamic> data,
-      }) async {
+    BuildContext context, {
+    required int? id,
+    required Map<String, dynamic> data,
+  }) async {
     emit(state.copyWith(isCheckOutVisitor: true));
     try {
       CheckOutVisitorResponseModel? response = await _checkInRepo
-          .checkOutVisitors(
-          data: data,
-          id: id
-      )
+          .checkOutVisitors(data: data, id: id)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCheckOutVisitor: false));
         // log( error.toString());
@@ -188,12 +184,18 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(isCheckOutVisitor: false));
       // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
+        emit(state.copyWith(
+            checkOutVisitors: (response.record == null)
+                ? state.checkOutVisitors
+                : [response.record!, ...state.checkOutVisitors ?? []]));
         if (context.mounted) {
           Navigator.pop(context);
         }
         getDashboardCheckIns();
-        Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
+        Fluttertoast.showToast(
+            msg: (data['checkout'] != null)
+                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
+                : ' Checkout successfully');
         return true;
       } else {
         Fluttertoast.showToast(
@@ -211,8 +213,8 @@ class DashboardCubit extends Cubit<DashboardState> {
   Future<void> getVisitorPassesCount() async {
     emit(state.copyWith(isVisitorPassesCountLoading: true));
     VisitorPassesCountResponseModel? response =
-    await _visitorPassRepo.getVisitorPassesCount().onError(
-          (error, stackTrace) {
+        await _visitorPassRepo.getVisitorPassesCount().onError(
+      (error, stackTrace) {
         emit(state.copyWith(isVisitorPassesCountLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -225,62 +227,59 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(visitorPassesCount: response.record));
       // print('Visitor Pass Count cubit : ${response.record?.count}');
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching visitor passes count');
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching visitor passes count');
     }
   }
 
-  Future<void> getData(BuildContext context,
-      //{bool isNavigationAllow = true}
-      ) async {
+  Future<void> getData(
+    BuildContext context,
+    //{bool isNavigationAllow = true}
+  ) async {
     final dashboardCubit = context.read<DashboardCubit>();
+    final visitorPassCubit = context.read<VisitorPassCubit>();
+    final directoryCubit = context.read<DirectoryCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
 
-    if (profileSuccess && context.mounted) {
+    if (profileSuccess) {
       await Future.wait([
         dashboardCubit.getVisitorPassesCount(),
         dashboardCubit.getDashboardCheckIns(limit: 3),
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
-        context.read<VisitorPassCubit>().getVisitorPasses(),
-        context.read<DirectoryCubit>().getUnits(),
-
+        visitorPassCubit.getVisitorPasses(),
+        directoryCubit.getUnits(),
       ]);
-    }
-
-   // if (isNavigationAllow) {
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.mainDashboard,
-              (route) => false,
+          (route) => false,
         );
       }
-      else {
-        if (context.mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.login,
-                (route) => false,
-          );
-        }
+    } else {
+      if (context.mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.login,
+          (route) => false,
+        );
       }
-   // }
-  }
-    Future<void> refreshData(BuildContext context) async {
-      final dashboardCubit = context.read<DashboardCubit>();
-      await dashboardCubit.getDashboardCheckIns(limit: 3);
-      await dashboardCubit.getDashboardCount();
-      await dashboardCubit.getDashboardServices(limit: 3);
-      await dashboardCubit.getDashboardWorkOrder(limit: 3);
-      dashboardCubit.getVisitorPassesCount();
-      if(context.mounted){
-        context.read<VisitorPassCubit>().getVisitorPasses();
-        context.read<DirectoryCubit>().getUnits();
-
-      }
-
     }
+  }
 
-
+  Future<void> refreshData(BuildContext context) async {
+    final dashboardCubit = context.read<DashboardCubit>();
+    final visitorPassCubit = context.read<VisitorPassCubit>();
+    final directoryCubit = context.read<DirectoryCubit>();
+    await dashboardCubit.getDashboardCheckIns(limit: 3);
+    await dashboardCubit.getDashboardCount();
+    await dashboardCubit.getDashboardServices(limit: 3);
+    await dashboardCubit.getDashboardWorkOrder(limit: 3);
+    dashboardCubit.getVisitorPassesCount();
+    if (context.mounted) {
+      visitorPassCubit.getVisitorPasses();
+      directoryCubit.getUnits();
+    }
+  }
 }
-
