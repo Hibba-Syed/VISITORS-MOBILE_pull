@@ -21,6 +21,7 @@ import 'package:visitors/view/widgets/responsive_layout_widget.dart';
 import '../../bloc/check_out/check_out_cubit.dart';
 import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
+import '../../service/connectivity_service.dart';
 import '../../utils/app_utils.dart';
 import 'check_ins/check_in_screen.dart';
 import 'check_outs/check_outs_screen.dart';
@@ -29,9 +30,55 @@ import 'dashboard/dashboard_screen.dart';
 import 'directory/directory_screen.dart';
 import 'messages/message_screen.dart';
 
-class MainDashboardScreen extends StatelessWidget {
-  MainDashboardScreen({super.key});
+class MainDashboardScreen extends StatefulWidget {
+  const MainDashboardScreen({super.key});
+  @override
+  State<MainDashboardScreen> createState() => _MainDashboardScreenState();
+
+  static final List<DrawerItemModel> drawerItems = [
+    DrawerItemModel(
+        index: AppConstants.dashboardIndex,
+        title: 'Dashboard',
+        iconPath: AppImages.dashboard),
+    DrawerItemModel(
+        index: AppConstants.checkInsIndex,
+        title: 'Check-Ins',
+        iconPath: AppImages.menuCheckIn),
+    DrawerItemModel(
+        index: AppConstants.eServicesIndex,
+        title: 'E-Services',
+        iconPath: AppImages.menuEservices),
+    DrawerItemModel(
+        index: AppConstants.workOrderRfpIndex,
+        title: 'Work Order / RFPs',
+        iconPath: AppImages.menuRFPs),
+    DrawerItemModel(
+        index: AppConstants.messagesIndex,
+        title: 'Messages',
+        iconPath: AppImages.menuMsg),
+    DrawerItemModel(
+        index: AppConstants.checkOutsIndex,
+        title: 'Check-Outs',
+        iconPath: AppImages.menuCheckout),
+    DrawerItemModel(
+        index: AppConstants.directoryIndex,
+        title: 'Directory',
+        iconPath: AppImages.directory),
+    DrawerItemModel(
+        index: AppConstants.logoutIndex,
+        title: 'Logout',
+        iconPath: AppImages.logout),
+  ];
+}
+
+class _MainDashboardScreenState extends State<MainDashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    ConnectivityService().initialize(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +130,6 @@ class MainDashboardScreen extends StatelessWidget {
                     const Gap(10),
                     Expanded(
                         child: CustomButton(
-                            padding: EdgeInsets.symmetric(vertical: 2),
                             text: 'Logout',
                             invert: true,
                             onPressed: () {
@@ -100,7 +146,7 @@ class MainDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildDrawer(BuildContext context, int selectedIndex) {
-    final items = drawerItems;
+    final items = MainDashboardScreen.drawerItems;
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
       backgroundColor: AppColors.white,
@@ -241,39 +287,4 @@ class MainDashboardScreen extends StatelessWidget {
         return const SizedBox.shrink();
     }
   }
-
-  static final List<DrawerItemModel> drawerItems = [
-    DrawerItemModel(
-        index: AppConstants.dashboardIndex,
-        title: 'Dashboard',
-        iconPath: AppImages.dashboard),
-    DrawerItemModel(
-        index: AppConstants.checkInsIndex,
-        title: 'Check-Ins',
-        iconPath: AppImages.menuCheckIn),
-    DrawerItemModel(
-        index: AppConstants.eServicesIndex,
-        title: 'E-Services',
-        iconPath: AppImages.menuEservices),
-    DrawerItemModel(
-        index: AppConstants.workOrderRfpIndex,
-        title: 'Work Order / RFPs',
-        iconPath: AppImages.menuRFPs),
-    DrawerItemModel(
-        index: AppConstants.messagesIndex,
-        title: 'Messages',
-        iconPath: AppImages.menuMsg),
-    DrawerItemModel(
-        index: AppConstants.checkOutsIndex,
-        title: 'Check-Outs',
-        iconPath: AppImages.menuCheckout),
-    DrawerItemModel(
-        index: AppConstants.directoryIndex,
-        title: 'Directory',
-        iconPath: AppImages.directory),
-    DrawerItemModel(
-        index: AppConstants.logoutIndex,
-        title: 'Logout',
-        iconPath: AppImages.logout),
-  ];
 }

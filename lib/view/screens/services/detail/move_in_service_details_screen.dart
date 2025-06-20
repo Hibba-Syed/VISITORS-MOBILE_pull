@@ -254,7 +254,6 @@ class _MoveInServiceDetailsScreenState
             children: [
               Expanded(
                 child: CustomButton(
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     buttonColor: AppColors.cyanBlue,
                     text: 'Add Log',
                     onPressed: () {
@@ -334,7 +333,6 @@ class _MoveInServiceDetailsScreenState
                     child: CustomButton(
                         buttonColor: AppColors.green,
                         text: 'Complete',
-                        padding: EdgeInsets.symmetric(vertical: 2),
                         onPressed: () {
                           showDialog(
                               barrierDismissible: false,
@@ -429,7 +427,6 @@ class _MoveInServiceDetailsScreenState
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
-                      padding: EdgeInsets.symmetric(vertical: 2),
                       buttonColor: AppColors.yellow,
                       text: 'Clear Payment',
                       onPressed: () {

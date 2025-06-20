@@ -241,7 +241,6 @@ final  TextEditingController _idController = TextEditingController();
             children: [
               Expanded(
                 child: CustomButton(
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -313,7 +312,6 @@ final  TextEditingController _idController = TextEditingController();
                   child: CustomButton(
                       buttonColor: AppColors.green,
                       text: 'Complete',
-                      padding: EdgeInsets.symmetric(vertical: 2),
                       onPressed: () {
                         showDialog(
                             barrierDismissible: false,

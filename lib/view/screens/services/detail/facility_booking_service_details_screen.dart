@@ -251,7 +251,6 @@ class _FacilityBookingServiceDetailsScreenState
             children: [
               Expanded(
                 child: CustomButton(
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -321,7 +320,6 @@ class _FacilityBookingServiceDetailsScreenState
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
-                      padding: EdgeInsets.symmetric(vertical: 2),
                       buttonColor: AppColors.green,
                       text: 'Complete',
                       onPressed: () {

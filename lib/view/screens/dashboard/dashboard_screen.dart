@@ -106,7 +106,6 @@ class DashboardScreen extends StatelessWidget {
                     const Gap(10),
                     Expanded(
                       child: CustomButton(
-                        padding: EdgeInsets.symmetric(vertical: 2),
                         text: 'Yes, Exit',
                         invert: true,
                         onPressed: () {

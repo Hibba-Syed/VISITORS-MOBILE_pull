@@ -18,6 +18,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     context.read<DashboardCubit>().getData(context);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 70, width: 70, child: LoaderWidget()),
+            SizedBox(
+              height: 70,
+              width: 70,
+              child: LoaderWidget(),
+            ),
             Gap(60),
             Text(
               'Wait while setting up the Dashboard',

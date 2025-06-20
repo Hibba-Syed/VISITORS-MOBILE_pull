@@ -28,34 +28,33 @@ class _SplashScreenState extends State<SplashScreen> {
       5.seconds,
       () async {
         if (!mounted) return;
-        if (Globals().token?.isNotEmpty??false) {
-         bool result = await LocalAuthService().hasBiometricSupport();
-         if (!mounted) return;
-         if(result){
-          Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.biometricAuth, (route) => false);
-         }else{
-          _navigateToNextScreen();
-         }
-          
+        if (Globals().token?.isNotEmpty ?? false) {
+          // print('token^^^${Globals().token}');
+          bool result = await LocalAuthService().hasBiometricSupport();
+          if (!mounted) return;
+          if (result) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, AppRoutes.biometricAuth, (route) => false);
+          } else {
+            _navigateToNextScreen();
+          }
         } else {
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.login, (route) => false);
-         }
+        }
       },
     );
   }
 
-    void _navigateToNextScreen() {
+  void _navigateToNextScreen() {
     context.read<AuthCubit>().login(
-      context,
-      password: spUtil.password,
-      communityId: spUtil.communityId,
-      gate: spUtil.gate,
-      loginId: spUtil.loginId,
-    );
+          context,
+          password: spUtil.password,
+          communityId: spUtil.communityId,
+          gate: spUtil.gate,
+          loginId: spUtil.loginId,
+        );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               height: double.infinity,
               width: double.infinity,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.primary,
               ),
             ),
@@ -79,15 +78,20 @@ class _SplashScreenState extends State<SplashScreen> {
                       Align(
                         alignment: Alignment.center,
                         child: Text('Nice to see you',
-                          style: AppUtils.isTablet(context) ? AppTextStyles.style25white600 : AppTextStyles.style20white600 ),
+                            style: AppUtils.isTablet(context)
+                                ? AppTextStyles.style25white600
+                                : AppTextStyles.style20white600),
                       ),
                       Align(
                         alignment: Alignment.center,
-                        child: Text('Visitor Management System',
-                          style: AppUtils.isTablet(context) ? AppTextStyles.style35white600: AppTextStyles.style24white600,
+                        child: Text(
+                          'Visitor Management System',
+                          style: AppUtils.isTablet(context)
+                              ? AppTextStyles.style35white600
+                              : AppTextStyles.style24white600,
                         ),
                       ),
-                       Gap(40),
+                      Gap(40),
                       Image.asset(
                         AppImages.splash,
                         width: MediaQuery.of(context).size.height * 0.25,
@@ -95,7 +99,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     ],
                   ),
                 ),
-                Text('© ${DateTime.now().year} ISKAAN Visitor Portal',style: AppTextStyles.style15white600,),
+                Text(
+                  '© ${DateTime.now().year} ISKAAN Visitor Portal',
+                  style: AppTextStyles.style15white600,
+                ),
                 const Gap(10),
               ],
             ),
@@ -104,5 +111,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-
 }

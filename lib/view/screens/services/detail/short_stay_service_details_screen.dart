@@ -236,7 +236,6 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
             children: [
               Expanded(
                 child: CustomButton(
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(

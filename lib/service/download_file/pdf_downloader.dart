@@ -174,6 +174,7 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
+      print(e);
     }
   }
 
@@ -182,6 +183,7 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
+      print(e);
     }
   }
 

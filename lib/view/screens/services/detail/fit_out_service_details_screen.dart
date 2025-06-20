@@ -285,7 +285,6 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
             children: [
               Expanded(
                 child: CustomButton(
-                    padding: EdgeInsets.symmetric(vertical: 2),
                     text: 'Add Log',
                     onPressed: () {
                       showDialog(
@@ -354,7 +353,6 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                 const Gap(10),
                     Expanded(
                     child: CustomButton(
-                        padding: EdgeInsets.symmetric(vertical: 2),
                         buttonColor: AppColors.green,
                         text: 'Complete',
                         onPressed: () {

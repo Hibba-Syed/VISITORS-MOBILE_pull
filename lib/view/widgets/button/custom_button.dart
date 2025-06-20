@@ -18,7 +18,6 @@ class CustomButton extends StatelessWidget {
   final bool invert;
   final double? width;
   final double? height;
-  final EdgeInsets padding;
   final FontWeight? fontWeight;
   final double? fontSize;
   const CustomButton({
@@ -31,28 +30,28 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.fontSize,
     this.maxLines = 1,
-    this.padding = const EdgeInsets.all(10),
     this.textColor,
-     this.onPressed,
+    this.onPressed,
     this.invert = false,
     this.fontWeight,
     this.borderRadius,
     this.imageHeight,
-    // imageHeight: AppUtils.isTablet(context) ?22 :18,
   });
 
   @override
   Widget build(BuildContext context) {
     final double bothHeight = height ?? (AppUtils.isTablet(context) ? 39 : 36);
-    final double imageSize = imageHeight ?? (AppUtils.isTablet(context) ?22 :18);
-    final double bothFontSize = fontSize ?? (AppUtils.isTablet(context) ?15 :13);
+    final double imageSize =
+        imageHeight ?? (AppUtils.isTablet(context) ? 22 : 18);
+    final double bothFontSize =
+        fontSize ?? (AppUtils.isTablet(context) ? 15 : 12);
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         alignment: Alignment.center,
-        padding: padding,
         width: width,
         height: bothHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius ?? 7),
             border: invert == true
@@ -60,28 +59,27 @@ class CustomButton extends StatelessWidget {
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
         child: Row(
-            mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (image != null)
+            if (image?.isNotEmpty ?? false) ...[
               SvgPicture.asset(
-                '$image',
+                image!,
                 height: imageSize,
-                //imageHeight ?? 18,
                 colorFilter: const ColorFilter.mode(
                   AppColors.white,
                   BlendMode.srcIn,
                 ),
               ),
-            if (image != null) AppUtils.isTablet(context) ? Gap(15) : Gap(10),
-            // AutoSizeText(''),
+              AppUtils.isTablet(context) ? Gap(15) : Gap(10),
+            ],
             Flexible(
               child: Text(
                 text,
                 style: invert
                     ? TextStyle(
                         color: textColor ?? AppColors.primary,
-                        fontSize: fontSize,
+                        fontSize: bothFontSize,
                         fontWeight: FontWeight.w600,
                       )
                     : TextStyle(
