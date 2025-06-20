@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:visitors/bloc/directory/directory_cubit.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 
 import '../../model/check_ins/check_in_model.dart';
@@ -31,7 +30,6 @@ import '../../repo/work_order_rfp/work_order_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
 import '../../utils/routes/app_routes.dart';
-import '../visitor_passes/visitor_pass_cubit.dart';
 part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
@@ -237,8 +235,6 @@ class DashboardCubit extends Cubit<DashboardState> {
     //{bool isNavigationAllow = true}
   ) async {
     final dashboardCubit = context.read<DashboardCubit>();
-    final visitorPassCubit = context.read<VisitorPassCubit>();
-    final directoryCubit = context.read<DirectoryCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
 
@@ -249,8 +245,6 @@ class DashboardCubit extends Cubit<DashboardState> {
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
-        visitorPassCubit.getVisitorPasses(),
-        directoryCubit.getUnits(),
       ]);
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -270,16 +264,10 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> refreshData(BuildContext context) async {
     final dashboardCubit = context.read<DashboardCubit>();
-    final visitorPassCubit = context.read<VisitorPassCubit>();
-    final directoryCubit = context.read<DirectoryCubit>();
     await dashboardCubit.getDashboardCheckIns(limit: 3);
     await dashboardCubit.getDashboardCount();
     await dashboardCubit.getDashboardServices(limit: 3);
     await dashboardCubit.getDashboardWorkOrder(limit: 3);
     dashboardCubit.getVisitorPassesCount();
-    if (context.mounted) {
-      visitorPassCubit.getVisitorPasses();
-      directoryCubit.getUnits();
-    }
   }
 }
