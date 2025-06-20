@@ -184,10 +184,21 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(isCheckOutVisitor: false));
       // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        emit(state.copyWith(
-            checkOutVisitors: (response.record == null)
-                ? state.checkOutVisitors
-                : [response.record!, ...state.checkOutVisitors ?? []]));
+        final updated = response.record;
+        if (updated != null) {
+          final list = state.checkOutVisitors ?? [];
+
+          final index = list.indexWhere((visitor) => visitor.id == updated.id);
+          final updatedList = [...list];
+
+          if (index != -1) {
+            updatedList[index] = updated; // Replace existing item
+          } else {
+            updatedList.insert(0, updated); // Insert new item at top
+          }
+
+          emit(state.copyWith(checkOutVisitors: updatedList));
+        }
         if (context.mounted) {
           Navigator.pop(context);
         }

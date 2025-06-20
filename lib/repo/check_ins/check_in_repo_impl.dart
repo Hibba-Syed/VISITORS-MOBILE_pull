@@ -65,9 +65,12 @@ class CheckInRepoImpl implements CheckInRepo {
   }) async {
     try {
       String url = '${ApiUrl.checkOutVisitor}/$id';
+      print('checkOutVisitors$url');
       dynamic response =
       await _apiService.getAuthPutApiResponse(url, data: data);
+      print('checkOutVisitors$response');
       return CheckOutVisitorResponseModel.fromJson(response);
+
     } catch (e) {
       rethrow;
     }
