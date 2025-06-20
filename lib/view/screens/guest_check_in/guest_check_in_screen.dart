@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:google_mlkit_document_scanner/google_mlkit_document_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image/image.dart' as img;
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -18,7 +17,6 @@ import 'package:visitors/view/screens/guest_check_in/components/get_info_card_wi
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/container_widgets/scan_type_container_widget.dart';
-import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/view/widgets/picker/custom_date_time_picker.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
@@ -60,7 +58,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   String? _selectedExpiryDate;
   String? _selectedItemNationality;
   File? _imageFile;
-  List<File?>? _personImageFiles;
+  File? _personImage;
   final List<String> _nationalityItems = [
     'Pakistan',
     'Australia',
@@ -68,13 +66,18 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     'India'
   ];
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-        source: ImageSource.camera, maxWidth: 539, maxHeight: 340);
-
-    if (pickedFile != null) {
+    DocumentScannerOptions documentOptions = DocumentScannerOptions(
+      documentFormat: DocumentFormat.jpeg, // set output document format
+      mode: ScannerMode.base, // to control what features are enabled
+      pageLimit: 1, // setting a limit to the number of pages scanned
+      isGalleryImport: false, // importing from the photo gallery
+    );
+    final documentScanner = DocumentScanner(options: documentOptions);
+    DocumentScanningResult result = await documentScanner.scanDocument();
+    final List<String> images = result.images;
+    if (images.isNotEmpty && images.first.isNotEmpty) {
       setState(() {
-        _imageFile = File(pickedFile.path);
+        _imageFile = File(images.first);
       });
 
       await _performOCR(_imageFile!);
@@ -103,7 +106,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
     setState(() {
       // _extractedText = text;
-      _personImageFiles = _extractPersonImage(imageFile, faces);
+      _personImage = _extractPersonImage(imageFile, faces);
 
       // Auto-fill form fields
       _nameController.text = parsedData['Name'] ?? '';
@@ -135,19 +138,15 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     textDetector.close();
   }
 
-  List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
+  File? _extractPersonImage(File originalImage, List<Face> faces) {
     if (faces.isNotEmpty) {
-
-      List<File?>? images = [];
+      File? image;
       for (int i = 0; i < faces.length; i++) {
         final face = faces[i];
         final boundingBox = face.boundingBox;
-        images.add(_cropImage(originalImage, boundingBox, index: i));
+        image = _cropImage(originalImage, boundingBox, index: i);
       }
-      for (var element in images) {
-        print(element?.path);
-      }
-      return images;
+      return image;
     }
     return null; // Return null if no image is extracted
   }
@@ -162,10 +161,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         img.decodeImage(originalImage.readAsBytesSync())!;
 
     // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt() - 20;
-    final int top = boundingBox.top.toInt() - 16;
-    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 40;
-    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 46;
+    final int left = boundingBox.left.toInt() - 150;
+    final int top = boundingBox.top.toInt() - 150;
+    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 300;
+    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 300;
 
     // print('left:: $left');
     // print('top:: $top');
@@ -321,11 +320,23 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   const Gap(20),
                   Align(
                     alignment: Alignment.center,
-                    child: const NetworkImageWidget(
-                      url:
-                          "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                      height: 150,
-                      width: 150,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 4,
+                      height: MediaQuery.of(context).size.width / 4,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.darkGrey),
+                      ),
+                      child: (_personImage?.path.isNotEmpty ?? false)
+                          ? Image.file(
+                              _personImage!,
+                              fit: BoxFit.fill,
+                            )
+                          : Icon(
+                              Icons.person_outline_rounded,
+                              size: MediaQuery.of(context).size.width / 4,
+                            ),
                     ),
                   ),
                   const Gap(25),
@@ -360,78 +371,49 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 : AppTextStyles
                                                     .style14Black600),
                                         Gap(20),
-                                        AppUtils.isTablet(context)
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 0,
-                                                        vertical: 20),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    ScanTypeContainerWidget(
-                                                      text: 'Passport',
-                                                      textSize: 16,
-                                                      iconSize: 30,
-                                                      padding: 10,
-                                                      heightContainer: 110,
-                                                      widthContainer: 110,
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    ScanTypeContainerWidget(
-                                                      text: 'Emirates Id',
-                                                      textSize: 16,
-                                                      iconSize: 30,
-                                                      padding: 10,
-                                                      heightContainer: 110,
-                                                      widthContainer: 110,
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    ScanTypeContainerWidget(
-                                                      text: 'Driving license',
-                                                      textSize: 16,
-                                                      iconSize: 30,
-                                                      padding: 10,
-                                                      heightContainer: 110,
-                                                      widthContainer: 110,
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  ScanTypeContainerWidget(
-                                                    text: 'Passport',
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  ScanTypeContainerWidget(
-                                                    text: 'Emirates Id',
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  ScanTypeContainerWidget(
-                                                    text: 'Driving license',
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              )
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 20),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              ScanTypeContainerWidget(
+                                                text: 'Passport',
+                                                textSize: 16,
+                                                iconSize: 30,
+                                                padding: 10,
+                                                heightContainer: 110,
+                                                widthContainer: 110,
+                                                onTap: () {
+                                                  _onScanPassportTap();
+                                                },
+                                              ),
+                                              ScanTypeContainerWidget(
+                                                text: 'Emirates Id',
+                                                textSize: 16,
+                                                iconSize: 30,
+                                                padding: 10,
+                                                heightContainer: 110,
+                                                widthContainer: 110,
+                                                onTap: () {
+                                                  _onScanEmiratesIdTap();
+                                                },
+                                              ),
+                                              ScanTypeContainerWidget(
+                                                text: 'Driving license',
+                                                textSize: 16,
+                                                iconSize: 30,
+                                                padding: 10,
+                                                heightContainer: 110,
+                                                widthContainer: 110,
+                                                onTap: () {
+                                                  _onScanDrivingLicenseTap();
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     );
                                   },
@@ -869,72 +851,68 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.darkGrey),
                       ),
-                      child:
-                          (_personImageFiles?.first?.path.isNotEmpty ?? false)
-                              ? Image.file(
-                                  _personImageFiles!.first!,
-                                  fit: BoxFit.fill,
-                                )
-                              : Icon(
-                                  Icons.person_outline_rounded,
-                                  size: MediaQuery.of(context).size.width / 4,
-                                ),
+                      child: (_personImage?.path.isNotEmpty ?? false)
+                          ? Image.file(
+                              _personImage!,
+                              fit: BoxFit.fill,
+                            )
+                          : Icon(
+                              Icons.person_outline_rounded,
+                              size: MediaQuery.of(context).size.width / 4,
+                            ),
                     ),
                   ),
                   const Gap(20),
                   CustomButton(
-                      buttonColor: AppColors.primary,
-                      text: 'Scan ID',
-                      height: 41,
-                      borderRadius: 6,
-                      image: AppImages.scan,
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return CustomAlertDialogBox(
-                                insetPadding: EdgeInsets.all(10),
-                                hideBothButtons: true,
-                                title: 'Select Type',
-                                contentBuilder: (context, setState) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                    buttonColor: AppColors.primary,
+                    text: 'Scan ID',
+                    height: 41,
+                    borderRadius: 6,
+                    image: AppImages.scan,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CustomAlertDialogBox(
+                            insetPadding: EdgeInsets.all(10),
+                            hideBothButtons: true,
+                            title: 'Select Type',
+                            contentBuilder: (context, setState) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          ScanTypeContainerWidget(
-                                            text: 'Passport',
-                                            onTap: () {
-                                              _pickImage();
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ScanTypeContainerWidget(
-                                            text: 'Emirates Id',
-                                            onTap: () {
-                                              _pickImage();
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ScanTypeContainerWidget(
-                                            text: 'Driving license',
-                                            onTap: () {
-                                              _pickImage();
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
+                                      ScanTypeContainerWidget(
+                                        text: 'Passport',
+                                        onTap: () {
+                                          _onScanPassportTap();
+                                        },
+                                      ),
+                                      ScanTypeContainerWidget(
+                                        text: 'Emirates Id',
+                                        onTap: () {
+                                          _onScanEmiratesIdTap();
+                                        },
+                                      ),
+                                      ScanTypeContainerWidget(
+                                        text: 'Driving license',
+                                        onTap: () {
+                                          _onScanDrivingLicenseTap();
+                                        },
                                       ),
                                     ],
-                                  );
-                                },
+                                  ),
+                                ],
                               );
-                            });
-                        // _pickImage();
-                      }),
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
                   const Gap(20),
                   Form(
                     key: _formKey,
@@ -1336,5 +1314,20 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         );
       },
     );
+  }
+
+  void _onScanPassportTap() {
+    _pickImage();
+    Navigator.pop(context);
+  }
+
+  void _onScanEmiratesIdTap() {
+    _pickImage();
+    Navigator.pop(context);
+  }
+
+  void _onScanDrivingLicenseTap() {
+    _pickImage();
+    Navigator.pop(context);
   }
 }
