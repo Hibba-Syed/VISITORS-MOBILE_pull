@@ -18,7 +18,6 @@ class MessageImpl implements MessageRepo {
     try {
       String url =
           '${ApiUrl.messages}?page=${page ?? 1}&limit=${limit ??10}';
-      print('message^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return MessagesResponseModel.fromJson(response);
     } catch (e) {
@@ -28,15 +27,14 @@ class MessageImpl implements MessageRepo {
   @override
   Future<SendMessageResponseModel?> sendMessage({
     required Map<String, dynamic> data,
-    required List<http.MultipartFile> files,
+     List<http.MultipartFile>? files,
   }) async {
     try {
       String url = ApiUrl.sendMessage;
-      print('send message^^ $url');
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,
-        files,
+        files ?? [],
       );
       return SendMessageResponseModel.fromJson(response);
     } catch (e) {

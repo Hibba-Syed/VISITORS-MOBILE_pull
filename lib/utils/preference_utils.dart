@@ -44,12 +44,12 @@ class PreferenceUtil {
     return _spf!.getKeys();
   }
 
-  get(String key) {
+  Object? get(String key) {
     if (_beforeCheck()) return null;
     return _spf!.get(key);
   }
 
-  getString(String key) {
+  String? getString(String key) {
     if (_beforeCheck()) return "";
     return _spf!.getString(key);
   }
@@ -176,6 +176,6 @@ class PreferenceUtil {
 }
 
 late PreferenceUtil spUtil;
-initPreferences() async {
+Future<void> initPreferences() async {
   spUtil = (await PreferenceUtil.getInstance())!;
 }

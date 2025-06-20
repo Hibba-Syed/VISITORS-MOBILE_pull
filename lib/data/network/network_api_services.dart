@@ -71,7 +71,7 @@ class NetworkApiServices implements BaseApiServices {
       });
       debugPrint('code: ${response.statusCode}\nbody: ${response.body}');
       responseJson = returnResponse(response);
-      print('add Log ??? ${response.body} status  ${response.statusCode}');
+      //print('add Log ??? ${response.body} status  ${response.statusCode}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     } catch (e) {
@@ -100,7 +100,7 @@ class NetworkApiServices implements BaseApiServices {
       debugPrint(
           'status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
-      print('response::: ${response.body}');
+      // print('response::: ${response.body}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     }
@@ -231,7 +231,7 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
-      print('response::: ${response.body}');
+      // print('response::: ${response.body}');
       responseJson = returnResponse(response);
 
       return responseJson;
@@ -277,6 +277,7 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   dynamic returnResponse(http.Response response) {
+    print('ress Code:: ${response.statusCode}');
     print('ress:: ${response.body}');
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
@@ -285,6 +286,7 @@ class NetworkApiServices implements BaseApiServices {
     switch (statusCode) {
       // Add your own status code errors or message
       case 200:
+      case 201:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:

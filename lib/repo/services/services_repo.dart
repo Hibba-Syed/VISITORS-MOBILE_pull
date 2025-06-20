@@ -1,5 +1,10 @@
+import 'package:http/http.dart' as http;
+
+import '../../model/service/add_service_log_response_model.dart';
+import '../../model/service/move_out_service_clear_payment_response_model.dart';
 import '../../model/service/service_details_response_model.dart';
 import '../../model/service/service_response_model.dart';
+import '../../model/service/visitors_service_complete_response_model.dart';
 
 abstract class ServiceRepo{
   Future<ServiceResponseModel?> getServices({
@@ -8,7 +13,20 @@ abstract class ServiceRepo{
     String? keyword,
     int? unitId,
     String? serviceType,
+    String? type,
 
   });
   Future<ServiceDetailsResponseModel?> getServiceDetails( {int? serviceId});
+  Future<AddServiceLogResponseModel?> addServiceLog(
+      {required Map<String, dynamic> data,
+      });
+  Future<VisitorsServiceCompleteResponseModel?> completeService(
+      {required Map<String, dynamic> data,
+      });
+  Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({
+      required int? id,
+      required Map<String, dynamic> data,
+       required List<http.MultipartFile> files,
+
+      });
 }

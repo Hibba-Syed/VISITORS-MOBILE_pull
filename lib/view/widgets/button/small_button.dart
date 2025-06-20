@@ -22,8 +22,8 @@ class SmallButton extends StatelessWidget {
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: onPressed,
       child: Container(
-        height: height,
-        width: width,
+        width: AppUtils.isTablet(context) ? 50 : 35,
+        height: AppUtils.isTablet(context) ? 50 : 35,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: backgroundColor

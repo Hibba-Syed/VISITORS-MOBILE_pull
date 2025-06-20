@@ -8,6 +8,53 @@ class UnitModel {
   String? titleDeedUrl;
   List<PrimaryOwner>? primaryOwner;
   Resident? resident;
+  String? name;
+  dynamic mollakUnitName;
+  int? unitSizeSqft;
+  dynamic unitTypeId;
+  int? componentId;
+  dynamic subComponentId;
+  dynamic balconyArea;
+  dynamic suiteArea;
+  int? applicableArea;
+  dynamic virtualAccountNumber;
+  dynamic plotNo;
+  int? parkingCount;
+  int? actualArea;
+  int? bedroomCount;
+  dynamic bathroomCount;
+  int? isOccupied;
+  dynamic datePurchased;
+  int? isActive;
+  dynamic saleDeed;
+  int? isParking;
+  int? isParkingAvailable;
+  int? parkings;
+  String? adult;
+  dynamic child;
+  dynamic agentId;
+  dynamic leaseCompanyId;
+  String? unitExternalId;
+  int? isMollakEnable;
+  dynamic landType;
+  dynamic landStatus;
+  dynamic zoneCode;
+  int? recoveryReminderStatus;
+  String? recoveryAnalysisNote;
+  String? status;
+  double? balance;
+  int? pdc;
+  int? isLfpExempt;
+  dynamic mollakBuildingEnglishName;
+  dynamic mollakBuildingArabicName;
+  dynamic dtcmPermit;
+  dynamic dtcmPermitExpiry;
+  String? titleDeed;
+  String? titleDeedNumber;
+  dynamic vaNumber;
+  DateTime? updatedAt;
+  DateTime? createdAt;
+  dynamic deletedAt;
 
   UnitModel({
     this.id,
@@ -19,6 +66,53 @@ class UnitModel {
     this.titleDeedUrl,
     this.primaryOwner,
     this.resident,
+    this.name,
+    this.mollakUnitName,
+    this.unitSizeSqft,
+    this.unitTypeId,
+    this.componentId,
+    this.subComponentId,
+    this.balconyArea,
+    this.suiteArea,
+    this.applicableArea,
+    this.virtualAccountNumber,
+    this.plotNo,
+    this.parkingCount,
+    this.actualArea,
+    this.bedroomCount,
+    this.bathroomCount,
+    this.isOccupied,
+    this.datePurchased,
+    this.isActive,
+    this.saleDeed,
+    this.isParking,
+    this.isParkingAvailable,
+    this.parkings,
+    this.adult,
+    this.child,
+    this.agentId,
+    this.leaseCompanyId,
+    this.unitExternalId,
+    this.isMollakEnable,
+    this.landType,
+    this.landStatus,
+    this.zoneCode,
+    this.recoveryReminderStatus,
+    this.recoveryAnalysisNote,
+    this.status,
+    this.balance,
+    this.pdc,
+    this.isLfpExempt,
+    this.mollakBuildingEnglishName,
+    this.mollakBuildingArabicName,
+    this.dtcmPermit,
+    this.dtcmPermitExpiry,
+    this.titleDeed,
+    this.titleDeedNumber,
+    this.vaNumber,
+    this.updatedAt,
+    this.createdAt,
+    this.deletedAt,
   });
 
   factory UnitModel.fromJson(Map<String, dynamic> json) => UnitModel(
@@ -36,6 +130,57 @@ class UnitModel {
         resident: json["resident"] == null
             ? null
             : Resident.fromJson(json["resident"]),
+        name: json["name"],
+        mollakUnitName: json["mollak_unit_name"],
+        unitSizeSqft: json["unit_size_sqft"],
+        unitTypeId: json["unit_type_id"],
+        componentId: json["component_id"],
+        subComponentId: json["sub_component_id"],
+        balconyArea: json["balcony_area"],
+        suiteArea: json["suite_area"],
+        applicableArea: json["applicable_area"],
+        virtualAccountNumber: json["virtual_account_number"],
+        plotNo: json["plot_no"],
+        parkingCount: json["parking_count"],
+        actualArea: json["actual_area"],
+        bedroomCount: json["bedroom_count"],
+        bathroomCount: json["bathroom_count"],
+        isOccupied: json["is_occupied"],
+        datePurchased: json["date_purchased"],
+        isActive: json["is_active"],
+        saleDeed: json["sale_deed"],
+        isParking: json["is_parking"],
+        isParkingAvailable: json["is_parking_available"],
+        parkings: json["parkings"],
+        adult: json["adult"],
+        child: json["child"],
+        agentId: json["agent_id"],
+        leaseCompanyId: json["lease_company_id"],
+        unitExternalId: json["unit_external_id"],
+        isMollakEnable: json["is_mollak_enable"],
+        landType: json["land_type"],
+        landStatus: json["land_status"],
+        zoneCode: json["zone_code"],
+        recoveryReminderStatus: json["recovery_reminder_status"],
+        recoveryAnalysisNote: json["recovery_analysis_note"],
+        status: json["status"],
+        balance: json["balance"]?.toDouble(),
+        pdc: json["pdc"],
+        isLfpExempt: json["is_lfp_exempt"],
+        mollakBuildingEnglishName: json["mollak_building_english_name"],
+        mollakBuildingArabicName: json["mollak_building_arabic_name"],
+        dtcmPermit: json["dtcm_permit"],
+        dtcmPermitExpiry: json["dtcm_permit_expiry"],
+        titleDeed: json["title_deed"],
+        titleDeedNumber: json["title_deed_number"],
+        vaNumber: json["va_number"],
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        deletedAt: json["deleted_at"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,6 +195,53 @@ class UnitModel {
             ? []
             : List<dynamic>.from(primaryOwner!.map((x) => x.toJson())),
         "resident": resident?.toJson(),
+        "name": name,
+        "mollak_unit_name": mollakUnitName,
+        "unit_size_sqft": unitSizeSqft,
+        "unit_type_id": unitTypeId,
+        "component_id": componentId,
+        "sub_component_id": subComponentId,
+        "balcony_area": balconyArea,
+        "suite_area": suiteArea,
+        "applicable_area": applicableArea,
+        "virtual_account_number": virtualAccountNumber,
+        "plot_no": plotNo,
+        "parking_count": parkingCount,
+        "actual_area": actualArea,
+        "bedroom_count": bedroomCount,
+        "bathroom_count": bathroomCount,
+        "is_occupied": isOccupied,
+        "date_purchased": datePurchased,
+        "is_active": isActive,
+        "sale_deed": saleDeed,
+        "is_parking": isParking,
+        "is_parking_available": isParkingAvailable,
+        "parkings": parkings,
+        "adult": adult,
+        "child": child,
+        "agent_id": agentId,
+        "lease_company_id": leaseCompanyId,
+        "unit_external_id": unitExternalId,
+        "is_mollak_enable": isMollakEnable,
+        "land_type": landType,
+        "land_status": landStatus,
+        "zone_code": zoneCode,
+        "recovery_reminder_status": recoveryReminderStatus,
+        "recovery_analysis_note": recoveryAnalysisNote,
+        "status": status,
+        "balance": balance,
+        "pdc": pdc,
+        "is_lfp_exempt": isLfpExempt,
+        "mollak_building_english_name": mollakBuildingEnglishName,
+        "mollak_building_arabic_name": mollakBuildingArabicName,
+        "dtcm_permit": dtcmPermit,
+        "dtcm_permit_expiry": dtcmPermitExpiry,
+        "title_deed": titleDeed,
+        "title_deed_number": titleDeedNumber,
+        "va_number": vaNumber,
+        "updated_at": updatedAt?.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "deleted_at": deletedAt,
       };
 }
 

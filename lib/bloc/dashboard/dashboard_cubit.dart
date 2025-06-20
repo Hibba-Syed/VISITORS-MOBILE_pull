@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/bloc/directory/directory_cubit.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_ins/check_ins_response_model.dart';
 import '../../model/check_out/check_out_model.dart';
+import '../../model/check_outs/check_out_visitor_response_model.dart';
 import '../../model/count/count_model.dart';
 import '../../model/count/count_response_model.dart';
 import '../../model/profile/profile_response_model.dart';
 import '../../model/service/service_model.dart';
+import '../../model/visitor_passes/visitor_pass_model.dart';
+import '../../model/visitor_passes/visitor_pass_response_model.dart';
+import '../../model/visitor_passes/visitor_passes_count_response_model.dart';
 import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
 import '../../repo/check_ins/check_in_repo.dart';
@@ -20,10 +25,13 @@ import '../../repo/profile/profile_repo.dart';
 import '../../repo/profile/profile_repo_impl.dart';
 import '../../repo/services/services_repo.dart';
 import '../../repo/services/services_repo_impl.dart';
-import '../../repo/work_order_rfp/work_order_impl.dart';
+import '../../repo/visitor_passes/visitor_pass_repo.dart';
+import '../../repo/visitor_passes/visitor_pass_repo_impl.dart';
+import '../../repo/work_order_rfp/work_order_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
 import '../../utils/routes/app_routes.dart';
+import '../visitor_passes/visitor_pass_cubit.dart';
 part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
@@ -32,7 +40,8 @@ class DashboardCubit extends Cubit<DashboardState> {
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
   final DashboardRepo _dashboardRepo = DashboardRepoImpl();
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
-  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPImpl();
+  final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPRepoImpl();
+  final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
 
   Future<bool> getProfile() async {
     emit(state.copyWith(isLoading: true));
@@ -94,7 +103,8 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> getDashboardServices({int? limit}) async {
     emit(state.copyWith(isServicesLoading: true));
-    ServiceResponseModel? response = await _serviceRepo.getServices(limit: limit).onError(
+    ServiceResponseModel? response =
+        await _serviceRepo.getServices(limit: limit).onError(
       (error, stackTrace) {
         emit(state.copyWith(isServicesLoading: false));
         Fluttertoast.showToast(
@@ -107,7 +117,8 @@ class DashboardCubit extends Cubit<DashboardState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(serviceModel: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching service');
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching service');
     }
   }
 
@@ -131,34 +142,144 @@ class DashboardCubit extends Cubit<DashboardState> {
           msg: 'Something went wrong while fetching work order');
     }
   }
-  Future<void> getData(BuildContext context) async {
+
+  Future<void> getVisitorPasses() async {
+    emit(state.copyWith(isVisitorPassLoading: true, page: 1));
+    VisitorPassResponseModel? response =
+        await _visitorPassRepo.getVisitorPasses().onError(
+      (error, stackTrace) {
+        emit(state.copyWith(isVisitorPassLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(isVisitorPassLoading: false));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(visitorPasses: response.record));
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching visitor pass');
+    }
+  }
+
+  Future<bool> checkOutVisitors(
+    BuildContext context, {
+    required int? id,
+    required Map<String, dynamic> data,
+  }) async {
+    emit(state.copyWith(isCheckOutVisitor: true));
+    try {
+      CheckOutVisitorResponseModel? response = await _checkInRepo
+          .checkOutVisitors(data: data, id: id)
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isCheckOutVisitor: false));
+        // log( error.toString());
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        return null;
+      });
+      emit(state.copyWith(isCheckOutVisitor: false));
+      // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
+      if (response != null && response.status == 'success') {
+        emit(state.copyWith(
+            checkOutVisitors: (response.record == null)
+                ? state.checkOutVisitors
+                : [response.record!, ...state.checkOutVisitors ?? []]));
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+        getDashboardCheckIns();
+        Fluttertoast.showToast(
+            msg: (data['checkout'] != null)
+                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
+                : ' Checkout successfully');
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while checking out visitor');
+        return false;
+      }
+    } catch (e) {
+      emit(state.copyWith(isCheckOutVisitor: false));
+      Fluttertoast.showToast(msg: e.toString());
+      // log('cubit call ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<void> getVisitorPassesCount() async {
+    emit(state.copyWith(isVisitorPassesCountLoading: true));
+    VisitorPassesCountResponseModel? response =
+        await _visitorPassRepo.getVisitorPassesCount().onError(
+      (error, stackTrace) {
+        emit(state.copyWith(isVisitorPassesCountLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(isCountLoading: false));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(visitorPassesCount: response.record));
+      // print('Visitor Pass Count cubit : ${response.record?.count}');
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching visitor passes count');
+    }
+  }
+
+  Future<void> getData(
+    BuildContext context,
+    //{bool isNavigationAllow = true}
+  ) async {
     final dashboardCubit = context.read<DashboardCubit>();
+    final visitorPassCubit = context.read<VisitorPassCubit>();
+    final directoryCubit = context.read<DirectoryCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
 
-    if (profileSuccess && context.mounted) {
+    if (profileSuccess) {
       await Future.wait([
+        dashboardCubit.getVisitorPassesCount(),
         dashboardCubit.getDashboardCheckIns(limit: 3),
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
+        visitorPassCubit.getVisitorPasses(),
+        directoryCubit.getUnits(),
       ]);
-
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.deviceDeciderScreen,
-              (route) => false,
+          AppRoutes.mainDashboard,
+          (route) => false,
         );
       }
     } else {
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.loginScreen,
-              (route) => false,
+          AppRoutes.login,
+          (route) => false,
         );
       }
     }
   }
 
-
+  Future<void> refreshData(BuildContext context) async {
+    final dashboardCubit = context.read<DashboardCubit>();
+    final visitorPassCubit = context.read<VisitorPassCubit>();
+    final directoryCubit = context.read<DirectoryCubit>();
+    await dashboardCubit.getDashboardCheckIns(limit: 3);
+    await dashboardCubit.getDashboardCount();
+    await dashboardCubit.getDashboardServices(limit: 3);
+    await dashboardCubit.getDashboardWorkOrder(limit: 3);
+    dashboardCubit.getVisitorPassesCount();
+    if (context.mounted) {
+      visitorPassCubit.getVisitorPasses();
+      directoryCubit.getUnits();
+    }
+  }
 }

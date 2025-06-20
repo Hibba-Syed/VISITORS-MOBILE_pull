@@ -5,9 +5,9 @@ Future<CheckOutResponseModel?> getCheckOuts({
   int? page,
   int? limit,
   String? keyword,
-  List<int>? unitId,
+  int? unitId,
   String? dateRange,
   String? serviceableType,
-  List<int>? vendorId,
+  int? vendorId,
 });
 }

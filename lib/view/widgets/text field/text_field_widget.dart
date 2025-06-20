@@ -33,6 +33,8 @@ class TextFieldWidget extends StatelessWidget {
   final InputBorder? errorBorder;
   final InputBorder? focusedErrorBorder;
   final EdgeInsetsGeometry? contentPadding;
+  final TextStyle? textStyle;
+  final AutovalidateMode? autovalidateMode;
 
   const TextFieldWidget({
     super.key,
@@ -63,6 +65,8 @@ class TextFieldWidget extends StatelessWidget {
     this.focusedErrorBorder,
     this.contentPadding,
     this.outLineColor,
+    this.textStyle,
+    this.autovalidateMode,
   });
 
   @override
@@ -74,13 +78,15 @@ class TextFieldWidget extends StatelessWidget {
           Text(
             label!,
             style: AppUtils.isTablet(context)
-                ? AppTextStyles.style15Black600
-                : AppTextStyles.style14Black600,
+                ? //const TextStyle(fontSize: 15, color: AppColors.DarkGrey,fontWeight: FontWeight.w500)
+            AppTextStyles.style15DarkGrey600
+                : AppTextStyles.style13DarkGrey600,
           ),
         if (label?.isNotEmpty ?? false) const Gap(8.0),
         TextFormField(
           initialValue: initialValue,
           controller: controller,
+          autovalidateMode: autovalidateMode,
           onChanged: onChanged,
           onFieldSubmitted: onFieldSubmitted,
           onEditingComplete: onEditingComplete,
@@ -95,14 +101,15 @@ class TextFieldWidget extends StatelessWidget {
           maxLines: maxLines,
           maxLength: maxLength,
           expands: expands,
+          style: textStyle,
           decoration: InputDecoration(
             isDense: true,
             contentPadding: contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: hint,
             hintStyle: AppUtils.isTablet(context)
-                ? AppTextStyles.style15black400
-                : AppTextStyles.style14darkGray400,
+                ? AppTextStyles.style14darkGrey400
+                : AppTextStyles.style13darkGray400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: prefix,
             suffixIcon: suffix,

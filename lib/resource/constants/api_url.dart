@@ -20,4 +20,14 @@ class ApiUrl {
   static const String serviceDetails = '$baseUrl/visitor/all-applications/one';
   static const String workOrderDetails = '$baseUrl/visitor/job';
   static const String addWorkOrderLog = '$baseUrl/visitor/log-job';
+  static const String visitorPasses = '$baseUrl/visitor/visitor-passes';
+  static const String checkOutVisitor = '$baseUrl/visitor/check-out';
+  static const String addServiceLog = '$baseUrl/visitor/log-application';
+  static const String serviceComplete = '$baseUrl/visitor/service-complete';
+  static const String clearPayment = '$baseUrl/visitor/clear-payment';
+  static const String visitorPassesCount = '$baseUrl/visitor/visitor-passes/counts';
+  static const String countries = '$baseUrl/countries';
+  static const String visitorQuickInfo = '$baseUrl/visitor/quick-info';
+  static const String deleteVisitor = '$baseUrl/visitor/delete-visitor';
+  static const String guestCheckIn = '$baseUrl/visitor/check-in';
 }

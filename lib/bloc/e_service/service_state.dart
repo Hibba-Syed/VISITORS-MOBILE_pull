@@ -9,6 +9,7 @@ class ServiceState {
   List<ServiceModel>? serviceModel;
   final String? searchKeyword;
   final TypeModel? selectedType;
+  final TypeModel? selectCheckInTypeList;
   final UnitModel? selectedUnit;
   final  List<UnitModel>? units;
 
@@ -22,6 +23,7 @@ class ServiceState {
     this.loadMore = false,
     this.selectedUnit,
     this.selectedType,
+    this.selectCheckInTypeList,
     this.units,
   });
   ServiceState copyWith({
@@ -35,6 +37,7 @@ class ServiceState {
     TypeModel? selectedType,
     UnitModel? selectedUnit,
     List<UnitModel>? units,
+    TypeModel? selectCheckInTypeList,
   }) {
     return ServiceState(
       isLoading: isLoading ?? this.isLoading,
@@ -47,7 +50,8 @@ class ServiceState {
       selectedUnit: selectedUnit ?? this.selectedUnit,
       selectedType: selectedType ?? this.selectedType,
       isUnitLoading: isUnitLoading ?? this.isUnitLoading,
-      units: units ?? this.units
+      units: units ?? this.units,
+        selectCheckInTypeList: selectCheckInTypeList ?? this.selectCheckInTypeList
 
     );
   }

@@ -8,9 +8,9 @@ class EncryptionHelper {
   static const ivHex = "e0caf19491a698a9e3b0a077015ce5f1";
   /// Encrypts [data] and returns a URI-encoded Base64 string
   static String encryptPayload(Map<String, dynamic> data,) {
-    // Convert inner 'filter' map to a string
-    final fixed = {
-      "filter": jsonEncode(data["filter"])
+    // Convert inner 'vendors' map to a string
+    final fixed = (data['filter']!=null)?{"filter":jsonEncode(data["filter"])}:(data["vendors"]==null)?data:{
+      "vendors": jsonEncode(data["vendors"])
     };
     final jsonStr = jsonEncode(fixed);
 
@@ -24,7 +24,7 @@ class EncryptionHelper {
     final encrypted = encrypter.encrypt(jsonStr, iv: iv);
     final xyz = Uri.encodeComponent(encrypted.base64);
 
-    debugPrint('Encrypted (XYZ): $xyz');
+    // debugPrint('Encrypted (XYZ): $xyz');
     return xyz;
   }
 

@@ -5,30 +5,32 @@ import '../../model/vendor/vendor_model.dart';
 import '../../model/vendor/vendor_response_model.dart';
 import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
-import '../../repo/filter/general_filter_impl.dart';
-import '../../repo/filter/general_filter_repo.dart';
-import '../../repo/work_order_rfp/work_order_impl.dart';
+import '../../repo/vendors/vendors_repo.dart';
+import '../../repo/vendors/vendors_repo_impl.dart';
+import '../../repo/work_order_rfp/work_order_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
-import '../../view/Common Screens/check ins/componants/check_in_filter_bottom_sheet.dart';
+import '../../utils/app_utils.dart';
 
 part 'work_order_state.dart';
 
 class WorkOrderCubit extends Cubit<WorkOrderState> {
   WorkOrderCubit() : super(WorkOrderState());
-  final WorkOrderRFPRepo _workOrderRFPRepo  = WorkOrderRFPImpl();
-  final GeneralFilterRepo _generalFilterRepo = GeneralFilterRepoImpl();
+  final WorkOrderRFPRepo _workOrderRFPRepo  = WorkOrderRFPRepoImpl();
+  final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
 
-  onChangeSearchKeyWord(String? keyword) {
+  void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
-  onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
-  onChangeSelectedType(TypeModel? type) {
-    emit(state.copyWith(selectedType: type));
-  }
 
-  clearFilterData() {
+   void onChangeSelectedType(TypeModel? type) {
+    emit(state.copyWith(
+      selectedType: type,
+    ));
+  }
+  void resetFilterData() {
     emit(WorkOrderState(
       workOrderModel: state.workOrderModel,
       isLoading: state.isLoading,

@@ -13,14 +13,13 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final TextAlign? textAlign;
   final double? borderRadius;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final int maxLines;
   final bool invert;
   final double? width;
   final double? height;
-  final EdgeInsets padding;
   final FontWeight? fontWeight;
-  final double fontSize;
+  final double? fontSize;
   const CustomButton({
     super.key,
     this.buttonColor,
@@ -28,12 +27,11 @@ class CustomButton extends StatelessWidget {
     this.textAlign,
     this.width,
     this.image,
-    this.height = 42,
-    this.fontSize = 15,
+    this.height,
+    this.fontSize,
     this.maxLines = 1,
-    this.padding = const EdgeInsets.all(10),
     this.textColor,
-    required this.onPressed,
+    this.onPressed,
     this.invert = false,
     this.fontWeight,
     this.borderRadius,
@@ -42,13 +40,18 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double bothHeight = height ?? (AppUtils.isTablet(context) ? 39 : 36);
+    final double imageSize =
+        imageHeight ?? (AppUtils.isTablet(context) ? 22 : 18);
+    final double bothFontSize =
+        fontSize ?? (AppUtils.isTablet(context) ? 15 : 12);
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         alignment: Alignment.center,
-        padding: padding,
         width: width,
-        height: height,
+        height: bothHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius ?? 7),
             border: invert == true
@@ -56,32 +59,32 @@ class CustomButton extends StatelessWidget {
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
         child: Row(
-            mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (image != null)
+            if (image?.isNotEmpty ?? false) ...[
               SvgPicture.asset(
-                '$image',
-                height: imageHeight ?? 18,
+                image!,
+                height: imageSize,
                 colorFilter: const ColorFilter.mode(
                   AppColors.white,
                   BlendMode.srcIn,
                 ),
               ),
-            if (image != null) AppUtils.isTablet(context) ? Gap(15) : Gap(10),
-            // AutoSizeText(''),
+              AppUtils.isTablet(context) ? Gap(15) : Gap(10),
+            ],
             Flexible(
               child: Text(
                 text,
                 style: invert
                     ? TextStyle(
                         color: textColor ?? AppColors.primary,
-                        fontSize: fontSize,
+                        fontSize: bothFontSize,
                         fontWeight: FontWeight.w600,
                       )
                     : TextStyle(
                         color: AppColors.white,
-                        fontSize: fontSize,
+                        fontSize: bothFontSize,
                         fontWeight: fontWeight ?? FontWeight.w600,
                       ),
                 textAlign: textAlign,

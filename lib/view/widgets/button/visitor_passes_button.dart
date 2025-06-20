@@ -20,22 +20,24 @@ class VisitorPassesButton extends StatelessWidget {
       onTap: onPressed,
       child: Row(
         children: [
-          Container(
-            alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(horizontal:  12,vertical: verticalPadding ?? 10),
-              decoration: const BoxDecoration(
-                 borderRadius: BorderRadius.only(
-                   topLeft: Radius.circular(5),
-                   bottomLeft: Radius.circular(5),
-                 ),
-                color:AppColors.lightYellow,
-              ),
-              child: Text(count?.toString() ?? "",style: TextStyle(
-                  fontSize: AppUtils.isTablet(context)  ? 17 : 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.white
-              ),
-              )),
+          Expanded(
+            child: Container(
+              alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal:  12,vertical: verticalPadding ?? 15),
+                decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                     topLeft: Radius.circular(5),
+                     bottomLeft: Radius.circular(5),
+                   ),
+                  color:AppColors.lightYellow,
+                ),
+                child: Text(count?.toString() ?? "",style: TextStyle(
+                    fontSize: AppUtils.isTablet(context)  ? 15 : 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.white
+                ),
+                )),
+          ),
           Container(
             alignment: Alignment.center,
            padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
@@ -48,8 +50,8 @@ class VisitorPassesButton extends StatelessWidget {
             ),
             child:  Text("Visitor Passes",
               style: TextStyle(
-                fontSize:  AppUtils.isTablet(context)  ? 17 : 14,
-                  fontWeight: FontWeight.w500,
+                fontSize:  AppUtils.isTablet(context)  ? 15 : 14,
+                  fontWeight: FontWeight.w600,
                  color: AppColors.white
               ),
               // AppTextStyles.style15white600

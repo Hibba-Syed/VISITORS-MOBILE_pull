@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-CheckOutAllModel checkOutAllModelFromJson(String str) => CheckOutAllModel.fromJson(json.decode(str));
+CheckOutAll checkOutAllModelFromJson(String str) => CheckOutAll.fromJson(json.decode(str));
 
-String checkOutAllModelToJson(CheckOutAllModel data) => json.encode(data.toJson());
+String checkOutAllModelToJson(CheckOutAll data) => json.encode(data.toJson());
 
-class CheckOutAllModel {
+class CheckOutAll {
   String? status;
   bool? record;
   int? code;
@@ -16,7 +16,7 @@ class CheckOutAllModel {
   bool? requestStatus;
   String? message;
 
-  CheckOutAllModel({
+  CheckOutAll({
     this.status,
     this.record,
     this.code,
@@ -25,7 +25,7 @@ class CheckOutAllModel {
     this.message,
   });
 
-  factory CheckOutAllModel.fromJson(Map<String, dynamic> json) => CheckOutAllModel(
+  factory CheckOutAll.fromJson(Map<String, dynamic> json) => CheckOutAll(
     status: json["status"],
     record: json["record"],
     code: json["code"],

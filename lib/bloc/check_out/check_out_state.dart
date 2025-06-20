@@ -8,22 +8,32 @@ class CheckOutState {
   final bool loadMore;
   final bool isCheckOutLoading;
   final int page;
-  List<CheckOutModel>? checkOutModel;
+  List<CheckOutVisitor>? checkOutVisitors;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  final String? dateRang;
+  final DateTimeRange? dateRang;
+  final String? selectedRange;
+  final TypeModel? selectedType;
+  final UnitModel? selectedUnit;
+  final VendorModel? selectedVendor;
+  final String? searchKeyword;
   CheckOutState({
     this.isLoading = false,
     this.loadMore = false,
     this.isUnitLoading = false,
     this.isVendorLoading = false,
     this.page = 1,
-    this.checkOutModel,
+    this.checkOutVisitors,
     this.units,
     this.vendors,
     this.isCheckOutAllLoading = false,
     this.dateRang,
+    this.selectedRange,
     this.isCheckOutLoading = false,
+    this.selectedType,
+    this.selectedUnit,
+    this.selectedVendor,
+    this.searchKeyword,
   });
   CheckOutState copyWith({
     bool? isLoading,
@@ -33,10 +43,15 @@ class CheckOutState {
     bool? isCheckOutLoading,
     bool? loadMore,
     int? page,
-    List<CheckOutModel>? checkOutModel,
+    List<CheckOutVisitor>? checkOutVisitors,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    final String? dateRang,
+    DateTimeRange? dateRang,
+    String? selectedRange,
+    TypeModel? selectedType,
+    UnitModel? selectedUnit,
+    VendorModel? selectedVendor,
+    String? searchKeyword,
   }) {
     return CheckOutState(
         isLoading: isLoading ?? this.isLoading,
@@ -49,6 +64,11 @@ class CheckOutState {
         dateRang: dateRang ?? this.dateRang,
         vendors: vendors ?? this.vendors,
         units: units ?? this.units,
-        checkOutModel: checkOutModel ?? this.checkOutModel);
+        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
+        selectedRange: selectedRange ?? this.selectedRange,
+        selectedType: selectedType ?? this.selectedType,
+        selectedUnit: selectedUnit ?? this.selectedUnit,
+        selectedVendor: selectedVendor ?? this.selectedVendor,
+        searchKeyword: searchKeyword ?? this.searchKeyword);
   }
 }

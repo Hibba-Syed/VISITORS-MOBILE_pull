@@ -3,31 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
-import 'package:visitors/bloc/device%20decider/device_decider_cubit.dart';
-import 'package:visitors/view/Common%20Screens/auth/biometric_auth_screen.dart';
-import 'package:visitors/view/Common%20Screens/auth/login_screen.dart';
-import 'package:visitors/view/Common%20Screens/check%20ins/detail/check_in_details_screen.dart';
-import 'package:visitors/view/Common%20Screens/device_decider_screen.dart';
-import 'package:visitors/view/Common%20Screens/services/detail/service_details_screen.dart';
-import 'package:visitors/view/Common%20Screens/visitor%20passes/serviceable_check_ins_screen.dart';
-import 'package:visitors/view/Common%20Screens/visitor%20passes/visitor_passes_screen.dart';
-import 'package:visitors/view/Common%20Screens/work%20order/detail/work_order_job_details_screen.dart';
-import 'package:visitors/view/Common%20Screens/work%20order/job_check_ins_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/dashboard/mobile_dashboard_screen.dart';
-import 'package:visitors/view/Mobile%20Screens/guest%20check%20in/mobile_guest_check_in_screen.dart';
-import 'package:visitors/view/Tablet%20Screens/dashboard/tablet_dashboard_screen.dart';
-import 'package:visitors/view/Tablet%20Screens/guest_check_in/tablet_guest_check_in_screen.dart';
+import 'package:visitors/bloc/main_dashboard/main_dashboard_cubit.dart';
+import 'package:visitors/view/screens/guest_check_in/guest_check_in_screen.dart';
 import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../bloc/check_out/check_out_cubit.dart';
+import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/e_service/details/service_details_cubit.dart';
 import '../../bloc/e_service/service_cubit.dart';
+import '../../bloc/guest_check_in/guest_check_in_cubit.dart';
 import '../../bloc/message/message_cubit.dart';
+import '../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../bloc/work_order/details/work_order_details_cubit.dart';
 import '../../bloc/work_order/work_order_cubit.dart';
-import '../../view/Common Screens/auth/loading_screen.dart';
-import '../../view/Common Screens/splash_screen.dart';
-import '../../view/Common Screens/work order/work_order_rfp_screen.dart';
+import '../../view/screens/auth/biometric_auth_screen.dart';
+import '../../view/screens/auth/loading_screen.dart';
+import '../../view/screens/auth/login_screen.dart';
+import '../../view/screens/check_ins/detail/check_in_details_screen.dart';
+import '../../view/screens/dashboard/dashboard_screen.dart';
+import '../../view/screens/main_dashboard_screen.dart';
+import '../../view/screens/services/detail/fit_out_service_details_screen.dart';
+import '../../view/screens/splash_screen.dart';
+import '../../view/screens/visitor passes/serviceable_check_ins_screen.dart';
+import '../../view/screens/visitor passes/visitor_passes_screen.dart';
+import '../../view/screens/work order/detail/work_order_job_details_screen.dart';
+import '../../view/screens/work order/job_check_ins_screen.dart';
+import '../../view/screens/work order/work_order_rfp_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -37,7 +38,7 @@ class AppPages {
       page: const SplashScreen(),
     ),
     PageEntity(
-      route: AppRoutes.loginScreen,
+      route: AppRoutes.login,
       page: const LoginScreen(),
       bloc: BlocProvider(
         create: (context) => AuthCubit(),
@@ -48,16 +49,16 @@ class AppPages {
       page: const BiometricAuthScreen(),
     ),
     PageEntity(
-      route: AppRoutes.loadingScreen,
+      route: AppRoutes.loading,
       page: const LoadingScreen(),
     ),
     PageEntity(
-      route: AppRoutes.deviceDeciderScreen,
-      page:  DeviceDeciderScreen(),
+      route: AppRoutes.mainDashboard,
+      page:  MainDashboardScreen(),
       bloc: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => DeviceDeciderCubit(),
+            create: (context) => MainDashboardCubit(),
           ),
           BlocProvider(
             create: (context) => DashboardCubit(),
@@ -74,64 +75,65 @@ class AppPages {
           BlocProvider(
             create: (context) => ServiceCubit(),
           ),
+          BlocProvider(
+            create: (context) => DirectoryCubit(),
+          ), BlocProvider(
+            create: (context) => GuestCheckInCubit(),
+          ),
         ],
         child: const SizedBox.shrink(),
       ),
     ),
     PageEntity(
-      route: AppRoutes.workOrderJobDetailsScreen,
+      route: AppRoutes.workOrderJobDetails,
       page: const WorkOrderJobDetailsScreen(),
       bloc: BlocProvider(
           create: (context) => WorkOrderDetailsCubit(),
       )
     ),
     PageEntity(
-      route: AppRoutes.servicesDetailsScreen,
-      page: const ServiceDetailsScreen(),
+      route: AppRoutes.servicesDetails,
+      page:  FitOutServiceDetailsScreen(),
         bloc: BlocProvider(
           create: (context) => ServiceDetailsCubit(),
         )
     ),
     PageEntity(
-      route: AppRoutes.mobileGuestCheckInScreen,
-      page: const MobileGuestCheckInScreen(),
-    ),
-    PageEntity(
-      route: AppRoutes.checkInDetailsScreen,
-      page: const CheckInDetailsScreen(),
+      route: AppRoutes.checkInDetails,
+      page:  CheckInDetailsScreen(),
       bloc: BlocProvider(
         create: (context) => CheckInsDetailsCubit(),
       ),
     ),
     PageEntity(
-      route: AppRoutes.workOrderScreen,
+      route: AppRoutes.workOrder,
       page: const WorkOrderRfpScreen(),
       bloc: BlocProvider(
         create: (context) => WorkOrderCubit(),
       ),
     ),
     PageEntity(
-      route: AppRoutes.visitorPassesScreen,
+      route: AppRoutes.visitorPasses,
       page: const VisitorPassesScreen(),
+      bloc: BlocProvider(
+        create: (context) => VisitorPassCubit(),
+      ),
+
     ),
     PageEntity(
-      route: AppRoutes.serviceableCheckInsScreen,
+      route: AppRoutes.serviceableCheckIns,
       page: const ServiceableCheckInsScreen(),
     ),
     PageEntity(
-      route: AppRoutes.tabletGuestCheckInScreen,
-      page: const TabletGuestCheckInScreen(),
+      route: AppRoutes.guestCheckIn,
+      page: const GuestCheckInScreen(),
     ),
     PageEntity(
-      route: AppRoutes.mobileDashboardScreen,
-      page: const MobileDashboardScreen(),
+      route: AppRoutes.dashboard,
+      page:  DashboardScreen(),
     ),
     PageEntity(
-      route: AppRoutes.tabletDashboardScreen,
-      page: const TabletDashboardScreen(),
-    ),
-    PageEntity(
-      route: AppRoutes.jobCheckInsScreen,
+      route: AppRoutes.jobCheckIns,
       page: const JobCheckInsScreen(),
     ),
     // PageEntity(

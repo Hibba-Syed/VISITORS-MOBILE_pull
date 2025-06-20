@@ -32,13 +32,8 @@ class ActivityLogWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding ?? 10, vertical: verticalPadding ?? 0),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
       child: Column(
         children: [
-          const Gap(10),
           TimelineTile(
             alignment: TimelineAlign.values.first,
             isLast: isLast ?? false,
@@ -91,21 +86,41 @@ class ActivityLogWidget extends StatelessWidget {
                             style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style16black600
                                 : AppTextStyles.style14Black600),
+                        if(byValue?.isNotEmpty ?? false)
                         Flexible(
-                          child: Text(  byValue ?? "",
-                              style: AppUtils.isTablet(context)
-                                  ? AppTextStyles.style16Primary600
-                                  : AppTextStyles.style14Primary600),
+                          child: Row(
+                            children: [
+                              Text(' By'  ,
+                                  style: AppUtils.isTablet(context)
+                                      ? AppTextStyles.style16black600
+                                      : AppTextStyles.style14Black600),
+                              Text('$byValue'  ,
+                                  style: AppUtils.isTablet(context)
+                                      ? AppTextStyles.style16Primary600
+                                      : AppTextStyles.style14Primary600),
+                            ],
+                          ),
                         ),
                       ],
                     ),
+
                     const Gap(5),
-                    Text(
-                      description ?? "",
-                      style: AppUtils.isTablet(context)
-                          ? AppTextStyles.style14DarkGrey600
-                          : AppTextStyles.style12DarkGrey600,
+                    Text( description ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: AppColors.darkGrey,
+                        fontWeight:  FontWeight.w500,
+                        fontSize: AppUtils.isTablet(context)  ? 15 :  13,
+                        //AppTextStyles.style10Black400
+                      ),
                     ),
+                    // Text(
+                    //   description ?? "",
+                    //   style: AppUtils.isTablet(context)
+                    //       ? AppTextStyles.style14DarkGrey600
+                    //       : AppTextStyles.style13DarkGrey500,
+                    // ),
                     const Gap(10),
                     IconTextContainerWidget(
                       image: AppImages.date,
