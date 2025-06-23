@@ -47,28 +47,42 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     emit(state.copyWith(isCheckOutVisitor: true));
     try {
       CheckOutVisitorResponseModel? response = await _checkInRepo
-          .checkOutVisitors(
-          data: data,
-          id: id
-      )
+          .checkOutVisitors(data: data, id: id)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCheckOutVisitor: false));
-        // log( error.toString());
         Fluttertoast.showToast(
           msg: error.toString(),
         );
         return null;
       });
       emit(state.copyWith(isCheckOutVisitor: false));
-      // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
+        //emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
+        final updated = response.record;
+        if (updated != null) {
+          final list = state.checkOutVisitors ?? [];
+
+          final index = list.indexWhere((visitor) => visitor.id == updated.id);
+          final updatedList = [...list];
+
+          if (index != -1) {
+            updatedList[index] = updated;
+          } else {
+            updatedList.insert(0, updated);
+          }
+
+          emit(state.copyWith(checkOutVisitors: updatedList));
+        }
         if (context.mounted) {
           Navigator.pop(context);
-         getCheckInDetailsLog(id: id);
           context.read<CheckInsCubit>().getCheckIns();
+          Navigator.pop(context);
         }
-        Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
+        getCheckInDetailsLog(id: id);
+        Fluttertoast.showToast(
+            msg: (data['checkout'] != null)
+                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
+                : ' Checkout successfully');
         return true;
       } else {
         Fluttertoast.showToast(
@@ -78,8 +92,50 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     } catch (e) {
       emit(state.copyWith(isCheckOutVisitor: false));
       Fluttertoast.showToast(msg: e.toString());
-      // log('cubit call ${e.toString()}');
       return false;
     }
   }
+
+// Future<bool> checkOutVisitors(
+  //     BuildContext context, {
+  //       required int? id,
+  //       required Map<String, dynamic> data,
+  //     }) async {
+  //   emit(state.copyWith(isCheckOutVisitor: true));
+  //   try {
+  //     CheckOutVisitorResponseModel? response = await _checkInRepo
+  //         .checkOutVisitors(
+  //         data: data,
+  //         id: id
+  //     )
+  //         .onError((error, stackTrace) {
+  //       emit(state.copyWith(isCheckOutVisitor: false));
+  //       // log( error.toString());
+  //       Fluttertoast.showToast(
+  //         msg: error.toString(),
+  //       );
+  //       return null;
+  //     });
+  //     emit(state.copyWith(isCheckOutVisitor: false));
+  //     // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
+  //     if (response != null && response.status == 'success') {
+  //       emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
+  //       if (context.mounted) {
+  //         Navigator.pop(context);
+  //        getCheckInDetailsLog(id: id);
+  //       }
+  //       Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
+  //       return true;
+  //     } else {
+  //       Fluttertoast.showToast(
+  //           msg: 'Something went wrong while checking out visitor');
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     emit(state.copyWith(isCheckOutVisitor: false));
+  //     Fluttertoast.showToast(msg: e.toString());
+  //     // log('cubit call ${e.toString()}');
+  //     return false;
+  //   }
+  // }
 }
