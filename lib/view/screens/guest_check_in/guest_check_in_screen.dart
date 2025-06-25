@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image/image.dart' as img;
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -17,7 +18,7 @@ import 'package:visitors/view/screens/guest_check_in/components/get_info_card_wi
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/container_widgets/scan_type_container_widget.dart';
-import 'package:visitors/view/widgets/picker/custom_date_time_picker.dart';
+import 'package:visitors/view/widgets/picker/custom_date_picker.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -54,17 +55,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   final TextEditingController _passportNumberController =
       TextEditingController();
   String? _selectedItemType;
-  String? _selectedIssueDate;
-  String? _selectedExpiryDate;
-  String? _selectedItemNationality;
+  DateTime? _selectedIssueDate;
+  DateTime? _selectedExpiryDate;
+  String? _selectedNationality;
   File? _imageFile;
   File? _personImage;
-  final List<String> _nationalityItems = [
-    'Pakistan',
-    'Australia',
-    'United Arab Emirates',
-    'India'
-  ];
   Future<void> _pickImage() async {
     DocumentScannerOptions documentOptions = DocumentScannerOptions(
       documentFormat: DocumentFormat.jpeg, // set output document format
@@ -110,32 +105,39 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       // Auto-fill form fields
       _nameController.text = parsedData['Name'] ?? '';
-      _selectedItemNationality = parsedData['Nationality'];
+      _selectedNationality = parsedData['Nationality'];
       _idNumberController.text = parsedData['ID Number'] ?? '';
-      _selectedIssueDate = parsedData['Issuing Date'] ?? '';
-      _selectedExpiryDate = parsedData['Expiry Date'] ?? '';
-      _passportExpiryController.text = parsedData[''] ?? '';
-      _passportNumberController.text = parsedData[''] ?? '';
+      DateFormat format = DateFormat('dd/MM/yyyy');
+      _selectedIssueDate = format.tryParse(parsedData['Issuing Date'] ?? '');
+      _selectedExpiryDate = format.tryParse(parsedData['Expiry Date'] ?? '');
 
       String? nationality =
           parsedData['Nationality'] ?? parsedData['nationality'];
-
-      if (nationality != null && _nationalityItems.isNotEmpty) {
+      List<Country>? countries =
+          context.read<GuestCheckInCubit>().state.countries;
+      if (nationality != null && (countries?.isNotEmpty ?? false)) {
         final normalized = nationality.trim().toLowerCase();
 
-        final match = _nationalityItems.firstWhere(
-          (item) => item.toLowerCase() == normalized,
-          orElse: () => '',
+        final Country? matchedCountry = countries?.firstWhere(
+          (item) => item.name?.toLowerCase() == normalized,
+          orElse: () => Country(),
         );
 
-        if (match.isNotEmpty) {
-          setState(() {
-            _selectedItemNationality = match;
-          });
+        if (matchedCountry?.id != null) {
+          context
+              .read<GuestCheckInCubit>()
+              .onChangeSelectedCountry(matchedCountry);
         }
       }
     });
+    setState(() {});
+    print('Name:: ${_nameController.text}');
+    print('Nationality:: $_selectedNationality');
+    print('ID Number:: ${_idNumberController.text}');
+    print('Issuing Date:: $_selectedIssueDate');
+    print('Expiry Date:: $_selectedExpiryDate');
     textDetector.close();
+    faceDetector.close();
   }
 
   File? _extractPersonImage(File originalImage, List<Face> faces) {
@@ -379,17 +381,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               ScanTypeContainerWidget(
-                                                text: 'Passport',
-                                                textSize: 16,
-                                                iconSize: 30,
-                                                padding: 10,
-                                                heightContainer: 110,
-                                                widthContainer: 110,
-                                                onTap: () {
-                                                  _onScanPassportTap();
-                                                },
-                                              ),
-                                              ScanTypeContainerWidget(
                                                 text: 'Emirates Id',
                                                 textSize: 16,
                                                 iconSize: 30,
@@ -400,17 +391,28 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                   _onScanEmiratesIdTap();
                                                 },
                                               ),
-                                              ScanTypeContainerWidget(
-                                                text: 'Driving license',
-                                                textSize: 16,
-                                                iconSize: 30,
-                                                padding: 10,
-                                                heightContainer: 110,
-                                                widthContainer: 110,
-                                                onTap: () {
-                                                  _onScanDrivingLicenseTap();
-                                                },
-                                              ),
+                                              // ScanTypeContainerWidget(
+                                              //   text: 'Passport',
+                                              //   textSize: 16,
+                                              //   iconSize: 30,
+                                              //   padding: 10,
+                                              //   heightContainer: 110,
+                                              //   widthContainer: 110,
+                                              //   onTap: () {
+                                              //     _onScanPassportTap();
+                                              //   },
+                                              // ),
+                                              // ScanTypeContainerWidget(
+                                              //   text: 'Driving license',
+                                              //   textSize: 16,
+                                              //   iconSize: 30,
+                                              //   padding: 10,
+                                              //   heightContainer: 110,
+                                              //   widthContainer: 110,
+                                              //   onTap: () {
+                                              //     _onScanDrivingLicenseTap();
+                                              //   },
+                                              // ),
                                             ],
                                           ),
                                         )
@@ -467,49 +469,27 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         Row(
                           children: [
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Date of Issue",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  CustomDateTimePickerWidget(
-                                    fillColor: AppColors.white,
-                                    hintText: 'Date of issue',
-                                    onlyDatePicker: true,
-                                    selectedDateTime: _selectedIssueDate,
-                                    onChangeDateTime: (value) {
-                                      _selectedIssueDate = value;
-                                      //print('Selected Date: $value');
-                                    },
-                                  ),
-                                ],
+                              child: CustomDatePicker(
+                                key: UniqueKey(),
+                                title: "Date of Issue",
+                                hint: 'Date of issue',
+                                initialDate: _selectedIssueDate,
+                                onDatePicked: (value) {
+                                  _selectedIssueDate = value;
+                                },
                               ),
                             ),
                             const Gap(10),
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Date of Expiry",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  CustomDateTimePickerWidget(
-                                    // outLineColor: AppColors.outLineGray
-                                    fillColor: AppColors.white,
-                                    hintText: 'Date of issue',
-                                    onlyDatePicker: true,
-                                    selectedDateTime: _selectedExpiryDate,
-                                    onChangeDateTime: (value) {
-                                      _selectedExpiryDate = value;
-                                      //print('Selected Date: $value');
-                                    },
-                                  ),
-                                ],
+                              child: CustomDatePicker(
+                                key: UniqueKey(),
+                                title: "Date of Expiry",
+                                hint: 'Date of expiry',
+                                initialDate: _selectedExpiryDate,
+                                onDatePicked: (value) {
+                                  _selectedExpiryDate = value;
+                                  //print('Selected Date: $value');
+                                },
                               ),
                             ),
                           ],
@@ -886,23 +866,23 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       ScanTypeContainerWidget(
-                                        text: 'Passport',
-                                        onTap: () {
-                                          _onScanPassportTap();
-                                        },
-                                      ),
-                                      ScanTypeContainerWidget(
                                         text: 'Emirates Id',
                                         onTap: () {
                                           _onScanEmiratesIdTap();
                                         },
                                       ),
-                                      ScanTypeContainerWidget(
-                                        text: 'Driving license',
-                                        onTap: () {
-                                          _onScanDrivingLicenseTap();
-                                        },
-                                      ),
+                                      // ScanTypeContainerWidget(
+                                      //   text: 'Passport',
+                                      //   onTap: () {
+                                      //     _onScanPassportTap();
+                                      //   },
+                                      // ),
+                                      // ScanTypeContainerWidget(
+                                      //   text: 'Driving license',
+                                      //   onTap: () {
+                                      //     _onScanDrivingLicenseTap();
+                                      //   },
+                                      // ),
                                     ],
                                   ),
                                 ],
@@ -950,33 +930,23 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                        const Text(
-                          "Date of Issue",
-                          style: AppTextStyles.style13Black600,
-                        ),
-                        const Gap(8),
-                        CustomDateTimePickerWidget(
-                          fillColor: AppColors.white,
-                          hintText: 'Date of issue',
-                          onlyDatePicker: true,
-                          selectedDateTime: _selectedIssueDate,
-                          onChangeDateTime: (value) {
+                        CustomDatePicker(
+                          key: UniqueKey(),
+                          title: "Date of Issue",
+                          hint: 'Date of issue',
+                          initialDate: _selectedIssueDate,
+                          onDatePicked: (value) {
                             _selectedIssueDate = value;
                             //print('Selected Date: $value');
                           },
                         ),
                         const Gap(5),
-                        const Text(
-                          "Date of expiry",
-                          style: AppTextStyles.style13Black600,
-                        ),
-                        const Gap(8),
-                        CustomDateTimePickerWidget(
-                          fillColor: AppColors.white,
-                          hintText: 'Date of Issue',
-                          onlyDatePicker: true,
-                          selectedDateTime: _selectedExpiryDate,
-                          onChangeDateTime: (value) {
+                        CustomDatePicker(
+                          key: UniqueKey(),
+                          title: "Date of Expiry",
+                          hint: 'Date of expiry',
+                          initialDate: _selectedExpiryDate,
+                          onDatePicked: (value) {
                             _selectedExpiryDate = value;
                             //print('Selected Date: $value');
                           },
