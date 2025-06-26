@@ -163,10 +163,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         img.decodeImage(originalImage.readAsBytesSync())!;
 
     // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt() - 150;
-    final int top = boundingBox.top.toInt() - 150;
-    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 300;
-    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 300;
+    final int left = boundingBox.left.toInt() - 130;
+    final int top = boundingBox.top.toInt() - 130;
+    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 270;
+    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 270;
 
     // print('left:: $left');
     // print('top:: $top');
@@ -391,28 +391,28 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                   _onScanEmiratesIdTap();
                                                 },
                                               ),
-                                              // ScanTypeContainerWidget(
-                                              //   text: 'Passport',
-                                              //   textSize: 16,
-                                              //   iconSize: 30,
-                                              //   padding: 10,
-                                              //   heightContainer: 110,
-                                              //   widthContainer: 110,
-                                              //   onTap: () {
-                                              //     _onScanPassportTap();
-                                              //   },
-                                              // ),
-                                              // ScanTypeContainerWidget(
-                                              //   text: 'Driving license',
-                                              //   textSize: 16,
-                                              //   iconSize: 30,
-                                              //   padding: 10,
-                                              //   heightContainer: 110,
-                                              //   widthContainer: 110,
-                                              //   onTap: () {
-                                              //     _onScanDrivingLicenseTap();
-                                              //   },
-                                              // ),
+                                              ScanTypeContainerWidget(
+                                                text: 'Passport',
+                                                textSize: 16,
+                                                iconSize: 30,
+                                                padding: 10,
+                                                heightContainer: 110,
+                                                widthContainer: 110,
+                                                onTap: () {
+                                                  _onScanPassportTap();
+                                                },
+                                              ),
+                                              ScanTypeContainerWidget(
+                                                text: 'Driving license',
+                                                textSize: 16,
+                                                iconSize: 30,
+                                                padding: 10,
+                                                heightContainer: 110,
+                                                widthContainer: 110,
+                                                onTap: () {
+                                                  _onScanDrivingLicenseTap();
+                                                },
+                                              ),
                                             ],
                                           ),
                                         )
@@ -871,18 +871,18 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                           _onScanEmiratesIdTap();
                                         },
                                       ),
-                                      // ScanTypeContainerWidget(
-                                      //   text: 'Passport',
-                                      //   onTap: () {
-                                      //     _onScanPassportTap();
-                                      //   },
-                                      // ),
-                                      // ScanTypeContainerWidget(
-                                      //   text: 'Driving license',
-                                      //   onTap: () {
-                                      //     _onScanDrivingLicenseTap();
-                                      //   },
-                                      // ),
+                                      ScanTypeContainerWidget(
+                                        text: 'Passport',
+                                        onTap: () {
+                                          _onScanPassportTap();
+                                        },
+                                      ),
+                                      ScanTypeContainerWidget(
+                                        text: 'Driving license',
+                                        onTap: () {
+                                          _onScanDrivingLicenseTap();
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ],
