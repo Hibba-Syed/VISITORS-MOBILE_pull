@@ -10,6 +10,9 @@ import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
+import 'package:visitors/model/driving_license_model.dart';
+import 'package:visitors/model/emirates_id_model.dart';
+import 'package:visitors/model/passport_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
@@ -49,18 +52,163 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _entryCardNumberController =
       TextEditingController();
-  final TextEditingController _idNumberController = TextEditingController();
-  final TextEditingController _passportExpiryController =
+  final TextEditingController _licenseNumberController =
       TextEditingController();
+  final TextEditingController _idNumberController = TextEditingController();
   final TextEditingController _passportNumberController =
       TextEditingController();
   String? _selectedItemType;
   DateTime? _selectedIssueDate;
   DateTime? _selectedExpiryDate;
-  String? _selectedNationality;
-  File? _imageFile;
+  DateTime? _selectedPassportExpiry;
   File? _personImage;
-  Future<void> _pickImage() async {
+
+  Future<void> _scanEmiratesIdAndPerformOcr() async {
+    EmiratesIdModel? emiratesIdData;
+    Map<String, dynamic>? ocrData = await _scanDocumentAndPerformOCR();
+    File? personImage;
+    String? recognizedText;
+    if (ocrData != null) {
+      personImage = ocrData['person_image'];
+      recognizedText = ocrData['recognized_text'];
+      if (personImage != null) {
+        _personImage = personImage;
+      }
+      if (recognizedText?.isNotEmpty ?? false) {
+        final Map<String, String> parsedText =
+            _parseEmiratesIdExtractedText(recognizedText!);
+        emiratesIdData = EmiratesIdModel(
+          personImage: personImage,
+          name: parsedText['Name'] ?? '',
+          idNumber: parsedText['ID Number'] ?? '',
+          issueDate: parsedText['Issuing Date'] ?? '',
+          expiryDate: parsedText['Expiry Date'] ?? '',
+          nationality: parsedText['Nationality'] ?? parsedText['nationality'],
+        );
+
+        setState(() {
+          _nameController.text = emiratesIdData?.name ?? '';
+          _idNumberController.text = emiratesIdData?.idNumber ?? '';
+          DateFormat format = DateFormat('dd/MM/yyyy');
+          _selectedIssueDate = format.tryParse(emiratesIdData?.issueDate ?? '');
+          _selectedExpiryDate =
+              format.tryParse(emiratesIdData?.expiryDate ?? '');
+          List<Country>? countries =
+              context.read<GuestCheckInCubit>().state.countries;
+          if ((emiratesIdData?.nationality?.isNotEmpty ?? false) &&
+              (countries?.isNotEmpty ?? false)) {
+            final normalized =
+                emiratesIdData?.nationality?.trim().toLowerCase();
+
+            final Country? matchedCountry = countries?.firstWhere(
+              (item) => item.name?.toLowerCase() == normalized,
+              orElse: () => Country(),
+            );
+
+            if (matchedCountry?.id != null) {
+              context
+                  .read<GuestCheckInCubit>()
+                  .onChangeSelectedCountry(matchedCountry);
+            }
+          }
+        });
+      }
+    }
+  }
+
+  Future<void> _scanDrivingLicenseAndPerformOcr() async {
+    Map<String, dynamic>? ocrData = await _scanDocumentAndPerformOCR();
+    File? personImage;
+    String? recognizedText;
+    if (ocrData != null) {
+      personImage = ocrData['person_image'];
+      recognizedText = ocrData['recognized_text'];
+      if (personImage != null) {
+        _personImage = personImage;
+      }
+      if (recognizedText?.isNotEmpty ?? false) {
+        DrivingLicenseModel? drivingLicenseData =
+            _parseDrivingLicenseExtractedText(recognizedText!, personImage);
+
+        setState(() {
+          _nameController.text = drivingLicenseData.name ?? '';
+          _licenseNumberController.text =
+              drivingLicenseData.licenseNumber ?? '';
+          DateFormat format = DateFormat('dd/MM/yyyy');
+          _selectedIssueDate =
+              format.tryParse(drivingLicenseData.issueDate ?? '');
+          _selectedExpiryDate =
+              format.tryParse(drivingLicenseData.expiryDate ?? '');
+          List<Country>? countries =
+              context.read<GuestCheckInCubit>().state.countries;
+          if ((drivingLicenseData.nationality?.isNotEmpty ?? false) &&
+              (countries?.isNotEmpty ?? false)) {
+            final normalized =
+                drivingLicenseData.nationality?.trim().toLowerCase();
+
+            final Country? matchedCountry = countries?.firstWhere(
+              (item) => item.name?.toLowerCase() == normalized,
+              orElse: () => Country(),
+            );
+
+            if (matchedCountry?.id != null) {
+              context
+                  .read<GuestCheckInCubit>()
+                  .onChangeSelectedCountry(matchedCountry);
+            }
+          }
+        });
+      }
+    }
+  }
+
+  Future<void> _scanPassportAndPerformOcr() async {
+    Map<String, dynamic>? ocrData = await _scanDocumentAndPerformOCR();
+    File? personImage;
+    String? recognizedText;
+    if (ocrData != null) {
+      personImage = ocrData['person_image'];
+      recognizedText = ocrData['recognized_text'];
+      if (personImage != null) {
+        _personImage = personImage;
+      }
+      if (recognizedText?.isNotEmpty ?? false) {
+        PassportModel? passportData =
+            _parsePassportExtractedText(recognizedText!, personImage);
+        print('name:::${passportData.name}');
+        print('nationality:: ${passportData.nationality}');
+
+        setState(() {
+          _nameController.text = passportData.name ?? '';
+          _passportNumberController.text = passportData.passportNumber ?? '';
+          DateFormat format = DateFormat('dd/MM/yyyy');
+          _selectedIssueDate = format.tryParse(passportData.issueDate ?? '');
+          _selectedExpiryDate = format.tryParse(passportData.expiryDate ?? '');
+          _selectedPassportExpiry =
+              format.tryParse(passportData.expiryDate ?? '');
+          List<Country>? countries =
+              context.read<GuestCheckInCubit>().state.countries;
+          if ((passportData.nationality?.isNotEmpty ?? false) &&
+              (countries?.isNotEmpty ?? false)) {
+            final normalized = passportData.nationality?.trim().toLowerCase();
+
+            final Country? matchedCountry = countries?.firstWhere(
+              (item) => item.name?.toLowerCase() == normalized,
+              orElse: () => Country(),
+            );
+
+            if (matchedCountry?.id != null) {
+              context
+                  .read<GuestCheckInCubit>()
+                  .onChangeSelectedCountry(matchedCountry);
+            }
+          }
+        });
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>?> _scanDocumentAndPerformOCR() async {
     DocumentScannerOptions documentOptions = DocumentScannerOptions(
       documentFormat: DocumentFormat.jpeg, // set output document format
       mode: ScannerMode.base, // to control what features are enabled
@@ -69,17 +217,17 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
     final documentScanner = DocumentScanner(options: documentOptions);
     DocumentScanningResult result = await documentScanner.scanDocument();
+    File? scannedImageFile;
     final List<String> images = result.images;
     if (images.isNotEmpty && images.first.isNotEmpty) {
-      setState(() {
-        _imageFile = File(images.first);
-      });
+      scannedImageFile = File(images.first);
 
-      await _performOCR(_imageFile!);
+      return await _performOCR(scannedImageFile);
     }
+    return null;
   }
 
-  Future<void> _performOCR(File imageFile) async {
+  Future<Map<String, dynamic>> _performOCR(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
     TextRecognizer textDetector =
         TextRecognizer(script: TextRecognitionScript.latin);
@@ -94,50 +242,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         await textDetector.processImage(inputImage);
     String text = recognizedText.text;
 
+    print('Text:::$text');
+
     final List<Face> faces = await faceDetector.processImage(inputImage);
 
     ///
-    final Map<String, String> parsedData = _parseExtractedText(text);
 
-    setState(() {
-      // _extractedText = text;
-      _personImage = _extractPersonImage(imageFile, faces);
-
-      // Auto-fill form fields
-      _nameController.text = parsedData['Name'] ?? '';
-      _selectedNationality = parsedData['Nationality'];
-      _idNumberController.text = parsedData['ID Number'] ?? '';
-      DateFormat format = DateFormat('dd/MM/yyyy');
-      _selectedIssueDate = format.tryParse(parsedData['Issuing Date'] ?? '');
-      _selectedExpiryDate = format.tryParse(parsedData['Expiry Date'] ?? '');
-
-      String? nationality =
-          parsedData['Nationality'] ?? parsedData['nationality'];
-      List<Country>? countries =
-          context.read<GuestCheckInCubit>().state.countries;
-      if (nationality != null && (countries?.isNotEmpty ?? false)) {
-        final normalized = nationality.trim().toLowerCase();
-
-        final Country? matchedCountry = countries?.firstWhere(
-          (item) => item.name?.toLowerCase() == normalized,
-          orElse: () => Country(),
-        );
-
-        if (matchedCountry?.id != null) {
-          context
-              .read<GuestCheckInCubit>()
-              .onChangeSelectedCountry(matchedCountry);
-        }
-      }
-    });
-    setState(() {});
-    print('Name:: ${_nameController.text}');
-    print('Nationality:: $_selectedNationality');
-    print('ID Number:: ${_idNumberController.text}');
-    print('Issuing Date:: $_selectedIssueDate');
-    print('Expiry Date:: $_selectedExpiryDate');
+    final File? extractedPersonImage = _extractPersonImage(imageFile, faces);
     textDetector.close();
     faceDetector.close();
+    return {
+      'person_image': extractedPersonImage,
+      'recognized_text': text,
+    };
   }
 
   File? _extractPersonImage(File originalImage, List<Face> faces) {
@@ -167,11 +284,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     final int top = boundingBox.top.toInt() - 130;
     final int width = ((boundingBox.right - boundingBox.left).toInt()) + 270;
     final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 270;
-
-    // print('left:: $left');
-    // print('top:: $top');
-    // print('width:: $width');
-    // print('height:: $height');
     // Crop the image
     final img.Image croppedImg = img.copyCrop(originalImg,
         x: left, y: top, width: width, height: height);
@@ -186,7 +298,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     return croppedFile; // Return the cropped image file
   }
 
-  Map<String, String> _parseExtractedText(String text) {
+  Map<String, String> _parseEmiratesIdExtractedText(String text) {
     Map<String, String> parsedData = {};
     List<String> lines = text.split('\n');
 
@@ -209,14 +321,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           lineLower.contains('nationality')) {
         parsedData['Nationality'] = _extractValue(line, lines, i);
       }
-      // // Issuing Date
-      // else if (lineLower.contains('تاريخ الاصدار') || lineLower.contains('issuing date')) {
-      //   parsedData['Issuing Date'] = _extractValue(line, lines, i);
-      // }
-      // // Expiry Date
-      // else if (lineLower.contains('تاريخ الانتهاء') || lineLower.contains('expiry date')) {
-      //   parsedData['Expiry Date'] = _extractValue(line, lines, i);
-      // }
       // Issuing Date (ONLY next line)
       else if (lineLower.contains('تاريخ الاصدار/') ||
           lineLower.contains('issuing date')) {
@@ -232,10 +336,144 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         }
       }
     }
-
-    // print(
-    //     'Parsed UAE ID Data: ${parsedData['Expiry Date']}${parsedData['Issuing Date']}${parsedData['Nationality']}');
     return parsedData;
+  }
+
+  DrivingLicenseModel _parseDrivingLicenseExtractedText(
+      String rawText, File? imageFile) {
+    final lines = rawText.split('\n').map((line) => line.trim()).toList();
+
+    String? licenseNumber;
+    String? name;
+    String? nationality;
+    String? dateOfBirth;
+    String? issueDate;
+    String? expiryDate;
+
+    final dateRegex = RegExp(r'\d{2}/\d{2}/\d{4}');
+    final licenseRegex = RegExp(r'^\d{6,}$'); // Numeric and >= 6 digits
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+
+      // License number
+      if (licenseNumber == null && licenseRegex.hasMatch(line)) {
+        licenseNumber = licenseRegex.firstMatch(line)!.group(0);
+      }
+
+      // Name
+      if (name == null && line.toLowerCase().contains('name')) {
+        name =
+            line.replaceFirst(RegExp(r'name', caseSensitive: false), '').trim();
+        if (name.isEmpty && i + 1 < lines.length) {
+          name = lines[i + 1].trim();
+        }
+      }
+
+      // Nationality
+      if (nationality == null && line.toLowerCase().contains('nationality')) {
+        nationality = line
+            .replaceFirst(RegExp(r'nationality', caseSensitive: false), '')
+            .trim();
+        if (nationality.isEmpty && i + 1 < lines.length) {
+          nationality = lines[i + 1].trim();
+        }
+      }
+
+      // Dates (DOB, Issue, Expiry)
+      if (dateRegex.hasMatch(line)) {
+        final matches =
+            dateRegex.allMatches(line).map((m) => m.group(0)!).toList();
+        for (final date in matches) {
+          if (dateOfBirth == null) {
+            dateOfBirth = date;
+          } else if (issueDate == null) {
+            issueDate = date;
+          } else {
+            expiryDate ??= date;
+          }
+        }
+      }
+    }
+
+    return DrivingLicenseModel(
+      personImage: imageFile,
+      name: name,
+      licenseNumber: licenseNumber,
+      issueDate: issueDate,
+      expiryDate: expiryDate,
+      nationality: nationality,
+    );
+  }
+
+  PassportModel _parsePassportExtractedText(String rawText, File? imageFile) {
+    final lines = rawText.split('\n').map((line) => line.trim()).toList();
+
+    String? name;
+    String? passportNumber;
+    String? issueDate;
+    String? expiryDate;
+    String? nationality;
+
+    final dateRegex = RegExp(r'\d{2}/\d{2}/\d{4}');
+    final passportNoRegex = RegExp(r'^[A-Z0-9]{6,}$'); // Passport No format
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+
+      // Passport Number
+      if (passportNumber == null &&
+          line.toLowerCase().contains('passport no')) {
+        if (i + 1 < lines.length && passportNoRegex.hasMatch(lines[i + 1])) {
+          passportNumber = lines[i + 1];
+        }
+      }
+
+      // Name (line before "Date of Birth")
+      if (name == null &&
+          line.toLowerCase().contains('date of birth') &&
+          i > 0) {
+        name = lines[i - 1].trim();
+      }
+
+      // Nationality
+      if (nationality == null && line.toLowerCase().contains('nationality')) {
+        // Check same line first
+        final parts = line.split(RegExp(r'nationality', caseSensitive: false));
+        if (parts.length > 1 && parts[1].trim().isNotEmpty) {
+          nationality = parts[1].trim();
+        } else if (i + 1 < lines.length) {
+          final nextLine = lines[i + 1].trim();
+          // Ensure it's not an unrelated keyword like "Country Code" or name
+          if (!nextLine.toLowerCase().contains('country') &&
+              !nextLine.toLowerCase().contains('code') &&
+              !nextLine.toLowerCase().contains('name') &&
+              !dateRegex.hasMatch(nextLine)) {
+            nationality = nextLine;
+          }
+        }
+      }
+
+      // Dates
+      final matches =
+          dateRegex.allMatches(line).map((m) => m.group(0)!).toList();
+      for (final date in matches) {
+        if (issueDate == null) {
+          issueDate = date;
+        } else {
+          expiryDate ??= date;
+        }
+      }
+    }
+
+    return PassportModel(
+      personImage: imageFile,
+      name: name,
+      passportNumber: passportNumber,
+      issueDate: issueDate,
+      expiryDate: expiryDate,
+      nationality: nationality,
+    );
   }
 
   String _extractValue(String line, List<String> lines, int currentIndex) {
@@ -252,6 +490,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: const AppBarWidget(
           title: 'Guest Check-In',
           titleColor: AppColors.black,
@@ -403,7 +642,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 },
                                               ),
                                               ScanTypeContainerWidget(
-                                                text: 'Driving license',
+                                                text: 'Driving License',
                                                 textSize: 16,
                                                 iconSize: 30,
                                                 padding: 10,
@@ -509,14 +748,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             ),
                             const Gap(10),
                             Expanded(
-                              child: TextFieldWidget(
-                                outLineColor: AppColors.outLineGray,
-                                fillColor: AppColors.white,
-                                enabledBorder: InputBorder.none,
-                                controller: _passportExpiryController,
-                                label: 'Passport Expiry',
+                              child: CustomDatePicker(
+                                key: UniqueKey(),
+                                title: "Passport Expiry",
                                 hint: 'Passport expiry',
-                                keyboardType: TextInputType.text,
+                                initialDate: _selectedPassportExpiry,
+                                onDatePicked: (value) {
+                                  _selectedPassportExpiry = value;
+                                },
                               ),
                             ),
                           ],
@@ -699,6 +938,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               ),
                             ),
                           ],
+                        ),
+                        const Gap(5),
+                        TextFieldWidget(
+                          controller: _licenseNumberController,
+                          label: 'License Number',
+                          hint: 'Enter license number',
                         ),
                         const Gap(5),
                         TextFieldWidget(
@@ -990,18 +1235,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.outLineGray,
-                          enabledBorder: InputBorder.none,
-                          controller: _passportExpiryController,
-                          label: 'Passport Expiry',
+                        CustomDatePicker(
+                          key: UniqueKey(),
+                          title: 'Passport Expiry',
                           hint: 'Passport expiry',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
+                          initialDate: _selectedPassportExpiry,
+                          onDatePicked: (value) {
+                            _selectedPassportExpiry = value;
                           },
                         ),
                         const Gap(5),
@@ -1194,6 +1434,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         TextFieldWidget(
                           outLineColor: AppColors.gray,
+                          controller: _licenseNumberController,
+                          label: 'Entry License Number',
+                          hint: 'Enter license number',
+                        ),
+                        const Gap(5),
+                        TextFieldWidget(
+                          outLineColor: AppColors.gray,
                           controller: _entryCardNumberController,
                           label: 'Entry Card Number',
                           hint: 'Enter card number',
@@ -1287,17 +1534,17 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   void _onScanPassportTap() {
-    _pickImage();
+    _scanPassportAndPerformOcr();
     Navigator.pop(context);
   }
 
   void _onScanEmiratesIdTap() {
-    _pickImage();
+    _scanEmiratesIdAndPerformOcr();
     Navigator.pop(context);
   }
 
   void _onScanDrivingLicenseTap() {
-    _pickImage();
+    _scanDrivingLicenseAndPerformOcr();
     Navigator.pop(context);
   }
 }
