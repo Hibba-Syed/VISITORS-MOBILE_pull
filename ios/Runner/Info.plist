@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>This app uses the camera to scan identity documents such as passports, driving licenses, and other official IDs.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app may access the microphone during scanning for enhanced detection and verification features.</string>
 </dict>
 </plist>

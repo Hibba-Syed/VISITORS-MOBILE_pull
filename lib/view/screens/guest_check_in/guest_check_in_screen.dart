@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
+import 'package:mrz_parser/mrz_parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/model/driving_license_model.dart';
@@ -17,6 +18,7 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
@@ -26,6 +28,7 @@ import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../../helper/mrz_helper.dart';
 import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/country/country_model.dart';
 import '../../../model/unit/unit_model.dart';
@@ -175,8 +178,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       if (recognizedText?.isNotEmpty ?? false) {
         PassportModel? passportData =
             _parsePassportExtractedText(recognizedText!, personImage);
-        print('name:::${passportData.name}');
-        print('nationality:: ${passportData.nationality}');
 
         setState(() {
           _nameController.text = passportData.name ?? '';
@@ -242,11 +243,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         await textDetector.processImage(inputImage);
     String text = recognizedText.text;
 
-    print('Text:::$text');
-
     final List<Face> faces = await faceDetector.processImage(inputImage);
-
-    ///
 
     final File? extractedPersonImage = _extractPersonImage(imageFile, faces);
     textDetector.close();
@@ -415,7 +412,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     String? expiryDate;
     String? nationality;
 
-    final dateRegex = RegExp(r'\d{2}/\d{2}/\d{4}');
+    final allDateRegex = RegExp(
+      r'\b(?:\d{1,2}[\/\-. ])(?:\d{1,2}|[A-Za-z]{3,})[\/\-. ]\d{2,4}\b|'
+      r'\b\d{4}[\/\-. ]\d{1,2}[\/\-. ]\d{1,2}\b|'
+      r'\b\d{1,2} [A-Za-z]{3,9} \d{4}\b',
+      caseSensitive: false,
+    );
     final passportNoRegex = RegExp(r'^[A-Z0-9]{6,}$'); // Passport No format
 
     for (int i = 0; i < lines.length; i++) {
@@ -448,7 +450,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           if (!nextLine.toLowerCase().contains('country') &&
               !nextLine.toLowerCase().contains('code') &&
               !nextLine.toLowerCase().contains('name') &&
-              !dateRegex.hasMatch(nextLine)) {
+              !allDateRegex.hasMatch(nextLine)) {
             nationality = nextLine;
           }
         }
@@ -456,12 +458,16 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       // Dates
       final matches =
-          dateRegex.allMatches(line).map((m) => m.group(0)!).toList();
-      for (final date in matches) {
-        if (issueDate == null) {
-          issueDate = date;
-        } else {
-          expiryDate ??= date;
+          allDateRegex.allMatches(line).map((m) => m.group(0)!.trim()).toList();
+      for (final rawDate in matches) {
+        final parsed = DateTimeUtil.tryParseDate(rawDate);
+        if (parsed != null) {
+          final formatted = DateFormat('dd/MM/yyyy').format(parsed);
+          if (issueDate == null) {
+            issueDate = formatted;
+          } else {
+            expiryDate ??= formatted;
+          }
         }
       }
     }
@@ -638,7 +644,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 heightContainer: 110,
                                                 widthContainer: 110,
                                                 onTap: () {
-                                                  _onScanPassportTap();
+                                                  _onScanPassportTap(context);
                                                 },
                                               ),
                                               ScanTypeContainerWidget(
@@ -1119,7 +1125,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       ScanTypeContainerWidget(
                                         text: 'Passport',
                                         onTap: () {
-                                          _onScanPassportTap();
+                                          _onScanPassportTap(context);
                                         },
                                       ),
                                       ScanTypeContainerWidget(
@@ -1533,9 +1539,81 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
   }
 
-  void _onScanPassportTap() {
-    _scanPassportAndPerformOcr();
-    Navigator.pop(context);
+  void _onScanPassportTap(BuildContext context) {
+    _scanMrzAndParse(context);
+    // _scanPassportAndPerformOcr();
+    // Navigator.pop(context);
+  }
+
+  Future<void> _scanMrzAndParse(BuildContext context) async {
+    final options = DocumentScannerOptions(
+      documentFormat: DocumentFormat.jpeg,
+      mode: ScannerMode.full,
+      pageLimit: 1,
+    );
+
+    final scanner = DocumentScanner(options: options);
+
+    try {
+      final result = await scanner.scanDocument();
+      scanner.close();
+
+      if (result.images.isEmpty) {
+        print('No document scanned');
+        return;
+      }
+
+      final path = result.images.first;
+      final inputImage = InputImage.fromFilePath(path);
+
+      final textRecognizer = TextRecognizer();
+      final visionText = await textRecognizer.processImage(inputImage);
+      await textRecognizer.close();
+
+      final rawLines = visionText.text
+          .replaceAll(' ', '')
+          .split('\n')
+          .where((line) => MRZHelper.testTextLine(line).isNotEmpty)
+          .map((line) => MRZHelper.testTextLine(line))
+          .toList();
+
+      final mrzLines = MRZHelper.getFinalListToParse(rawLines);
+
+      if (mrzLines != null) {
+        final result = MRZParser.parse(mrzLines);
+
+        // Show dialog or update UI
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text('MRZ Details'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Name: ${result.givenNames}'),
+                Text('Surname: ${result.surnames}'),
+                Text('Sex: ${result.sex}'),
+                Text('Document Number: ${result.documentNumber}'),
+                Text('Birth Date: ${result.birthDate}'),
+                Text('Expiry Date: ${result.expiryDate}'),
+                Text('Nationality: ${result.nationalityCountryCode}'),
+                Text('Type: ${result.documentType}'),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Close'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        print('No valid MRZ detected.');
+      }
+    } catch (e) {
+      print('Document scanning failed: $e');
+    }
   }
 
   void _onScanEmiratesIdTap() {
