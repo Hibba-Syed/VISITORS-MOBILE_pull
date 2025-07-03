@@ -59,6 +59,7 @@ class AppUtils {
 
     return AppColors.red;
   }
+
   // static String getDateRangeStringFromLabel(String label) {
   //   final now = DateTime.now();
   //   DateTime fromDate;
@@ -195,6 +196,10 @@ class AppUtils {
       requestName = "Short Stay";
     }
     return requestName;
+  }
+
+  static String? getNationalityName(String code) {
+    return AppConstants.nationalityMap[code.toUpperCase()] ?? '';
   }
 }
 

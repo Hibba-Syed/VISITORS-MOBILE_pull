@@ -13,6 +13,7 @@ import 'package:path/path.dart' as path;
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/model/driving_license_model.dart';
 import 'package:visitors/model/emirates_id_model.dart';
+import 'package:visitors/model/ocr_model.dart';
 import 'package:visitors/model/passport_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -66,30 +67,41 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   DateTime? _selectedPassportExpiry;
   File? _personImage;
 
+  void clearData() {
+    _personImage = null;
+    _licenseNumberController.clear();
+    _idNumberController.clear();
+    _passportNumberController.clear();
+    _selectedIssueDate = null;
+    _selectedExpiryDate = null;
+    _selectedPassportExpiry = null;
+
+    context.read<GuestCheckInCubit>().onChangeSelectedCountry(Country());
+  }
+
   Future<void> _scanEmiratesIdAndPerformOcr() async {
     EmiratesIdModel? emiratesIdData;
-    Map<String, dynamic>? ocrData = await _scanDocumentAndPerformOCR();
-    File? personImage;
+    OcrModel? ocrData = await _scanDocumentAndPerformOCR();
     String? recognizedText;
     if (ocrData != null) {
-      personImage = ocrData['person_image'];
-      recognizedText = ocrData['recognized_text'];
-      if (personImage != null) {
-        _personImage = personImage;
-      }
+      recognizedText = ocrData.recognizedTExt;
+
       if (recognizedText?.isNotEmpty ?? false) {
         final Map<String, String> parsedText =
             _parseEmiratesIdExtractedText(recognizedText!);
+
         emiratesIdData = EmiratesIdModel(
-          personImage: personImage,
+          personImage: ocrData.personImage,
           name: parsedText['Name'] ?? '',
           idNumber: parsedText['ID Number'] ?? '',
           issueDate: parsedText['Issuing Date'] ?? '',
           expiryDate: parsedText['Expiry Date'] ?? '',
           nationality: parsedText['Nationality'] ?? parsedText['nationality'],
         );
+        clearData();
 
         setState(() {
+          _personImage = emiratesIdData?.personImage;
           _nameController.text = emiratesIdData?.name ?? '';
           _idNumberController.text = emiratesIdData?.idNumber ?? '';
           DateFormat format = DateFormat('dd/MM/yyyy');
@@ -120,20 +132,18 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   Future<void> _scanDrivingLicenseAndPerformOcr() async {
-    Map<String, dynamic>? ocrData = await _scanDocumentAndPerformOCR();
-    File? personImage;
+    OcrModel? ocrData = await _scanDocumentAndPerformOCR();
     String? recognizedText;
     if (ocrData != null) {
-      personImage = ocrData['person_image'];
-      recognizedText = ocrData['recognized_text'];
-      if (personImage != null) {
-        _personImage = personImage;
-      }
+      recognizedText = ocrData.recognizedTExt;
+
       if (recognizedText?.isNotEmpty ?? false) {
         DrivingLicenseModel? drivingLicenseData =
-            _parseDrivingLicenseExtractedText(recognizedText!, personImage);
-
+            _parseDrivingLicenseExtractedText(
+                recognizedText!, ocrData.personImage);
+        clearData();
         setState(() {
+          _personImage = drivingLicenseData.personImage;
           _nameController.text = drivingLicenseData.name ?? '';
           _licenseNumberController.text =
               drivingLicenseData.licenseNumber ?? '';
@@ -166,12 +176,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   Future<void> _scanPassportAndPerformOcr() async {
-    Map<String, dynamic>? ocrData = await _scanDocumentAndPerformOCR();
+    OcrModel? ocrData = await _scanDocumentAndPerformOCR();
     File? personImage;
     String? recognizedText;
     if (ocrData != null) {
-      personImage = ocrData['person_image'];
-      recognizedText = ocrData['recognized_text'];
+      personImage = ocrData.personImage;
+      recognizedText = ocrData.recognizedTExt;
       if (personImage != null) {
         _personImage = personImage;
       }
@@ -209,7 +219,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     }
   }
 
-  Future<Map<String, dynamic>?> _scanDocumentAndPerformOCR() async {
+  Future<OcrModel?> _scanDocumentAndPerformOCR() async {
     DocumentScannerOptions documentOptions = DocumentScannerOptions(
       documentFormat: DocumentFormat.jpeg, // set output document format
       mode: ScannerMode.base, // to control what features are enabled
@@ -228,7 +238,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     return null;
   }
 
-  Future<Map<String, dynamic>> _performOCR(File imageFile) async {
+  Future<OcrModel> _performOCR(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
     TextRecognizer textDetector =
         TextRecognizer(script: TextRecognitionScript.latin);
@@ -248,10 +258,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     final File? extractedPersonImage = _extractPersonImage(imageFile, faces);
     textDetector.close();
     faceDetector.close();
-    return {
-      'person_image': extractedPersonImage,
-      'recognized_text': text,
-    };
+    return OcrModel(personImage: extractedPersonImage, recognizedTExt: text);
   }
 
   File? _extractPersonImage(File originalImage, List<Face> faces) {
@@ -503,8 +510,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           iconColor: AppColors.black,
         ),
         body: width >= AppConstants.tabletScreen
-            ? tabletGuestCheckInScreen(context)
-            : mobileGuestCheckInScreen(context),
+            ? _tabletGuestCheckInScreen(context)
+            : _mobileGuestCheckInScreen(context),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.horizontalPadding,
@@ -517,7 +524,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   buttonColor: AppColors.green,
                   text: 'Check-In',
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if ((_formKey.currentState?.validate() ?? false) &&
+                        (_phoneNumberKey.currentState?.validate() ?? false)) {
                       context
                           .read<GuestCheckInCubit>()
                           .guestCheckIn(context, data: {
@@ -530,19 +538,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         'phone': _phoneNumberController.text,
                         'email': _emailController.text,
                         'entry_card_number': _entryCardNumberController.text,
-                        'nationality': state.selectedCountry,
+                        'nationality': state.selectedCountry?.name,
                         'description': _descriptionController.text,
                         'serviceable_id': '',
                         'serviceable_type': '',
                         'sms': false,
                         'visitor_id': ''
                       });
-
-                      if (_phoneNumberKey.currentState!.validate()) {
-                        // print("Form is valid. Proceeding with check-in...");
-                      } else {
-                        // print("Form validation failed.");
-                      }
                     }
                   });
             },
@@ -552,7 +554,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
   }
 
-  Widget tabletGuestCheckInScreen(BuildContext context) {
+  Widget _tabletGuestCheckInScreen(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -600,14 +602,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         onPressed: () {
                           showDialog(
                               context: context,
-                              builder: (context) {
+                              builder: (ctx) {
                                 return CustomAlertDialogBox(
                                   insetPadding: AppUtils.isTablet(context)
                                       ? EdgeInsets.all(70)
                                       : EdgeInsets.all(10),
                                   hideBothButtons: true,
                                   title: 'Select Type',
-                                  contentBuilder: (context, setState) {
+                                  contentBuilder: (ctx, setState) {
                                     return Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -1020,7 +1022,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 horizontal: 10),
                                         title: 'Select Visitor',
                                         contentBuilder: (context, setState) {
-                                          return visitorNumberWidget(
+                                          return _visitorNumberWidget(
                                             _phoneNumberController.text,
                                             remainingVisitors: ((context
                                                         .read<
@@ -1060,7 +1062,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
   }
 
-  Widget mobileGuestCheckInScreen(BuildContext context) {
+  Widget _mobileGuestCheckInScreen(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -1417,7 +1419,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 horizontal: 10),
                                         title: 'Select Visitor',
                                         contentBuilder: (context, setState) {
-                                          return visitorNumberWidget(
+                                          return _visitorNumberWidget(
                                               _phoneNumberController.text);
                                         },
                                       );
@@ -1470,7 +1472,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
   }
 
-  Widget visitorNumberWidget(String phoneNumber, {int? remainingVisitors}) {
+  Widget _visitorNumberWidget(String phoneNumber, {int? remainingVisitors}) {
     return BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
       builder: (context, state) {
         if (state.isNumberInfoLoading) {
@@ -1540,35 +1542,40 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   void _onScanPassportTap(BuildContext context) {
-    _scanMrzAndParse(context);
+    _scanMrzForPassportAndParse(context);
     // _scanPassportAndPerformOcr();
-    // Navigator.pop(context);
+    Navigator.pop(context);
   }
 
-  Future<void> _scanMrzAndParse(BuildContext context) async {
-    final options = DocumentScannerOptions(
+  Future<void> _scanMrzForPassportAndParse(BuildContext context) async {
+    final DocumentScannerOptions documentOptions = DocumentScannerOptions(
       documentFormat: DocumentFormat.jpeg,
       mode: ScannerMode.full,
       pageLimit: 1,
+      isGalleryImport: false,
     );
-
-    final scanner = DocumentScanner(options: options);
-
-    try {
-      final result = await scanner.scanDocument();
-      scanner.close();
-
-      if (result.images.isEmpty) {
-        print('No document scanned');
-        return;
-      }
-
-      final path = result.images.first;
+    final documentScanner = DocumentScanner(options: documentOptions);
+    DocumentScanningResult result = await documentScanner.scanDocument();
+    File? scannedImageFile;
+    final List<String> images = result.images;
+    if (images.isNotEmpty && images.first.isNotEmpty) {
+      scannedImageFile = File(images.first);
+      final path = images.first;
       final inputImage = InputImage.fromFilePath(path);
 
       final textRecognizer = TextRecognizer();
       final visionText = await textRecognizer.processImage(inputImage);
       await textRecognizer.close();
+      FaceDetector faceDetector = FaceDetector(
+        options: FaceDetectorOptions(
+          performanceMode: FaceDetectorMode.accurate,
+          minFaceSize: 1,
+        ),
+      );
+      final List<Face> faces = await faceDetector.processImage(inputImage);
+      final File? extractedPersonImage =
+          _extractPersonImage(scannedImageFile, faces);
+      faceDetector.close();
 
       final rawLines = visionText.text
           .replaceAll(' ', '')
@@ -1581,38 +1588,74 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       if (mrzLines != null) {
         final result = MRZParser.parse(mrzLines);
+        PassportModel passportData = PassportModel(
+          personImage: extractedPersonImage,
+          name: result.givenNames,
+          passportNumber: result.documentNumber,
+          issueDate: result.expiryDate.toString(),
+          expiryDate: result.expiryDate.toString(),
+          nationality:
+              AppUtils.getNationalityName(result.nationalityCountryCode),
+        );
+        clearData();
+
+        setState(() {
+          _personImage = passportData.personImage;
+          _nameController.text = passportData.name ?? '';
+          _passportNumberController.text = passportData.passportNumber ?? '';
+          _selectedPassportExpiry =
+              DateTime.tryParse(passportData.expiryDate ?? '');
+          List<Country>? countries =
+              context.read<GuestCheckInCubit>().state.countries;
+          if ((passportData.nationality?.isNotEmpty ?? false) &&
+              (countries?.isNotEmpty ?? false)) {
+            final normalized = passportData.nationality?.trim().toLowerCase();
+
+            final Country? matchedCountry = countries?.firstWhere(
+              (item) => item.name?.toLowerCase() == normalized,
+              orElse: () => Country(),
+            );
+
+            if (matchedCountry?.id != null) {
+              context
+                  .read<GuestCheckInCubit>()
+                  .onChangeSelectedCountry(matchedCountry);
+            }
+          }
+        });
 
         // Show dialog or update UI
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text('MRZ Details'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Name: ${result.givenNames}'),
-                Text('Surname: ${result.surnames}'),
-                Text('Sex: ${result.sex}'),
-                Text('Document Number: ${result.documentNumber}'),
-                Text('Birth Date: ${result.birthDate}'),
-                Text('Expiry Date: ${result.expiryDate}'),
-                Text('Nationality: ${result.nationalityCountryCode}'),
-                Text('Type: ${result.documentType}'),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Close'),
-              ),
-            ],
-          ),
-        );
+        // showDialog(
+        //   context: context,
+        //   builder: (_) => AlertDialog(
+        //     title: Text('MRZ Details'),
+        //     content: Column(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: [
+        //         if (extractedPersonImage?.path.isNotEmpty ?? false)
+        //           Image.file(extractedPersonImage!),
+        //         Text('Name: ${result.givenNames}'),
+        //         Text('Surname: ${result.surnames}'),
+        //         Text('Sex: ${result.sex}'),
+        //         Text('Document Number: ${result.documentNumber}'),
+        //         Text('Birth Date: ${result.birthDate}'),
+        //         Text('Expiry Date: ${result.expiryDate}'),
+        //         Text(
+        //             'Nationality: ${AppUtils.getNationalityName(result.nationalityCountryCode)}'),
+        //         Text('Type: ${result.documentType}'),
+        //       ],
+        //     ),
+        //     actions: [
+        //       TextButton(
+        //         onPressed: () => Navigator.pop(context),
+        //         child: Text('Close'),
+        //       ),
+        //     ],
+        //   ),
+        // );
       } else {
         print('No valid MRZ detected.');
       }
-    } catch (e) {
-      print('Document scanning failed: $e');
     }
   }
 

@@ -1,5 +1,3 @@
-
-
 class AppConstants {
   static const int dashboardIndex = 0;
   static const int checkInsIndex = 1;
@@ -16,10 +14,55 @@ class AppConstants {
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
 
-  static  const List<String> rangList = [
+  static const List<String> rangList = [
     'Last 30 Days',
     'Last 60 Days',
     'Last 90 Days'
   ];
 
+  static const Map<String, String> nationalityMap = {
+    "AFG": "Afghanistan",
+    "ALB": "Albania",
+    "DZA": "Algeria",
+    "AND": "Andorra",
+    "ARE": "United Arab Emirates",
+    "ARG": "Argentina",
+    "ARM": "Armenia",
+    "AUS": "Australia",
+    "AUT": "Austria",
+    "AZE": "Azerbaijan",
+    "BGD": "Bangladesh",
+    "BEL": "Belgium",
+    "BHR": "Bahrain",
+    "BRA": "Brazil",
+    "CAN": "Canada",
+    "CHN": "China",
+    "DEU": "Germany",
+    "EGY": "Egypt",
+    "FRA": "France",
+    "GBR": "United Kingdom",
+    "IND": "India",
+    "IRN": "Iran",
+    "IRQ": "Iraq",
+    "ITA": "Italy",
+    "JPN": "Japan",
+    "JOR": "Jordan",
+    "KWT": "Kuwait",
+    "LBN": "Lebanon",
+    "LKA": "Sri Lanka",
+    "MAR": "Morocco",
+    "MYS": "Malaysia",
+    "NPL": "Nepal",
+    "OMN": "Oman",
+    "PAK": "Pakistan",
+    "PHL": "Philippines",
+    "QAT": "Qatar",
+    "SAU": "Saudi Arabia",
+    "SDN": "Sudan",
+    "SYR": "Syria",
+    "THA": "Thailand",
+    "TUR": "Turkey",
+    "USA": "United States",
+    "YEM": "Yemen",
+  };
 }
