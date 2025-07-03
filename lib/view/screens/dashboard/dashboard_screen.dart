@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -94,7 +95,7 @@ class DashboardScreen extends StatelessWidget {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                const Text('Are you sure you want to exit?',
+                 Text('Are you sure you want to exit?'.tr(),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
@@ -209,7 +210,7 @@ class DashboardScreen extends StatelessWidget {
           builder: (context, state) {
             final List<ActionsItemModel> actions = [
               ActionsItemModel(
-                title: 'All Check-Ins',
+                title: 'All Check-Ins'.tr(),
                 count: state.countModel?.total ?? 0,
                 iconPath: AppImages.checkIn,
                 backgroundColor: AppColors.white,
@@ -220,7 +221,7 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ActionsItemModel(
-                title: 'Guests',
+                title: 'Guests'.tr(),
                 count: state.countModel?.guests ?? 0,
                 iconPath: AppImages.guests,
                 backgroundColor: AppColors.white,
@@ -231,7 +232,7 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ActionsItemModel(
-                title: 'E-Services',
+                title: 'E-Services'.tr(),
                 count: state.countModel?.service ?? 0,
                 iconPath: AppImages.eServices,
                 backgroundColor: AppColors.white,
@@ -242,7 +243,7 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ActionsItemModel(
-                title: 'Work Order / RFPs',
+                title: 'Work Order / RFPs'.tr(),
                 count: state.countModel?.jobs ?? 0,
                 iconPath: AppImages.rfps,
                 backgroundColor: AppColors.white,
@@ -270,7 +271,7 @@ class DashboardScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             HeadingWidget(
-                              heading: 'Welcome',
+                              heading: "Welcome".tr(),
                               style: AppTextStyles.style15DarkGrey600,
                             ),
                             HeadingWidget(
@@ -308,7 +309,7 @@ class DashboardScreen extends StatelessWidget {
                         imageHeight: 25,
                         fontSize: 17,
                         height: 70,
-                        text: 'Guest Check-In',
+                        text: 'Guest Check-In'.tr(),
                         buttonColor: AppColors.green,
                         textColor: AppColors.white,
                         image: AppImages.guestCheckIn,
@@ -323,8 +324,8 @@ class DashboardScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Check-Ins',
+                         Text(
+                          'Check-Ins'.tr(),
                           style: AppTextStyles.style19Primary600,
                         ),
                         Row(
@@ -332,7 +333,7 @@ class DashboardScreen extends StatelessWidget {
                             CustomButton(
                                 buttonColor: AppColors.red,
                                 fontWeight: FontWeight.w500,
-                                text: 'Check-Outs',
+                                text: 'Check-Outs'.tr(),
                                 fontSize: 14,
                                 height: 41,
                                 borderRadius: 6,
@@ -344,7 +345,7 @@ class DashboardScreen extends StatelessWidget {
                             const Gap(10),
                             CustomButton(
                                 buttonColor: AppColors.primary,
-                                text: 'View All',
+                                text: 'View All'.tr(),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 height: 41.5,
@@ -680,7 +681,7 @@ class DashboardScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeadingWidget(
-                  heading: 'Welcome',
+                  heading: (context.locale.countryCode == "AE") ? "مرحبا": "Welcome",
                   style: AppUtils.isTablet(context)
                       ? AppTextStyles.style16DarkGrey600
                       : AppTextStyles.style15DarkGrey600,

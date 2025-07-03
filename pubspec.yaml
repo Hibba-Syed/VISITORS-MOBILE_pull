@@ -69,6 +69,8 @@ dependencies:
   open_file: ^3.5.10
   path_provider: ^2.1.5
   connectivity_plus: ^6.1.4
+  easy_localization: ^3.0.7+1
+  animated_switch: ^0.0.3
 
 
 dev_dependencies:
@@ -97,6 +99,7 @@ flutter:
   assets:
       - assets/png/
       - assets/svg/
+      - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

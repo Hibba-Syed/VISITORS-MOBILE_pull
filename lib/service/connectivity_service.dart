@@ -110,7 +110,7 @@ class ConnectivityService {
                           changeState(() {
                             isLoading = false;
                           });
-                          if (hasInternet) {
+                          if (hasInternet && context.mounted) {
                             _showOrDismissPopup(context, true);
                           }
                         },

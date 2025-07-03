@@ -1,3 +1,5 @@
+import 'package:animated_switch/animated_switch.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,7 +40,7 @@ class MainDashboardScreen extends StatefulWidget {
   static final List<DrawerItemModel> drawerItems = [
     DrawerItemModel(
         index: AppConstants.dashboardIndex,
-        title: 'Dashboard',
+        title: 'Dashboard'.tr(),
         iconPath: AppImages.dashboard),
     DrawerItemModel(
         index: AppConstants.checkInsIndex,
@@ -219,7 +221,41 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     }
                   }
                 },
-              ))
+              )),
+          ListTile(
+            dense: true,
+            leading: Icon(Icons.translate,color: AppColors.darkGrey,size: 23,),
+            title: Text(
+              "Change Language",style: AppTextStyles.style16DarkGrey400,
+              textAlign: (context.locale.countryCode == "US")
+                  ? TextAlign.left
+                  : TextAlign.right,
+            ),
+            trailing: SizedBox(
+              width: 50,
+              height: 20,
+              child: AnimatedSwitch(
+                colorOn: AppColors.primary,
+                colorOff: AppColors.primary,
+                onTap: () {
+                  var nextLanguage =
+                  (context.locale.countryCode == "US")
+                      ? const Locale("ar", "AE")
+                      : const Locale("en", "US");
+                  context.deleteSaveLocale();
+                  context.setLocale(nextLanguage);
+                  Navigator.pop(context);
+                },
+                indicatorColor: AppColors.white,
+                height: 20,
+                textOn: "EN",
+                textOff: "AR",
+                value:
+                (context.locale.countryCode == "US") ? true : false,
+                textStyle: const TextStyle(color: AppColors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
@@ -37,6 +38,9 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
             title: 'Visitors Mobile',
             // locale: DevicePreview.locale(context),
             // builder: DevicePreview.appBuilder,
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
             theme: ThemeData(
               textTheme: GoogleFonts.interTextTheme(),
               scaffoldBackgroundColor: AppColors.backgroundColor,
@@ -51,6 +55,7 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
                 color: AppColors.primary,
               ),
             ),
+
             onGenerateRoute: AppPages.generateRouteSettings,
             initialRoute: AppRoutes.splash,
             debugShowCheckedModeBanner: false,
