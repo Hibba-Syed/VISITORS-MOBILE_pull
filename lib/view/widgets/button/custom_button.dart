@@ -7,7 +7,7 @@ import '../../../resource/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   final Color? buttonColor;
-  final String text;
+  final String? text;
   final String? image;
   final double? imageHeight;
   final Color? textColor;
@@ -75,7 +75,7 @@ class CustomButton extends StatelessWidget {
             ],
             Flexible(
               child: Text(
-                text,
+                text ?? "",
                 style: invert
                     ? TextStyle(
                         color: textColor ?? AppColors.primary,

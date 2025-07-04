@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/utils/app_utils.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
 import '../../widgets/loader/loader_widget.dart';
 
@@ -33,7 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             ),
             Gap(60),
             Text(
-              'Wait while setting up the Dashboard',
+              AppUtils.languageConverter('WaitWhileSettingUpTheDashboard'),
               style: TextStyle(
                 fontSize: 15,
                 color: AppColors.darkGrey,

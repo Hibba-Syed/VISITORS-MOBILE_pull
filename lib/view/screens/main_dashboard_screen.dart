@@ -40,35 +40,35 @@ class MainDashboardScreen extends StatefulWidget {
   static final List<DrawerItemModel> drawerItems = [
     DrawerItemModel(
         index: AppConstants.dashboardIndex,
-        title: 'Dashboard'.tr(),
+        title: AppUtils.languageConverter('dashboard'),
         iconPath: AppImages.dashboard),
     DrawerItemModel(
         index: AppConstants.checkInsIndex,
-        title: 'Check-Ins',
+        title: AppUtils.languageConverter('checkIns'),
         iconPath: AppImages.menuCheckIn),
     DrawerItemModel(
         index: AppConstants.eServicesIndex,
-        title: 'E-Services',
+        title: AppUtils.languageConverter('eServices'),
         iconPath: AppImages.menuEservices),
     DrawerItemModel(
         index: AppConstants.workOrderRfpIndex,
-        title: 'Work Order / RFPs',
+        title: AppUtils.languageConverter('workOrderRFPs'),
         iconPath: AppImages.menuRFPs),
     DrawerItemModel(
         index: AppConstants.messagesIndex,
-        title: 'Messages',
+        title: AppUtils.languageConverter('messages'),
         iconPath: AppImages.menuMsg),
     DrawerItemModel(
         index: AppConstants.checkOutsIndex,
-        title: 'Check-Outs',
+        title: AppUtils.languageConverter('checkOuts'),
         iconPath: AppImages.menuCheckout),
     DrawerItemModel(
         index: AppConstants.directoryIndex,
-        title: 'Directory',
+        title: AppUtils.languageConverter('directory'),
         iconPath: AppImages.directory),
     DrawerItemModel(
         index: AppConstants.logoutIndex,
-        title: 'Logout',
+        title:  AppUtils.languageConverter('logout'),
         iconPath: AppImages.logout),
   ];
 }
@@ -120,19 +120,19 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                const Text('Are you sure you want to logout?',
+                 Text(AppUtils.languageConverter('areYouSureYouWantToLogout?'),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
                   children: [
                     Expanded(
                         child: CustomButton(
-                            text: 'Cancel',
+                            text: AppUtils.languageConverter('cancel'),
                             onPressed: () => Navigator.pop(context, false))),
                     const Gap(10),
                     Expanded(
                         child: CustomButton(
-                            text: 'Logout',
+                            text: AppUtils.languageConverter('logout'),
                             invert: true,
                             onPressed: () {
                               Navigator.pop(context, true);
@@ -173,7 +173,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text('VMS APPLICATION',
+                  child:  Text(AppUtils.languageConverter('vMSAPPLICATION'),
                       style: AppTextStyles.style13white500),
                 )
               ],
@@ -225,8 +225,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           ListTile(
             dense: true,
             leading: Icon(Icons.translate,color: AppColors.darkGrey,size: 23,),
-            title: Text(
-              "Change Language",style: AppTextStyles.style16DarkGrey400,
+            title: Text(AppUtils.languageConverter('changeLanguage'),
+              style: AppUtils.isTablet(context) ? AppTextStyles.style21DarkGrey400  :
+              AppTextStyles.style16DarkGrey400,
               textAlign: (context.locale.countryCode == "US")
                   ? TextAlign.left
                   : TextAlign.right,
@@ -264,19 +265,19 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
   String _getTitle(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:
-        return 'Dashboard';
+        return AppUtils.languageConverter('dashboard');
       case AppConstants.checkInsIndex:
-        return 'Check-Ins';
+        return AppUtils.languageConverter('checkIns');
       case AppConstants.eServicesIndex:
-        return 'All E-Services Requests';
+        return AppUtils.languageConverter('allE-ServicesRequests');
       case AppConstants.workOrderRfpIndex:
-        return 'Work Order / RFPs';
+        return AppUtils.languageConverter('workOrderRFPs');
       case AppConstants.messagesIndex:
-        return 'Messages';
+        return AppUtils.languageConverter('messages');
       case AppConstants.checkOutsIndex:
-        return 'Check-Outs';
+        return AppUtils.languageConverter('checkOuts');
       case AppConstants.directoryIndex:
-        return 'Directory';
+        return AppUtils.languageConverter('directory');
       default:
         return '';
     }

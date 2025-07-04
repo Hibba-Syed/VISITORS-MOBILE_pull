@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
@@ -50,7 +51,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Authenticate',
+        title: AppUtils.languageConverter('authenticate'),
         isBackButtonEnabled: false,
         actions: [
           IconButton(
@@ -75,8 +76,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                             ),
                           ),
                           Gap(16),
-                          Text(
-                            'Are you sure you want to logout?',
+                          Text(AppUtils.languageConverter('areYouSureYouWantToLogout?'),
                             style: AppTextStyles.style16DarkGrey600,
                           ),
                           Gap(20),
@@ -84,7 +84,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                             children: [
                               Flexible(
                                 child: CustomButton(
-                                  text: 'Cancel',
+                                  text: AppUtils.languageConverter('cancel'),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -93,7 +93,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                               Gap(10.0),
                               Flexible(
                                 child: CustomButton(
-                                  text: 'Logout',
+                                  text: AppUtils.languageConverter('logout'),
                                   invert: true,
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -147,7 +147,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
               ),
               SizedBox(height: 15),
               Text(
-                "Authenticate to continue",
+                AppUtils.languageConverter('authenticateToContinue'),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -155,12 +155,12 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                "Use your fingerprint or Face ID to access the app.",
+                AppUtils.languageConverter('UseYourFingerprintOrFaceIDToAccessTheApp'),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               CustomButton(
-                text: "Authenticate",
+                text: AppUtils.languageConverter('authenticate'),
                 onPressed: _authenticateUser,
               ),
             ],

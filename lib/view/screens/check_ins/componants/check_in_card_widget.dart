@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -152,7 +153,7 @@ class CheckInCardWidget extends StatelessWidget {
                 CustomButton(
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
-                    text: 'Checkout',
+                    text: AppUtils.languageConverter("checkout"),
                     onPressed: checkOutOnPressed
                 ),
               ],

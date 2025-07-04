@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
@@ -195,6 +196,10 @@ class AppUtils {
       requestName = "Short Stay";
     }
     return requestName;
+  }
+
+  static String languageConverter(String key) {
+    return tr(key);
   }
 }
 

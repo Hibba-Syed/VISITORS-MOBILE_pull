@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -107,7 +108,7 @@ class ServicesCardWidget extends StatelessWidget {
                           fontSize: AppUtils.isTablet(context)  ? 15 : 15,
                           buttonColor: AppColors.green,
                           image: AppImages.checkInButton,
-                          text: 'Check-In',
+                          text: AppUtils.languageConverter('checkIn'),
                           onPressed: checkInOnPressed),
                     ),
                     if(isActiveCheckins)...[
@@ -118,7 +119,7 @@ class ServicesCardWidget extends StatelessWidget {
                             // imageHeight: AppUtils.isTablet(context) ?22 :18,
                             buttonColor: AppColors.cyanBlue,
                             image: AppImages.serviceable,
-                            text: 'Serviceable Check Ins',
+                            text: AppUtils.languageConverter('serviceableCheckIns'),
                             onPressed: serviceableCheckInOnPressed),
                       ),
                     ],
