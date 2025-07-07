@@ -31,8 +31,10 @@ class CustomAlertDialogBox extends StatefulWidget {
   const CustomAlertDialogBox({
     super.key,
     this.title,
-    this.cancelButtonText = "Cancel",
-    this.confirmButtonText = "Confirm",
+    this.cancelButtonText,
+    //= "Cancel",
+    this.confirmButtonText,
+    //= "Confirm",
     this.onConfirm,
     this.onCancel,
     this.contentBuilder,
@@ -173,8 +175,8 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                               ? widget.contentBuilder!(context, setState)
                               : Align(
                                   alignment: Alignment.center,
-                                  child: const Text(
-                                    "Are you sure you want to proceed with this action?",
+                                  child:  Text(
+                                   AppUtils.languageTranslate('areYouSureYouWantToProceedWithThisAction'),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 14,
@@ -219,7 +221,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                             ),
                                             child: Text(
                                               textAlign: TextAlign.center,
-                                              widget.cancelButtonText!,
+                                              widget.cancelButtonText ?? AppUtils.languageTranslate('cancel'),
                                               style: TextStyle(
                                                   color: widget
                                                           .cancelButtonTextColor ??
@@ -250,7 +252,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                           ),
                                           child: Text(
                                             textAlign: TextAlign.center,
-                                            widget.confirmButtonText ?? "Yes",
+                                            widget.confirmButtonText ?? AppUtils.languageTranslate('confirm'),
                                             style: TextStyle(
                                                 color: widget
                                                         .confirmButtonTextColor ??

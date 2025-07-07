@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -35,8 +36,8 @@ class CheckInDetailsScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as CheckInModel?;
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Check-In Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('checkInDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -62,7 +63,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                      HeadingWidget(
                       heading: '${AppUtils.getServiceableType(
                           checkIns?.serviceableType)
-                          .label} ${checkIns?.purpose ?? ""} Details',
+                          .label} ${checkIns?.purpose ?? ""} ${AppUtils.languageTranslate('details')}',
                     ),
                     const Gap(10),
                     Container(
@@ -75,58 +76,59 @@ class CheckInDetailsScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
+                            title: AppUtils.languageTranslate('name'),
                             value: checkIns?.name ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
+                            title: AppUtils.languageTranslate('phone'),
                             value: checkIns?.phone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Email',
+                            title: AppUtils.languageTranslate('email'),
                             value: checkIns?.email ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Unit',
+                            title: AppUtils.languageTranslate('unit'),
                             value: checkIns?.unit?.unitNumber ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Current Visitors Count',
+                            title:  AppUtils.languageTranslate('currentVisitorsCount'),
                             value: checkIns?.visitorCount ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Visit Purpose',
+                            title:  AppUtils.languageTranslate('visitPurpose'),
                             value: checkIns?.purpose ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Entry Card Number',
+                            title:  AppUtils.languageTranslate('entryCardNumber'),
                             value: checkIns?.entryCardNumber ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Nationality',
+                            title:  AppUtils.languageTranslate('nationality'),
                             value: checkIns?.visitor?.nationality ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Check-In Time',
+                            title:  AppUtils.languageTranslate('checkInTime'),
                             value: DateTimeUtil.getFormattedDateTime(
                                 checkIns?.checkinTime),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Check-In Gate',
+                            title:  AppUtils.languageTranslate('checkInGate'),
                             value: checkIns?.checkinGate ?? "--",
                           ),
                           Align(
-                            alignment: Alignment.topLeft,
+                            alignment: context.locale.languageCode == 'en' ?
+                            Alignment.topLeft : Alignment.topRight,
                             child: ReadMoreWidget(
-                                title: 'Description',
+                                title:  AppUtils.languageTranslate('description'),
                                 valueText: checkIns?.description ?? "--"),
                           ),
                         ],
                       ),
                     ),
                     const Gap(20),
-                    const Text(
-                      'Check-In Log',
+                     Text(
+                      AppUtils.languageTranslate('checkInLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
@@ -174,7 +176,7 @@ class CheckInDetailsScreen extends StatelessWidget {
           child: CustomButton(
               image: AppImages.logoutCard,
               buttonColor: AppColors.red,
-              text: 'Checkout',
+              text: AppUtils.languageTranslate('checkout'),
               onPressed: () {
                 context.read<CheckInsDetailsCubit>().getCheckInDetailsLog(id: checkIns?.id);
                 _showCheckoutDialog(context,checkIns);
@@ -206,8 +208,8 @@ class CheckInDetailsScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isCancelButtonDisable: true,
                       confirmButtonColor: AppColors.red,
-                      confirmButtonText: 'Checkout All',
-                      title: 'Checkout for All Check-Ins',
+                      confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onConfirm: ()async{
                         final result = await context.read<CheckInsDetailsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
                           "checkout_count": visitorsNoController.text.isNotEmpty
@@ -227,7 +229,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                 final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
                 if ( (enteredCount??0) > availableCount) {
                   Fluttertoast.showToast(
-                      msg: "Available count is $availableCount");
+                      msg: AppUtils.languageTranslate("availableCountIs $availableCount"));
                   return;
                 }
                 showDialog(
@@ -238,9 +240,9 @@ class CheckInDetailsScreen extends StatelessWidget {
                         insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                         isCancelButtonDisable: true,
                         confirmButtonColor: AppColors.red,
-                        confirmButtonText: 'Checkout',
+                        confirmButtonText: AppUtils.languageTranslate("checkout"),
                         confirmButtonTextFontSize: AppUtils.isTablet(context) ? 15 : 13,
-                        title: 'Checkout For Visitors',
+                        title: AppUtils.languageTranslate('checkoutForVisitors'),
                         onConfirm: ()async{
                           final result = await
                           context.read<CheckInsDetailsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {

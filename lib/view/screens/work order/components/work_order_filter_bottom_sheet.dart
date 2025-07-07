@@ -41,15 +41,15 @@ class _WorkOrderFilterBottomSheetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(10),
-              const Align(
+               Align(
                 alignment: Alignment.center,
                 child: HeadingWidget(
-                    heading: 'Work Order / RFP Filter',
+                    heading: AppUtils.languageTranslate('workOrderRfpFilter'),
                     style: AppTextStyles.style16black600),
               ),
               const Gap(15),
               SingleSelectedDropdownWidget<TypeModel>(
-                  hint: "Type",
+                  hint:  AppUtils.languageTranslate('type'),
                   fillColor: AppColors.white,
                   selectedItem:  context.watch<WorkOrderCubit>().state.selectedType,
                   itemAsString: (type) => type.label,
@@ -61,7 +61,7 @@ class _WorkOrderFilterBottomSheetState
                   }),
               const Gap(10),
               SingleSelectedDropdownWidget<VendorModel>(
-                  hint: "Vendors",
+                  hint:  AppUtils.languageTranslate('vendors'),
                   outLineColor: AppColors.outLineGray,
                   fillColor: AppColors.white,
                   selectedItem:

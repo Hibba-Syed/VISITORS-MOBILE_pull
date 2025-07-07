@@ -96,19 +96,19 @@ class DashboardScreen extends StatelessWidget {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                 Text(AppUtils.languageConverter('areYouSureYouWantToExit?'),
+                 Text(AppUtils.languageTranslate('areYouSureYouWantToExit?'),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
                   children: [
                     Expanded(
                         child: CustomButton(
-                            text: AppUtils.languageConverter('cancel'),
+                            text: AppUtils.languageTranslate('cancel'),
                             onPressed: () => Navigator.pop(context, false))),
                     const Gap(10),
                     Expanded(
                       child: CustomButton(
-                        text: AppUtils.languageConverter('yesExit'),
+                        text: AppUtils.languageTranslate('yesExit'),
                         invert: true,
                         onPressed: () {
                           exit(0);
@@ -146,8 +146,8 @@ class DashboardScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isCancelButtonDisable: true,
                       confirmButtonColor: AppColors.red,
-                      confirmButtonText: AppUtils.languageConverter('تسجيل خروج الجميع'),
-                      title: AppUtils.languageConverter('تسجيل الخروج لجميع تسجيلات الوصول'),
+                      confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onConfirm: () async {
                         final result = await context
                             .read<DashboardCubit>()
@@ -168,7 +168,7 @@ class DashboardScreen extends StatelessWidget {
                 final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
                 if ( (enteredCount??0) > availableCount) {
                   Fluttertoast.showToast(
-                      msg: "Available count is $availableCount");
+                      msg: AppUtils.languageTranslate('availableCountIs $availableCount'));
                   return;
                 }
                 showDialog(
@@ -180,8 +180,8 @@ class DashboardScreen extends StatelessWidget {
                             const EdgeInsets.symmetric(horizontal: 20),
                         isCancelButtonDisable: true,
                         confirmButtonColor: AppColors.red,
-                        confirmButtonText: 'Checkout',
-                        title: 'Checkout For Visitors',
+                        confirmButtonText: AppUtils.languageTranslate('checkout'),
+                        title: AppUtils.languageTranslate('checkoutForVisitors'),
                         onConfirm: () async {
                           final result = await context
                               .read<DashboardCubit>()
@@ -211,7 +211,7 @@ class DashboardScreen extends StatelessWidget {
           builder: (context, state) {
             final List<ActionsItemModel> actions = [
               ActionsItemModel(
-                title: AppUtils.languageConverter("allCheckIns"),
+                title: AppUtils.languageTranslate("allCheckIns"),
                 count: state.countModel?.total ?? 0,
                 iconPath: AppImages.checkIn,
                 backgroundColor: AppColors.white,
@@ -222,7 +222,7 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ActionsItemModel(
-                title: AppUtils.languageConverter("guests"),
+                title: AppUtils.languageTranslate("guests"),
                 count: state.countModel?.guests ?? 0,
                 iconPath: AppImages.guests,
                 backgroundColor: AppColors.white,
@@ -233,7 +233,7 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ActionsItemModel(
-                title: AppUtils.languageConverter("eServices"),
+                title: AppUtils.languageTranslate("eServices"),
                 count: state.countModel?.service ?? 0,
                 iconPath: AppImages.eServices,
                 backgroundColor: AppColors.white,
@@ -244,7 +244,7 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
               ActionsItemModel(
-                title: AppUtils.languageConverter("workOrderRFPs"),
+                title: AppUtils.languageTranslate("workOrderRFPs"),
                 count: state.countModel?.jobs ?? 0,
                 iconPath: AppImages.rfps,
                 backgroundColor: AppColors.white,
@@ -272,7 +272,7 @@ class DashboardScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             HeadingWidget(
-                              heading: AppUtils.languageConverter("welcome"),
+                              heading: AppUtils.languageTranslate("welcome"),
                               style: AppTextStyles.style15DarkGrey600,
                             ),
                             HeadingWidget(
@@ -310,7 +310,7 @@ class DashboardScreen extends StatelessWidget {
                         imageHeight: 25,
                         fontSize: 17,
                         height: 70,
-                        text: AppUtils.languageConverter("guestCheckIn"),
+                        text: AppUtils.languageTranslate("guestCheckIn"),
                         buttonColor: AppColors.green,
                         textColor: AppColors.white,
                         image: AppImages.guestCheckIn,
@@ -326,7 +326,7 @@ class DashboardScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                          Text(
-                            AppUtils.languageConverter("checkIns"),
+                            AppUtils.languageTranslate("checkIns"),
                           style: AppTextStyles.style19Primary600,
                         ),
                         Row(
@@ -334,7 +334,7 @@ class DashboardScreen extends StatelessWidget {
                             CustomButton(
                                 buttonColor: AppColors.red,
                                 fontWeight: FontWeight.w500,
-                                text:  AppUtils.languageConverter("checkOuts"),
+                                text:  AppUtils.languageTranslate("checkOuts"),
                                 fontSize: 14,
                                 height: 41,
                                 borderRadius: 6,
@@ -346,7 +346,7 @@ class DashboardScreen extends StatelessWidget {
                             const Gap(10),
                             CustomButton(
                                 buttonColor: AppColors.primary,
-                                text: AppUtils.languageConverter("viewAll"),
+                                text: AppUtils.languageTranslate("viewAll"),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 height: 41.5,
@@ -365,7 +365,7 @@ class DashboardScreen extends StatelessWidget {
                         ? SizedBox(
                             height: 100,
                             child:  EmptyWidget(
-                              text: AppUtils.languageConverter('noDataAvailable'),
+                              text: AppUtils.languageTranslate('noDataAvailable'),
                             ),
                           )
                         : ListView.separated(
@@ -426,7 +426,7 @@ class DashboardScreen extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            AppUtils.languageConverter("eServices"),
+                            AppUtils.languageTranslate("eServices"),
 
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -450,7 +450,7 @@ class DashboardScreen extends StatelessWidget {
                             const Gap(6),
                             CustomButton(
                                 buttonColor: AppColors.primary,
-                                text: AppUtils.languageConverter("viewAll"),
+                                text: AppUtils.languageTranslate("viewAll"),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 height: 41,
@@ -469,7 +469,7 @@ class DashboardScreen extends StatelessWidget {
                         ? SizedBox(
                             height: 100,
                             child:  EmptyWidget(
-                              text:  AppUtils.languageConverter('noDataAvailable'),
+                              text:  AppUtils.languageTranslate('noDataAvailable'),
                             ),
                           )
                         : ListView.separated(
@@ -534,13 +534,13 @@ class DashboardScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                          Text(
-                        AppUtils.languageConverter("workOrdersRFPs"),
+                        AppUtils.languageTranslate("workOrderRFPs"),
                           style: AppTextStyles.style19Primary600,
                         ),
                         CustomButton(
                             buttonColor: AppColors.primary,
                             fontSize: 14,
-                            text:  AppUtils.languageConverter("viewAll"),
+                            text:  AppUtils.languageTranslate("viewAll"),
                             height: 41,
                             fontWeight: FontWeight.w500,
                             borderRadius: 6,
@@ -556,7 +556,7 @@ class DashboardScreen extends StatelessWidget {
                         ? SizedBox(
                             height: 100,
                             child:  EmptyWidget(
-                              text:  AppUtils.languageConverter('noDataAvailable'),
+                              text:  AppUtils.languageTranslate('noDataAvailable'),
                             ),
                           )
                         : ListView.separated(
@@ -630,7 +630,7 @@ class DashboardScreen extends StatelessWidget {
         builder: (context, state) {
       final List<ActionsItemModel> actions = [
         ActionsItemModel(
-          title: AppUtils.languageConverter("allCheckIns"),
+          title: AppUtils.languageTranslate("allCheckIns"),
           count: state.countModel?.total ?? 0,
           iconPath: AppImages.checkIn,
           backgroundColor: AppColors.white,
@@ -640,7 +640,7 @@ class DashboardScreen extends StatelessWidget {
           },
         ),
         ActionsItemModel(
-          title: AppUtils.languageConverter("guests"),
+          title: AppUtils.languageTranslate("guests"),
           count: state.countModel?.guests ?? 0,
           iconPath: AppImages.guests,
           backgroundColor: AppColors.white,
@@ -650,7 +650,7 @@ class DashboardScreen extends StatelessWidget {
           },
         ),
         ActionsItemModel(
-          title: AppUtils.languageConverter("eServices"),
+          title: AppUtils.languageTranslate("eServices"),
           count: state.countModel?.service ?? 0,
           iconPath: AppImages.eServices,
           backgroundColor: AppColors.white,
@@ -660,7 +660,7 @@ class DashboardScreen extends StatelessWidget {
           },
         ),
         ActionsItemModel(
-          title: AppUtils.languageConverter("workOrderRFPs"),
+          title: AppUtils.languageTranslate("workOrderRFPs"),
           count: state.countModel?.jobs ?? 0,
           iconPath: AppImages.rfps,
           backgroundColor: AppColors.white,
@@ -683,7 +683,7 @@ class DashboardScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeadingWidget(
-                  heading: AppUtils.languageConverter("welcome"),
+                  heading: AppUtils.languageTranslate("welcome"),
                   style: AppUtils.isTablet(context)
                       ? AppTextStyles.style16DarkGrey600
                       : AppTextStyles.style15DarkGrey600,
@@ -718,7 +718,7 @@ class DashboardScreen extends StatelessWidget {
                     imageHeight: 30,
                     fontSize: 20,
                     height: 80,
-                    text: AppUtils.languageConverter("guestCheckIn"),
+                    text: AppUtils.languageTranslate("guestCheckIn"),
                     buttonColor: AppColors.green,
                     textColor: AppColors.white,
                     image: AppImages.guestCheckIn,
@@ -732,7 +732,7 @@ class DashboardScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      AppUtils.languageConverter("checkIns"),
+                      AppUtils.languageTranslate("checkIns"),
                       style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
@@ -742,7 +742,7 @@ class DashboardScreen extends StatelessWidget {
                           Expanded(
                             child: CustomButton(
                                 buttonColor: AppColors.red,
-                                text:  AppUtils.languageConverter("checkOuts"),
+                                text:  AppUtils.languageTranslate("checkOuts"),
                                 height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
@@ -756,7 +756,7 @@ class DashboardScreen extends StatelessWidget {
                           Expanded(
                             child: CustomButton(
                                 buttonColor: AppColors.primary,
-                                text: AppUtils.languageConverter("viewAll"),
+                                text: AppUtils.languageTranslate("viewAll"),
                                 height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
@@ -776,7 +776,7 @@ class DashboardScreen extends StatelessWidget {
                     ? SizedBox(
                         height: 100,
                         child:  EmptyWidget(
-                          text:  AppUtils.languageConverter('noDataAvailable'),
+                          text:  AppUtils.languageTranslate('noDataAvailable'),
                         ),
                       )
                     : ListView.separated(
@@ -833,7 +833,7 @@ class DashboardScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                     AppUtils.languageConverter("eServices"),
+                     AppUtils.languageTranslate("eServices"),
                       style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
@@ -854,7 +854,7 @@ class DashboardScreen extends StatelessWidget {
                           Expanded(
                             child: CustomButton(
                                 buttonColor: AppColors.primary,
-                                text:   AppUtils.languageConverter("viewAll"),
+                                text:   AppUtils.languageTranslate("viewAll"),
                                 height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
@@ -874,7 +874,7 @@ class DashboardScreen extends StatelessWidget {
                     ? SizedBox(
                         height: 100,
                         child:  EmptyWidget(
-                          text:  AppUtils.languageConverter('noDataAvailable'),
+                          text:  AppUtils.languageTranslate('noDataAvailable'),
                         ),
                       )
                     : ListView.separated(
@@ -934,13 +934,13 @@ class DashboardScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                      Text(
-                       AppUtils.languageConverter("workOrdersRFPs"),
+                       AppUtils.languageTranslate("workOrderRFPs"),
                       style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
                     CustomButton(
                         buttonColor: AppColors.primary,
-                        text: AppUtils.languageConverter("viewAll"),
+                        text: AppUtils.languageTranslate("viewAll"),
                         height: 42,
                         width: 230,
                         imageHeight: 22,
@@ -956,8 +956,8 @@ class DashboardScreen extends StatelessWidget {
                 state.workOrderModel?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
-                        child: const EmptyWidget(
-                          text: 'No data available',
+                        child:  EmptyWidget(
+                          text: AppUtils.languageTranslate('noDataAvailable'),
                         ),
                       )
                     : ListView.separated(

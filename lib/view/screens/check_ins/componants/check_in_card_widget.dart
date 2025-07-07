@@ -139,8 +139,8 @@ class CheckInCardWidget extends StatelessWidget {
                 isServiceable ?
                 Row(
                   children: [
-                    const Text(
-                      'Purpose: ',
+                     Text(
+                      '${AppUtils.languageTranslate("purpose")}:',
                       style: AppTextStyles.style14Black600,
                     ),
                     Text(
@@ -153,7 +153,7 @@ class CheckInCardWidget extends StatelessWidget {
                 CustomButton(
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
-                    text: AppUtils.languageConverter("checkout"),
+                    text: AppUtils.languageTranslate("checkout"),
                     onPressed: checkOutOnPressed
                 ),
               ],

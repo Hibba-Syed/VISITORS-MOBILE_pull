@@ -34,7 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             ),
             Gap(60),
             Text(
-              AppUtils.languageConverter('WaitWhileSettingUpTheDashboard'),
+              AppUtils.languageTranslate('WaitWhileSettingUpTheDashboard'),
               style: TextStyle(
                 fontSize: 15,
                 color: AppColors.darkGrey,

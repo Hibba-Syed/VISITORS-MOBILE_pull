@@ -28,8 +28,8 @@ class ServiceableCheckInsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Serviceable Check-Ins',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('serviceAbleCheckIns'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -47,7 +47,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                     child:
                     CustomButton(
                         buttonColor: AppColors.red,
-                        text: 'Checkout All',
+                        text: AppUtils.languageTranslate('checkoutAll'),
                         height: AppUtils.isTablet(context) ? 43 : 42,
                         width: AppUtils.isTablet(context) ? 200 : 150,
                         borderRadius: 6,
@@ -62,8 +62,8 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 10),
                                 isCancelButtonDisable: true,
                                 confirmButtonColor: AppColors.red,
-                                confirmButtonText: 'Checkout All',
-                                title: 'Checkout for All Check-Ins',
+                                confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                                title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                                 onConfirm: ()async{
                                   return context
                                       .read<CheckInsCubit>()
@@ -139,7 +139,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                           return const Gap(10);
                         },
                       ),
-                    ) : EmptyWidget(text: 'No data available'),
+                    ) : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')),
                   )
                 ],
               ),
@@ -173,8 +173,8 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isCancelButtonDisable: true,
                       confirmButtonColor: AppColors.red,
-                      confirmButtonText: 'Checkout All',
-                      title: 'Checkout for All Check-Ins',
+                      confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      title:AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onConfirm: () async {
                         final result = await context
                             .read<CheckInsCubit>()
@@ -200,8 +200,8 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 20),
                         isCancelButtonDisable: true,
                         confirmButtonColor: AppColors.red,
-                        confirmButtonText: 'Checkout',
-                        title: 'Checkout For Visitors',
+                        confirmButtonText: AppUtils.languageTranslate('checkout'),
+                        title: AppUtils.languageTranslate('checkoutForVisitors'),
                         onConfirm: () async {
                           final result = await context
                               .read<CheckInsCubit>()

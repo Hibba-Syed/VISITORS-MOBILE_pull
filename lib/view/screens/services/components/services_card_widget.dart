@@ -108,7 +108,7 @@ class ServicesCardWidget extends StatelessWidget {
                           fontSize: AppUtils.isTablet(context)  ? 15 : 15,
                           buttonColor: AppColors.green,
                           image: AppImages.checkInButton,
-                          text: AppUtils.languageConverter('checkIn'),
+                          text: AppUtils.languageTranslate('checkIn'),
                           onPressed: checkInOnPressed),
                     ),
                     if(isActiveCheckins)...[
@@ -119,7 +119,7 @@ class ServicesCardWidget extends StatelessWidget {
                             // imageHeight: AppUtils.isTablet(context) ?22 :18,
                             buttonColor: AppColors.cyanBlue,
                             image: AppImages.serviceable,
-                            text: AppUtils.languageConverter('serviceableCheckIns'),
+                            text: AppUtils.languageTranslate('serviceableCheckIns'),
                             onPressed: serviceableCheckInOnPressed),
                       ),
                     ],

@@ -25,8 +25,8 @@ class JobCheckInsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Job Check-Ins',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('jobCheckIns'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -42,7 +42,7 @@ class JobCheckInsScreen extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: CustomButton(
                         buttonColor: AppColors.red,
-                        text: 'Checkout All',
+                        text: AppUtils.languageTranslate('checkoutAll'),
                         height: AppUtils.isTablet(context) ? 43 : 42,
                         width: AppUtils.isTablet(context) ? 200 : 150,
                         borderRadius: 6,
@@ -62,8 +62,8 @@ class JobCheckInsScreen extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 isCancelButtonDisable: true,
                                 confirmButtonColor: AppColors.red,
-                                confirmButtonText: 'Checkout All',
-                                title: 'Checkout for All Check-Ins',
+                                confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                                title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                                 contentBuilder: (context, setState) {
                                   return const Align(
                                     alignment: Alignment.center,
@@ -116,6 +116,10 @@ class JobCheckInsScreen extends StatelessWidget {
                                 checkInModel?.createdAt.toString()),
                             purpose: checkInModel?.description ?? "--",
                             checkOutOnPressed: () {
+                              context
+                                  .read<CheckInsDetailsCubit>()
+                                  .getCheckInDetailsLog(
+                                  id: checkInModel?.id);
                               _showCheckoutDialog(context,checkInModel);
                             },
                             detailsOnPressed: () {
@@ -166,8 +170,8 @@ class JobCheckInsScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isCancelButtonDisable: true,
                       confirmButtonColor: AppColors.red,
-                      confirmButtonText: 'Checkout All',
-                      title: 'Checkout for All Check-Ins',
+                      confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onConfirm: () async {
                         final result = await context
                             .read<CheckInsCubit>()
@@ -193,8 +197,8 @@ class JobCheckInsScreen extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 20),
                         isCancelButtonDisable: true,
                         confirmButtonColor: AppColors.red,
-                        confirmButtonText: 'Checkout',
-                        title: 'Checkout For Visitors',
+                        confirmButtonText: AppUtils.languageTranslate('checkout'),
+                        title: AppUtils.languageTranslate('checkOutForVisitors'),
                         onConfirm: () async {
                           final result = await context
                               .read<CheckInsCubit>()

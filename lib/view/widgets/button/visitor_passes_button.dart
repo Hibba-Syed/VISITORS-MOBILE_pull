@@ -50,7 +50,7 @@ class VisitorPassesButton extends StatelessWidget {
               ),
               color: AppColors.yellow,
             ),
-            child:  Text(AppUtils.languageConverter("visitorPasses"),
+            child:  Text(AppUtils.languageTranslate("visitorPasses"),
               style: TextStyle(
                 fontSize:  AppUtils.isTablet(context)  ? 15 : 14,
                   fontWeight: FontWeight.w600,
@@ -74,7 +74,7 @@ class VisitorPassesButton extends StatelessWidget {
                 ),
                 color: AppColors.yellow,
               ),
-              child:  Text(AppUtils.languageConverter("visitorPasses"),
+              child:  Text(AppUtils.languageTranslate("visitorPasses"),
                 style: TextStyle(
                     fontSize:  AppUtils.isTablet(context)  ? 15 : 14,
                     fontWeight: FontWeight.w600,

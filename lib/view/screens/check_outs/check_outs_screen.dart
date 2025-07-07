@@ -5,6 +5,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/text%20field/search_text_field.dart';
@@ -136,8 +137,8 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                       },
                                     ),
                                   )
-                                : const EmptyWidget(
-                                    text: 'No data found',
+                                :  EmptyWidget(
+                                    text: AppUtils.languageTranslate('noDataAvailable'),
                                   ),
                       ),
                       if (state.loadMore) const LoaderWidget(),
@@ -162,7 +163,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                 // fit: BoxFit.scaleDown,
               ),
               label: Text(
-                'Export',
+                AppUtils.languageTranslate('export'),
                 style: AppTextStyles.style13white500,
               ),
             ),

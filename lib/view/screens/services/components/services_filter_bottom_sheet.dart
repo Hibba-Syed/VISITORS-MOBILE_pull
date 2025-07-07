@@ -40,15 +40,15 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(10),
-              const Align(
+               Align(
                 alignment: Alignment.center,
                 child: HeadingWidget(
-                    heading: 'E-Services Filter',
+                    heading: AppUtils.languageTranslate('eServicesFilter'),
                     style: AppTextStyles.style16black600),
               ),
               const Gap(15),
               SingleSelectedDropdownWidget<TypeModel>(
-                  hint: "Type",
+                  hint:  AppUtils.languageTranslate('type'),
                   fillColor: AppColors.white,
                   selectedItem:
                       context.watch<ServiceCubit>().state.selectedType,
@@ -67,7 +67,7 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                   }
 
                   return SingleSelectedDropdownWidget<UnitModel>(
-                      hint: "Unit",
+                      hint:  AppUtils.languageTranslate('unit'),
                       fillColor: AppColors.white,
                       selectedItem:
                           context.watch<ServiceCubit>().state.selectedUnit,

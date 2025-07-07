@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Gap(10),
               Text(
-                AppUtils.languageConverter('visitorManagementSystem'),
+                AppUtils.languageTranslate('visitorManagementSystem'),
                 style: AppUtils.isTablet(context)
                     ? AppTextStyles.style25black600
                     : AppTextStyles.style20black600,
@@ -96,10 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
               Gap(20.0),
               TextFieldWidget(
                 controller: _communityIdController,
-                hint: AppUtils.languageConverter('enterCommunityID'),
+                hint: AppUtils.languageTranslate('enterCommunityID'),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? true) {
-                    return AppUtils.languageConverter('fieldIsMandatory');"Field is mandatory";
+                    return AppUtils.languageTranslate('fieldIsMandatory');"Field is mandatory";
                   }
                   return null;
                 },
@@ -115,10 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
               Gap(15),
               TextFieldWidget(
                 controller: _gateController,
-                hint: AppUtils.languageConverter('enterGateNameNumber'),
+                hint: AppUtils.languageTranslate('enterGateNameNumber'),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? true) {
-                    return AppUtils.languageConverter('fieldIsMandatory');
+                    return AppUtils.languageTranslate('fieldIsMandatory');
                   }
                   return null;
                 },
@@ -134,10 +134,10 @@ class _LoginScreenState extends State<LoginScreen> {
               Gap(15),
               TextFieldWidget(
                 controller: _loginIdController,
-                hint: AppUtils.languageConverter('enterLoginID'),
+                hint: AppUtils.languageTranslate('enterLoginID'),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? true) {
-                    return AppUtils.languageConverter('fieldIsMandatory');
+                    return AppUtils.languageTranslate('fieldIsMandatory');
                   }
                   return null;
                 },
@@ -153,10 +153,10 @@ class _LoginScreenState extends State<LoginScreen> {
               Gap(15),
               PasswordTextField(
                 controller: _passwordController,
-                hint: AppUtils.languageConverter('enterYourPassword'),
+                hint: AppUtils.languageTranslate('enterYourPassword'),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? true) {
-                    return AppUtils.languageConverter('fieldIsMandatory');
+                    return AppUtils.languageTranslate('fieldIsMandatory');
                   }
                   return null;
                 },
@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context) {
                           return CustomAlertDialogBox(
                               hideBothButtons: true,
-                              title: AppUtils.languageConverter('forgotPassword'),
+                              title: AppUtils.languageTranslate('forgotPassword'),
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         child: Text(
-                                          AppUtils.languageConverter('pleaseContactAdminToGetISKAANVisitorManagementSystemCredentials'),
+                                          AppUtils.languageTranslate('pleaseContactAdminToGetISKAANVisitorManagementSystemCredentials'),
                                           textAlign: TextAlign.center,
                                           style: AppUtils.isTablet(context)
                                               ? AppTextStyles.style18black600
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                   },
                   child: Text(
-                    AppUtils.languageConverter('forgotPassword'),
+                    AppUtils.languageTranslate('forgotPassword'),
                     style: AppUtils.isMobile(context)
                         ? AppTextStyles.style14Primary600
                         : AppTextStyles.style16Primary600,
@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomButton(
                 height: AppUtils.isTablet(context) ? 60 : 42,
                 fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                text: AppUtils.languageConverter('signIn'),
+                text: AppUtils.languageTranslate('signIn'),
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
                     context.read<AuthCubit>().login(context,

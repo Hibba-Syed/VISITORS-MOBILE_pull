@@ -41,8 +41,8 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Service Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -94,12 +94,12 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                             ?.map((device) =>  Column(
                           children: [
                             TitleValueRowDividerDetailsContainerWidget(
-                                title: 'Device',
+                                title: AppUtils.languageTranslate('device'),
                                 value: device.deviceType ?? "--"
                             ),
                             TitleValueRowDividerDetailsContainerWidget(
                                 isLast: true,
-                                title: 'No. of Devices',
+                                title: AppUtils.languageTranslate('numberOfDevices'),
                                 value: device.deviceCount?.toString() ?? "--"
                             ),
 
@@ -147,8 +147,8 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                     //       : EmptyWidget(text: 'No data available',) ,
                     // ),
                     const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Applicant Details',
+                     HeadingWidget(
+                      heading:  AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
                     Container(
@@ -161,39 +161,39 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requester Type',
+                              title: AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
+                            title: AppUtils.languageTranslate('name'),
                             value: state.serviceDetails?.clientName ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
+                            title: AppUtils.languageTranslate('phone'),
                             value: state.serviceDetails?.clientPhone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Email',
+                            title: AppUtils.languageTranslate('email'),
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Passport Number',
+                              title: AppUtils.languageTranslate('passportNumber'),
                               value: state.serviceDetails?.passportNumber
                                   ?.toString() ??
                                   "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Passport Expiry',
+                            title: AppUtils.languageTranslate('passportExpiry'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.serviceDetails?.clientIdExpiry),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'ID Number',
+                            title: AppUtils.languageTranslate('idNumber'),
                             value: state.serviceDetails?.clientIdNumber
                                 ?.toString() ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'ID Expiry',
+                            title: AppUtils.languageTranslate('idExpiry'),
                             valueColor: AppColors.red,
                             value: DateTimeUtil.getFormattedDate(
                                 state.serviceDetails?.clientIdExpiry),
@@ -202,8 +202,8 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                       ),
                     ),
                     const Gap(20),
-                    const Text(
-                      'Activity Log',
+                     Text(
+                      AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
@@ -241,7 +241,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                         },
 
                       ),
-                    ) : EmptyWidget(text: 'No data available',),
+                    ) : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')),
                   ],
                 );
               },
@@ -256,7 +256,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
             children: [
               Expanded(
                 child: CustomButton(
-                    text: 'Add Log',
+                    text: AppUtils.languageTranslate('addLog'),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -269,11 +269,11 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: 'Add Log',
+                              confirmButtonText: AppUtils.languageTranslate('addLog'),
                               onConfirm: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type note first.");
+                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                   return false;
                                 }
                                 final result = await context
@@ -307,7 +307,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note*',
+                                      label: AppUtils.languageTranslate('note'),
                                     ),
                                   ],
                                 );
@@ -325,7 +325,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.green,
-                    text: 'Complete',
+                    text: AppUtils.languageTranslate('complete'),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -339,8 +339,8 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                               disableCancelButtonBorder: true,
                               cancelButtonTextColor: AppColors.white,
                               cancelButtonColor: AppColors.green,
-                              cancelButtonText: 'Complete',
-                              confirmButtonText: 'Scan ID',
+                              cancelButtonText: AppUtils.languageTranslate('complete'),
+                              confirmButtonText: AppUtils.languageTranslate('scanId'),
                               confirmButtonColor: AppColors.primary,
                               onConfirm: () async {
                                 return false;
@@ -348,12 +348,12 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                               onCancel: () async{
                                 if (_nameController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type name first.");
+                                      msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
                                   return false;
                                 }
                                 if (_idController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type id first.");
+                                      msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
                                   return false;
                                 }
 
@@ -390,18 +390,18 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      label: 'Requester Name',
+                                      label: AppUtils.languageTranslate('requesterName'),
                                       controller: _nameController,
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
-                                      label: 'ID Number',
+                                      label:  AppUtils.languageTranslate('idNumber'),
                                       controller: _idController,
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note*',
+                                      label: AppUtils.languageTranslate('note'),
                                     ),
                                   ],
                                 );

@@ -4,6 +4,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/check_ins/details/check_ins_details_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
@@ -63,10 +64,10 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
             controller: widget.controller,
             keyboardType: TextInputType.number,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            hint: 'No. of visitors checking-out',
+            hint: AppUtils.languageTranslate('noOfVisitorsCheckingOut'),
             validator: (value){
               if ( (enteredCount??0) > availableCount) {
-                return "Enter valid count";
+                return AppUtils.languageTranslate('enterValidCount');
               }
               return null;
             },
@@ -86,7 +87,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                       height: 42,
                       buttonColor: AppColors.red,
                   textColor: AppColors.red,
-                      text: 'Checkout',
+                      text: AppUtils.languageTranslate('checkout'),
                       onPressed: (){
                         widget.checkOutOnPress?.call();
                       }
@@ -98,7 +99,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                       borderRadius: 6,
                       buttonColor: AppColors.red,
                       height: 42,
-                      text: 'Checkout All',
+                      text: AppUtils.languageTranslate('checkoutAll'),
                       onPressed: widget.checkOutAllOnPress,
                     ),
                   ),
@@ -108,14 +109,14 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                 borderRadius: 6,
                 buttonColor: AppColors.red,
                 height: 42,
-                text: 'Checkout All',
+                text: AppUtils.languageTranslate('checkoutAll'),
                 onPressed: widget.checkOutAllOnPress,
               ),
         const Gap(10),
-        const Align(
+        Align(
           alignment: Alignment.topLeft,
           child: Text(
-            'Check-In Log',
+           AppUtils.languageTranslate('checkInLog'),
             style: AppTextStyles.style16black600,
           ),
         ),
@@ -129,7 +130,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                 return LoaderWidget();
               }
               if(state.checkInLogs?.isEmpty ?? true){
-                EmptyWidget(text: 'No data available',);
+                EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable'));
               }
               return ListView.builder(
                 shrinkWrap: true,

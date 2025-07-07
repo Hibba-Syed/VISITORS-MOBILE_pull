@@ -126,7 +126,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                           child: CustomButton(
                               buttonColor: AppColors.green,
                               image: AppImages.checkInButton,
-                              text: 'Check-In',
+                              text: AppUtils.languageTranslate('checkIn'),
                               onPressed: checkInPressed),
                         ),
                         if(isActiveCheckins)...[
@@ -135,7 +135,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                             child: CustomButton(
                                 buttonColor: AppColors.cyanBlue,
                                 image: AppImages.serviceable,
-                                text: 'Job Check - Ins', onPressed: jobCheckInOnPressed
+                                text: AppUtils.languageTranslate('jobCheckIns'), onPressed: jobCheckInOnPressed
                             ),
                           ),
                         ]

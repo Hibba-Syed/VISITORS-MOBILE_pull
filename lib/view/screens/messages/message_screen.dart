@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/model/message/message_model.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
@@ -79,7 +80,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         )
                             : state.messageModel?.isEmpty ?? true
                             ? EmptyWidget(
-                          text: 'No data available',
+                          text: AppUtils.languageTranslate('noDataAvailable'),
                         )
                             :
                         ListView.separated(
@@ -157,7 +158,7 @@ class _MessageScreenState extends State<MessageScreen> {
             },
             onSend: ()async {
               if (messageController.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Please type a message first");
+                Fluttertoast.showToast(msg: AppUtils.languageTranslate('pleaseTypeAMessageFirst'));
                 return;
               }
               context.read<MessageCubit>().sendMessage(

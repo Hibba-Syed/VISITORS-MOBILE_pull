@@ -86,7 +86,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                         ),
                         const Gap(6),
                         IconTitleValueContainerWidget(
-                          title: 'From',
+                          title: AppUtils.languageTranslate('from'),
                           value: fromDate,
                           image: AppImages.date,
                         ),
@@ -109,8 +109,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
               const Gap(5),
               Row(
                 children: [
-                  const Text(
-                    'Company: ',
+                   Text('${AppUtils.languageTranslate('company')}:',
                     style: AppTextStyles.style14Black600,
                   ),
                   Text(
@@ -127,7 +126,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                         imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                         buttonColor: AppColors.green,
                         image: AppImages.checkInButton,
-                        text: 'Check-In',
+                        text: AppUtils.languageTranslate('checkIn'),
                         onPressed: checkInOnPressed),
                   ),
                   if (isActiveCheckins) ...[
@@ -137,7 +136,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
                           imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                           buttonColor: AppColors.cyanBlue,
                           image: AppImages.serviceable,
-                          text: 'Visitor Pass Check - Ins',
+                          text: AppUtils.languageTranslate('visitorPassCheckIns'),
                           onPressed: visitorPassCheckInOnPressed),
                     ),
                   ],

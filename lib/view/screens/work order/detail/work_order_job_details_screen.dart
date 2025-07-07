@@ -35,8 +35,8 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Job Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('jobDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -56,7 +56,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        HeadingWidget(heading: 'Work Order'),
+                        HeadingWidget(heading: AppUtils.languageTranslate('workOrder')),
                         StatusWidget(
                             status: state.workOrderDetailsModel?.status ?? ""),
                       ],
@@ -79,17 +79,17 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Title',
+                            title: AppUtils.languageTranslate('title'),
                             value: state.workOrderDetailsModel?.title ?? "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Category',
+                            title:  AppUtils.languageTranslate('category'),
                             value:
                                 state.workOrderDetailsModel?.category?.name ??
                                     "",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Assets',
+                            title:  AppUtils.languageTranslate('assets'),
                             value: state.workOrderDetailsModel?.assets
                                 ?.map((e) => e.name)
                                 .where((name) => name != null && name.isNotEmpty)
@@ -97,13 +97,13 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                           ),
 
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Start Date',
+                            title: AppUtils.languageTranslate('startDate'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.workOrderDetailsModel?.startDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'End Date',
+                            title: AppUtils.languageTranslate('endDate'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.workOrderDetailsModel?.finishDate),
                           ),
@@ -111,7 +111,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                       ),
                     ),
                     const Gap(20),
-                    const HeadingWidget(heading: 'Vendor Details'),
+                     HeadingWidget(heading: AppUtils.languageTranslate('vendorDetails')),
                     const Gap(10),
                     PhoneEmailInformationCardWidget(
                       name:
@@ -125,7 +125,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                           "",
                     ),
                     const Gap(20),
-                    const HeadingWidget(heading: 'Contact Person'),
+                     HeadingWidget(heading: AppUtils.languageTranslate('contactPerson')),
                     const Gap(10),
                     PhoneEmailInformationCardWidget(
                       name: state.workOrderDetailsModel?.primaryContact?.name ??
@@ -148,7 +148,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
               horizontal: AppConstants.horizontalPadding,
               vertical: AppConstants.horizontalPadding),
           child: CustomButton(
-              text: 'Add Log',
+              text: AppUtils.languageTranslate('addLog'),
               onPressed: () {
                 showDialog(
                     barrierDismissible: false,
@@ -159,11 +159,11 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                         insetPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
                         title: 'Add Log to ${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.reference ?? ""}',
-                        confirmButtonText: 'Add Log',
+                        confirmButtonText: AppUtils.languageTranslate('addLog'),
                         onConfirm: () async {
                           if (noteController.text.isEmpty) {
                             Fluttertoast.showToast(
-                                msg: "Please type note first.");
+                                msg: AppUtils.languageTranslate('pleaseTypeNoteFirst') );
                             return false;
                           }
                           // print('add##${noteController.text}');
@@ -199,7 +199,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                               const Gap(5),
                               TextFieldWidget(
                                 controller: noteController,
-                                label: 'Note *',
+                                label: AppUtils.languageTranslate('note'),
                               ),
                             ],
                           );

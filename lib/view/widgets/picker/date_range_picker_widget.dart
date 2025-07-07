@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/utils/app_utils.dart';
 import '../text field/text_field_widget.dart';
 
 class DateRangePickerField extends StatefulWidget {
@@ -49,7 +50,7 @@ class _DateRangePickerFieldState extends State<DateRangePickerField> {
   Widget build(BuildContext context) {
     return TextFieldWidget(
       readOnly: true,
-      hint: 'Date range' ,
+      hint: AppUtils.languageTranslate("dateRange"),
       controller: widget.controller,
       textStyle: TextStyle(
         fontSize: 15,

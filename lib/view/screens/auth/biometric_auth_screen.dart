@@ -51,7 +51,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: AppUtils.languageConverter('authenticate'),
+        title: AppUtils.languageTranslate('authenticate'),
         isBackButtonEnabled: false,
         actions: [
           IconButton(
@@ -76,7 +76,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                             ),
                           ),
                           Gap(16),
-                          Text(AppUtils.languageConverter('areYouSureYouWantToLogout?'),
+                          Text(AppUtils.languageTranslate('areYouSureYouWantToLogout?'),
                             style: AppTextStyles.style16DarkGrey600,
                           ),
                           Gap(20),
@@ -84,7 +84,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                             children: [
                               Flexible(
                                 child: CustomButton(
-                                  text: AppUtils.languageConverter('cancel'),
+                                  text: AppUtils.languageTranslate('cancel'),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -93,7 +93,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                               Gap(10.0),
                               Flexible(
                                 child: CustomButton(
-                                  text: AppUtils.languageConverter('logout'),
+                                  text: AppUtils.languageTranslate('logout'),
                                   invert: true,
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -147,7 +147,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
               ),
               SizedBox(height: 15),
               Text(
-                AppUtils.languageConverter('authenticateToContinue'),
+                AppUtils.languageTranslate('authenticateToContinue'),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -155,12 +155,12 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                AppUtils.languageConverter('UseYourFingerprintOrFaceIDToAccessTheApp'),
+                AppUtils.languageTranslate('UseYourFingerprintOrFaceIDToAccessTheApp'),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               CustomButton(
-                text: AppUtils.languageConverter('authenticate'),
+                text: AppUtils.languageTranslate('authenticate'),
                 onPressed: _authenticateUser,
               ),
             ],

@@ -40,6 +40,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
             );
       }
     });
+    context.read<ServiceCubit>().getUnits();
   }
 
   @override
@@ -165,7 +166,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                   ),
                                 )
                               : EmptyWidget(
-                                  text: 'No data available',
+                                  text: AppUtils.languageTranslate('noDataAvailable'),
                                 ),
                     ),
                     if (state.loadMore) const LoaderWidget(),
@@ -186,7 +187,6 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<ServiceCubit>().getUnits();
         return const ServicesFilterBottomSheet();
       },
     );

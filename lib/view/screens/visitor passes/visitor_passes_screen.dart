@@ -45,8 +45,8 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Visitor Passes',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('visitorPasses'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -131,7 +131,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                           return const Gap(10);
                         },
                       ),
-                    ) : EmptyWidget(text: 'No data available'),
+                    ) : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')),
                   ),
                   if(state.loadMore) const LoaderWidget(),
                 ],

@@ -59,10 +59,10 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap(10),
-                const Align(
+                 Align(
                   alignment: Alignment.center,
                   child: HeadingWidget(
-                      heading: 'Check-In Filter',
+                      heading:  AppUtils.languageTranslate('checkInFilter'),
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
@@ -76,7 +76,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<String>(
-                  hint: "Range",
+                  hint: AppUtils.languageTranslate('range'),
                   fillColor: AppColors.white,
                   selectedItem: state.selectedRange,
                   itemAsString: (range) => range,
@@ -99,7 +99,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<TypeModel>(
-                    hint: "Type",
+                    hint: AppUtils.languageTranslate('type'),
                     fillColor: AppColors.white,
                     selectedItem: state.selectedType,
                     itemAsString: (type) => type.label,
@@ -116,7 +116,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                     }
 
                     return SingleSelectedDropdownWidget<UnitModel>(
-                        hint: "Unit",
+                        hint: AppUtils.languageTranslate('unit'),
                         fillColor: AppColors.white,
                         selectedItem: state.selectedUnit,
                         itemAsString: (unit) => unit.unitNumber ?? "",
@@ -133,7 +133,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 BlocBuilder<CheckInsCubit, CheckInsState>(
                   builder: (context, state) {
                     return SingleSelectedDropdownWidget<VendorModel>(
-                        hint: "Vendors",
+                        hint: AppUtils.languageTranslate('vendors'),
                         fillColor: AppColors.white,
                         selectedItem: state.selectedVendor,
                         itemAsString: (vendor) => vendor.companyName ?? "",

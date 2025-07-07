@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/filter_button_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
@@ -38,10 +39,10 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap(10),
-                const Align(
+                 Align(
                   alignment: Alignment.center,
                   child: HeadingWidget(
-                      heading: 'Visitor Passes Filter',
+                      heading: AppUtils.languageTranslate('visitorPassesFilter'),
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
@@ -51,7 +52,7 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
                       return LoaderWidget();
                     }
                     return SingleSelectedDropdownWidget<UnitModel>(
-                        hint: "Unit",
+                        hint: AppUtils.languageTranslate('unit'),
                         fillColor: AppColors.white,
                         selectedItem:
                         context.watch<VisitorPassCubit>().state.selectedUnit,

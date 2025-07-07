@@ -4,6 +4,7 @@ import 'package:gap/gap.dart' show Gap;
 import 'package:visitors/bloc/directory/directory_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
@@ -40,7 +41,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                 children: [
                   const Gap(10),
                   SingleSelectedDropdownWidget<UnitModel>(
-                    hint: "Unit",
+                    hint: AppUtils.languageTranslate('unit'),
                     fillColor: AppColors.white,
                     selectedItem: selectedUnit,
                     itemAsString: (unit) => unit.unitNumber ?? "",
@@ -71,11 +72,11 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                   selectedUnit == null
                       ? Expanded(
                           child: EmptyWidget(
-                              text: 'Select a unit to view details'))
+                              text: AppUtils.languageTranslate('selectUnitToViewDetails')))
                       : SizedBox.shrink(),
                   if (state.primaryOwner != null) ...[
                     const Gap(20),
-                    const HeadingWidget(heading: 'OWNER INFORMATION'),
+                     HeadingWidget(heading: AppUtils.languageTranslate('ownerInformation')),
                     const Gap(10),
                     PhoneEmailInformationCardWidget(
                       name: state.primaryOwner?.fullName ?? "--",
@@ -88,7 +89,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                   ],
                   if (state.resident != null) ...[
                     const Gap(20),
-                    const HeadingWidget(heading: 'RESIDENT INFORMATION'),
+                     HeadingWidget(heading: AppUtils.languageTranslate('residentInformation')),
                     const Gap(10),
                     PhoneEmailInformationCardWidget(
                       name: state.resident?.fullName ?? "--",

@@ -77,14 +77,14 @@ class _SplashScreenState extends State<SplashScreen> {
                     children: [
                       Align(
                         alignment: Alignment.center,
-                        child: Text(AppUtils.languageConverter('niceToSeeYou'),
+                        child: Text(AppUtils.languageTranslate('niceToSeeYou'),
                             style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style25white600
                                 : AppTextStyles.style20white600),
                       ),
                       Align(
                         alignment: Alignment.center,
-                        child: Text(AppUtils.languageConverter('visitorManagementSystem'),
+                        child: Text(AppUtils.languageTranslate('visitorManagementSystem'),
                           style: AppUtils.isTablet(context)
                               ? AppTextStyles.style35white600
                               : AppTextStyles.style24white600,
@@ -99,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 Text(
-                  '© ${DateTime.now().year}${AppUtils.languageConverter('iSKAANVisitorPortal')}',
+                  '© ${DateTime.now().year}${AppUtils.languageTranslate('iSKAANVisitorPortal')}',
                   style: AppTextStyles.style15white600,
                 ),
                 const Gap(10),

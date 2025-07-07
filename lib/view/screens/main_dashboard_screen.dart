@@ -37,40 +37,6 @@ class MainDashboardScreen extends StatefulWidget {
   @override
   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
 
-  static final List<DrawerItemModel> drawerItems = [
-    DrawerItemModel(
-        index: AppConstants.dashboardIndex,
-        title: AppUtils.languageConverter('dashboard'),
-        iconPath: AppImages.dashboard),
-    DrawerItemModel(
-        index: AppConstants.checkInsIndex,
-        title: AppUtils.languageConverter('checkIns'),
-        iconPath: AppImages.menuCheckIn),
-    DrawerItemModel(
-        index: AppConstants.eServicesIndex,
-        title: AppUtils.languageConverter('eServices'),
-        iconPath: AppImages.menuEservices),
-    DrawerItemModel(
-        index: AppConstants.workOrderRfpIndex,
-        title: AppUtils.languageConverter('workOrderRFPs'),
-        iconPath: AppImages.menuRFPs),
-    DrawerItemModel(
-        index: AppConstants.messagesIndex,
-        title: AppUtils.languageConverter('messages'),
-        iconPath: AppImages.menuMsg),
-    DrawerItemModel(
-        index: AppConstants.checkOutsIndex,
-        title: AppUtils.languageConverter('checkOuts'),
-        iconPath: AppImages.menuCheckout),
-    DrawerItemModel(
-        index: AppConstants.directoryIndex,
-        title: AppUtils.languageConverter('directory'),
-        iconPath: AppImages.directory),
-    DrawerItemModel(
-        index: AppConstants.logoutIndex,
-        title:  AppUtils.languageConverter('logout'),
-        iconPath: AppImages.logout),
-  ];
 }
 
 class _MainDashboardScreenState extends State<MainDashboardScreen> {
@@ -120,19 +86,19 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                 Text(AppUtils.languageConverter('areYouSureYouWantToLogout?'),
+                 Text(AppUtils.languageTranslate('areYouSureYouWantToLogout'),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
                   children: [
                     Expanded(
                         child: CustomButton(
-                            text: AppUtils.languageConverter('cancel'),
+                            text: AppUtils.languageTranslate('cancel'),
                             onPressed: () => Navigator.pop(context, false))),
                     const Gap(10),
                     Expanded(
                         child: CustomButton(
-                            text: AppUtils.languageConverter('logout'),
+                            text: AppUtils.languageTranslate('logout'),
                             invert: true,
                             onPressed: () {
                               Navigator.pop(context, true);
@@ -148,7 +114,40 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
   }
 
   Widget _buildDrawer(BuildContext context, int selectedIndex) {
-    final items = MainDashboardScreen.drawerItems;
+    final items = [
+      DrawerItemModel(
+          index: AppConstants.dashboardIndex,
+          title: AppUtils.languageTranslate('dashboard'),
+          iconPath: AppImages.dashboard),
+      DrawerItemModel(
+          index: AppConstants.checkInsIndex,
+          title: AppUtils.languageTranslate('checkIns'),
+          iconPath: AppImages.menuCheckIn),
+      DrawerItemModel(
+          index: AppConstants.eServicesIndex,
+          title: AppUtils.languageTranslate('eServices'),
+          iconPath: AppImages.menuEservices),
+      DrawerItemModel(
+          index: AppConstants.workOrderRfpIndex,
+          title: AppUtils.languageTranslate('workOrderRFPs'),
+          iconPath: AppImages.menuRFPs),
+      DrawerItemModel(
+          index: AppConstants.messagesIndex,
+          title: AppUtils.languageTranslate('messages'),
+          iconPath: AppImages.menuMsg),
+      DrawerItemModel(
+          index: AppConstants.checkOutsIndex,
+          title: AppUtils.languageTranslate('checkOuts'),
+          iconPath: AppImages.menuCheckout),
+      DrawerItemModel(
+          index: AppConstants.directoryIndex,
+          title: AppUtils.languageTranslate('directory'),
+          iconPath: AppImages.directory),
+      DrawerItemModel(
+          index: AppConstants.logoutIndex,
+          title:  AppUtils.languageTranslate('logout'),
+          iconPath: AppImages.logout),
+    ];
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
       backgroundColor: AppColors.white,
@@ -173,7 +172,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child:  Text(AppUtils.languageConverter('vMSAPPLICATION'),
+                  child:  Text(AppUtils.languageTranslate('vMSAPPLICATION'),
                       style: AppTextStyles.style13white500),
                 )
               ],
@@ -225,7 +224,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           ListTile(
             dense: true,
             leading: Icon(Icons.translate,color: AppColors.darkGrey,size: 23,),
-            title: Text(AppUtils.languageConverter('changeLanguage'),
+            title: Text(AppUtils.languageTranslate('changeLanguage'),
               style: AppUtils.isTablet(context) ? AppTextStyles.style21DarkGrey400  :
               AppTextStyles.style16DarkGrey400,
               textAlign: (context.locale.countryCode == "US")
@@ -239,12 +238,12 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 colorOn: AppColors.primary,
                 colorOff: AppColors.primary,
                 onTap: () {
-                  var nextLanguage =
-                  (context.locale.countryCode == "US")
+                  var languageChange =
+                  (context.locale.languageCode == "en")
                       ? const Locale("ar", "AE")
                       : const Locale("en", "US");
                   context.deleteSaveLocale();
-                  context.setLocale(nextLanguage);
+                  context.setLocale(languageChange);
                   Navigator.pop(context);
                 },
                 indicatorColor: AppColors.white,
@@ -252,7 +251,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 textOn: "EN",
                 textOff: "AR",
                 value:
-                (context.locale.countryCode == "US") ? true : false,
+                (context.locale.languageCode == "en") ? true : false,
                 textStyle: const TextStyle(color: AppColors.white),
               ),
             ),
@@ -265,19 +264,19 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
   String _getTitle(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:
-        return AppUtils.languageConverter('dashboard');
+        return AppUtils.languageTranslate('dashboard');
       case AppConstants.checkInsIndex:
-        return AppUtils.languageConverter('checkIns');
+        return AppUtils.languageTranslate('checkIns');
       case AppConstants.eServicesIndex:
-        return AppUtils.languageConverter('allE-ServicesRequests');
+        return AppUtils.languageTranslate('allE-ServicesRequests');
       case AppConstants.workOrderRfpIndex:
-        return AppUtils.languageConverter('workOrderRFPs');
+        return AppUtils.languageTranslate('workOrderRFPs');
       case AppConstants.messagesIndex:
-        return AppUtils.languageConverter('messages');
+        return AppUtils.languageTranslate('messages');
       case AppConstants.checkOutsIndex:
-        return AppUtils.languageConverter('checkOuts');
+        return AppUtils.languageTranslate('checkOuts');
       case AppConstants.directoryIndex:
-        return AppUtils.languageConverter('directory');
+        return AppUtils.languageTranslate('directory');
       default:
         return '';
     }

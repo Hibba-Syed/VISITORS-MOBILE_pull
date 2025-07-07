@@ -198,7 +198,7 @@ class AppUtils {
     return requestName;
   }
 
-  static String languageConverter(String key) {
+  static String languageTranslate(String key) {
     return tr(key);
   }
 }
