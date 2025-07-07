@@ -84,7 +84,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                       Align(
                         alignment: Alignment.center,
-                        child: Text(AppUtils.languageTranslate('visitorManagementSystem'),
+                        child: Text(
+                          AppUtils.languageTranslate('visitorManagementSystem'),
                           style: AppUtils.isTablet(context)
                               ? AppTextStyles.style35white600
                               : AppTextStyles.style24white600,

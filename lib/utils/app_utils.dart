@@ -1,8 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../model/service/service_model.dart';
 import '../resource/constants/strings.dart';
 import '../resource/styles/styles.dart';
@@ -60,6 +59,7 @@ class AppUtils {
 
     return AppColors.red;
   }
+
   // static String getDateRangeStringFromLabel(String label) {
   //   final now = DateTime.now();
   //   DateTime fromDate;
@@ -196,6 +196,10 @@ class AppUtils {
       requestName = "Short Stay";
     }
     return requestName;
+  }
+
+  static String? getNationalityName(String code) {
+    return AppConstants.nationalityMap[code.toUpperCase()] ?? '';
   }
 
   static String languageTranslate(String key) {
