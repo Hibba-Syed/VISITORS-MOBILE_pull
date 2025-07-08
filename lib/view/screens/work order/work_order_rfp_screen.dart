@@ -8,7 +8,6 @@ import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../bloc/check_ins/check_ins_cubit.dart';
-import '../../../bloc/check_ins/details/check_ins_details_cubit.dart';
 import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../../resource/constants/strings.dart';

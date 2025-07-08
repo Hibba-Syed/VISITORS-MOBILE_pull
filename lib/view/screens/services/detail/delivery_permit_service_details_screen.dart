@@ -43,8 +43,8 @@ class _DeliveryPermitServiceDetailsScreenState
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Service Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -94,12 +94,12 @@ class _DeliveryPermitServiceDetailsScreenState
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requested Date',
+                              title: AppUtils.languageTranslate('requestedDate'),
                               value: DateTimeUtil.getFormattedDate(
                                   state.serviceDetails?.application?.datetime)),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'Delivery Company',
+                            title: AppUtils.languageTranslate('deliveryCompany'),
                             value: state.serviceDetails?.application
                                     ?.deliveryCompany ??
                                 "--",
@@ -108,8 +108,8 @@ class _DeliveryPermitServiceDetailsScreenState
                       ),
                     ),
                     const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Applicant Details',
+                     HeadingWidget(
+                      heading: AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
                     Container(
@@ -122,39 +122,39 @@ class _DeliveryPermitServiceDetailsScreenState
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requester Type',
+                              title:  AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
+                            title: AppUtils.languageTranslate('name'),
                             value: state.serviceDetails?.clientName ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
+                            title: AppUtils.languageTranslate('phone'),
                             value: state.serviceDetails?.clientPhone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Email',
+                            title: AppUtils.languageTranslate('email'),
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Passport Number',
+                              title: AppUtils.languageTranslate('passportNumber'),
                               value: state.serviceDetails?.passportNumber
                                       ?.toString() ??
                                   "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Passport Expiry',
+                            title:  AppUtils.languageTranslate('passportExpiry'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.serviceDetails?.clientIdExpiry),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'ID Number',
+                            title: AppUtils.languageTranslate('idNumber'),
                             value: state.serviceDetails?.clientIdNumber
                                     ?.toString() ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'ID Expiry',
+                            title: AppUtils.languageTranslate('idExpiry'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.serviceDetails?.clientIdExpiry),
                           ),
@@ -162,8 +162,8 @@ class _DeliveryPermitServiceDetailsScreenState
                       ),
                     ),
                     const Gap(20),
-                    const Text(
-                      'Activity Log',
+                     Text(
+                      AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
@@ -213,7 +213,7 @@ class _DeliveryPermitServiceDetailsScreenState
                             ),
                           )
                         : EmptyWidget(
-                            text: 'No data available',
+                            text: AppUtils.languageTranslate('noDataAvailable')
                           ),
                   ],
                 );
@@ -229,7 +229,7 @@ class _DeliveryPermitServiceDetailsScreenState
             children: [
               Expanded(
                 child: CustomButton(
-                    text: 'Add Log',
+                    text: AppUtils.languageTranslate('addLog'),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -242,11 +242,11 @@ class _DeliveryPermitServiceDetailsScreenState
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title:
                                   'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: 'Add Log',
+                              confirmButtonText: AppUtils.languageTranslate('addLog'),
                               onConfirm: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type note first.");
+                                      msg:  AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                   return false;
                                 }
                                 // print('add^^^${_noteController.text}');
@@ -281,7 +281,7 @@ class _DeliveryPermitServiceDetailsScreenState
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note*',
+                                      label: AppUtils.languageTranslate('note'),
                                     ),
                                   ],
                                 );
@@ -300,7 +300,7 @@ class _DeliveryPermitServiceDetailsScreenState
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.green,
-                      text: 'Complete',
+                      text: AppUtils.languageTranslate('complete'),
                       onPressed: () {
                         showDialog(
                             barrierDismissible: false,
@@ -315,18 +315,18 @@ class _DeliveryPermitServiceDetailsScreenState
                                 disableCancelButtonBorder: true,
                                 cancelButtonTextColor: AppColors.white,
                                 cancelButtonColor: AppColors.primary,
-                                cancelButtonText: 'Scan ID',
-                                confirmButtonText: 'Complete',
+                                cancelButtonText: AppUtils.languageTranslate('scanId'),
+                                confirmButtonText:AppUtils.languageTranslate('complete'),
                                 confirmButtonColor: AppColors.green,
                                 onConfirm: () async {
                                   if (_nameController.text.isEmpty) {
                                     Fluttertoast.showToast(
-                                        msg: "Please type name first.");
+                                        msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
                                     return false;
                                   }
                                   if (_idController.text.isEmpty) {
                                     Fluttertoast.showToast(
-                                        msg: "Please type id first.");
+                                        msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
                                     return false;
                                   }
                                   final result = await context
@@ -365,18 +365,18 @@ class _DeliveryPermitServiceDetailsScreenState
                                       ),
                                       const Gap(5),
                                       TextFieldWidget(
-                                        label: 'Requester Name',
+                                        label: AppUtils.languageTranslate('requesterName'),
                                         controller: _nameController,
                                       ),
                                       const Gap(5),
                                       TextFieldWidget(
-                                        label: 'ID Number',
+                                        label: AppUtils.languageTranslate('idNumber'),
                                         controller: _idController,
                                       ),
                                       const Gap(5),
                                       TextFieldWidget(
                                         controller: _noteController,
-                                        label: 'Note*',
+                                        label: AppUtils.languageTranslate('note'),
                                       ),
                                     ],
                                   );

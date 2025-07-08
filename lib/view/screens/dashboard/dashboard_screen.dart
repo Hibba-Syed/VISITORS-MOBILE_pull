@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,7 +32,6 @@ import '../../../resource/constants/app_constants.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/constants/strings.dart';
 import '../../../resource/styles/styles.dart';
-import '../../../utils/app_utils.dart';
 import '../../../utils/date_time.dart';
 import '../../widgets/container_widgets/check_out_container_widget.dart';
 import '../../widgets/empty_widget.dart';
@@ -325,10 +323,14 @@ class DashboardScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Text(
-                            AppUtils.languageTranslate("checkIns"),
-                          style: AppTextStyles.style19Primary600,
-                        ),
+                         Flexible(
+                           child: Text(
+                              AppUtils.languageTranslate("checkIns"),
+                            style: AppTextStyles.style19Primary600,
+                             maxLines: 1,
+                             overflow: TextOverflow.ellipsis,
+                                                   ),
+                         ),
                         Row(
                           children: [
                             CustomButton(

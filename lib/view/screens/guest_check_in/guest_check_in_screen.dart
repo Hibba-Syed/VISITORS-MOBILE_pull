@@ -504,8 +504,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: const AppBarWidget(
-          title: 'Guest Check-In',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('guestCheckIn'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -522,7 +522,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                   image: AppImages.checkInButton,
                   buttonColor: AppColors.green,
-                  text: 'Check-In',
+                  text: AppUtils.languageTranslate('checkIn'),
                   onPressed: () {
                     if ((_formKey.currentState?.validate() ?? false) &&
                         (_phoneNumberKey.currentState?.validate() ?? false)) {
@@ -593,7 +593,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                     alignment: Alignment.center,
                     child: CustomButton(
                         buttonColor: AppColors.primary,
-                        text: 'Scan ID',
+                        text: AppUtils.languageTranslate('scanId'),
                         fontSize: 20,
                         height: 60,
                         imageHeight: 25,
@@ -608,7 +608,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       ? EdgeInsets.all(70)
                                       : EdgeInsets.all(10),
                                   hideBothButtons: true,
-                                  title: 'Select Type',
+                                  title: AppUtils.languageTranslate('selectType'),
                                   contentBuilder: (ctx, setState) {
                                     return Column(
                                       mainAxisAlignment:
@@ -628,7 +628,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               ScanTypeContainerWidget(
-                                                text: 'Emirates Id',
+                                                text: AppUtils.languageTranslate('emiratesId'),
                                                 textSize: 16,
                                                 iconSize: 30,
                                                 padding: 10,
@@ -639,7 +639,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 },
                                               ),
                                               ScanTypeContainerWidget(
-                                                text: 'Passport',
+                                                text: AppUtils.languageTranslate('passport'),
                                                 textSize: 16,
                                                 iconSize: 30,
                                                 padding: 10,
@@ -650,7 +650,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 },
                                               ),
                                               ScanTypeContainerWidget(
-                                                text: 'Driving License',
+                                                text: AppUtils.languageTranslate('drivingLicense'),
                                                 textSize: 16,
                                                 iconSize: 30,
                                                 padding: 10,
@@ -683,8 +683,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 outLineColor: AppColors.outLineGray,
                                 enabledBorder: InputBorder.none,
                                 controller: _idNumberController,
-                                label: 'ID Number',
-                                hint: 'Enter id number',
+                                label: AppUtils.languageTranslate('idNumber'),
+                                hint: AppUtils.languageTranslate('enterIdNumber'),
                                 keyboardType: TextInputType.text,
                                 // validator: (value) {
                                 //   if (value == null || value.isEmpty) {
@@ -699,12 +699,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: TextFieldWidget(
                                 enabledBorder: InputBorder.none,
                                 controller: _nameController,
-                                label: 'Name*',
-                                hint: 'Enter name',
+                                label: AppUtils.languageTranslate('name*'),
+                                hint: AppUtils.languageTranslate('enterName'),
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'required';
+                                    return AppUtils.languageTranslate('required');
                                   }
                                   return null;
                                 },
@@ -718,8 +718,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             Expanded(
                               child: CustomDatePicker(
                                 key: UniqueKey(),
-                                title: "Date of Issue",
-                                hint: 'Date of issue',
+                                title:  AppUtils.languageTranslate('dateOfIssue'),
+                                hint: AppUtils.languageTranslate('dateOfIssueHint'),
                                 initialDate: _selectedIssueDate,
                                 onDatePicked: (value) {
                                   _selectedIssueDate = value;
@@ -730,8 +730,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             Expanded(
                               child: CustomDatePicker(
                                 key: UniqueKey(),
-                                title: "Date of Expiry",
-                                hint: 'Date of expiry',
+                                title:  AppUtils.languageTranslate('dateOfExpiry'),
+                                hint:  AppUtils.languageTranslate('dateOfExpiryHint'),
                                 initialDate: _selectedExpiryDate,
                                 onDatePicked: (value) {
                                   _selectedExpiryDate = value;
@@ -749,8 +749,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 outLineColor: AppColors.outLineGray,
                                 enabledBorder: InputBorder.none,
                                 controller: _passportNumberController,
-                                label: 'Passport Number',
-                                hint: 'Passport number',
+                                label: AppUtils.languageTranslate('passportNumber'),
+                                hint: AppUtils.languageTranslate('passportNumberHint'),
                                 keyboardType: TextInputType.text,
                               ),
                             ),
@@ -758,8 +758,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             Expanded(
                               child: CustomDatePicker(
                                 key: UniqueKey(),
-                                title: "Passport Expiry",
-                                hint: 'Passport expiry',
+                                title: AppUtils.languageTranslate('passportExpiry'),
+                                hint: AppUtils.languageTranslate('passportExpiryHint'),
                                 initialDate: _selectedPassportExpiry,
                                 onDatePicked: (value) {
                                   _selectedPassportExpiry = value;
@@ -775,19 +775,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    "Type*",
+                                   Text(
+                                    "${AppUtils.languageTranslate('type')}*",
                                     style: AppTextStyles.style12Black600,
                                   ),
                                   const Gap(8),
                                   SingleSelectedDropdownWidget<String>(
-                                    hint: "Select type",
+                                    hint: AppUtils.languageTranslate('selectType'),
                                     fillColor: AppColors.white,
                                     selectedItem: _selectedItemType,
                                     compareFn: (p0, p1) => p0 == p1,
-                                    items: const [
-                                      'Unit Visit',
-                                      'Community Visit',
+                                    items:  [
+                                     AppUtils.languageTranslate('unitVisit'),
+                                     AppUtils.languageTranslate('communityVisit'),
                                     ],
                                     onChanged: (value) {
                                       setState(() {
@@ -796,7 +796,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                     },
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'required';
+                                        return AppUtils.languageTranslate('required');
                                       }
                                       return null;
                                     },
@@ -808,12 +808,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             Expanded(
                               child: TextFieldWidget(
                                 controller: _visitorCountController,
-                                label: 'Visitor Count*',
-                                hint: 'Enter count ',
+                                label: '${AppUtils.languageTranslate('visitorCount')}*',
+                                hint: AppUtils.languageTranslate('enterCount'),
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'required';
+                                    return AppUtils.languageTranslate('required');
                                   }
                                   return null;
                                 },
@@ -829,14 +829,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      "Purpose*",
+                                     Text(
+                                      "${AppUtils.languageTranslate('purpose')}*",
                                       style: AppTextStyles.style12Black600,
                                     ),
                                     const Gap(8),
                                     SingleSelectedDropdownWidget<
                                         VisitorsPurpose>(
-                                      hint: "Select purpose",
+                                      hint: AppUtils.languageTranslate('selectPurpose'),
                                       fillColor: AppColors.white,
                                       selectedItem: context
                                           .watch<GuestCheckInCubit>()
@@ -868,13 +868,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      "Unit Number*",
+                                     Text(
+                                      "${AppUtils.languageTranslate('unitNumber')}*",
                                       style: AppTextStyles.style12Black600,
                                     ),
                                     const Gap(8),
                                     SingleSelectedDropdownWidget<UnitModel>(
-                                      hint: "Unit",
+                                      hint: AppUtils.languageTranslate('unit'),
                                       fillColor: AppColors.white,
                                       selectedItem: context
                                           .watch<GuestCheckInCubit>()
@@ -892,7 +892,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                       },
                                       validator: (value) {
                                         if (value?.name?.isNotEmpty ?? false) {
-                                          return 'required';
+                                          return AppUtils.languageTranslate('required');
                                         }
                                         return null;
                                       },
@@ -911,14 +911,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    "Nationality",
+                                   Text(
+                                   AppUtils.languageTranslate('nationality'),
                                     style: AppTextStyles.style12Black600,
                                   ),
                                   const Gap(8),
                                   SingleSelectedDropdownWidget<Country>(
                                     outLineColor: AppColors.outLineGray,
-                                    hint: "Select nationality",
+                                    hint: AppUtils.languageTranslate('selectNationality'),
                                     fillColor: AppColors.white,
                                     selectedItem: context
                                         .watch<GuestCheckInCubit>()
@@ -941,8 +941,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             Expanded(
                               child: TextFieldWidget(
                                 controller: _emailController,
-                                label: 'Email',
-                                hint: 'Enter email',
+                                label:  AppUtils.languageTranslate('email'),
+                                hint:  AppUtils.languageTranslate('enterEmail'),
                               ),
                             ),
                           ],
@@ -950,28 +950,28 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         TextFieldWidget(
                           controller: _licenseNumberController,
-                          label: 'License Number',
-                          hint: 'Enter license number',
+                          label: AppUtils.languageTranslate('entryLicenseNumber'),
+                          hint: AppUtils.languageTranslate('enterLicenseNumber'),
                         ),
                         const Gap(5),
                         TextFieldWidget(
                           controller: _entryCardNumberController,
-                          label: 'Entry Card Number',
-                          hint: 'Enter card number',
+                          label: AppUtils.languageTranslate('entryCardNumber'),
+                          hint: AppUtils.languageTranslate('enterCardNumber'),
                         ),
                         const Gap(5),
                         Form(
                           key: _phoneNumberKey,
                           child: TextFieldWidget(
-                            label: "Phone Number*",
-                            hint: "Enter phone number",
+                            label:"${AppUtils.languageTranslate('phoneNumber')}*",
+                            hint: AppUtils.languageTranslate('enterPhoneNumber'),
                             controller: _phoneNumberController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Required max length 13 digits';
+                                return AppUtils.languageTranslate('requiredMax13Digits');
                               }
                               if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
-                                return 'Please enter a valid mobile number';
+                                return AppUtils.languageTranslate('enterValidMobileNumber');
                               }
                               return null;
                             },
@@ -997,7 +997,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
                                   if (phoneNumber.isEmpty) {
                                     Fluttertoast.showToast(
-                                        msg: "Please type note first.");
+                                        msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                     return;
                                   }
                                   if (!(_phoneNumberKey.currentState
@@ -1020,7 +1020,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 horizontal: 35)
                                             : const EdgeInsets.symmetric(
                                                 horizontal: 10),
-                                        title: 'Select Visitor',
+                                        title: AppUtils.languageTranslate('selectVisitor'),
                                         contentBuilder: (context, setState) {
                                           return _visitorNumberWidget(
                                             _phoneNumberController.text,
@@ -1038,7 +1038,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                     },
                                   );
                                 },
-                                child: const Text("Get Info",
+                                child:  Text(AppUtils.languageTranslate('getInfo'),
                                     style: TextStyle(color: AppColors.primary)),
                               ),
                             ),
@@ -1047,8 +1047,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         TextFieldWidget(
                           controller: _descriptionController,
-                          label: 'Description',
-                          hint: 'Enter description',
+                          label: AppUtils.languageTranslate('description'),
+                          hint: AppUtils.languageTranslate('enterDescription'),
                         ),
                       ],
                     ),
@@ -1098,7 +1098,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   const Gap(20),
                   CustomButton(
                     buttonColor: AppColors.primary,
-                    text: 'Scan ID',
+                    text: AppUtils.languageTranslate('scanId'),
                     height: 41,
                     borderRadius: 6,
                     image: AppImages.scan,
@@ -1109,7 +1109,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           return CustomAlertDialogBox(
                             insetPadding: EdgeInsets.all(10),
                             hideBothButtons: true,
-                            title: 'Select Type',
+                            title: AppUtils.languageTranslate('selectType'),
                             contentBuilder: (context, setState) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1119,19 +1119,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       ScanTypeContainerWidget(
-                                        text: 'Emirates Id',
+                                        text: AppUtils.languageTranslate('emiratesId'),
                                         onTap: () {
                                           _onScanEmiratesIdTap();
                                         },
                                       ),
                                       ScanTypeContainerWidget(
-                                        text: 'Passport',
+                                        text:  AppUtils.languageTranslate('passport'),
                                         onTap: () {
                                           _onScanPassportTap(context);
                                         },
                                       ),
                                       ScanTypeContainerWidget(
-                                        text: 'Driving license',
+                                        text: AppUtils.languageTranslate('drivingLicense'),
                                         onTap: () {
                                           _onScanDrivingLicenseTap();
                                         },
@@ -1157,12 +1157,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _nameController,
-                          label: 'Name*',
-                          hint: 'Enter name',
+                          label: '${AppUtils.languageTranslate('name')}*',
+                          hint: AppUtils.languageTranslate('enterName'),
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'required';
+                              return AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
@@ -1172,12 +1172,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _idNumberController,
-                          label: 'ID Number',
-                          hint: 'Enter id number',
+                          label:  AppUtils.languageTranslate('idNumber'),
+                          hint: AppUtils.languageTranslate('enterIdNumber'),
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'required';
+                              return  AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
@@ -1185,8 +1185,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          title: "Date of Issue",
-                          hint: 'Date of issue',
+                          title:  AppUtils.languageTranslate('dateOfIssue'),
+                          hint: AppUtils.languageTranslate('dateOfIssueHint'),
                           initialDate: _selectedIssueDate,
                           onDatePicked: (value) {
                             _selectedIssueDate = value;
@@ -1196,8 +1196,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          title: "Date of Expiry",
-                          hint: 'Date of expiry',
+                          title:  AppUtils.languageTranslate('dateOfExpiry'),
+                          hint:  AppUtils.languageTranslate('dateOfExpiryHint'),
                           initialDate: _selectedExpiryDate,
                           onDatePicked: (value) {
                             _selectedExpiryDate = value;
@@ -1205,14 +1205,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                        const Text(
-                          "Nationality",
+                         Text(
+                           AppUtils.languageTranslate('nationality'),
                           style: AppTextStyles.style13Black600,
                         ),
                         const Gap(5),
                         SingleSelectedDropdownWidget<Country>(
                           outLineColor: AppColors.outLineGray,
-                          hint: "United Arab Emirates",
+                          hint:  AppUtils.languageTranslate('unitedArabEmirates'),
                           fillColor: AppColors.white,
                           selectedItem: context
                               .watch<GuestCheckInCubit>()
@@ -1232,12 +1232,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           outLineColor: AppColors.outLineGray,
                           enabledBorder: InputBorder.none,
                           controller: _passportNumberController,
-                          label: 'Passport Number',
-                          hint: 'Passport number',
+                          label: AppUtils.languageTranslate('passportNumber'),
+                          hint: AppUtils.languageTranslate('passportNumberHint'),
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'required';
+                              return AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
@@ -1245,35 +1245,36 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          title: 'Passport Expiry',
-                          hint: 'Passport expiry',
+                          title: AppUtils.languageTranslate('passportExpiry'),
+                          hint: AppUtils.languageTranslate('passportExpiryHint'),
                           initialDate: _selectedPassportExpiry,
                           onDatePicked: (value) {
                             _selectedPassportExpiry = value;
                           },
                         ),
                         const Gap(5),
-                        const Text(
-                          "Type*",
+                         Text(
+                          "${AppUtils.languageTranslate('type')}*",
                           style: AppTextStyles.style12Black600,
                         ),
                         const Gap(5),
                         SingleSelectedDropdownWidget<String>(
                           outLineColor: AppColors.outLineGray,
-                          hint: "Select type",
+                          hint:  AppUtils.languageTranslate('selectType'),
                           fillColor: AppColors.white,
                           selectedItem: _selectedItemType,
                           compareFn: (p0, p1) => p0 == p1,
-                          items: const [
-                            'Unit Visit',
-                            'Community Visit',
+                          items:  [
+                            AppUtils.languageTranslate('unitVisit'),
+                            AppUtils.languageTranslate('communityVisit'),
+
                           ],
                           onChanged: (value) {
                             _selectedItemType = value;
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'required';
+                              return  AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
@@ -1282,25 +1283,25 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         TextFieldWidget(
                           outLineColor: AppColors.outLineGray,
                           controller: _visitorCountController,
-                          label: 'Visitor Count*',
-                          hint: 'Enter count',
+                          label: '${AppUtils.languageTranslate('visitorCount')}*',
+                          hint: AppUtils.languageTranslate('enterCount'),
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'required';
+                              return AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
                         ),
                         const Gap(5),
                         if (_selectedItemType == 'Unit Visit') ...[
-                          const Text(
-                            "Purpose*",
+                           Text(
+                            "${AppUtils.languageTranslate('purpose')}*",
                             style: AppTextStyles.style12Black600,
                           ),
                           const Gap(5),
                           SingleSelectedDropdownWidget<VisitorsPurpose>(
-                            hint: "Select purpose",
+                            hint: AppUtils.languageTranslate('selectPurpose'),
                             fillColor: AppColors.white,
                             outLineColor: AppColors.outLineGray,
                             selectedItem: context
@@ -1319,20 +1320,20 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                             validator: (value) {
                               if (value?.purpose?.isNotEmpty ?? false) {
-                                return 'required';
+                                return AppUtils.languageTranslate('required');
                               }
                               return null;
                             },
                           ),
                           const Gap(5),
-                          const Text(
-                            "Unit Number*",
+                           Text(
+                            "${ AppUtils.languageTranslate('unitNumber')}*",
                             style: AppTextStyles.style12Black600,
                           ),
                           const Gap(5),
                           SingleSelectedDropdownWidget<UnitModel>(
                             outLineColor: AppColors.outLineGray,
-                            hint: "Unit",
+                            hint:  AppUtils.languageTranslate('unit'),
                             fillColor: AppColors.white,
                             selectedItem: context
                                 .watch<CheckInsCubit>()
@@ -1348,7 +1349,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                             validator: (value) {
                               if (value?.name?.isNotEmpty ?? false) {
-                                return 'required';
+                                return AppUtils.languageTranslate('required');
                               }
                               return null;
                             },
@@ -1359,15 +1360,15 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           key: _phoneNumberKey,
                           child: TextFieldWidget(
                             outLineColor: AppColors.gray,
-                            label: "Phone number*",
+                            label: "${AppUtils.languageTranslate('phoneNumber')}*",
                             hint: "+971",
                             controller: _phoneNumberController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Required max length 13 digits';
+                                return AppUtils.languageTranslate('requiredMax13Digits');
                               }
                               if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
-                                return 'Please enter a valid mobile number';
+                                return  AppUtils.languageTranslate('enterValidMobileNumber');
                               }
                               return null;
                             },
@@ -1393,7 +1394,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
                                   if (phoneNumber.isEmpty) {
                                     Fluttertoast.showToast(
-                                        msg: "Please type note first.");
+                                        msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                     return;
                                   }
 
@@ -1417,7 +1418,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                                 horizontal: 35)
                                             : const EdgeInsets.symmetric(
                                                 horizontal: 10),
-                                        title: 'Select Visitor',
+                                        title: AppUtils.languageTranslate('selectVisitor'),
                                         contentBuilder: (context, setState) {
                                           return _visitorNumberWidget(
                                               _phoneNumberController.text);
@@ -1426,7 +1427,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                     },
                                   );
                                 },
-                                child: const Text("Get Info",
+                                child:  Text(AppUtils.languageTranslate('getInfo'),
                                     style: TextStyle(color: AppColors.primary)),
                               ),
                             ),
@@ -1436,29 +1437,29 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         TextFieldWidget(
                           outLineColor: AppColors.gray,
                           controller: _emailController,
-                          label: 'Email',
-                          hint: 'Enter email',
+                          label:  AppUtils.languageTranslate('email'),
+                          hint:  AppUtils.languageTranslate('enterEmail'),
                         ),
                         const Gap(5),
                         TextFieldWidget(
                           outLineColor: AppColors.gray,
                           controller: _licenseNumberController,
-                          label: 'Entry License Number',
-                          hint: 'Enter license number',
+                          label: AppUtils.languageTranslate('entryLicenseNumber'),
+                          hint: AppUtils.languageTranslate('enterLicenseNumber'),
                         ),
                         const Gap(5),
                         TextFieldWidget(
                           outLineColor: AppColors.gray,
                           controller: _entryCardNumberController,
-                          label: 'Entry Card Number',
-                          hint: 'Enter card number',
+                          label: AppUtils.languageTranslate('entryCardNumber'),
+                          hint: AppUtils.languageTranslate('enterCardNumber'),
                         ),
                         const Gap(5),
                         TextFieldWidget(
                           outLineColor: AppColors.gray,
                           controller: _descriptionController,
-                          label: 'Description',
-                          hint: 'Enter description',
+                          label: AppUtils.languageTranslate('description'),
+                          hint: AppUtils.languageTranslate('enterDescription'),
                         ),
                       ],
                     ),
@@ -1483,7 +1484,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         if (state.numberInfo?.isEmpty ?? true) {
           return Center(
             child: Text(
-              'No visitor records found for this number',
+              AppUtils.languageTranslate('noVisitorRecordsFound'),
               style: AppTextStyles.style14DarkGrey600,
             ),
           );
@@ -1497,7 +1498,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
               style: AppTextStyles.style36Blue500,
             ),
             Text(
-              'Visitor records found for this number',
+              AppUtils.languageTranslate('visitorRecordsFound'),
               style: AppUtils.isMobile(context)
                   ? AppTextStyles.style14Black600
                   : AppTextStyles.style15Black600,

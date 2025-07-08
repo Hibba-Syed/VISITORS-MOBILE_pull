@@ -73,8 +73,6 @@ dependencies:
   google_mlkit_text_recognition: ^0.15.0
   mrz_parser: ^2.0.1
   easy_localization: ^3.0.7+1
-  animated_switch: ^0.0.3
-
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +100,7 @@ flutter:
   assets:
       - assets/png/
       - assets/svg/
+      - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

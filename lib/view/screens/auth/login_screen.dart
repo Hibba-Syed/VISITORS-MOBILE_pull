@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hint: AppUtils.languageTranslate('enterCommunityID'),
                 validator: (value) {
                   if (value?.trim().isEmpty ?? true) {
-                    return AppUtils.languageTranslate('fieldIsMandatory');"Field is mandatory";
+                    return AppUtils.languageTranslate('fieldIsMandatory');
                   }
                   return null;
                 },

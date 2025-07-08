@@ -43,8 +43,8 @@ class _FacilityBookingServiceDetailsScreenState
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Service Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -94,35 +94,35 @@ class _FacilityBookingServiceDetailsScreenState
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Facility',
+                              title: AppUtils.languageTranslate('facility'),
                               value:
                                   state.serviceDetails?.application?.facility ??
                                       "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Nature of function',
+                            title: AppUtils.languageTranslate('natureOfFunction'),
                             value: state.serviceDetails?.application
                                     ?.natureOfFunction ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Expected Guests',
+                              title: AppUtils.languageTranslate('expectedGuests'),
                               value: state.serviceDetails?.application
                                       ?.expectedGuests
                                       ?.toString() ??
                                   '--'),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Booking Date',
+                              title: AppUtils.languageTranslate('bookingDate'),
                               value: DateTimeUtil.getFormattedDate(state
                                   .serviceDetails?.application?.bookingDate)),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Start Time',
+                            title: AppUtils.languageTranslate('startTime'),
                             value:
                                 state.serviceDetails?.application?.startTime ??
                                     "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                               isLast: true,
-                              title: 'End Time',
+                              title: AppUtils.languageTranslate('endTime'),
                               value:
                                   state.serviceDetails?.application?.endTime ??
                                       '--'),
@@ -130,8 +130,8 @@ class _FacilityBookingServiceDetailsScreenState
                       ),
                     ),
                     const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Applicant Details',
+                     HeadingWidget(
+                      heading: AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
                     Container(
@@ -144,39 +144,39 @@ class _FacilityBookingServiceDetailsScreenState
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requester Type',
+                              title:  AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
+                            title: AppUtils.languageTranslate('name'),
                             value: state.serviceDetails?.clientName ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
+                            title: AppUtils.languageTranslate('phone'),
                             value: state.serviceDetails?.clientPhone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Email',
+                            title: AppUtils.languageTranslate('email'),
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Passport Number',
+                              title: AppUtils.languageTranslate('passportNumber'),
                               value: state.serviceDetails?.passportNumber
                                       ?.toString() ??
                                   "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Passport Expiry',
+                            title: AppUtils.languageTranslate('passportExpiry'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.serviceDetails?.clientIdExpiry),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'ID Number',
+                            title: AppUtils.languageTranslate('idNumber'),
                             value: state.serviceDetails?.clientIdNumber
                                     ?.toString() ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'ID Expiry',
+                            title: AppUtils.languageTranslate('idExpiry'),
                             value: DateTimeUtil.getFormattedDate(
                                 state.serviceDetails?.clientIdExpiry),
                           ),
@@ -184,8 +184,8 @@ class _FacilityBookingServiceDetailsScreenState
                       ),
                     ),
                     const Gap(20),
-                    const Text(
-                      'Activity Log',
+                     Text(
+                      AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
@@ -235,7 +235,7 @@ class _FacilityBookingServiceDetailsScreenState
                             ),
                           )
                         : EmptyWidget(
-                            text: 'No data available',
+                            text: AppUtils.languageTranslate('noDataAvailable')
                           ),
                   ],
                 );
@@ -251,7 +251,7 @@ class _FacilityBookingServiceDetailsScreenState
             children: [
               Expanded(
                 child: CustomButton(
-                    text: 'Add Log',
+                    text: AppUtils.languageTranslate('addLog'),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -264,11 +264,11 @@ class _FacilityBookingServiceDetailsScreenState
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title:
                                   'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: 'Add Log',
+                              confirmButtonText: AppUtils.languageTranslate('addLog'),
                               onConfirm: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type note first.");
+                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                   return false;
                                 }
                                 final result = await context
@@ -302,7 +302,7 @@ class _FacilityBookingServiceDetailsScreenState
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note*',
+                                      label:AppUtils.languageTranslate('note'),
                                     ),
                                   ],
                                 );
@@ -321,7 +321,7 @@ class _FacilityBookingServiceDetailsScreenState
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.green,
-                      text: 'Complete',
+                      text: AppUtils.languageTranslate('complete'),
                       onPressed: () {
                         showDialog(
                             barrierDismissible: false,
@@ -335,18 +335,18 @@ class _FacilityBookingServiceDetailsScreenState
                                 disableCancelButtonBorder: true,
                                 cancelButtonTextColor: AppColors.white,
                                 cancelButtonColor: AppColors.green,
-                                cancelButtonText: 'Complete',
-                                confirmButtonText: 'Scan ID',
+                                cancelButtonText: AppUtils.languageTranslate('complete'),
+                                confirmButtonText: AppUtils.languageTranslate('scanId'),
                                 confirmButtonColor: AppColors.primary,
                                 onConfirm: () async {
                                   if (_nameController.text.isEmpty) {
                                     Fluttertoast.showToast(
-                                        msg: "Please type name first.");
+                                        msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
                                     return false;
                                   }
                                   if (_idController.text.isEmpty) {
                                     Fluttertoast.showToast(
-                                        msg: "Please type id first.");
+                                        msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
                                     return false;
                                   }
                                   final result = await context
@@ -385,18 +385,18 @@ class _FacilityBookingServiceDetailsScreenState
                                       ),
                                       const Gap(5),
                                       TextFieldWidget(
-                                        label: 'Requester Name',
+                                        label: AppUtils.languageTranslate('requesterName'),
                                         controller: _nameController,
                                       ),
                                       const Gap(5),
                                       TextFieldWidget(
-                                        label: 'ID Number',
+                                        label: AppUtils.languageTranslate('idNumber'),
                                         controller: _idController,
                                       ),
                                       const Gap(5),
                                       TextFieldWidget(
                                         controller: _noteController,
-                                        label: 'Note*',
+                                        label: AppUtils.languageTranslate('note'),
                                       ),
                                     ],
                                   );

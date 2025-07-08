@@ -96,46 +96,4 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     }
   }
 
-// Future<bool> checkOutVisitors(
-  //     BuildContext context, {
-  //       required int? id,
-  //       required Map<String, dynamic> data,
-  //     }) async {
-  //   emit(state.copyWith(isCheckOutVisitor: true));
-  //   try {
-  //     CheckOutVisitorResponseModel? response = await _checkInRepo
-  //         .checkOutVisitors(
-  //         data: data,
-  //         id: id
-  //     )
-  //         .onError((error, stackTrace) {
-  //       emit(state.copyWith(isCheckOutVisitor: false));
-  //       // log( error.toString());
-  //       Fluttertoast.showToast(
-  //         msg: error.toString(),
-  //       );
-  //       return null;
-  //     });
-  //     emit(state.copyWith(isCheckOutVisitor: false));
-  //     // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
-  //     if (response != null && response.status == 'success') {
-  //       emit(state.copyWith(checkOutVisitors: (response.record==null)?state.checkOutVisitors:[response.record!, ...state.checkOutVisitors??[]]));
-  //       if (context.mounted) {
-  //         Navigator.pop(context);
-  //        getCheckInDetailsLog(id: id);
-  //       }
-  //       Fluttertoast.showToast(msg: (data['checkout']!=null)?'Checkout ${data['checkout'].toString()} visitors successfully' :' Checkout successfully');
-  //       return true;
-  //     } else {
-  //       Fluttertoast.showToast(
-  //           msg: 'Something went wrong while checking out visitor');
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     emit(state.copyWith(isCheckOutVisitor: false));
-  //     Fluttertoast.showToast(msg: e.toString());
-  //     // log('cubit call ${e.toString()}');
-  //     return false;
-  //   }
-  // }
 }

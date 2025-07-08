@@ -1,4 +1,3 @@
-import 'package:animated_switch/animated_switch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -227,33 +226,28 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
             title: Text(AppUtils.languageTranslate('changeLanguage'),
               style: AppUtils.isTablet(context) ? AppTextStyles.style21DarkGrey400  :
               AppTextStyles.style16DarkGrey400,
-              textAlign: (context.locale.countryCode == "US")
+              textAlign: (context.locale.languageCode == "en")
                   ? TextAlign.left
                   : TextAlign.right,
             ),
             trailing: SizedBox(
-              width: 50,
-              height: 20,
-              child: AnimatedSwitch(
-                colorOn: AppColors.primary,
-                colorOff: AppColors.primary,
-                onTap: () {
-                  var languageChange =
-                  (context.locale.languageCode == "en")
-                      ? const Locale("ar", "AE")
-                      : const Locale("en", "US");
+              width: 60,
+              height: 15,
+              child: Switch(
+                activeColor: AppColors.white,
+                activeTrackColor: AppColors.primary,
+                inactiveTrackColor: AppColors.primary,
+                inactiveThumbColor: AppColors.green,
+                value: context.locale.languageCode == "en",
+                onChanged: (value) {
+                  final languageChange = value
+                      ? const Locale("en", "US")
+                      : const Locale("ar", "AE");
                   context.deleteSaveLocale();
                   context.setLocale(languageChange);
                   Navigator.pop(context);
                 },
-                indicatorColor: AppColors.white,
-                height: 20,
-                textOn: "EN",
-                textOff: "AR",
-                value:
-                (context.locale.languageCode == "en") ? true : false,
-                textStyle: const TextStyle(color: AppColors.white),
-              ),
+              )
             ),
           ),
         ],

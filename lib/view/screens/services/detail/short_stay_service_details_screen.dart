@@ -40,8 +40,8 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Service Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -90,23 +90,23 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Start Date',
+                            title: AppUtils.languageTranslate('startDate'),
                             value:
                             DateTimeUtil.getFormattedDateTime(
                                 state.serviceDetails?.application?.startDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'End Date',
+                            title: AppUtils.languageTranslate('endDate'),
                             value:  DateTimeUtil.getFormattedDateTime(
                                 state.serviceDetails?.application?.endDate),
 
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Number of guests',
+                              title: AppUtils.languageTranslate('numberOfGuests'),
                               value: state.serviceDetails?.application?.numberOfPeople?.toString()  ?? '--'
                           ),TitleValueRowDividerDetailsContainerWidget(
                               isLast: true,
-                              title: 'Description',
+                              title:  AppUtils.languageTranslate('description'),
                               value: state.serviceDetails?.application?.description ?? '--'
                           ),
 
@@ -115,7 +115,7 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                     ),
                     const Gap(20),
                     HeadingWidget(
-                      heading:  "Expected Guests",
+                      heading:   AppUtils.languageTranslate('expectedGuests'),
                     ),
                     const Gap(10),
                     Container(
@@ -130,17 +130,17 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                             Column(
                               children: [
                                 TitleValueRowDividerDetailsContainerWidget(
-                                  title: 'Name',
+                                  title: AppUtils.languageTranslate('name'),
                                   value:guest.name ?? "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
-                                  title: 'Phone',
+                                  title: AppUtils.languageTranslate('phone'),
                                   value: guest.phone ?? "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   isLast: true,
-                                  title: 'Passport / ID',
-                                   value:  "Download",
+                                  title:  AppUtils.languageTranslate('passportOrId'),
+                                   value: AppUtils.languageTranslate('Download'),
                                   url: guest.fileUrl ?? "",
                                 ),
                               ],
@@ -149,8 +149,8 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                       )
                     ),
                     const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Applicant Details',
+                     HeadingWidget(
+                      heading: AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
                     Container(
@@ -163,27 +163,27 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requester Type',
+                              title:  AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
+                            title: AppUtils.languageTranslate('name'),
                             value: state.serviceDetails?.clientName ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
+                            title: AppUtils.languageTranslate('phone'),
                             value: state.serviceDetails?.clientPhone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'Email',
+                            title: AppUtils.languageTranslate('email'),
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                         ],
                       ),
                     ),
                     const Gap(20),
-                    const Text(
-                      'Activity Log',
+                     Text(
+                      AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
@@ -221,7 +221,7 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                         },
 
                       ),
-                    ) : EmptyWidget(text: 'No data available',),
+                    ) : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')),
                   ],
                 );
               },
@@ -236,7 +236,7 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
             children: [
               Expanded(
                 child: CustomButton(
-                    text: 'Add Log',
+                    text:  AppUtils.languageTranslate('addLog'),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -249,11 +249,11 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: 'Add Log',
+                              confirmButtonText:  AppUtils.languageTranslate('addLog'),
                               onConfirm: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type note first.");
+                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                   return false;
                                 }
                                 final result = await context
@@ -287,7 +287,7 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note*',
+                                      label:  AppUtils.languageTranslate('note'),
                                     ),
                                   ],
                                 );

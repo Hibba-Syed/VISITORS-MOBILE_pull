@@ -45,8 +45,8 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Service Details',
+        appBar:  AppBarWidget(
+          title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -96,19 +96,19 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requested Date',
+                              title: AppUtils.languageTranslate('requestedDate'),
                               value:
                           DateTimeUtil.getFormattedDateTime(
                               state.serviceDetails?.application?.moveDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Requested Time',
+                            title:  AppUtils.languageTranslate('requestedTime'),
                             value: '${state.serviceDetails?.application?.moveTimeFrom ?? "--"} - ${state.serviceDetails?.application?.moveTimeTo ?? "--"}'
                                 ,
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                              title: 'Emergency Number',
+                              title: AppUtils.languageTranslate('emergencyNumber'),
                               value: state.serviceDetails?.application?.emergencyNumber ?? '--'
                           ),
 
@@ -116,8 +116,8 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                       ),
                     ),
                     const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Applicant Details',
+                     HeadingWidget(
+                      heading: AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
                     Container(
@@ -130,27 +130,27 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requester Type',
+                              title: AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
+                            title:AppUtils.languageTranslate('name'),
                             value: state.serviceDetails?.clientName ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
+                            title: AppUtils.languageTranslate('phone'),
                             value: state.serviceDetails?.clientPhone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: 'Email',
+                            title:AppUtils.languageTranslate('email'),
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                         ],
                       ),
                     ),
                     const Gap(20),
-                    const Text(
-                      'Activity Log',
+                     Text(
+                      AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
@@ -188,7 +188,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                         },
 
                       ),
-                    ) : EmptyWidget(text: 'No data available',),
+                    ) : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')),
                   ],
                 );
               },
@@ -204,7 +204,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
               Expanded(
                 child: CustomButton(
                     buttonColor: AppColors.cyanBlue,
-                    text: 'Add Log',
+                    text: AppUtils.languageTranslate('addLog'),
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -217,11 +217,11 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: 'Add Log',
+                              confirmButtonText: AppUtils.languageTranslate('addLog'),
                               onConfirm: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: "Please type note first.");
+                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
                                   return false;
                                 }
                                 final result = await context
@@ -255,7 +255,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label: 'Note*',
+                                      label:  AppUtils.languageTranslate('note')
                                     ),
                                   ],
                                 );
@@ -279,7 +279,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                 Expanded(
                     child: CustomButton(
                         buttonColor: AppColors.green,
-                        text: 'Complete',
+                        text:  AppUtils.languageTranslate('complete'),
                         onPressed: () {
                           showDialog(
                               barrierDismissible: false,
@@ -294,18 +294,18 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                   disableCancelButtonBorder: true,
                                   cancelButtonTextColor: AppColors.white,
                                   cancelButtonColor: AppColors.primary,
-                                  cancelButtonText: 'Scan ID',
-                                  confirmButtonText: 'Complete',
+                                  cancelButtonText:  AppUtils.languageTranslate('scanId'),
+                                  confirmButtonText: AppUtils.languageTranslate('complete'),
                                   confirmButtonColor: AppColors.green,
                                   onConfirm: () async {
                                     if (_nameController.text.isEmpty) {
                                       Fluttertoast.showToast(
-                                          msg: "Please type name first.");
+                                          msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
                                       return false;
                                     }
                                     if (_idController.text.isEmpty) {
                                       Fluttertoast.showToast(
-                                          msg: "Please type id first.");
+                                          msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
                                       return false;
                                     }
                                     final result = await context
@@ -346,18 +346,18 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                         ),
                                         const Gap(5),
                                         TextFieldWidget(
-                                          label: 'Requester Name',
+                                          label:  AppUtils.languageTranslate('requesterName'),
                                           controller: _nameController,
                                         ),
                                         const Gap(5),
                                         TextFieldWidget(
-                                          label: 'ID Number',
+                                          label: AppUtils.languageTranslate('idNumber'),
                                           controller: _idController,
                                         ),
                                         const Gap(5),
                                         TextFieldWidget(
                                           controller: _noteController,
-                                          label: 'Note*',
+                                          label: AppUtils.languageTranslate('note'),
                                         ),
                                       ],
                                     );
@@ -372,7 +372,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.yellow,
-                      text: 'Clear Payment',
+                      text:  AppUtils.languageTranslate('clearPayment'),
                       onPressed: () {
                         showDialog(
                             barrierDismissible: false,
@@ -385,17 +385,17 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                 isCancelButtonDisable: true,
                                 title: 'Clear Payment for ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
                                 disableCancelButtonBorder: true,
-                                confirmButtonText: 'Clear Payment',
+                                confirmButtonText:  AppUtils.languageTranslate('clearPayment'),
                                 confirmButtonColor: AppColors.yellow,
                                 onConfirm: () async {
                                   if (selectedImages?.isEmpty ?? false) {
                                     Fluttertoast.showToast(
-                                        msg: "Please choose image file first.");
+                                        msg: AppUtils.languageTranslate('pleaseChooseImageFileFirst'));
                                     return false;
                                   }
                                   if (isPaymentReceived == null) {
                                     Fluttertoast.showToast(
-                                        msg: "Please select checkbox first.");
+                                        msg:  AppUtils.languageTranslate('pleaseSelectCheckboxFirst'));
                                     return false;
                                   }
                                   final filePaths = selectedImages
@@ -436,10 +436,10 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                       const Gap(5),
                                       TextFieldWidget(
                                         controller: _noteController,
-                                        label: 'Note*',
+                                        label: AppUtils.languageTranslate('note'),
                                       ),
                                       const Gap(5),
-                                      Text('Cheque File *',style: AppTextStyles.style14Black600),
+                                      Text(AppUtils.languageTranslate('chequeFile'),style: AppTextStyles.style14Black600),
                                       const Gap(10),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -448,7 +448,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                             child: Text(
                                               (filePath?.isNotEmpty ?? true)
                                                   ? selectedImages?.firstOrNull?.name??""
-                                                  : 'Choose File',
+                                                  : AppUtils.languageTranslate('chooseFile'),
                                               style: AppTextStyles.style14darkGrey400,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
@@ -460,7 +460,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                             onTap: () async {
                                               if ((selectedImages?.length ?? 0) >= 1) {
                                                 Fluttertoast.showToast(
-                                                    msg: "You cannot select more than one file");
+                                                    msg:  AppUtils.languageTranslate('cannotSelectMultipleFiles'));
                                                 return;
                                               }
                                               await FilePicker.platform
@@ -505,7 +505,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                                       isPaymentReceived = value;
                                                     });
                                                   })),
-                                          const Text('Payment Received *',style: AppTextStyles.style14Black600,
+                                           Text( AppUtils.languageTranslate('paymentReceived'),style: AppTextStyles.style14Black600,
                                           ),
                                         ],
                                       ),
