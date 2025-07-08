@@ -36,8 +36,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
 
-  void onChangeSelectedCountry(Country? country) {
-    emit(state.copyWith(selectedCountry: country));
+  void onChangeSelectedNationality(Country? country) {
+    emit(state.copyWith(selectedNationality: country));
   }
 
   void onChangeSelectedPurpose(VisitorsPurpose? purpose) {
@@ -64,7 +64,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(
           countries: response.record,
-          selectedCountry: response.record?.firstWhere((country) =>
+          selectedNationality: response.record?.firstWhere((country) =>
               country.name?.toLowerCase() == 'united arab emirates')));
     } else {
       Fluttertoast.showToast(
