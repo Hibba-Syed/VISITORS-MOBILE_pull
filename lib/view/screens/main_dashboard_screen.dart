@@ -220,8 +220,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                   context.deleteSaveLocale();
                   context.setLocale(languageChange);
                   Navigator.pop(context);
-                  final currentIndex = selectedIndex;
-                  refreshScreenData(context,currentIndex);
+
 
                 },
               )
