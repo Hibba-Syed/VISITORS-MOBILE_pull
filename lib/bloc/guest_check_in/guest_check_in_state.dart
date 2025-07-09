@@ -9,7 +9,7 @@ class GuestCheckInState {
   final bool isNumberInfoLoading;
   final bool isDeleteVisitorLoading;
   final List<Country>? countries;
-  final Country? selectedCountry;
+  final Country? selectedNationality;
   final VisitorsPurpose? selectedPurpose;
   final ProfileRecord? profileRecord;
   final List<UnitModel>? units;
@@ -26,7 +26,7 @@ class GuestCheckInState {
     this.isDeleteVisitorLoading = false,
     this.isGuestCheckInLoading = false,
     this.countries,
-    this.selectedCountry,
+    this.selectedNationality,
     this.selectedPurpose,
     this.profileRecord,
     this.units,
@@ -43,7 +43,7 @@ class GuestCheckInState {
     bool? isDeleteVisitorLoading,
     bool? isGuestCheckInLoading,
     List<Country>? countries,
-    Country? selectedCountry,
+    Country? selectedNationality,
     VisitorsPurpose? selectedPurpose,
     ProfileRecord? profileRecord,
     List<UnitModel>? units,
@@ -54,7 +54,7 @@ class GuestCheckInState {
     return GuestCheckInState(
       isLoading: isLoading ?? this.isLoading,
       countries: countries ?? this.countries,
-      selectedCountry: selectedCountry ?? this.selectedCountry,
+      selectedNationality: selectedNationality ?? this.selectedNationality,
       selectedPurpose: selectedPurpose ?? this.selectedPurpose,
       profileRecord: profileRecord ?? this.profileRecord,
       isCountriesLoading: isCountriesLoading ?? this.isCountriesLoading,

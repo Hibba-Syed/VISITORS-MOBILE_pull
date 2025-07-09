@@ -8,18 +8,20 @@ import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.d
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
   final String? country;
-  final  Future<bool> Function()? deleteOnPressed;
-  const GetInfoCardWidget(
-      {super.key,
-      this.profileImageUrl,
-      this.name,
-      this.country,
-      this.deleteOnPressed});
+  final Future<bool> Function()? deleteOnPressed;
+  final VoidCallback onSelectPressed;
+  const GetInfoCardWidget({
+    super.key,
+    this.profileImageUrl,
+    this.name,
+    this.country,
+    this.deleteOnPressed,
+    required this.onSelectPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,7 @@ class GetInfoCardWidget extends StatelessWidget {
                   backgroundColor: AppColors.green,
                   onPressed: () {
                     Navigator.pop(context);
+                    onSelectPressed();
                   },
                 ),
                 const Gap(10),
@@ -87,7 +90,7 @@ class GetInfoCardWidget extends StatelessWidget {
                             isCancelButtonDisable: true,
                             confirmButtonText: 'Delete',
                             confirmButtonColor: AppColors.red,
-                            onConfirm: deleteOnPressed ,
+                            onConfirm: deleteOnPressed,
                             insetPadding: AppUtils.isTablet(context)
                                 ? EdgeInsets.symmetric(horizontal: 50)
                                 : EdgeInsets.all(20),
