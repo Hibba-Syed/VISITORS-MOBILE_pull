@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/auth/login_response_model.dart';
 import '../../repo/auth/atuh_repo_impl.dart';
@@ -53,7 +54,7 @@ class AuthCubit extends Cubit<AuthState> {
      }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong, please try again later');
+          msg: AppUtils.languageTranslate('somethingWentWrongPleaseTryAgainLater'));
     }
   }
   Future<void> logout(BuildContext context) async {

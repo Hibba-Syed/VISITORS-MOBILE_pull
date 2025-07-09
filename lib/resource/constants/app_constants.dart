@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class AppConstants {
   static const int dashboardIndex = 0;
   static const int checkInsIndex = 1;
@@ -14,10 +16,11 @@ class AppConstants {
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
 
-  static const List<String> rangList = [
-    'Last 30 Days',
-    'Last 60 Days',
-    'Last 90 Days'
+  static final List<String> rangList = [
+    AppUtils.languageTranslate('last30Days'),
+    AppUtils.languageTranslate('last60Days'),
+    AppUtils.languageTranslate('last90Days'),
+
   ];
 
   static const Map<String, String> nationalityMap = {

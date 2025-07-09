@@ -158,7 +158,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                     CheckInModel? checkIns =
                                         state.checkInModel?[index];
                                     return CheckInCardWidget(
-                                      phone: checkIns?.phone ?? "--",
+                                      phone:  checkIns?.phone ?? "--",
                                       count: checkIns?.visitorCount ?? "--",
                                       typeImage: (checkIns?.type
                                                       ?.toLowerCase() ==

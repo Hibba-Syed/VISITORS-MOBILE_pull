@@ -65,7 +65,7 @@ class ServiceCubit extends Cubit<ServiceState> {
       emit(state.copyWith(serviceModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
   Future<void> getMoreServices({
@@ -97,13 +97,13 @@ class ServiceCubit extends Cubit<ServiceState> {
         checkIns.addAll(response.record as Iterable<ServiceModel>);
         emit(state.copyWith(serviceModel: checkIns));
       } else {
-        Fluttertoast.showToast(msg: 'No more service');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreService'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
 
@@ -122,7 +122,7 @@ class ServiceCubit extends Cubit<ServiceState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
 }

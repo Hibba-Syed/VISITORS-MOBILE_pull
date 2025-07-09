@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:visitors/utils/app_utils.dart';
 import '../../../model/service/add_service_log_response_model.dart';
 import '../../../model/service/service_details_model.dart';
 import '../../../model/service/service_details_response_model.dart';
@@ -38,7 +39,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return response;
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service details'
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingServiceDetails')
       );
       emit(state.copyWith(isLoading: false));
       return null;
@@ -64,14 +65,14 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       emit(state.copyWith(isAddLogLoading: false));
 
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: 'Log added successfully');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('logAddedSuccessfully'));
         if(context.mounted){
           getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
         }
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while adding log');
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingLog'));
         return false;
       }
     } catch (e) {
@@ -99,14 +100,14 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       emit(state.copyWith(isCompleteServiceLoading: false));
       // log("Service model RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: 'service completed successfully');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
         if(context.mounted){
           getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
         }
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while adding completing services');
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingCompletingServices'));
         return false;
       }
     } catch (e) {
@@ -125,7 +126,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     emit(state.copyWith(isClearPaymentLoading: true));
 
     if (file?.isEmpty??true) {
-      Fluttertoast.showToast(msg: 'Please select a file');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('pleaseSelectAFile'));
       emit(state.copyWith(isClearPaymentLoading: false));
       return false;
     }
@@ -153,7 +154,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     emit(state.copyWith(isClearPaymentLoading: false));
 
     if (response != null && response.status == 'success') {
-      Fluttertoast.showToast(msg: 'Payment cleared successfully');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('paymentClearedSuccessfully'));
      if(context.mounted){
        getServiceDetails(
            serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
@@ -162,7 +163,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return true;
     }
 
-    Fluttertoast.showToast(msg: 'Something went wrong');
+    Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrong'));
     return false;
   }
 }

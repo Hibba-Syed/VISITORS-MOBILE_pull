@@ -8,6 +8,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog2/progress_dialog2.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:visitors/utils/app_utils.dart';
 import '../../repo/encrption/encryption_helper.dart';
 import '../../resource/constants/api_url.dart';
 import '../../resource/globals.dart';
@@ -55,8 +56,7 @@ class FileDownloader {
       } else if (response.statusCode == 500) {
         progressDialog.hide();
         if(context.mounted){
-          _showErrorDialog(context,
-              "An error occurred while downloading the document. Please try again. If the issue persists, contact our support team for assistance.");
+          _showErrorDialog(context,AppUtils.languageTranslate('errorDownloadingDocumentContactSupport'));
         }
       } else {
         if(context.mounted){
@@ -65,7 +65,7 @@ class FileDownloader {
       }
     } catch (e) {
       if(context.mounted){
-        _showErrorDialog(context, "An unexpected error occurred: $e");
+        _showErrorDialog(context, "${AppUtils.languageTranslate('anUnexpectedErrorOccurred')}: $e");
         progressDialog.hide();
       }
     }
@@ -95,7 +95,7 @@ class FileDownloader {
   static ProgressDialog _createProgressDialog(BuildContext context) {
     final progressDialog = ProgressDialog(context,
         type: ProgressDialogType.Normal, showLogs: true, isDismissible: false);
-    progressDialog.style(message: 'Downloading File...');
+    progressDialog.style(message: AppUtils.languageTranslate('downloadingFile'));
     progressDialog.show();
     return progressDialog;
   }
@@ -120,7 +120,7 @@ class FileDownloader {
           context, filePath, response.headers['content-disposition']);
     } else {
       if (context.mounted){
-        _showErrorDialog(context, "Error saving the file.");
+        _showErrorDialog(context, AppUtils.languageTranslate('errorSavingTheFile'));
       }
     }
   }
@@ -144,7 +144,7 @@ class FileDownloader {
     progressDialog.hide();
     final errorMsg = response.body.isNotEmpty
         ? response.body
-        : "Error downloading the file.";
+        : AppUtils.languageTranslate('errorDownloadingTheFile');
     _showErrorDialog(context, errorMsg);
   }
 
@@ -153,10 +153,10 @@ class FileDownloader {
       BuildContext context, String filePath, String? contentDisposition) {
     if (contentDisposition?.contains("zip") ?? false) {
       _openFileBasedOnPlatform(filePath);
-      Fluttertoast.showToast(msg: "File has been downloaded successfully!");
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('fileHasBeenDownloadedSuccessfully'));
     } else {
       _showSuccessDialog(
-          context, "File has been downloaded successfully!", filePath);
+          context, AppUtils.languageTranslate('fileHasBeenDownloadedSuccessfully'), filePath);
     }
   }
 
@@ -233,16 +233,15 @@ class FileDownloader {
       context: context,
       builder: (_) => CustomAlertDialogBox(
         insetPadding: EdgeInsets.all(10),
-        title: "Download Complete",
-        confirmButtonText: "Open File",
-        cancelButtonText: "No",
+        title: AppUtils.languageTranslate('downloadComplete'),
+        confirmButtonText: AppUtils.languageTranslate('openFile'),
+        cancelButtonText: AppUtils.languageTranslate('no'),
         onConfirm: () async {
           openFile(filePath);
           return true;
         },
         contentBuilder: (p0, p1) {
-          return const Text(
-            "File downloaded successfully",
+          return  Text(AppUtils.languageTranslate('fileDownloadedSuccessfully'),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14, color: Colors.grey),
           );
@@ -276,12 +275,12 @@ class FileDownloader {
         barrierDismissible: false,
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text("Error"),
+          title:  Text(AppUtils.languageTranslate('error')),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
+              child:  Text(AppUtils.languageTranslate('ok')),
             ),
           ],
         ),

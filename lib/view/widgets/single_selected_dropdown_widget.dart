@@ -7,6 +7,7 @@ import 'package:dropdown_search/dropdown_search.dart'
         DropdownSuffixProps,
         PopupProps,
         TextFieldProps;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -71,7 +72,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
             ),
           ),
           decoratorProps: DropDownDecoratorProps(
-            textAlign: TextAlign.left,
+            textAlign: context.locale.languageCode == "en"  ? TextAlign.left :  TextAlign.right,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               isDense: true,

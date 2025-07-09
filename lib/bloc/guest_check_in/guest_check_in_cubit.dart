@@ -7,6 +7,7 @@ import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/repo/countries/countries_repo.dart';
 import 'package:visitors/repo/countries/countries_repo_impl.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_ins/guest_checkin_response_model.dart';
@@ -68,7 +69,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
               country.name?.toLowerCase() == 'united arab emirates')));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching countries');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCountries'));
     }
   }
 
@@ -84,7 +85,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       emit(state.copyWith(profileRecord: profileResponse.record));
       return true;
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrong'));
       return false;
     }
   }
@@ -104,7 +105,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
 
@@ -125,7 +126,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       emit(state.copyWith(numberInfo: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching number Info');
+          msg:  AppUtils.languageTranslate('somethingWentWrongWhileFetchingNumberInfo'));
     }
   }
 
@@ -141,7 +142,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     });
     emit(state.copyWith(isDeleteVisitorLoading: false));
     if (response != null && response.status == 'success') {
-      Fluttertoast.showToast(msg: 'visitor deleted successfully');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('visitorDeletedSuccessfully'));
       if ((phoneNumber?.isNotEmpty ?? false) && (remainingVisitors ?? 0) > 0) {
         // If there are remaining visitors, fetch the number info again
         // to update the UI with the latest visitor count.
@@ -155,7 +156,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       return true;
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong, please try again later');
+          msg: AppUtils.languageTranslate('somethingWentWrongPleaseTryAgainLater'));
       return false;
     }
   }
@@ -185,10 +186,10 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
           context.read<CheckInsCubit>().getCheckIns();
           Navigator.pop(context);
         }
-        Fluttertoast.showToast(msg: 'Check in successfully');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('checkInSuccessfully'));
         return true;
       } else {
-        Fluttertoast.showToast(msg: 'Something went wrong while checking in ');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingIn'));
         return false;
       }
     } catch (e) {

@@ -88,7 +88,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(checkOutVisitors: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching check out');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckOut'));
     }
   }
   Future<void> getMoreCheckOut({
@@ -128,7 +128,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching check-outs');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckouts'));
     }
   }
 
@@ -147,7 +147,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
 
@@ -168,7 +168,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       emit(state.copyWith(vendors: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching vendors');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVendors'));
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/routes/app_pages.dart';
 
 import '../../resource/globals.dart';
@@ -35,7 +36,7 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp(
-            title: 'Visitors Mobile',
+            title: AppUtils.languageTranslate('visitorsMobile'),
             // locale: DevicePreview.locale(context),
             // builder: DevicePreview.appBuilder,
             locale: context.locale,

@@ -63,7 +63,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
       emit(state.copyWith(workOrderModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order, rfp');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderRfp'));
     }
   }
   Future<void> getVendors() async {
@@ -83,7 +83,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
       emit(state.copyWith(vendors: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching vendors');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVendors'));
     }
   }
   Future<void> getMoreWorkOrder() async {
@@ -112,13 +112,13 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
         checkIns.addAll(response.record as Iterable<WorkOrderModel>);
         emit(state.copyWith(workOrderModel: checkIns));
       } else {
-        Fluttertoast.showToast(msg: 'No more work order');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreWorkOrder'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderRfp'));
     }
   }
 }

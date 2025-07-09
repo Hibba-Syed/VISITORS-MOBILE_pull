@@ -189,34 +189,8 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     context
                         .read<MainDashboardCubit>()
                         .onChangeSelectedIndex(item.index);
-
                     // Optionally trigger specific cubits
-                    switch (item.index) {
-                      case AppConstants.checkInsIndex:
-                        context.read<CheckInsCubit>().resetFilterData();
-                        context.read<CheckInsCubit>().getCheckIns();
-                        break;
-                      case AppConstants.eServicesIndex:
-                        context.read<ServiceCubit>().resetFilterData();
-                        context.read<ServiceCubit>().getServices();
-                        break;
-                      case AppConstants.workOrderRfpIndex:
-                        context.read<WorkOrderCubit>().resetFilterData();
-                        context.read<WorkOrderCubit>().getWorkOrder();
-                        break;
-                      case AppConstants.messagesIndex:
-                        context.read<MessageCubit>().getMessages();
-                        break;
-                      case AppConstants.checkOutsIndex:
-                        context.read<CheckOutCubit>().onChangeDateRange(
-                            AppUtils.getDateRangeStringFromLabel(
-                                'Last 30 Days'));
-                        context.read<CheckOutCubit>().getCheckOuts();
-                        break;
-                      case AppConstants.directoryIndex:
-                     context.read<DirectoryCubit>().getUnits();
-                        break;
-                    }
+                    refreshScreenData(context,item.index);
                   }
                 },
               )),
@@ -237,7 +211,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 activeColor: AppColors.white,
                 activeTrackColor: AppColors.primary,
                 inactiveTrackColor: AppColors.primary,
-                inactiveThumbColor: AppColors.green,
+                inactiveThumbColor: AppColors.white,
                 value: context.locale.languageCode == "en",
                 onChanged: (value) {
                   final languageChange = value
@@ -246,6 +220,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                   context.deleteSaveLocale();
                   context.setLocale(languageChange);
                   Navigator.pop(context);
+                  final currentIndex = selectedIndex;
+                  refreshScreenData(context,currentIndex);
+
                 },
               )
             ),
@@ -254,7 +231,33 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       ),
     );
   }
-
+  void refreshScreenData(BuildContext context, int index) {
+    switch (index) {
+      case AppConstants.checkInsIndex:
+        context.read<CheckInsCubit>().resetFilterData();
+        context.read<CheckInsCubit>().getCheckIns();
+        break;
+      case AppConstants.eServicesIndex:
+        context.read<ServiceCubit>().resetFilterData();
+        context.read<ServiceCubit>().getServices();
+        break;
+      case AppConstants.workOrderRfpIndex:
+        context.read<WorkOrderCubit>().resetFilterData();
+        context.read<WorkOrderCubit>().getWorkOrder();
+        break;
+      case AppConstants.messagesIndex:
+        context.read<MessageCubit>().getMessages();
+        break;
+      case AppConstants.checkOutsIndex:
+        context.read<CheckOutCubit>().onChangeDateRange(
+            AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
+        context.read<CheckOutCubit>().getCheckOuts();
+        break;
+      case AppConstants.directoryIndex:
+        context.read<DirectoryCubit>().getUnits();
+        break;
+    }
+  }
   String _getTitle(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:

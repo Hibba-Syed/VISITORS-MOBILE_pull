@@ -1,6 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/utils/app_utils.dart';
 import '../../model/unit/unit_model.dart';
 import '../../model/unit/units_response_model.dart';
 import '../../repo/units/units_repo.dart';
@@ -44,7 +45,7 @@ class DirectoryCubit extends Cubit<DirectoryState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:visitors/model/message/message_model.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/message/message_response_model.dart';
 import '../../model/message/send_response_messages_model.dart';
@@ -32,7 +33,7 @@ class MessageCubit extends Cubit<MessageState> {
       emit(state.copyWith(messageModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching message');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingMessage'));
     }
   }
   Future<void> getMoreMessage({
@@ -60,13 +61,13 @@ class MessageCubit extends Cubit<MessageState> {
         checkIns.addAll(response.record as Iterable<MessageModel>);
         emit(state.copyWith(messageModel: checkIns));
       } else {
-        Fluttertoast.showToast(msg: 'No more message');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreMessage'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching message');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingMessage'));
     }
   }
   Future<bool> sendMessage(
@@ -104,12 +105,12 @@ class MessageCubit extends Cubit<MessageState> {
       emit(state.copyWith(isSendMessageLoading: false));
 
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: 'Message sent successfully');
+        Fluttertoast.showToast(msg:AppUtils.languageTranslate('messageSentSuccessfully'));
         getMessages();
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while sending message');
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileSendingMessage'));
         return false;
       }
     } catch (e) {

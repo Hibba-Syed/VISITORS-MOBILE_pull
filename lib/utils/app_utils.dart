@@ -43,6 +43,7 @@ class AppUtils {
         AppConstants.mobileScreen;
   }
 
+
   static Color getCheckOutTypeColor(String? type) {
     if (type?.toLowerCase() == "community visit") {
       return AppColors.yellow;
@@ -109,26 +110,26 @@ class AppUtils {
   }
 
   static List<TypeModel> serviceTypeList = [
-    TypeModel(label: 'Access device', value: 'AD'),
-    TypeModel(label: 'Delivery Permit', value: 'DP'),
-    TypeModel(label: 'Facility Booking', value: 'HB'),
-    TypeModel(label: 'Fit Out', value: 'FO'),
-    TypeModel(label: 'Move In', value: 'MI'),
-    TypeModel(label: 'Move Out', value: 'MO'),
-    TypeModel(label: 'Work Permit', value: 'WP'),
-    TypeModel(label: 'Short Stay', value: 'SS'),
+    TypeModel(label: AppUtils.languageTranslate('accessDevice'), value: 'AD'),
+    TypeModel(label: AppUtils.languageTranslate('deliveryPermit'), value: 'DP'),
+    TypeModel(label: AppUtils.languageTranslate('facilityBooking'), value: 'HB'),
+    TypeModel(label: AppUtils.languageTranslate('fitOut'), value: 'FO'),
+    TypeModel(label: AppUtils.languageTranslate('moveIn'), value: 'MI'),
+    TypeModel(label: AppUtils.languageTranslate('moveOut'), value: 'MO'),
+    TypeModel(label: AppUtils.languageTranslate('workPermit'), value: 'WP'),
+    TypeModel(label: AppUtils.languageTranslate('shortStay'), value: 'SS'),
   ];
 
   static List<TypeModel> workOrderType = [
-    TypeModel(label: 'Work Order', value: '1'),
-    TypeModel(label: 'RFP', value: '0'),
+    TypeModel(label: AppUtils.languageTranslate('workOrder'), value: '1'),
+    TypeModel(label: AppUtils.languageTranslate('rfp'), value: '0'),
   ];
 
   static List<TypeModel> checkInTypeList = [
-    TypeModel(label: 'Guests', value: Strings.guest),
-    TypeModel(label: 'Services', value: Strings.keyServices),
-    TypeModel(label: 'Work Order / RFPs', value: Strings.keyWorkOrder),
-    TypeModel(label: 'Visitor Pass', value: Strings.keyVisitorPass),
+    TypeModel(label: AppUtils.languageTranslate('guests'), value: Strings.guest),
+    TypeModel(label: AppUtils.languageTranslate('services'), value: Strings.keyServices),
+    TypeModel(label: AppUtils.languageTranslate('workOrdersRFPs'), value: Strings.keyWorkOrder),
+    TypeModel(label: AppUtils.languageTranslate('visitorPass'), value: Strings.keyVisitorPass),
   ];
 
   static Widget getRouteName(ServiceModel? service) {
@@ -165,35 +166,35 @@ class AppUtils {
   static String? getRequestName(String? applicationType) {
     String? requestName;
     if (applicationType == "AD") {
-      requestName = "Access Device";
+      requestName = AppUtils.languageTranslate('accessDevice');
     }
     if (applicationType == "MI") {
-      requestName = "Move In";
+      requestName = AppUtils.languageTranslate('moveIn');
     }
     if (applicationType == "MO") {
-      requestName = "Move Out";
+      requestName = AppUtils.languageTranslate('moveOut');
     }
     if (applicationType == "WP") {
-      requestName = "Work Permit";
+      requestName = AppUtils.languageTranslate('workPermit');
     }
     if (applicationType == "FO") {
-      requestName = "Fit Out";
+      requestName = AppUtils.languageTranslate('fitOut');
     }
     if (applicationType == "HB") {
-      requestName = "Facility Booking";
+      requestName = AppUtils.languageTranslate('facilityBooking');
     }
-    if (applicationType == "TP") {
-      requestName = "Transfer of Property";
-    }
-    if (applicationType == "CS") {}
-    if (applicationType == "RI") {
-      requestName = "Resident Information";
-    }
+    // if (applicationType == "TP") {
+    //   requestName = "Transfer of Property";
+    // }
+    // if (applicationType == "CS") {}
+    // if (applicationType == "RI") {
+    //   requestName = "Resident Information";
+    // }
     if (applicationType == "DP") {
-      requestName = "Delivery Permit";
+      requestName = AppUtils.languageTranslate('deliveryPermit');
     }
     if (applicationType == "SS") {
-      requestName = "Short Stay";
+      requestName = AppUtils.languageTranslate('shortStay');
     }
     return requestName;
   }

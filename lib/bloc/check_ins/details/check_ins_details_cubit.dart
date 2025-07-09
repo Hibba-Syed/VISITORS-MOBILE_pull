@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
 import '../../../model/check_ins/check_in_log_response_model.dart';
@@ -34,7 +35,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
        emit(state.copyWith(checkInLogs: response.record,isLoading: false));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching check in log details');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckInLogDetails'));
     }
     emit(state.copyWith(isLoading: false));
     return null;
@@ -81,12 +82,12 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         getCheckInDetailsLog(id: id);
         Fluttertoast.showToast(
             msg: (data['checkout'] != null)
-                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
-                : ' Checkout successfully');
+                ? '${AppUtils.languageTranslate('checkout')} ${data['checkout'].toString()} ${AppUtils.languageTranslate('visitorsSuccessfully')}'
+                : AppUtils.languageTranslate('checkoutSuccessfully'));
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while checking out visitor');
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingOutVisitor'));
         return false;
       }
     } catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/model/service/service_response_model.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_ins/check_ins_response_model.dart';
@@ -53,7 +54,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(profileRecord: profileResponse.record));
       return true;
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrong'));
       return false;
     }
   }
@@ -75,7 +76,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(checkInsModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitors check-ins');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVisitorsCheckins'));
     }
   }
 
@@ -95,7 +96,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(countModel: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching count');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCount'));
     }
   }
 
@@ -116,7 +117,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(serviceModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
 
@@ -137,7 +138,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(workOrderModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderRfp'));
     }
   }
 
@@ -158,7 +159,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(visitorPasses: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitor pass');
+          msg:  AppUtils.languageTranslate('somethingWentWrongWhileFetchingVisitorPass'));
     }
   }
 
@@ -203,12 +204,12 @@ class DashboardCubit extends Cubit<DashboardState> {
         getDashboardCheckIns();
         Fluttertoast.showToast(
             msg: (data['checkout'] != null)
-                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
-                : ' Checkout successfully');
+                ? '${AppUtils.languageTranslate('checkout')} ${data['checkout'].toString()} ${AppUtils.languageTranslate('visitorsSuccessfully')}'
+                : AppUtils.languageTranslate('checkoutSuccessfully'));
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while checking out visitor');
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingOutVisitor'));
         return false;
       }
     } catch (e) {
@@ -237,7 +238,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       // print('Visitor Pass Count cubit : ${response.record?.count}');
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitor passes count');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVisitorPassesCount'));
     }
   }
 
