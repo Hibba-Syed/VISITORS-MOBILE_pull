@@ -48,19 +48,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _phoneNumberKey = GlobalKey<FormState>();
   final TextEditingController _visitorCountController =
-      TextEditingController(text: '1');
+  TextEditingController(text: '1');
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController =
-      TextEditingController(text: '971');
+  TextEditingController(text: '971');
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _entryCardNumberController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _licenseNumberController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
   final TextEditingController _passportNumberController =
-      TextEditingController();
+  TextEditingController();
   String? _selectedItemType;
   DateTime? _selectedIssueDate;
   DateTime? _selectedExpiryDate;
@@ -88,7 +88,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       if (recognizedText?.isNotEmpty ?? false) {
         final Map<String, String> parsedText =
-            _parseEmiratesIdExtractedText(recognizedText!);
+        _parseEmiratesIdExtractedText(recognizedText!);
 
         emiratesIdData = EmiratesIdModel(
           personImage: ocrData.personImage,
@@ -113,10 +113,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           if ((emiratesIdData?.nationality?.isNotEmpty ?? false) &&
               (countries?.isNotEmpty ?? false)) {
             final normalized =
-                emiratesIdData?.nationality?.trim().toLowerCase();
+            emiratesIdData?.nationality?.trim().toLowerCase();
 
             final Country? matchedCountry = countries?.firstWhere(
-              (item) => item.name?.toLowerCase() == normalized,
+                  (item) => item.name?.toLowerCase() == normalized,
               orElse: () => Country(),
             );
 
@@ -139,8 +139,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       if (recognizedText?.isNotEmpty ?? false) {
         DrivingLicenseModel? drivingLicenseData =
-            _parseDrivingLicenseExtractedText(
-                recognizedText!, ocrData.personImage);
+        _parseDrivingLicenseExtractedText(
+            recognizedText!, ocrData.personImage);
         clearData();
         setState(() {
           _personImage = drivingLicenseData.personImage;
@@ -157,10 +157,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           if ((drivingLicenseData.nationality?.isNotEmpty ?? false) &&
               (countries?.isNotEmpty ?? false)) {
             final normalized =
-                drivingLicenseData.nationality?.trim().toLowerCase();
+            drivingLicenseData.nationality?.trim().toLowerCase();
 
             final Country? matchedCountry = countries?.firstWhere(
-              (item) => item.name?.toLowerCase() == normalized,
+                  (item) => item.name?.toLowerCase() == normalized,
               orElse: () => Country(),
             );
 
@@ -187,7 +187,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       }
       if (recognizedText?.isNotEmpty ?? false) {
         PassportModel? passportData =
-            _parsePassportExtractedText(recognizedText!, personImage);
+        _parsePassportExtractedText(recognizedText!, personImage);
 
         setState(() {
           _nameController.text = passportData.name ?? '';
@@ -204,7 +204,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
             final normalized = passportData.nationality?.trim().toLowerCase();
 
             final Country? matchedCountry = countries?.firstWhere(
-              (item) => item.name?.toLowerCase() == normalized,
+                  (item) => item.name?.toLowerCase() == normalized,
               orElse: () => Country(),
             );
 
@@ -241,7 +241,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   Future<OcrModel> _performOCR(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
     TextRecognizer textDetector =
-        TextRecognizer(script: TextRecognitionScript.latin);
+    TextRecognizer(script: TextRecognitionScript.latin);
     FaceDetector faceDetector = FaceDetector(
       options: FaceDetectorOptions(
         performanceMode: FaceDetectorMode.accurate,
@@ -250,7 +250,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
 
     final RecognizedText recognizedText =
-        await textDetector.processImage(inputImage);
+    await textDetector.processImage(inputImage);
     String text = recognizedText.text;
 
     final List<Face> faces = await faceDetector.processImage(inputImage);
@@ -275,13 +275,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   File? _cropImage(
-    File originalImage,
-    Rect boundingBox, {
-    required int index,
-  }) {
+      File originalImage,
+      Rect boundingBox, {
+        required int index,
+      }) {
     // Load the original image
     final img.Image originalImg =
-        img.decodeImage(originalImage.readAsBytesSync())!;
+    img.decodeImage(originalImage.readAsBytesSync())!;
 
     // Calculate the cropping dimensions
     final int left = boundingBox.left.toInt() - 130;
@@ -387,7 +387,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       // Dates (DOB, Issue, Expiry)
       if (dateRegex.hasMatch(line)) {
         final matches =
-            dateRegex.allMatches(line).map((m) => m.group(0)!).toList();
+        dateRegex.allMatches(line).map((m) => m.group(0)!).toList();
         for (final date in matches) {
           if (dateOfBirth == null) {
             dateOfBirth = date;
@@ -465,7 +465,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
       // Dates
       final matches =
-          allDateRegex.allMatches(line).map((m) => m.group(0)!.trim()).toList();
+      allDateRegex.allMatches(line).map((m) => m.group(0)!.trim()).toList();
       for (final rawDate in matches) {
         final parsed = DateTimeUtil.tryParseDate(rawDate);
         if (parsed != null) {
@@ -579,13 +579,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       ),
                       child: (_personImage?.path.isNotEmpty ?? false)
                           ? Image.file(
-                              _personImage!,
-                              fit: BoxFit.fill,
-                            )
+                        _personImage!,
+                        fit: BoxFit.fill,
+                      )
                           : Icon(
-                              Icons.person_outline_rounded,
-                              size: MediaQuery.of(context).size.width / 4,
-                            ),
+                        Icons.person_outline_rounded,
+                        size: MediaQuery.of(context).size.width / 4,
+                      ),
                     ),
                   ),
                   const Gap(25),
@@ -612,20 +612,20 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   contentBuilder: (ctx, setState) {
                                     return Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Text('Select any ID type for Scan',
                                             style: AppUtils.isTablet(context)
                                                 ? AppTextStyles.style16black600
                                                 : AppTextStyles
-                                                    .style14Black600),
+                                                .style14Black600),
                                         Gap(20),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 0, vertical: 20),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               ScanTypeContainerWidget(
                                                 text: AppUtils.languageTranslate('emiratesId'),
@@ -775,7 +775,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text(
+                                  Text(
                                     "${AppUtils.languageTranslate('type')}*",
                                     style: AppTextStyles.style12Black600,
                                   ),
@@ -786,8 +786,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                     selectedItem: _selectedItemType,
                                     compareFn: (p0, p1) => p0 == p1,
                                     items:  [
-                                     AppUtils.languageTranslate('unitVisit'),
-                                     AppUtils.languageTranslate('communityVisit'),
+                                      AppUtils.languageTranslate('unitVisit'),
+                                      AppUtils.languageTranslate('communityVisit'),
                                     ],
                                     onChanged: (value) {
                                       setState(() {
@@ -829,7 +829,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     Text(
+                                    Text(
                                       "${AppUtils.languageTranslate('purpose')}*",
                                       style: AppTextStyles.style12Black600,
                                     ),
@@ -843,10 +843,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                           .state
                                           .selectedPurpose,
                                       itemAsString: (purpose) =>
-                                          purpose.purpose ?? "",
+                                      purpose.purpose ?? "",
                                       compareFn: (p0, p1) => p0.id == p1.id,
                                       items: state.profileRecord?.association
-                                              ?.visitorsPurposes ??
+                                          ?.visitorsPurposes ??
                                           [],
                                       onChanged: (value) {
                                         context
@@ -868,7 +868,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     Text(
+                                    Text(
                                       "${AppUtils.languageTranslate('unitNumber')}*",
                                       style: AppTextStyles.style12Black600,
                                     ),
@@ -881,9 +881,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                           .state
                                           .selectedUnit,
                                       itemAsString: (unit) =>
-                                          unit.unitNumber ?? "",
+                                      unit.unitNumber ?? "",
                                       compareFn: (unit, item) =>
-                                          unit.id == item.id,
+                                      unit.id == item.id,
                                       items: state.units ?? [],
                                       onChanged: (value) {
                                         context
@@ -911,8 +911,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text(
-                                   AppUtils.languageTranslate('nationality'),
+                                  Text(
+                                    AppUtils.languageTranslate('nationality'),
                                     style: AppTextStyles.style12Black600,
                                   ),
                                   const Gap(8),
@@ -926,7 +926,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         .selectedCountry,
                                     items: state.countries ?? [],
                                     itemAsString: (country) =>
-                                        country.name ?? "",
+                                    country.name ?? "",
                                     compareFn: (p0, p1) => p0.id == p1.id,
                                     onChanged: (value) {
                                       context
@@ -993,7 +993,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 ),
                                 onPressed: () async {
                                   final phoneNumber =
-                                      _phoneNumberController.text.trim();
+                                  _phoneNumberController.text.trim();
 
                                   if (phoneNumber.isEmpty) {
                                     Fluttertoast.showToast(
@@ -1001,7 +1001,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                     return;
                                   }
                                   if (!(_phoneNumberKey.currentState
-                                          ?.validate() ??
+                                      ?.validate() ??
                                       false)) {
                                     return;
                                   }
@@ -1017,20 +1017,20 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         hideBothButtons: true,
                                         insetPadding: AppUtils.isTablet(context)
                                             ? const EdgeInsets.symmetric(
-                                                horizontal: 35)
+                                            horizontal: 35)
                                             : const EdgeInsets.symmetric(
-                                                horizontal: 10),
+                                            horizontal: 10),
                                         title: AppUtils.languageTranslate('selectVisitor'),
                                         contentBuilder: (context, setState) {
                                           return _visitorNumberWidget(
                                             _phoneNumberController.text,
                                             remainingVisitors: ((context
-                                                        .read<
-                                                            GuestCheckInCubit>()
-                                                        .state
-                                                        .numberInfo
-                                                        ?.length ??
-                                                    0) -
+                                                .read<
+                                                GuestCheckInCubit>()
+                                                .state
+                                                .numberInfo
+                                                ?.length ??
+                                                0) -
                                                 1),
                                           );
                                         },
@@ -1086,13 +1086,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       ),
                       child: (_personImage?.path.isNotEmpty ?? false)
                           ? Image.file(
-                              _personImage!,
-                              fit: BoxFit.fill,
-                            )
+                        _personImage!,
+                        fit: BoxFit.fill,
+                      )
                           : Icon(
-                              Icons.person_outline_rounded,
-                              size: MediaQuery.of(context).size.width / 4,
-                            ),
+                        Icons.person_outline_rounded,
+                        size: MediaQuery.of(context).size.width / 4,
+                      ),
                     ),
                   ),
                   const Gap(20),
@@ -1116,7 +1116,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 children: [
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       ScanTypeContainerWidget(
                                         text: AppUtils.languageTranslate('emiratesId'),
@@ -1205,8 +1205,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                         Text(
-                           AppUtils.languageTranslate('nationality'),
+                        Text(
+                          AppUtils.languageTranslate('nationality'),
                           style: AppTextStyles.style13Black600,
                         ),
                         const Gap(5),
@@ -1253,7 +1253,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                         Text(
+                        Text(
                           "${AppUtils.languageTranslate('type')}*",
                           style: AppTextStyles.style12Black600,
                         ),
@@ -1295,7 +1295,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         if (_selectedItemType == 'Unit Visit') ...[
-                           Text(
+                          Text(
                             "${AppUtils.languageTranslate('purpose')}*",
                             style: AppTextStyles.style12Black600,
                           ),
@@ -1311,7 +1311,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             itemAsString: (purpose) => purpose.purpose ?? "",
                             compareFn: (p0, p1) => p0.id == p1.id,
                             items: state.profileRecord?.association
-                                    ?.visitorsPurposes ??
+                                ?.visitorsPurposes ??
                                 [],
                             onChanged: (value) {
                               context
@@ -1326,7 +1326,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                           ),
                           const Gap(5),
-                           Text(
+                          Text(
                             "${ AppUtils.languageTranslate('unitNumber')}*",
                             style: AppTextStyles.style12Black600,
                           ),
@@ -1390,7 +1390,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 ),
                                 onPressed: () {
                                   final phoneNumber =
-                                      _phoneNumberController.text.trim();
+                                  _phoneNumberController.text.trim();
 
                                   if (phoneNumber.isEmpty) {
                                     Fluttertoast.showToast(
@@ -1415,9 +1415,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         hideBothButtons: true,
                                         insetPadding: AppUtils.isTablet(context)
                                             ? const EdgeInsets.symmetric(
-                                                horizontal: 35)
+                                            horizontal: 35)
                                             : const EdgeInsets.symmetric(
-                                                horizontal: 10),
+                                            horizontal: 10),
                                         title: AppUtils.languageTranslate('selectVisitor'),
                                         contentBuilder: (context, setState) {
                                           return _visitorNumberWidget(
@@ -1518,11 +1518,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   return GetInfoCardWidget(
                     deleteOnPressed: () async {
                       return context.read<GuestCheckInCubit>().deleteVisitor(
-                            context,
-                            id: numberInfo?.id,
-                            phoneNumber: phoneNumber,
-                            // remainingVisitors: remainingVisitors,
-                          );
+                        context,
+                        id: numberInfo?.id,
+                        phoneNumber: phoneNumber,
+                        // remainingVisitors: remainingVisitors,
+                      );
                     },
                     name: numberInfo?.name ?? '',
                     country: numberInfo?.nationality ?? '',
@@ -1575,7 +1575,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       );
       final List<Face> faces = await faceDetector.processImage(inputImage);
       final File? extractedPersonImage =
-          _extractPersonImage(scannedImageFile, faces);
+      _extractPersonImage(scannedImageFile, faces);
       faceDetector.close();
 
       final rawLines = visionText.text
@@ -1596,7 +1596,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           issueDate: result.expiryDate.toString(),
           expiryDate: result.expiryDate.toString(),
           nationality:
-              AppUtils.getNationalityName(result.nationalityCountryCode),
+          AppUtils.getNationalityName(result.nationalityCountryCode),
         );
         clearData();
 
@@ -1613,7 +1613,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
             final normalized = passportData.nationality?.trim().toLowerCase();
 
             final Country? matchedCountry = countries?.firstWhere(
-              (item) => item.name?.toLowerCase() == normalized,
+                  (item) => item.name?.toLowerCase() == normalized,
               orElse: () => Country(),
             );
 
