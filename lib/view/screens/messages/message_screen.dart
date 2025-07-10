@@ -29,6 +29,7 @@ class _MessageScreenState extends State<MessageScreen> {
   final ScrollController _scrollController = ScrollController();
   List<String> attachmentsList = [];
   bool isSending = false;
+  Locale? _currentLocale;
 
   @override
   void initState() {
@@ -48,6 +49,13 @@ class _MessageScreenState extends State<MessageScreen> {
         context.read<MessageCubit>().getMoreMessage();
       }
     }
+  }
+  @override
+  void didChangeDependencies() {
+    final locale = Localizations.localeOf(context);
+    if (locale != _currentLocale) {    _currentLocale = locale;
+    setState(() {});  }
+    super.didChangeDependencies();
   }
   @override
   Widget build(BuildContext context) {

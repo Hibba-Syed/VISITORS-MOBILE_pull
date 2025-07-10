@@ -28,6 +28,7 @@ class WorkOrderRfpScreen extends StatefulWidget {
 class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+  Locale? _currentLocale;
   @override
   void initState() {
     super.initState();
@@ -38,7 +39,13 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
       }
     });
   }
-
+  @override
+  void didChangeDependencies() {
+    final locale = Localizations.localeOf(context);
+    if (locale != _currentLocale) {    _currentLocale = locale;
+    setState(() {});  }
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(

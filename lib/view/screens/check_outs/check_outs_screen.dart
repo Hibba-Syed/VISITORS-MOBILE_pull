@@ -29,6 +29,7 @@ class CheckOutsScreen extends StatefulWidget {
 class _CheckOutsScreenState extends State<CheckOutsScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  Locale? _currentLocale;
 
   @override
   void initState() {
@@ -41,6 +42,13 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    final locale = Localizations.localeOf(context);
+    if (locale != _currentLocale) {    _currentLocale = locale;
+    setState(() {});  }
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(

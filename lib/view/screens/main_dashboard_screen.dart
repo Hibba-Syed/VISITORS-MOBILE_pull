@@ -24,6 +24,7 @@ import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../service/connectivity_service.dart';
 import '../../utils/app_utils.dart';
+import '../widgets/custom_switch_widget.dart';
 import 'check_ins/check_in_screen.dart';
 import 'check_outs/check_outs_screen.dart';
 import 'components/drawer_item_model.dart';
@@ -190,7 +191,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                         .read<MainDashboardCubit>()
                         .onChangeSelectedIndex(item.index);
                     // Optionally trigger specific cubits
-                    refreshScreenData(context,item.index);
+                    gettingApiCall(context,item.index);
                   }
                 },
               )),
@@ -204,33 +205,22 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                   ? TextAlign.left
                   : TextAlign.right,
             ),
-            trailing: SizedBox(
-              width: 60,
-              height: 15,
-              child: Switch(
-                activeColor: AppColors.white,
-                activeTrackColor: AppColors.primary,
-                inactiveTrackColor: AppColors.primary,
-                inactiveThumbColor: AppColors.white,
-                value: context.locale.languageCode == "en",
-                onChanged: (value) {
-                  final languageChange = value
-                      ? const Locale("en", "US")
-                      : const Locale("ar", "AE");
-                  context.deleteSaveLocale();
-                  context.setLocale(languageChange);
-                  Navigator.pop(context);
-
-
-                },
-              )
-            ),
+            trailing: CustomSwitch(
+             value: context.locale.languageCode == "en",
+             onChanged: ( value) {
+               final languageChange = value
+                       ? const Locale("en", "US")
+                       : const Locale("ar", "AE");
+                   context.deleteSaveLocale();
+                   context.setLocale(languageChange);
+                   Navigator.pop(context);
+             },),
           ),
         ],
       ),
     );
   }
-  void refreshScreenData(BuildContext context, int index) {
+  void gettingApiCall(BuildContext context, int index) {
     switch (index) {
       case AppConstants.checkInsIndex:
         context.read<CheckInsCubit>().resetFilterData();

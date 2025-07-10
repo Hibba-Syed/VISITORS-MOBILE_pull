@@ -21,6 +21,15 @@ class DirectoryScreen extends StatefulWidget {
 }
 
 class _DirectoryScreenState extends State<DirectoryScreen> {
+  Locale? _currentLocale;
+  @override
+  void didChangeDependencies() {
+    final locale = Localizations.localeOf(context);
+    if (locale != _currentLocale) {    _currentLocale = locale;
+    setState(() {});  }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(

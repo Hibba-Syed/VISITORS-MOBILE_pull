@@ -34,6 +34,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController visitorsNoController = TextEditingController();
+  Locale? _currentLocale;
   @override
   void initState() {
     super.initState();
@@ -48,7 +49,13 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
     context.read<CheckInsCubit>().getUnits();
     context.read<CheckInsCubit>().getVendors();
   }
-
+  @override
+  void didChangeDependencies() {
+    final locale = Localizations.localeOf(context);
+    if (locale != _currentLocale) {    _currentLocale = locale;
+    setState(() {});  }
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
