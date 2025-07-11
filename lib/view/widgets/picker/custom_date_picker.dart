@@ -5,9 +5,10 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 
 import '../../../resource/styles/styles.dart';
+import '../../../utils/app_utils.dart';
 
 class CustomDatePicker extends StatefulWidget {
-  final String title;
+  final String? label;
   final String? hint;
   final DateTime? initialDate;
   final void Function(DateTime?) onDatePicked;
@@ -15,7 +16,7 @@ class CustomDatePicker extends StatefulWidget {
   final DateTime? lastDate;
   const CustomDatePicker({
     super.key,
-    required this.title,
+    this.label,
     this.hint = 'Select date',
     this.initialDate,
     required this.onDatePicked,
@@ -48,11 +49,15 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: AppTextStyles.style12Black600,
-        ),
-        const Gap(8),
+        if (widget.label?.isNotEmpty ?? false) ...[
+          Text(
+            widget.label!,
+            style: AppUtils.isTablet(context)
+                ? AppTextStyles.style15DarkGrey600
+                : AppTextStyles.style13DarkGrey600,
+          ),
+          const Gap(8),
+        ],
         Row(
           children: [
             Expanded(

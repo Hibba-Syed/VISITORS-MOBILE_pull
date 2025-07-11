@@ -1,16 +1,11 @@
-import 'package:dropdown_search/dropdown_search.dart'
-    show
-        ClearButtonProps,
-        DropDownDecoratorProps,
-        DropdownButtonProps,
-        DropdownSearch,
-        DropdownSuffixProps,
-        PopupProps,
-        TextFieldProps;
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+
+import '../../resource/styles/styles.dart';
+import '../../utils/app_utils.dart';
 
 class SingleSelectedDropdownWidget<T> extends StatelessWidget {
   final String? label;
@@ -24,6 +19,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
   final String? Function(T?)? validator;
   final Color? fillColor;
   final Color? outLineColor;
+  final bool isClearButtonVisible;
 
   const SingleSelectedDropdownWidget({
     super.key,
@@ -38,6 +34,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
     this.validator,
     this.fillColor,
     this.outLineColor,
+    this.isClearButtonVisible = true,
   });
 
   @override
@@ -45,41 +42,53 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label?.isNotEmpty ?? false)
-          Text(label!,
-              style: const TextStyle(fontSize: 16, color: AppColors.darkGrey)),
-        if (label?.isNotEmpty ?? false) const Gap(8),
+        if (label?.isNotEmpty ?? false) ...[
+          Text(
+            label!,
+            style: AppUtils.isTablet(context)
+                ? AppTextStyles.style15DarkGrey600
+                : AppTextStyles.style13DarkGrey600,
+          ),
+          const Gap(8),
+        ],
         DropdownSearch<T>(
           enabled: enabled,
-          suffixProps: const DropdownSuffixProps(
+          suffixProps: DropdownSuffixProps(
             clearButtonProps: ClearButtonProps(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.clear,
-                  size: 16,
-                  color: AppColors.darkGrey,
-                ),
-                isVisible: true,
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.clear,
+                size: 16,
+                color: AppColors.darkGrey,
+              ),
+              isVisible: isClearButtonVisible,
             ),
             dropdownButtonProps: DropdownButtonProps(
               iconClosed: Icon(
-                Icons.keyboard_arrow_down_outlined,color: AppColors.darkGrey,
+                Icons.keyboard_arrow_down_outlined,
+                color: AppColors.darkGrey,
               ),
               iconOpened: Icon(
-                Icons.keyboard_arrow_up_outlined,color: AppColors.darkGrey,
+                Icons.keyboard_arrow_up_outlined,
+                color: AppColors.darkGrey,
               ),
             ),
           ),
           decoratorProps: DropDownDecoratorProps(
-            textAlign: context.locale.languageCode == "en"  ? TextAlign.left :  TextAlign.right,
+            textAlign: context.locale.languageCode == "en"
+                ? TextAlign.left
+                : TextAlign.right,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               isDense: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 2),
               hintText: hint,
-              hintStyle: const TextStyle(fontSize: 13, color: AppColors.darkGrey,fontWeight: FontWeight.w500),
+              hintStyle: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.darkGrey,
+                  fontWeight: FontWeight.w500),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               alignLabelWithHint: false,
               fillColor: fillColor ?? AppColors.white,
@@ -93,7 +102,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(7),
-                borderSide:  BorderSide(
+                borderSide: BorderSide(
                   color: outLineColor ?? AppColors.outLineGray,
                 ),
               ),

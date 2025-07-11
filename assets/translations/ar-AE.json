@@ -112,7 +112,7 @@
     "idExpiry": "تاريخ انتهاء الهوية",
     "activityLog": "سجل النشاط",
     "complete": "إكمال",
-    "scanId": "مسح الهوية",
+    "scan": "مسح",
     "pleaseTypeNameFirst": "يرجى كتابة الاسم أولاً",
     "pleaseTypeIdFirst": "يرجى كتابة رقم الهوية أولاً",
     "requesterName": "اسم مقدم الطلب",
