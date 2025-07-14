@@ -261,6 +261,18 @@
     "communityService": "خدمة المجتمع",
     "visitorPass": "تصريح الزائر",
     "workOrdersRFPs": "أوامر العمل / طلبات تقديم العروض",
-    "rfp": "طلب تقديم عرض"
+    "rfp": "طلب تقديم عرض",
+
+    "scanEmiratesId": "مسح بطاقة الهوية الإماراتية",
+    "scanPhotoId": "مسح بطاقة الهوية المصورة",
+    "scanTravelDocument": "مسح وثيقة السفر",
+    "photoId": "بطاقة الهوية المصورة",
+    "travelDocument": "وثيقة السفر",
+    "search": "بحث",
+    "enterNumber": "أدخل الرقم",
+    "issueDate": "تاريخ الإصدار",
+    "selectIssueDate": "اختر تاريخ الإصدار",
+    "expiryDate": "تاريخ الانتهاء",
+    "selectExpiryDate": "اختر تاريخ الانتهاء"
 
 }

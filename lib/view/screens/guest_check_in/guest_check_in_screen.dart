@@ -65,13 +65,44 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   DateTime? _selectedIssueDate;
   DateTime? _selectedExpiryDate;
   File? _personImage;
-  final List<String> _types = ['Emirates ID', 'Photo ID', 'Travel Document'];
-  String? _selectedType;
+  // final List<String> _types = [
+  // AppUtils.languageTranslate('emiratesId'),
+  // AppUtils.languageTranslate('photoId'),
+  // AppUtils.languageTranslate('travelDocument'),
+  //   'Emirates ID',
+  //   'Photo ID',
+  //   'Travel Document'
+  // ];
+  String? _selectedDocumentTypeId;
+  final List<TypeItemModel> _documentTypeId = [
+    TypeItemModel(
+      value: 'Emirates ID',
+      label: AppUtils.languageTranslate('emiratesId'),
+    ),
+    TypeItemModel(
+      value: 'Photo ID',
+      label: AppUtils.languageTranslate('photoId'),
+    ),
+    TypeItemModel(
+      value: 'Travel Document',
+      label: AppUtils.languageTranslate('travelDocument'),
+    ),
+  ];
+  List<TypeItemModel> typeItems = [
+    TypeItemModel(
+      value: 'Unit Visit',
+      label: AppUtils.languageTranslate('unitVisit'),
+    ),
+    TypeItemModel(
+      value: 'Community Visit',
+      label: AppUtils.languageTranslate('communityVisit'),
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
-    _selectedType = _types.first;
+    _selectedDocumentTypeId = _documentTypeId.first.value;
     _selectedItemType = AppUtils.languageTranslate('unitVisit');
   }
 
@@ -117,17 +148,17 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                     context
                         .read<GuestCheckInCubit>()
                         .guestCheckIn(context, data: {
-                      if (_selectedType == 'Emirates ID') ...{
+                      if (_selectedDocumentTypeId == 'Emirates ID') ...{
                         'id_number': _emiratesIdNumberController.text,
                         'id_issue_date': _selectedIssueDate?.toString(),
                         'id_expiry_date': _selectedExpiryDate?.toString(),
                       },
-                      if (_selectedType == 'Photo ID') ...{
+                      if (_selectedDocumentTypeId == 'Photo ID') ...{
                         'photo_id_number': _photoIdNumberController.text,
                         'photo_id_issue_date': _selectedIssueDate?.toString(),
                         'photo_id_expiry_date': _selectedExpiryDate?.toString(),
                       },
-                      if (_selectedType == 'Photo ID') ...{
+                      if (_selectedDocumentTypeId == 'Photo ID') ...{
                         'passport_number': _travelDocumentNumberController.text,
                         'passport_issue_date': _selectedIssueDate?.toString(),
                         'passport_expiry_date': _selectedExpiryDate?.toString(),
@@ -197,20 +228,20 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   const Gap(25),
                   CustomButton(
                     buttonColor: AppColors.primary,
-                    text: _selectedType == 'Emirates ID'
-                        ? 'Scan Emirates ID'
-                        : _selectedType == 'Photo ID'
-                            ? 'Scan Photo ID'
-                            : 'Scan Travel Document',
+                    text: _selectedDocumentTypeId == 'Emirates ID'
+                        ? AppUtils.languageTranslate('scanEmiratesId')
+                        : _selectedDocumentTypeId == 'Photo ID'
+                            ? AppUtils.languageTranslate('scanPhotoId')
+                            : AppUtils.languageTranslate('scanTravelDocument'),
                     fontSize: 20,
                     height: 60,
                     imageHeight: 25,
                     borderRadius: 6,
                     image: AppImages.scan,
                     onPressed: () {
-                      if (_selectedType == 'Emirates ID') {
+                      if (_selectedDocumentTypeId == 'Emirates ID') {
                         _onScanEmiratesIdTap();
-                      } else if (_selectedType == 'Photo ID') {
+                      } else if (_selectedDocumentTypeId == 'Photo ID') {
                         _onScanDrivingLicenseTap();
                       } else {
                         _onScanPassportTap(context);
@@ -292,61 +323,87 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SingleSelectedDropdownWidget<String>(
+                        SingleSelectedDropdownWidget<TypeItemModel>(
                           label: AppUtils.languageTranslate('type'),
-                          hint: AppUtils.languageTranslate('selectType'),
+                          hint: _selectedDocumentTypeId = _documentTypeId.first.value,
                           isClearButtonVisible: false,
                           fillColor: AppColors.white,
-                          selectedItem: _selectedType,
-                          compareFn: (p0, p1) => p0 == p1,
-                          items: _types
-                              .map((element) =>
-                                  AppUtils.languageTranslate(element))
-                              .toList(),
+                          selectedItem: typeItems.any(
+                                  (item) => item.value == _selectedDocumentTypeId)
+                              ? typeItems.firstWhere(
+                                  (item) => item.value == _selectedDocumentTypeId)
+                              : null,
+
+                          compareFn: (p0, p1) => p0.value == p1.value,
+                          items: _documentTypeId,
+                          itemAsString: (item) => item.label ?? '',
                           onChanged: (value) {
-                            _selectedType = value;
-                            clearData();
+                            _selectedDocumentTypeId = value?.value;
+                            print(
+                                '_documentTypeId : $_selectedDocumentTypeId');
                           },
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
+                            if (value == null) {
                               return AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
                         ),
+                        // SingleSelectedDropdownWidget<String>(
+                        //   label: AppUtils.languageTranslate('type'),
+                        //   hint: AppUtils.languageTranslate('selectType'),
+                        //   isClearButtonVisible: false,
+                        //   fillColor: AppColors.white,
+                        //   selectedItem: _selectedType,
+                        //   compareFn: (p0, p1) => p0 == p1,
+                        //   items: _types
+                        //       .map((element) =>
+                        //           AppUtils.languageTranslate(element))
+                        //       .toList(),
+                        //   onChanged: (value) {
+                        //     _selectedType = value;
+                        //     clearData();
+                        //   },
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return AppUtils.languageTranslate('required');
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
                         const Gap(5),
-                        if (_selectedType == 'Emirates ID')
+                        if (_selectedDocumentTypeId == 'Emirates ID')
                           TextFieldWidget(
                             outLineColor: AppColors.outLineGray,
                             enabledBorder: InputBorder.none,
                             controller: _emiratesIdNumberController,
-                            label: 'Emirates ID',
-                            hint: 'Enter number',
+                            label: AppUtils.languageTranslate('emiratesId'),
+                            hint: AppUtils.languageTranslate('enterNumber'),
                             keyboardType: TextInputType.text,
                           ),
-                        if (_selectedType == 'Photo ID')
+                        if (_selectedDocumentTypeId == 'Photo ID')
                           TextFieldWidget(
                             outLineColor: AppColors.outLineGray,
                             enabledBorder: InputBorder.none,
                             controller: _photoIdNumberController,
-                            label: 'Photo ID',
-                            hint: 'Enter number',
+                            label: AppUtils.languageTranslate('photoId'),
+                            hint: AppUtils.languageTranslate('enterNumber'),
                             keyboardType: TextInputType.text,
                           ),
-                        if (_selectedType == 'Travel Document')
+                        if (_selectedDocumentTypeId == 'Travel Document')
                           TextFieldWidget(
                             outLineColor: AppColors.outLineGray,
                             enabledBorder: InputBorder.none,
                             controller: _travelDocumentNumberController,
-                            label: 'Travel Document',
-                            hint: 'Enter number',
+                            label: AppUtils.languageTranslate('travelDocument'),
+                            hint: AppUtils.languageTranslate('enterNumber'),
                             keyboardType: TextInputType.text,
                           ),
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          label: 'Issue Date',
-                          hint: 'Select issue date',
+                          label: AppUtils.languageTranslate('issueDate'),
+                          hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedIssueDate,
                           onDatePicked: (value) {
                             _selectedIssueDate = value;
@@ -355,8 +412,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          label: 'Expiry Date',
-                          hint: 'Select expiry date',
+                          label: AppUtils.languageTranslate('expiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedExpiryDate,
                           onDatePicked: (value) {
                             _selectedExpiryDate = value;
@@ -367,23 +424,51 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         Row(
                           children: [
                             Expanded(
-                              child: SingleSelectedDropdownWidget<String>(
+                              child:
+                                  // SingleSelectedDropdownWidget<String>(
+                                  //   label: "${AppUtils.languageTranslate('type')}*",
+                                  //   hint: AppUtils.languageTranslate('selectType'),
+                                  //   isClearButtonVisible: false,
+                                  //   fillColor: AppColors.white,
+                                  //   selectedItem: _selectedItemType,
+                                  //   items: [
+                                  //     AppUtils.languageTranslate('unitVisit'),
+                                  //     AppUtils.languageTranslate('communityVisit'),
+                                  //   ],
+                                  //   onChanged: (value) {
+                                  //     Future.delayed(Duration(milliseconds: 500),
+                                  //         () {
+                                  //       setState(() {
+                                  //         _selectedItemType = value;
+                                  //       });
+                                  //     });
+                                  //   },
+                                  // ),
+                                  SingleSelectedDropdownWidget<TypeItemModel>(
                                 label: "${AppUtils.languageTranslate('type')}*",
-                                hint: AppUtils.languageTranslate('selectType'),
                                 isClearButtonVisible: false,
+                                outLineColor: AppColors.outLineGray,
+                                hint: AppUtils.languageTranslate('selectType'),
                                 fillColor: AppColors.white,
-                                selectedItem: _selectedItemType,
-                                items: [
-                                  AppUtils.languageTranslate('unitVisit'),
-                                  AppUtils.languageTranslate('communityVisit'),
-                                ],
+                                selectedItem: typeItems.any((item) =>
+                                        item.value == _selectedItemType)
+                                    ? typeItems.firstWhere((item) =>
+                                        item.value == _selectedItemType)
+                                    : null,
+                                compareFn: (p0, p1) => p0.value == p1.value,
+                                items: typeItems,
+                                itemAsString: (item) => item.label ?? '',
                                 onChanged: (value) {
-                                  Future.delayed(Duration(milliseconds: 500),
-                                      () {
-                                    setState(() {
-                                      _selectedItemType = value;
-                                    });
-                                  });
+                                  _selectedItemType = value?.value;
+                                  // print(
+                                  //     'Selected Item value : $_selectedItemType');
+                                },
+                                validator: (value) {
+                                  if (value == null) {
+                                    return AppUtils.languageTranslate(
+                                        'required');
+                                  }
+                                  return null;
                                 },
                               ),
                             ),
@@ -629,18 +714,18 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   const Gap(20),
                   CustomButton(
                     buttonColor: AppColors.primary,
-                    text: _selectedType == 'Emirates ID'
-                        ? 'Scan Emirates ID'
-                        : _selectedType == 'Photo ID'
-                            ? 'Scan Photo ID'
-                            : 'Scan Travel Document',
+                    text: _selectedDocumentTypeId == 'Emirates ID'
+                        ? AppUtils.languageTranslate('scanEmiratesId')
+                        : _selectedDocumentTypeId == 'Photo ID'
+                            ? AppUtils.languageTranslate('scanPhotoId')
+                            : AppUtils.languageTranslate('scanTravelDocument'),
                     height: 41,
                     borderRadius: 6,
                     image: AppImages.scan,
                     onPressed: () {
-                      if (_selectedType == 'Emirates ID') {
+                      if (_selectedDocumentTypeId == 'Emirates ID') {
                         _onScanEmiratesIdTap();
-                      } else if (_selectedType == 'Photo ID') {
+                      } else if (_selectedDocumentTypeId == 'Photo ID') {
                         _onScanDrivingLicenseTap();
                       } else {
                         _onScanPassportTap(context);
@@ -697,61 +782,87 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SingleSelectedDropdownWidget<String>(
+                        SingleSelectedDropdownWidget<TypeItemModel>(
                           label: AppUtils.languageTranslate('type'),
                           hint: AppUtils.languageTranslate('selectType'),
                           isClearButtonVisible: false,
                           fillColor: AppColors.white,
-                          selectedItem: _selectedType,
-                          compareFn: (p0, p1) => p0 == p1,
-                          items: _types
-                              .map((element) =>
-                                  AppUtils.languageTranslate(element))
-                              .toList(),
+                          selectedItem: typeItems.any(
+                                  (item) => item.value == _selectedDocumentTypeId)
+                              ? typeItems.firstWhere(
+                                  (item) => item.value == _selectedDocumentTypeId)
+                              : null,
+
+                          compareFn: (p0, p1) => p0.value == p1.value,
+                          items: _documentTypeId,
+                          itemAsString: (item) => item.label ?? '',
                           onChanged: (value) {
-                            _selectedType = value;
-                            clearData();
+                            _selectedDocumentTypeId = value?.value;
+                            print(
+                                'Selected document id : $_selectedDocumentTypeId');
                           },
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
+                            if (value == null) {
                               return AppUtils.languageTranslate('required');
                             }
                             return null;
                           },
                         ),
+                        // SingleSelectedDropdownWidget<String>(
+                        //   label: AppUtils.languageTranslate('type'),
+                        //   hint: AppUtils.languageTranslate('selectType'),
+                        //   isClearButtonVisible: false,
+                        //   fillColor: AppColors.white,
+                        //   selectedItem: _selectedDocumentTypeId,
+                        //   compareFn: (p0, p1) => p0 == p1,
+                        //   items: _types
+                        //       .map((element) =>
+                        //           AppUtils.languageTranslate(element))
+                        //       .toList(),
+                        //   onChanged: (value) {
+                        //     _selectedDocumentTypeId = value;
+                        //     clearData();
+                        //   },
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return AppUtils.languageTranslate('required');
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
                         const Gap(5),
-                        if (_selectedType == 'Emirates ID')
+                        if (_selectedDocumentTypeId == 'Emirates ID')
                           TextFieldWidget(
                             outLineColor: AppColors.outLineGray,
                             enabledBorder: InputBorder.none,
                             controller: _emiratesIdNumberController,
-                            label: 'Emirates ID',
-                            hint: 'Enter number',
+                            label: AppUtils.languageTranslate('emiratesId'),
+                            hint: AppUtils.languageTranslate('enterNumber'),
                             keyboardType: TextInputType.text,
                           ),
-                        if (_selectedType == 'Photo ID')
+                        if (_selectedDocumentTypeId == 'Photo ID')
                           TextFieldWidget(
                             outLineColor: AppColors.outLineGray,
                             enabledBorder: InputBorder.none,
                             controller: _photoIdNumberController,
-                            label: 'Photo ID',
-                            hint: 'Enter number',
+                            label: AppUtils.languageTranslate('photoId'),
+                            hint: AppUtils.languageTranslate('enterNumber'),
                             keyboardType: TextInputType.text,
                           ),
-                        if (_selectedType == 'Travel Document')
+                        if (_selectedDocumentTypeId == 'Travel Document')
                           TextFieldWidget(
                             outLineColor: AppColors.outLineGray,
                             enabledBorder: InputBorder.none,
                             controller: _travelDocumentNumberController,
-                            label: 'Travel Document',
-                            hint: 'Enter number',
+                            label: AppUtils.languageTranslate('travelDocument'),
+                            hint: AppUtils.languageTranslate('enterNumber'),
                             keyboardType: TextInputType.text,
                           ),
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          label: 'Issue Date',
-                          hint: 'Select issue date',
+                          label: AppUtils.languageTranslate('issueDate'),
+                          hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedIssueDate,
                           onDatePicked: (value) {
                             _selectedIssueDate = value;
@@ -760,8 +871,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         CustomDatePicker(
                           key: UniqueKey(),
-                          label: 'Expiry Date',
-                          hint: 'Select expiry date',
+                          label: AppUtils.languageTranslate('expiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedExpiryDate,
                           onDatePicked: (value) {
                             _selectedExpiryDate = value;
@@ -769,27 +880,59 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                        SingleSelectedDropdownWidget<String>(
+                        // SingleSelectedDropdownWidget<String>(
+                        //   label: "${AppUtils.languageTranslate('type')}*",
+                        //   isClearButtonVisible: false,
+                        //   outLineColor: AppColors.outLineGray,
+                        //   hint: AppUtils.languageTranslate('selectType'),
+                        //   fillColor: AppColors.white,
+                        //   selectedItem: _selectedItemType,
+                        //   compareFn: (p0, p1) => p0 == p1,
+                        //   // itemAsString: (value){
+                        //   //   return AppUtils.languageTranslate(value);
+                        //   // },
+                        //   items: [
+                        //     // 'Unit Visit',
+                        //     // 'Community Visit'
+                        //     AppUtils.languageTranslate('unitVisit'),
+                        //     AppUtils.languageTranslate('communityVisit'),
+                        //   ],
+                        //   onChanged: (value) {
+                        //     Future.delayed(Duration(milliseconds: 500), () {
+                        //       setState(() {
+                        //         _selectedItemType = value;
+                        //         print('selectedItemType in ar $_selectedItemType');
+                        //       });
+                        //     });
+                        //   },
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return AppUtils.languageTranslate('required');
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+                        SingleSelectedDropdownWidget<TypeItemModel>(
                           label: "${AppUtils.languageTranslate('type')}*",
                           isClearButtonVisible: false,
                           outLineColor: AppColors.outLineGray,
                           hint: AppUtils.languageTranslate('selectType'),
                           fillColor: AppColors.white,
-                          selectedItem: _selectedItemType,
-                          compareFn: (p0, p1) => p0 == p1,
-                          items: [
-                            AppUtils.languageTranslate('unitVisit'),
-                            AppUtils.languageTranslate('communityVisit'),
-                          ],
+                          selectedItem: typeItems.any(
+                                  (item) => item.value == _selectedItemType)
+                              ? typeItems.firstWhere(
+                                  (item) => item.value == _selectedItemType)
+                              : null,
+                          compareFn: (p0, p1) => p0.value == p1.value,
+                          items: typeItems,
+                          itemAsString: (item) => item.label ?? '',
                           onChanged: (value) {
-                            Future.delayed(Duration(milliseconds: 500), () {
-                              setState(() {
-                                _selectedItemType = value;
-                              });
-                            });
+                            _selectedItemType = value?.value;
+                            // print(
+                            //     'Selected Item value : $_selectedItemType');
                           },
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
+                            if (value == null) {
                               return AppUtils.languageTranslate('required');
                             }
                             return null;
@@ -1646,4 +1789,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     }
     return '';
   }
+}
+
+class TypeItemModel {
+  final String value;
+  final String label;
+
+  TypeItemModel({required this.value, required this.label});
 }
