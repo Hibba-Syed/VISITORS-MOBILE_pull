@@ -271,9 +271,8 @@
     "issueDate": "Issue Date",
     "selectIssueDate": "Select Issue Date",
     "expiryDate": "Expiry Date",
-    "selectExpiryDate": "Select Expiry Date"
-
-
+    "selectExpiryDate": "Select Expiry Date",
+    "dateRange": "Date Range"
 }
 
 

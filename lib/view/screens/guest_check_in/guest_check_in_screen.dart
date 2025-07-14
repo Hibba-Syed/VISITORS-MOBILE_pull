@@ -61,7 +61,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       TextEditingController();
   final TextEditingController _travelDocumentNumberController =
       TextEditingController();
-  String? _selectedItemType;
+  TypeItemModel? _selectedItemType;
   DateTime? _selectedEmiratesIdIssueDate;
   DateTime? _selectedEmiratesIdExpiryDate;
   DateTime? _selectedPhotoIdIssueDate;
@@ -78,7 +78,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   //   'Travel Document'
   // ];
   TypeItemModel? _selectedDocumentTypeId;
-  final List<TypeItemModel> _documentTypeId = [
+  final List<TypeItemModel> _documentType = [
     TypeItemModel(
       value: 'Emirates ID',
       label: AppUtils.languageTranslate('emiratesId'),
@@ -92,7 +92,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       label: AppUtils.languageTranslate('travelDocument'),
     ),
   ];
-  List<TypeItemModel> typeItems = [
+  final List<TypeItemModel> _typeItems = [
     TypeItemModel(
       value: 'Unit Visit',
       label: AppUtils.languageTranslate('unitVisit'),
@@ -106,8 +106,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDocumentTypeId = _documentTypeId.first;
-    _selectedItemType = AppUtils.languageTranslate('unitVisit');
+    _selectedDocumentTypeId = _documentType.first;
+    _selectedItemType = _typeItems.first;
   }
 
   void clearData() {
@@ -179,7 +179,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       },
                       'type': _selectedItemType,
                       'name': _nameController.text,
-                      if (_selectedItemType == 'Unit Visit') ...{
+                      if (_selectedItemType?.value == 'Unit Visit') ...{
                         'purpose': state.selectedPurpose?.purpose,
                         'unit_id': state.selectedUnit?.id,
                         'unit_number': state.selectedUnit?.toJson(),
@@ -344,13 +344,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           fillColor: AppColors.white,
                           selectedItem: _selectedDocumentTypeId,
                           compareFn: (p0, p1) => p0.value == p1.value,
-                          items: _documentTypeId,
+                          items: _documentType,
                           itemAsString: (item) => item.label ?? '',
                           onChanged: (value) {
                             _selectedDocumentTypeId = value;
                             clearData();
-                            print(
-                                '_documentTypeId : ${_selectedDocumentTypeId?.value}');
+                            // print(
+                            //     '_documentTypeId : ${_selectedDocumentTypeId?.value}');
                           },
                           validator: (value) {
                             if (value == null) {
@@ -508,16 +508,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 outLineColor: AppColors.outLineGray,
                                 hint: AppUtils.languageTranslate('selectType'),
                                 fillColor: AppColors.white,
-                                selectedItem: typeItems.any((item) =>
-                                        item.value == _selectedItemType)
-                                    ? typeItems.firstWhere((item) =>
-                                        item.value == _selectedItemType)
-                                    : null,
+                                selectedItem: _selectedItemType,
                                 compareFn: (p0, p1) => p0.value == p1.value,
-                                items: typeItems,
+                                items: _typeItems,
                                 itemAsString: (item) => item.label ?? '',
                                 onChanged: (value) {
-                                  _selectedItemType = value?.value;
+                                  _selectedItemType = value;
                                   // print(
                                   //     'Selected Item value : $_selectedItemType');
                                 },
@@ -549,7 +545,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             ),
                           ],
                         ),
-                        if (_selectedItemType ==
+                        if (_selectedItemType?.value ==
                             AppUtils.languageTranslate('unitVisit')) ...[
                           Gap(5),
                           Row(
@@ -847,13 +843,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           fillColor: AppColors.white,
                           selectedItem: _selectedDocumentTypeId,
                           compareFn: (p0, p1) => p0.value == p1.value,
-                          items: _documentTypeId,
+                          items: _documentType,
                           itemAsString: (item) => item.label ?? '',
                           onChanged: (value) {
                             _selectedDocumentTypeId = value;
                             clearData();
-                            print(
-                                'Selected document id : ${_selectedDocumentTypeId?.value}');
+                            // print(
+                            //     'Selected document id : ${_selectedDocumentTypeId?.value}');
                           },
                           validator: (value) {
                             if (value == null) {
@@ -1020,16 +1016,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           outLineColor: AppColors.outLineGray,
                           hint: AppUtils.languageTranslate('selectType'),
                           fillColor: AppColors.white,
-                          selectedItem: typeItems.any(
-                                  (item) => item.value == _selectedItemType)
-                              ? typeItems.firstWhere(
-                                  (item) => item.value == _selectedItemType)
-                              : null,
+                          selectedItem: _selectedItemType,
                           compareFn: (p0, p1) => p0.value == p1.value,
-                          items: typeItems,
+                          items: _typeItems,
                           itemAsString: (item) => item.label ?? '',
                           onChanged: (value) {
-                            _selectedItemType = value?.value;
+                            _selectedItemType = value;
                             // print(
                             //     'Selected Item value : $_selectedItemType');
                           },
@@ -1056,7 +1048,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                         const Gap(5),
-                        if (_selectedItemType ==
+                        if (_selectedItemType?.value ==
                             AppUtils.languageTranslate('unitVisit')) ...[
                           SingleSelectedDropdownWidget<VisitorsPurpose>(
                             label: "${AppUtils.languageTranslate('purpose')}*",
@@ -1182,8 +1174,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         SingleSelectedDropdownWidget<Country>(
                           label: AppUtils.languageTranslate('nationality'),
                           outLineColor: AppColors.outLineGray,
-                          hint:
-                              AppUtils.languageTranslate('unitedArabEmirates'),
+                          hint: AppUtils.languageTranslate('unitedArabEmirates'),
                           fillColor: AppColors.white,
                           selectedItem: context
                               .watch<GuestCheckInCubit>()

@@ -728,6 +728,7 @@ class DashboardScreen extends StatelessWidget {
                       context.read<GuestCheckInCubit>().getUnits();
                       context.read<GuestCheckInCubit>().getCountries();
                       context.read<GuestCheckInCubit>().getProfile();
+                      // context.read<GuestCheckInCubit>().
                       Navigator.pushNamed(context, AppRoutes.guestCheckIn);
                     }),
                 const Gap(10),
