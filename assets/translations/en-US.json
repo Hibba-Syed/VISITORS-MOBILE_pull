@@ -260,7 +260,20 @@
     "communityService": "community service",
     "visitorPass": "Visitor Pass",
     "workOrdersRFPs": "Work Orders / RFPs",
-    "rfp": "RFP"
+    "rfp": "RFP",
+    "scanEmiratesId": "Scan Emirates Id",
+    "scanPhotoId": "Scan Photo Id",
+    "scanTravelDocument": "Scan Travel Document",
+    "photoId": "Photo Id",
+    "travelDocument": "Travel Document",
+    "search": "Search",
+    "enterNumber": "Enter Number",
+    "issueDate": "Issue Date",
+    "selectIssueDate": "Select Issue Date",
+    "expiryDate": "Expiry Date",
+    "selectExpiryDate": "Select Expiry Date"
+
+
 }
 
 

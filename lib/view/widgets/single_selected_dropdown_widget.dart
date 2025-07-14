@@ -129,7 +129,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
             fit: FlexFit.loose,
             searchFieldProps: TextFieldProps(
                 decoration: InputDecoration(
-              hintText: 'Search ',
+              hintText: AppUtils.languageTranslate('search'),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 8, vertical: 0.0),
               focusedBorder: OutlineInputBorder(
