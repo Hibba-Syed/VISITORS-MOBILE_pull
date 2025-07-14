@@ -11,14 +11,14 @@ import 'package:visitors/utils/app_utils.dart';
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final String? country;
+  final String? nationality;
   final Future<bool> Function()? deleteOnPressed;
   final VoidCallback onSelectPressed;
   const GetInfoCardWidget({
     super.key,
     this.profileImageUrl,
     this.name,
-    this.country,
+    this.nationality,
     this.deleteOnPressed,
     required this.onSelectPressed,
   });
@@ -54,7 +54,7 @@ class GetInfoCardWidget extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        country ?? "",
+                        nationality ?? "",
                         style: AppUtils.isTablet(context)
                             ? AppTextStyles.style13DarkGrey600
                             : AppTextStyles.style12DarkGrey600,
