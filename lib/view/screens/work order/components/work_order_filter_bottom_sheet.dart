@@ -51,21 +51,19 @@ class _WorkOrderFilterBottomSheetState
               SingleSelectedDropdownWidget<TypeModel>(
                   hint:  AppUtils.languageTranslate('type'),
                   fillColor: AppColors.white,
-                  selectedItem:  context.watch<WorkOrderCubit>().state.selectedType,
+                  selectedItem:  state.selectedType,
                   itemAsString: (type) => type.label,
                   compareFn: (p0, p1) => p0.value == p1.value,
                   items: AppUtils.workOrderType,
                   onChanged: (value) {
                     context.read<WorkOrderCubit>().onChangeSelectedType(value);
-                    // print('work ${value?.value}');
                   }),
               const Gap(10),
               SingleSelectedDropdownWidget<VendorModel>(
                   hint:  AppUtils.languageTranslate('vendors'),
                   outLineColor: AppColors.outLineGray,
                   fillColor: AppColors.white,
-                  selectedItem:
-                      context.watch<WorkOrderCubit>().state.selectedVendor,
+                  selectedItem:state.selectedVendor,
                   itemAsString: (vendor) => vendor.companyName ?? "",
                   compareFn: (vendor, item) => vendor.id == item.id,
                   items: state.vendors ?? [],

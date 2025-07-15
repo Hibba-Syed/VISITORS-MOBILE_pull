@@ -29,8 +29,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-  void onChangeSelectedType(TypeModel? type) {
-    emit(state.copyWith(selectedType: type));
+  void onChangeSelectedVisitorType(TypeModel? type) {
+    emit(state.copyWith(selectedVisitorType: type));
   }
 
   void onChangeSelectedServiceableId(int? serviceableId) {
@@ -57,6 +57,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
+
   void resetFilterData() {
     emit(CheckInsState(
       checkInModel: state.checkInModel,
@@ -77,8 +78,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         .getCheckIns(
             keyword: state.searchKeyword,
             unitId: state.selectedUnit?.id,
-             dateRange: DateTimeUtil.getFormatDateRange(state.dateRange),
-            serviceableType: state.selectedType?.value,
+            dateRange: DateTimeUtil.getFormatDateRange(state.dateRange),
+            serviceableType: state.selectedVisitorType?.value,
             vendorId: state.selectedVendor?.id,
             serviceableId: state.serviceableId)
         .onError(
@@ -95,7 +96,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       emit(state.copyWith(checkInModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVisitorsCheckins'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingVisitorsCheckins'));
     }
   }
 
@@ -109,10 +111,10 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       page: state.page,
       keyword: keyword,
       unitId: state.selectedUnit?.id,
-      // dateRange: state.dateRang,
-      serviceableType: state.selectedType?.value,
+      serviceableType: state.selectedVisitorType?.value,
       vendorId: state.selectedVendor?.id,
       serviceableId: state.serviceableId,
+      dateRange: DateTimeUtil.getFormatDateRange(state.dateRange),
     )
         .onError(
       (error, stackTrace) {
@@ -130,13 +132,15 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         checkIns.addAll(response.record as Iterable<CheckInModel>);
         emit(state.copyWith(checkInModel: checkIns));
       } else {
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreCheckins'));
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('noMoreCheckins'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckins'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCheckins'));
     }
   }
 
@@ -151,12 +155,14 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(isCheckOutAllLoading: false));
 
     if (response != null && response.status == 'success') {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('checkOutAllVisitorsSuccessfully'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('checkOutAllVisitorsSuccessfully'));
       getCheckIns();
       return true;
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongPleaseTryAgainLater'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongPleaseTryAgainLater'));
       return false;
     }
   }
@@ -207,7 +213,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingOutVisitor'));
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileCheckingOutVisitor'));
         return false;
       }
     } catch (e) {
@@ -233,7 +240,9 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingUnits'));
     }
   }
 
@@ -254,7 +263,8 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       emit(state.copyWith(vendors: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVendors'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingVendors'));
     }
   }
 }

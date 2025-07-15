@@ -102,10 +102,12 @@ class AppUtils {
       return TypeModel(label: "Service", value: Strings.keyServices);
     } else if (type == "App\\Models\\Visitor\\VisitorPass") {
       return TypeModel(label: "Visitor Pass", value: Strings.keyVisitorPass);
-    } else if (type == null || type.isEmpty) {
-      return TypeModel(label: "Guest", value: Strings.guest);
-    } else {
-      return TypeModel(label: "", value: "");
+    }
+    else if (type == "guest") {
+      return TypeModel(label: "Guests", value: Strings.keyGuest);
+    }
+    else {
+      return TypeModel(label: "Select", value: "");
     }
   }
 
@@ -126,7 +128,7 @@ class AppUtils {
   ];
 
   static List<TypeModel> checkInTypeList = [
-    TypeModel(label: AppUtils.languageTranslate('guests'), value: Strings.guest),
+    TypeModel(label: AppUtils.languageTranslate('guests'), value: Strings.keyGuest),
     TypeModel(label: AppUtils.languageTranslate('services'), value: Strings.keyServices),
     TypeModel(label: AppUtils.languageTranslate('workOrdersRFPs'), value: Strings.keyWorkOrder),
     TypeModel(label: AppUtils.languageTranslate('visitorPass'), value: Strings.keyVisitorPass),

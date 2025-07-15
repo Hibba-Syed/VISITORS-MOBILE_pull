@@ -147,7 +147,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                         jobCheckInOnPressed: () {
                                           context
                                               .read<CheckInsCubit>()
-                                              .onChangeSelectedType(
+                                              .onChangeSelectedVisitorType(
                                                   AppUtils.getServiceableType(
                                                       Strings.keyWorkOrder));
                                           context

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -226,9 +227,18 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.yellow,
                 onTap: () {
-                  onViewAllDashboardPressed(
-                      context, AppConstants.checkInsIndex);
-                },
+                  // context
+                  //     .read<CheckInsCubit>()
+                  //     .onChangeSelectedVisitorType(
+                  //     AppUtils.getServiceableType(
+                  //         Strings.keyGuest)
+                  // );
+                  final type = AppUtils.getServiceableType(Strings.keyGuest);
+                  log("Filtering with type: ${type.value} hibba");
+                  context.read<CheckInsCubit>().onChangeSelectedVisitorType(type);
+                  context.read<CheckInsCubit>().getCheckIns();
+                  // context.read<CheckInsCubit>().getCheckIns();
+                  context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);                },
               ),
               ActionsItemModel(
                 title: AppUtils.languageTranslate("eServices"),
@@ -237,8 +247,13 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.cyanBlue,
                 onTap: () {
-                  onViewAllDashboardPressed(
-                      context, AppConstants.eServicesIndex);
+                  context
+                      .read<CheckInsCubit>()
+                      .onChangeSelectedVisitorType(
+                      AppUtils.getServiceableType(
+                          Strings.keyServices));
+                  context.read<CheckInsCubit>().getCheckIns();
+                  context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
                 },
               ),
               ActionsItemModel(
@@ -248,8 +263,14 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.primary,
                 onTap: () {
-                  onViewAllDashboardPressed(
-                      context, AppConstants.workOrderRfpIndex);
+                  context
+                      .read<CheckInsCubit>()
+                      .onChangeSelectedVisitorType(
+                      AppUtils.getServiceableType(
+                          Strings.keyWorkOrder));
+                  context.read<CheckInsCubit>().getCheckIns();
+                  context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
+
                 },
               ),
             ];
@@ -501,7 +522,7 @@ class DashboardScreen extends StatelessWidget {
                                 serviceableCheckInOnPressed: () {
                                   context
                                       .read<CheckInsCubit>()
-                                      .onChangeSelectedType(
+                                      .onChangeSelectedVisitorType(
                                           AppUtils.getServiceableType(
                                               Strings.keyServices));
                                   context
@@ -598,7 +619,7 @@ class DashboardScreen extends StatelessWidget {
                                 jobCheckInOnPressed: () {
                                   context
                                       .read<CheckInsCubit>()
-                                      .onChangeSelectedType(
+                                      .onChangeSelectedVisitorType(
                                           AppUtils.getServiceableType(
                                               Strings.keyWorkOrder));
                                   context
@@ -648,7 +669,14 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.yellow,
           onTap: () {
-            onViewAllDashboardPressed(context, AppConstants.checkInsIndex);
+            context
+                .read<CheckInsCubit>()
+                .onChangeSelectedVisitorType(
+                AppUtils.getServiceableType(
+                    Strings.keyGuest));
+            context.read<CheckInsCubit>().getCheckIns();
+            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
+
           },
         ),
         ActionsItemModel(
@@ -658,7 +686,13 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.cyanBlue,
           onTap: () {
-            onViewAllDashboardPressed(context, AppConstants.eServicesIndex);
+            context
+                .read<CheckInsCubit>()
+                .onChangeSelectedVisitorType(
+                AppUtils.getServiceableType(
+                    Strings.keyServices));
+            context.read<CheckInsCubit>().getCheckIns();
+            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
           },
         ),
         ActionsItemModel(
@@ -668,7 +702,13 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.primary,
           onTap: () {
-            onViewAllDashboardPressed(context, AppConstants.workOrderRfpIndex);
+            context
+                .read<CheckInsCubit>()
+                .onChangeSelectedVisitorType(
+                AppUtils.getServiceableType(
+                    Strings.keyWorkOrder));
+            context.read<CheckInsCubit>().getCheckIns();
+            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
           },
         ),
       ];
@@ -728,7 +768,6 @@ class DashboardScreen extends StatelessWidget {
                       context.read<GuestCheckInCubit>().getUnits();
                       context.read<GuestCheckInCubit>().getCountries();
                       context.read<GuestCheckInCubit>().getProfile();
-                      // context.read<GuestCheckInCubit>().
                       Navigator.pushNamed(context, AppRoutes.guestCheckIn);
                     }),
                 const Gap(10),
@@ -905,7 +944,7 @@ class DashboardScreen extends StatelessWidget {
                             serviceableCheckInOnPressed: () {
                               context
                                   .read<CheckInsCubit>()
-                                  .onChangeSelectedType(
+                                  .onChangeSelectedVisitorType(
                                       AppUtils.getServiceableType(
                                           Strings.keyServices));
                               context
@@ -1002,7 +1041,7 @@ class DashboardScreen extends StatelessWidget {
                             jobCheckInOnPressed: () {
                               context
                                   .read<CheckInsCubit>()
-                                  .onChangeSelectedType(
+                                  .onChangeSelectedVisitorType(
                                       AppUtils.getServiceableType(
                                           Strings.keyWorkOrder));
                               context
@@ -1034,7 +1073,6 @@ class DashboardScreen extends StatelessWidget {
 
   void onViewAllDashboardPressed(BuildContext context, int targetIndex) {
     final cubit = context.read<MainDashboardCubit>();
-
     if (targetIndex == AppConstants.checkInsIndex) {
       context.read<CheckInsCubit>().resetFilterData();
       context.read<CheckInsCubit>().getCheckIns();

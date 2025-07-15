@@ -116,7 +116,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                             visitorPassCheckInOnPressed: () {
                               context
                                   .read<CheckInsCubit>()
-                                  .onChangeSelectedType(
+                                  .onChangeSelectedVisitorType(
                                   AppUtils.getServiceableType(
                                       Strings.keyVisitorPass));
                               context.read<CheckInsCubit>().onChangeSelectedServiceableId(visitorPass?.id);

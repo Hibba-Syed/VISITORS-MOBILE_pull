@@ -101,12 +101,13 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 SingleSelectedDropdownWidget<TypeModel>(
                     hint: AppUtils.languageTranslate('type'),
                     fillColor: AppColors.white,
-                    selectedItem: state.selectedType,
+                    selectedItem: state.selectedVisitorType,
                     itemAsString: (type) => type.label,
                     compareFn: (p0, p1) => p0.value == p1.value,
                     items: AppUtils.checkInTypeList,
                     onChanged: (value) {
-                      context.read<CheckInsCubit>().onChangeSelectedType(value);
+                      context.read<CheckInsCubit>().onChangeSelectedVisitorType(value);
+
                     }),
                 const Gap(10),
                 BlocBuilder<CheckInsCubit, CheckInsState>(

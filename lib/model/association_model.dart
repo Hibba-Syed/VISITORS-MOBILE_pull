@@ -23,9 +23,9 @@ class Association {
   String? logoImageUrl;
   String? fullAddress;
   double? unitsArea;
-  int? applicableArea;
-  int? suiteArea;
-  int? balconyArea;
+  double? applicableArea;
+  double? suiteArea;
+  double? balconyArea;
   String? filledParkings;
   dynamic subdomain;
   String? contractUrl;
@@ -265,9 +265,9 @@ class Association {
     logoImageUrl: json["logo_image_url"],
     fullAddress: json["full_address"],
     unitsArea: json["units_area"]?.toDouble(),
-    applicableArea: json["applicable_area"],
-    suiteArea: json["suite_area"],
-    balconyArea: json["balcony_area"],
+    applicableArea: json["applicable_area"]?.toDouble(),
+    suiteArea: json["suite_area"]?.toDouble(),
+    balconyArea: json["balcony_area"]?.toDouble(),
     filledParkings: json["filled_parkings"],
     subdomain: json["subdomain"],
     contractUrl: json["contract_url"],

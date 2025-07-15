@@ -143,7 +143,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                         serviceableCheckInOnPressed: () {
                                           context
                                               .read<CheckInsCubit>()
-                                              .onChangeSelectedType(
+                                              .onChangeSelectedVisitorType(
                                               AppUtils.getServiceableType(
                                                   Strings.keyServices));
                                           context.read<CheckInsCubit>().onChangeSelectedServiceableId(service?.id);

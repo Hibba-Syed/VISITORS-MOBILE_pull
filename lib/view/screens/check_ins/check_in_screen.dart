@@ -92,8 +92,9 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                             .onChangeSearchKeyWord(value);
                         context.read<CheckInsCubit>().getCheckIns();
                       },
-                      isFilterApplied: (state.selectedUnit != null) ||
-                              (state.selectedType?.value.isNotEmpty ??
+                      isFilterApplied:
+                      (state.selectedUnit != null) ||
+                              (state.selectedVisitorType?.value.isNotEmpty ??
                                   false) ||
                               (state.selectedVendor != null) ||
                               (state.dateRange != null)

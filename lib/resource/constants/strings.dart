@@ -10,6 +10,6 @@ class Strings {
   static String keyWorkOrder = 'job';
   static String keyVisitorPass = 'visitor_passes';
   static String guests = 'guests';
-  static String guest = 'guest';
+  static String keyGuest = 'guest';
 
 }

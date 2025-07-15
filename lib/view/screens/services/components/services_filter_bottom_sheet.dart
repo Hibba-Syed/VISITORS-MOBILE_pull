@@ -36,41 +36,37 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
               ),
               border: Border.all(color: AppColors.gray)),
           child: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(10),
-               Align(
-                alignment: Alignment.center,
-                child: HeadingWidget(
-                    heading: AppUtils.languageTranslate('eServicesFilter'),
-                    style: AppTextStyles.style16black600),
-              ),
-              const Gap(15),
-              SingleSelectedDropdownWidget<TypeModel>(
-                  hint:  AppUtils.languageTranslate('type'),
-                  fillColor: AppColors.white,
-                  selectedItem:
-                      context.watch<ServiceCubit>().state.selectedType,
-                  itemAsString: (type) => type.label,
-                  compareFn: (type, item) => type.value == item.value,
-                  items: AppUtils.serviceTypeList,
-                  onChanged: (value) {
-                    // print(' Type***${value?.value}');
-                    context.read<ServiceCubit>().onChangeSelectedType(value);
-                  }),
-              const Gap(10),
-              BlocBuilder<ServiceCubit, ServiceState>(
-                builder: (context, state) {
-                  if (state.isUnitLoading) {
-                    return LoaderWidget();
-                  }
-
-                  return SingleSelectedDropdownWidget<UnitModel>(
-                      hint:  AppUtils.languageTranslate('unit'),
+              child: BlocBuilder<ServiceCubit, ServiceState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: HeadingWidget(
+                        heading: AppUtils.languageTranslate('eServicesFilter'),
+                        style: AppTextStyles.style16black600),
+                  ),
+                  const Gap(15),
+                  SingleSelectedDropdownWidget<TypeModel>(
+                      hint: AppUtils.languageTranslate('type'),
                       fillColor: AppColors.white,
-                      selectedItem:
-                          context.watch<ServiceCubit>().state.selectedUnit,
+                      selectedItem: state.selectedType,
+                      itemAsString: (type) => type.label,
+                      compareFn: (type, item) => type.value == item.value,
+                      items: AppUtils.serviceTypeList,
+                      onChanged: (value) {
+                        context
+                            .read<ServiceCubit>()
+                            .onChangeSelectedType(value);
+                      }),
+                  const Gap(10),
+                  state.isUnitLoading ? LoaderWidget() :
+                  SingleSelectedDropdownWidget<UnitModel>(
+                      hint: AppUtils.languageTranslate('unit'),
+                      fillColor: AppColors.white,
+                      selectedItem:state.selectedUnit,
                       itemAsString: (unit) => unit.unitNumber ?? "",
                       compareFn: (unit, item) => unit.id == item.id,
                       items: state.units ?? [],
@@ -78,22 +74,22 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                         context
                             .read<ServiceCubit>()
                             .onChangeSelectedUnit(value!);
-                      });
-                },
-              ),
-              const Gap(30),
-              FilterButtonWidget(
-                applyOnPressed: () {
-                  context.read<ServiceCubit>().getServices();
-                  Navigator.pop(context);
-                },
-                clearOnPressed: () {
-                  context.read<ServiceCubit>().resetFilterData();
-                  Navigator.pop(context);
-                  context.read<ServiceCubit>().getServices();
-                },
-              ),
-            ],
+                      }),
+                  const Gap(30),
+                  FilterButtonWidget(
+                    applyOnPressed: () {
+                      context.read<ServiceCubit>().getServices();
+                      Navigator.pop(context);
+                    },
+                    clearOnPressed: () {
+                      context.read<ServiceCubit>().resetFilterData();
+                      Navigator.pop(context);
+                      context.read<ServiceCubit>().getServices();
+                    },
+                  ),
+                ],
+              );
+            },
           )),
         ),
       ),
