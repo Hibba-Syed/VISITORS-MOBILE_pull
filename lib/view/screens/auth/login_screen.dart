@@ -6,6 +6,7 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/utils/routes/app_routes.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
@@ -171,7 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context) {
                           return CustomAlertDialogBox(
                               hideBothButtons: true,
-                              title: AppUtils.languageTranslate('forgotPassword'),
+                              title:
+                                  AppUtils.languageTranslate('forgotPassword'),
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
@@ -195,7 +197,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         child: Text(
-                                          AppUtils.languageTranslate('pleaseContactAdminToGetISKAANVisitorManagementSystemCredentials'),
+                                          AppUtils.languageTranslate(
+                                              'pleaseContactAdminToGetISKAANVisitorManagementSystemCredentials'),
                                           textAlign: TextAlign.center,
                                           style: AppUtils.isTablet(context)
                                               ? AppTextStyles.style18black600
@@ -217,19 +220,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Gap(15),
-              CustomButton(
-                height: AppUtils.isTablet(context) ? 60 : 42,
-                fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                text: AppUtils.languageTranslate('signIn'),
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    context.read<AuthCubit>().login(context,
-                        communityId: _communityIdController.text,
-                        gate: _gateController.text,
-                        loginId: _loginIdController.text,
-                         password: _passwordController.text,
-                    );
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, state) {
+                  if (state.isLoading) {
+                    LoaderWidget();
                   }
+                  return CustomButton(
+                    height: AppUtils.isTablet(context) ? 60 : 42,
+                    fontSize: AppUtils.isTablet(context) ? 20 : 15,
+                    text: AppUtils.languageTranslate('signIn'),
+                    onPressed: () async {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        context.read<AuthCubit>().login(
+                              context,
+                              communityId: _communityIdController.text,
+                              gate: _gateController.text,
+                              loginId: _loginIdController.text,
+                              password: _passwordController.text,
+                            );
+                      }
+                    },
+                  );
                 },
               ),
               if ((spUtil.communityId?.isNotEmpty ?? false) &&
