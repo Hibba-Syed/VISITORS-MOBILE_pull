@@ -50,22 +50,24 @@ class _MessageScreenState extends State<MessageScreen> {
       }
     }
   }
+
   @override
   void didChangeDependencies() {
     final locale = Localizations.localeOf(context);
-    if (locale != _currentLocale) {    _currentLocale = locale;
-    setState(() {});  }
+    if (locale != _currentLocale) {
+      _currentLocale = locale;
+      setState(() {});
+    }
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context
-            .read<MainDashboardCubit>()
-            .onBackButtonPressed();
+        context.read<MainDashboardCubit>().onBackButtonPressed();
       },
       child: SafeArea(
         child: Scaffold(
@@ -77,78 +79,74 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
                 child: Column(
                   children: [
-                     if (state.loadMore) const LoaderWidget(),
+                    if (state.loadMore) const LoaderWidget(),
                     Expanded(
-                        child: state.isLoading
-                            ? Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical:
-                              MediaQuery.of(context).size.height / 3),
-                          child: LoaderWidget(),
-                        )
-                            : state.messageModel?.isEmpty ?? true
-                            ? EmptyWidget(
-                          text: AppUtils.languageTranslate('noDataAvailable'),
-                        )
-                            :
-                        ListView.separated(
-                              reverse: true,
-                              padding: EdgeInsets.only(top: 10,bottom: 10),
-                              physics: AlwaysScrollableScrollPhysics(),
-                              controller: _scrollController,
-                              itemCount: state.messageModel?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                MessageModel? message =
-                                state.messageModel?[index];
-                                return
-                                  Row(
-                                  mainAxisAlignment: message?.by == 'user'
-                                      ? MainAxisAlignment.start
-                                      : MainAxisAlignment.end,
-                                  children: [
-                                    message?.by == 'user' ?
-                                         MessageReceiverCardWidget(
-                                      message:
-                                      message?.message ?? "",
-                                      date: message?.createdAt
-                                          .toString(),
-                                      userName:
-                                      message?.user?.fullName ??
-                                          "",
-                                      profileImage: message?.user
-                                          ?.profileImageUrl ??
-                                          "",
-                                      attachments:
-                                      message?.attachments,
-                                    )
-                                        :
-                                 // Text('hibba'):
-                                    MessageSenderCardWidget(
-                                      message:
-                                      message?.message ?? "",
-                                      date: message?.createdAt
-                                          .toString(),
-                                      attachments:
-                                      message?.attachments,
-                                    ),
-                                  ],
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 5));
-                              },
-                            ),
+                      child: state.isLoading
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height / 3),
+                              child: LoaderWidget(),
+                            )
+                          : state.messageModel?.isEmpty ?? true
+                              ? EmptyWidget(
+                                  text: AppUtils.languageTranslate(
+                                      'noDataAvailable'),
+                                )
+                              : ListView.separated(
+                                  reverse: true,
+                                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  controller: _scrollController,
+                                  itemCount: state.messageModel?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    MessageModel? message =
+                                        state.messageModel?[index];
+                                    return Row(
+                                      mainAxisAlignment: message?.by == 'user'
+                                          ? MainAxisAlignment.start
+                                          : MainAxisAlignment.end,
+                                      children: [
+                                        message?.by == 'user'
+                                            ? MessageReceiverCardWidget(
+                                                message: message?.message ?? "",
+                                                date: message?.createdAt
+                                                    .toString(),
+                                                userName:
+                                                    message?.user?.fullName ??
+                                                        "",
+                                                profileImage: message?.user
+                                                        ?.profileImageUrl ??
+                                                    "",
+                                                attachments:
+                                                    message?.attachments,
+                                              )
+                                            :
+                                            // Text('hibba'):
+                                            MessageSenderCardWidget(
+                                                message: message?.message ?? "",
+                                                date: message?.createdAt
+                                                    .toString(),
+                                                attachments:
+                                                    message?.attachments,
+                                              ),
+                                      ],
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5));
+                                  },
+                                ),
                     ),
-
-                    attachmentsList.isNotEmpty?
-                    Align(
-                      alignment: Alignment.topLeft,
-                        child: _buildAttachmentSection()) : SizedBox.shrink(),
+                    attachmentsList.isNotEmpty
+                        ? Align(
+                            alignment: Alignment.topLeft,
+                            child: _buildAttachmentSection())
+                        : SizedBox.shrink(),
                     const Gap(10),
-
                   ],
                 ),
               );
@@ -164,15 +162,17 @@ class _MessageScreenState extends State<MessageScreen> {
                 setState(() {});
               }
             },
-            onSend: ()async {
+            onSend: () async {
               if (messageController.text.isEmpty) {
-                Fluttertoast.showToast(msg: AppUtils.languageTranslate('pleaseTypeAMessageFirst'));
+                Fluttertoast.showToast(
+                    msg: AppUtils.languageTranslate('pleaseTypeMessageFirst'));
                 return;
               }
               context.read<MessageCubit>().sendMessage(
                     context,
                     data: {'message': messageController.text},
-                    filesPaths: attachmentsList.isNotEmpty ? attachmentsList : null,
+                    filesPaths:
+                        attachmentsList.isNotEmpty ? attachmentsList : null,
                   );
               messageController.clear();
               attachmentsList.clear();
@@ -209,6 +209,7 @@ class _MessageScreenState extends State<MessageScreen> {
       ),
     );
   }
+
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);

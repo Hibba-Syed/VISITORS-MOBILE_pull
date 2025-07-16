@@ -245,6 +245,8 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         context.read<MessageCubit>().getMessages();
         break;
       case AppConstants.checkOutsIndex:
+        context.read<CheckOutCubit>()
+            .onChangeSelectedRange('Last 30 Days');
         context.read<CheckOutCubit>().onChangeDateRange(
             AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
         context.read<CheckOutCubit>().getCheckOuts();
@@ -252,6 +254,8 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       case AppConstants.directoryIndex:
         context.read<DirectoryCubit>().getUnits();
         break;
+      default:
+        debugPrint("Index in gettingApiCall: $index");
     }
   }
 

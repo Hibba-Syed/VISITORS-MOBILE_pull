@@ -25,8 +25,10 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
   @override
   void didChangeDependencies() {
     final locale = Localizations.localeOf(context);
-    if (locale != _currentLocale) {    _currentLocale = locale;
-    setState(() {});  }
+    if (locale != _currentLocale) {
+      _currentLocale = locale;
+      setState(() {});
+    }
     super.didChangeDependencies();
   }
 
@@ -81,11 +83,14 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                   selectedUnit == null
                       ? Expanded(
                           child: EmptyWidget(
-                              text: AppUtils.languageTranslate('selectUnitToViewDetails')))
+                              text: AppUtils.languageTranslate(
+                                  'selectUnitToViewDetails')))
                       : SizedBox.shrink(),
                   if (state.primaryOwner != null) ...[
                     const Gap(20),
-                     HeadingWidget(heading: AppUtils.languageTranslate('ownerInformation')),
+                    HeadingWidget(
+                        heading:
+                            AppUtils.languageTranslate('ownerInformation')),
                     const Gap(10),
                     PhoneEmailInformationCardWidget(
                       name: state.primaryOwner?.fullName ?? "--",
@@ -98,7 +103,9 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                   ],
                   if (state.resident != null) ...[
                     const Gap(20),
-                     HeadingWidget(heading: AppUtils.languageTranslate('residentInformation')),
+                    HeadingWidget(
+                        heading:
+                            AppUtils.languageTranslate('residentInformation')),
                     const Gap(10),
                     PhoneEmailInformationCardWidget(
                       name: state.resident?.fullName ?? "--",

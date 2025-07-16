@@ -25,7 +25,7 @@ class CheckOutsFilterBottomSheet extends StatefulWidget {
 
 class _CheckOutsFilterBottomSheetState
     extends State<CheckOutsFilterBottomSheet> {
-  TextEditingController dateRangeController = TextEditingController();
+  final TextEditingController _dateRangeController = TextEditingController();
   final now = DateTime.now();
   late DateTime firstDayOfMonth;
   late DateTime lastDayOfMonth;
@@ -36,6 +36,10 @@ class _CheckOutsFilterBottomSheetState
     final selectedDate = DateTime(now.year, now.month - 1, 1);
     firstDayOfMonth = DateTime(selectedDate.year, selectedDate.month, 1);
     lastDayOfMonth = DateTime(selectedDate.year, selectedDate.month + 1, 0);
+    final dateRange = context.read<CheckOutCubit>().state.dateRang;
+    if (dateRange != null) {
+      _dateRangeController.text = DateTimeUtil.getFormatDateRange(dateRange);
+    }
   }
 
   DateTimeRange? dateRangeString;
@@ -66,7 +70,7 @@ class _CheckOutsFilterBottomSheetState
                 ),
                 const Gap(15),
                 DateRangePickerField(
-                  controller: dateRangeController,
+                  controller: _dateRangeController,
                   firstDate: firstDayOfMonth,
                   lastDate: lastDayOfMonth,
                   onDateRangeSelected: (range) {
@@ -83,12 +87,12 @@ class _CheckOutsFilterBottomSheetState
                   items: AppConstants.rangList,
                   onChanged: (value) {
                     if (value == null) {
-                      dateRangeController.clear();
+                      _dateRangeController.clear();
                       context.read<CheckOutCubit>().onChangeDateRange(null);
                     } else {
                       dateRangeString =
                           AppUtils.getDateRangeStringFromLabel(value);
-                      dateRangeController.text =
+                      _dateRangeController.text =
                           DateTimeUtil.getFormatDateRange(dateRangeString);
                       context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
                     }

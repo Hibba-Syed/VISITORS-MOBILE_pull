@@ -76,7 +76,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
                             ),
                           ),
                           Gap(16),
-                          Text(AppUtils.languageTranslate('areYouSureYouWantToLogout?'),
+                          Text(AppUtils.languageTranslate('areYouSureYouWantToLogout'),
                             style: AppTextStyles.style16DarkGrey600,
                           ),
                           Gap(20),

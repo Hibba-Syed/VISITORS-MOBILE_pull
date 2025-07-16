@@ -108,7 +108,9 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                   const Gap(15),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: CustomButton(
+                    child:
+                (state.checkInModel?.isNotEmpty ?? false ) ?
+                    CustomButton(
                       buttonColor: AppColors.red,
                       text: AppUtils.languageTranslate('checkoutAll'),
                       height: AppUtils.isTablet(context) ? 42 : 41,
@@ -144,7 +146,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                           },
                         );
                       },
-                    ),
+                    ) : SizedBox.shrink(),
                   ),
                   const Gap(10),
                   Expanded(

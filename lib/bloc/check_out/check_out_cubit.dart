@@ -29,6 +29,10 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   // onChangeRange(String? range) {
   //   emit(state.copyWith(selectedRang: range));
   // }
+  void onChangeSelectedRange(String? rangeLabel) {
+    emit(state.copyWith(selectedRange: rangeLabel));
+  }
+
   void onChangeDateRange(DateTimeRange? dateRange) {
     emit(state.copyWith(dateRang: dateRange));
   }

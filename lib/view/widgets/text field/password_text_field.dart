@@ -96,11 +96,17 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide:  BorderSide(color:  AppColors.outLineGray, width: 1),
+              borderSide: BorderSide(
+                  color: AppColors.outLineGray, width: 1),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide:  BorderSide(color:  AppColors.red, width: 1),
+              borderSide: BorderSide(color: AppColors.red, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(
+                  color:  AppColors.outLineGray, width: 1),
             ),
             prefixIcon: Padding(
               padding:

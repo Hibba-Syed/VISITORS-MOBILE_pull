@@ -43,22 +43,24 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
     });
     context.read<ServiceCubit>().getUnits();
   }
+
   @override
   void didChangeDependencies() {
     final locale = Localizations.localeOf(context);
-    if (locale != _currentLocale) {    _currentLocale = locale;
-    setState(() {});  }
+    if (locale != _currentLocale) {
+      _currentLocale = locale;
+      setState(() {});
+    }
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context
-            .read<MainDashboardCubit>()
-            .onBackButtonPressed();
+        context.read<MainDashboardCubit>().onBackButtonPressed();
       },
       child: SafeArea(
         child: Scaffold(
@@ -72,25 +74,22 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: SearchTextField(
-                          controller: _searchController,
-                          onClearPressed: () async {
-                            _searchController.clear();
-                            context
-                                .read<ServiceCubit>()
-                                .onChangeSearchKeyWord('');
-                            await context
-                                .read<ServiceCubit>()
-                                .getServices();
-                          },
-                          onFieldSubmitted: (value) {
-                            context
-                                .read<ServiceCubit>()
-                                .onChangeSearchKeyWord(value);
-                            context.read<ServiceCubit>().getServices();
-                          },
+                        controller: _searchController,
+                        onClearPressed: () async {
+                          _searchController.clear();
+                          context
+                              .read<ServiceCubit>()
+                              .onChangeSearchKeyWord('');
+                          await context.read<ServiceCubit>().getServices();
+                        },
+                        onFieldSubmitted: (value) {
+                          context
+                              .read<ServiceCubit>()
+                              .onChangeSearchKeyWord(value);
+                          context.read<ServiceCubit>().getServices();
+                        },
                         isFilterApplied: (state.selectedUnit != null) ||
-                            (state.selectedType?.value.isNotEmpty ??
-                                false)
+                                (state.selectedType?.value.isNotEmpty ?? false)
                             ? true
                             : false,
                         onFilterPressed: () {
@@ -125,41 +124,44 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                 true)
                                             ? true
                                             : false,
-                                        unit:
-                                            service?.unit?.unitNumber ?? "",
-                                        title:
-                                            service?.applicationType ?? "--",
+                                        unit: service?.unit?.unitNumber ?? "",
+                                        title: service?.applicationType ?? "--",
                                         reference: service?.reference ?? "--",
                                         status: service?.status ?? "--",
                                         serviceType:
                                             service?.applicationTitle ?? "--",
                                         name: service?.clientName ?? "--",
                                         checkInOnPressed: () {
-                                       Navigator.pushNamed(
-                                                  context,
-                                                  AppRoutes
-                                                      .guestCheckIn);
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.guestCheckIn);
                                         },
                                         serviceableCheckInOnPressed: () {
                                           context
                                               .read<CheckInsCubit>()
                                               .onChangeSelectedVisitorType(
-                                              AppUtils.getServiceableType(
-                                                  Strings.keyServices));
-                                          context.read<CheckInsCubit>().onChangeSelectedServiceableId(service?.id);
-                                          context.read<CheckInsCubit>().getCheckIns();
-                                          Navigator.pushNamed(
-                                              context,
-                                              AppRoutes
-                                                  .serviceableCheckIns);
+                                                  AppUtils.getServiceableType(
+                                                      Strings.keyServices));
+                                          context
+                                              .read<CheckInsCubit>()
+                                              .onChangeSelectedServiceableId(
+                                                  service?.id);
+                                          context
+                                              .read<CheckInsCubit>()
+                                              .getCheckIns();
+                                          Navigator.pushNamed(context,
+                                              AppRoutes.serviceableCheckIns);
                                         },
                                         detailsOnPressed: () {
-                                          context.read<ServiceDetailsCubit>().getServiceDetails(serviceId: service?.id);
+                                          context
+                                              .read<ServiceDetailsCubit>()
+                                              .getServiceDetails(
+                                                  serviceId: service?.id);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    AppUtils.getRouteName(service),
+                                                    AppUtils.getRouteName(
+                                                        service),
                                               ));
                                         },
                                       );
@@ -167,13 +169,14 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                     separatorBuilder:
                                         (BuildContext context, int index) {
                                       return const Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 5));
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5));
                                     },
                                   ),
                                 )
                               : EmptyWidget(
-                                  text: AppUtils.languageTranslate('noDataAvailable'),
+                                  text: AppUtils.languageTranslate(
+                                      'noDataAvailable'),
                                 ),
                     ),
                     if (state.loadMore) const LoaderWidget(),
@@ -186,6 +189,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       ),
     );
   }
+
   void _servicesFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       constraints: BoxConstraints(
@@ -198,5 +202,4 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
       },
     );
   }
-
 }
