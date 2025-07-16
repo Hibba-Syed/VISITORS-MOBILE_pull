@@ -36,7 +36,6 @@ class MainDashboardScreen extends StatefulWidget {
   const MainDashboardScreen({super.key});
   @override
   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
-
 }
 
 class _MainDashboardScreenState extends State<MainDashboardScreen> {
@@ -55,6 +54,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       builder: (context, selectedIndex) {
         return Scaffold(
           key: _scaffoldKey,
+          drawerEnableOpenDragGesture: false,
           appBar: AppBarWidget(
             leading: IconButton(
               icon: const Icon(Icons.menu, color: AppColors.black),
@@ -86,7 +86,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                 Text(AppUtils.languageTranslate('areYouSureYouWantToLogout'),
+                Text(AppUtils.languageTranslate('areYouSureYouWantToLogout'),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
@@ -145,7 +145,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           iconPath: AppImages.directory),
       DrawerItemModel(
           index: AppConstants.logoutIndex,
-          title:  AppUtils.languageTranslate('logout'),
+          title: AppUtils.languageTranslate('logout'),
           iconPath: AppImages.logout),
     ];
     return Drawer(
@@ -172,7 +172,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child:  Text(AppUtils.languageTranslate('vMSAPPLICATION'),
+                  child: Text(AppUtils.languageTranslate('vMSAPPLICATION'),
                       style: AppTextStyles.style13white500),
                 )
               ],
@@ -191,35 +191,42 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                         .read<MainDashboardCubit>()
                         .onChangeSelectedIndex(item.index);
                     // Optionally trigger specific cubits
-                    gettingApiCall(context,item.index);
+                    gettingApiCall(context, item.index);
                   }
                 },
               )),
           ListTile(
             dense: true,
-            leading: Icon(Icons.translate,color: AppColors.darkGrey,size: 23,),
-            title: Text(AppUtils.languageTranslate('changeLanguage'),
-              style: AppUtils.isTablet(context) ? AppTextStyles.style21DarkGrey400  :
-              AppTextStyles.style16DarkGrey400,
+            leading: Icon(
+              Icons.translate,
+              color: AppColors.darkGrey,
+              size: 23,
+            ),
+            title: Text(
+              AppUtils.languageTranslate('changeLanguage'),
+              style: AppUtils.isTablet(context)
+                  ? AppTextStyles.style21DarkGrey400
+                  : AppTextStyles.style16DarkGrey400,
               textAlign: (context.locale.languageCode == "en")
                   ? TextAlign.left
                   : TextAlign.right,
             ),
             trailing: CustomSwitch(
-             value: context.locale.languageCode == "en",
-             onChanged: ( value) {
-               final languageChange = value
-                       ? const Locale("en", "US")
-                       : const Locale("ar", "AE");
-                   context.deleteSaveLocale();
-                   context.setLocale(languageChange);
-                   Navigator.pop(context);
-             },),
+              value: context.locale.languageCode == "en",
+              onChanged: (value) {
+                final languageChange =
+                    value ? const Locale("en", "US") : const Locale("ar", "AE");
+                context.deleteSaveLocale();
+                context.setLocale(languageChange);
+                Navigator.pop(context);
+              },
+            ),
           ),
         ],
       ),
     );
   }
+
   void gettingApiCall(BuildContext context, int index) {
     switch (index) {
       case AppConstants.checkInsIndex:
@@ -247,6 +254,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         break;
     }
   }
+
   String _getTitle(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:
