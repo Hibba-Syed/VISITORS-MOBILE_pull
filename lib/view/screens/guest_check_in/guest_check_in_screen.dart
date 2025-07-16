@@ -145,9 +145,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 onPressed: () {
                   if ((_formKey.currentState?.validate() ?? false) &&
                       (_phoneNumberKey.currentState?.validate() ?? false)) {
-                    context
-                        .read<GuestCheckInCubit>()
-                        .guestCheckIn(context, data: {
+                    Map<String, dynamic> formData = {
                       if (_selectedDocumentType?.value == 'Emirates ID') ...{
                         'id_number': _emiratesIdNumberController.text,
                         'id_issue_date':
@@ -186,7 +184,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       'sms': false,
                       'visitor_count': _visitorCountController.text,
                       'visitor_id': null,
-                    });
+                    };
+                    context
+                        .read<GuestCheckInCubit>()
+                        .guestCheckIn(context, data: formData);
                   }
                 },
               );

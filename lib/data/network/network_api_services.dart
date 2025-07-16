@@ -196,8 +196,8 @@ class NetworkApiServices implements BaseApiServices {
       var response = await http.Response.fromStream(streamedResponse);
       responseJson = returnResponse(response);
       return responseJson;
-    } on SocketException catch (e) {
-      throw FetchDataException(e.toString());
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
     }
   }
 
@@ -235,8 +235,8 @@ class NetworkApiServices implements BaseApiServices {
       responseJson = returnResponse(response);
 
       return responseJson;
-    } on SocketException catch (e) {
-      throw FetchDataException(e.toString());
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
     }
   }
 
@@ -271,8 +271,8 @@ class NetworkApiServices implements BaseApiServices {
 
       responseJson = returnResponse(response);
       return responseJson;
-    } on SocketException catch (e) {
-      throw FetchDataException(e.toString());
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
     }
   }
 
