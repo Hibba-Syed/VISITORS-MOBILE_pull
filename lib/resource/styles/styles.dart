@@ -244,8 +244,18 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle style16Red400 = TextStyle(
+    color: AppColors.red,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
   static const TextStyle style21DarkGrey400 = TextStyle(
     color: AppColors.darkGrey,
+    fontSize: 21,
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle style21Red400 = TextStyle(
+    color: AppColors.red,
     fontSize: 21,
     fontWeight: FontWeight.w400,
   );

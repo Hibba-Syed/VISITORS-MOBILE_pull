@@ -240,7 +240,6 @@
     "anUnexpectedErrorOccurred": "حدث خطأ غير متوقع",
     "errorDownloadingDocumentContactSupport": "حدث خطأ أثناء تنزيل المستند. يرجى المحاولة مرة أخرى. إذا استمرت المشكلة، يرجى الاتصال بفريق الدعم للحصول على المساعدة.",
     "errorSavingTheFile": "حدث خطأ أثناء حفظ الملف.",
-    "visitorsMobile": "زوار الموبايل",
     "services": "الخدمات",
     "accessDevice": "جهاز الوصول",
     "deliveryPermit": "تصريح التسليم",
@@ -273,6 +272,9 @@
     "issueDate": "تاريخ الإصدار",
     "selectIssueDate": "اختر تاريخ الإصدار",
     "expiryDate": "تاريخ الانتهاء",
-    "selectExpiryDate": "اختر تاريخ الانتهاء"
+    "selectExpiryDate": "اختر تاريخ الانتهاء",
+    "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "الملف كبير جدًا. يرجى اختيار ملف أصغر من 10 ميغابايت",
+    "visitorsMobile": "جوال الزائرين"
+
 
 }

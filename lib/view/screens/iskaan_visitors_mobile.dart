@@ -37,11 +37,11 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
           },
           child: MaterialApp(
             title: AppUtils.languageTranslate('visitorsMobile'),
-            // locale: DevicePreview.locale(context),
-            // builder: DevicePreview.appBuilder,
             locale: context.locale,
             supportedLocales: context.supportedLocales,
             localizationsDelegates: context.localizationDelegates,
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
             theme: ThemeData(
               textTheme: GoogleFonts.interTextTheme(),
               scaffoldBackgroundColor: AppColors.backgroundColor,

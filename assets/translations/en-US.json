@@ -239,7 +239,6 @@
     "anUnexpectedErrorOccurred": "An unexpected error occurred",
     "errorDownloadingDocumentContactSupport": "An error occurred while downloading the document. Please try again. If the issue persists, contact our support team for assistance.",
     "errorSavingTheFile": "Error saving the file.",
-    "visitorsMobile" : "Visitors Mobile",
     "services": "Services",
     "accessDevice": "Access device",
     "deliveryPermit": "Delivery Permit",
@@ -272,7 +271,9 @@
     "selectIssueDate": "Select Issue Date",
     "expiryDate": "Expiry Date",
     "selectExpiryDate": "Select Expiry Date",
-    "dateRange": "Date Range"
+    "dateRange": "Date Range",
+    "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "File is too large. Please choose a file smaller than 10 MB",
+    "visitorsMobile": "Visitors Mobile"
 }
 
 

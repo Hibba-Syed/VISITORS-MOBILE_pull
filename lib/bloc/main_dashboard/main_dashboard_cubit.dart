@@ -23,6 +23,12 @@ class MainDashboardCubit extends Cubit<MainDashboardState> {
       );
     }
   }
+  void resetToDashboard() {
+    emit(state.copyWith(
+      selectedIndex: AppConstants.dashboardIndex,
+      navigationHistory: [],
+    ));
+  }
 
   void onBackButtonPressed() {
     final history = List<int>.from(state.navigationHistory);

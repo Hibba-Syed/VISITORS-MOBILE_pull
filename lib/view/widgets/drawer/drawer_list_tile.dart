@@ -19,6 +19,7 @@ class DrawerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
       onTap: onTap,
       tileColor: Colors.transparent,
       shape: OutlineInputBorder(

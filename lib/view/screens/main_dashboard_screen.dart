@@ -102,6 +102,8 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                             invert: true,
                             onPressed: () {
                               Navigator.pop(context, true);
+                              context
+                                  .read<MainDashboardCubit>().resetToDashboard();
                               context.read<AuthCubit>().logout(context);
                             })),
                   ],
@@ -143,10 +145,10 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           index: AppConstants.directoryIndex,
           title: AppUtils.languageTranslate('directory'),
           iconPath: AppImages.directory),
-      DrawerItemModel(
-          index: AppConstants.logoutIndex,
-          title: AppUtils.languageTranslate('logout'),
-          iconPath: AppImages.logout),
+      // DrawerItemModel(
+      //     index: AppConstants.logoutIndex,
+      //     title: AppUtils.languageTranslate('logout'),
+      //     iconPath: AppImages.logout),
     ];
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
@@ -184,15 +186,11 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 isSelected: item.index == selectedIndex,
                 onTap: () {
                   Navigator.of(context).pop();
-                  if (item.index == AppConstants.logoutIndex) {
-                    _showLogoutDialog(context);
-                  } else {
                     context
                         .read<MainDashboardCubit>()
                         .onChangeSelectedIndex(item.index);
                     // Optionally trigger specific cubits
                     gettingApiCall(context, item.index);
-                  }
                 },
               )),
           ListTile(
@@ -220,6 +218,31 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 context.setLocale(languageChange);
                 Navigator.pop(context);
               },
+            ),
+          ),
+          ListTile(
+            onTap: (){
+
+              _showLogoutDialog(context);
+            },
+            dense: true,
+            leading: SvgPicture.asset(
+              AppImages.logout,
+              width: AppUtils.isTablet(context)  ? 30 : 22,
+              height: AppUtils.isTablet(context)  ? 30 : 22,
+              colorFilter: ColorFilter.mode(
+                AppColors.red ,
+                BlendMode.srcIn,
+              ),
+            ),
+            title: Text(
+              AppUtils.languageTranslate('logout'),
+              style: AppUtils.isTablet(context)
+                  ? AppTextStyles.style21Red400
+                  : AppTextStyles.style16Red400,
+              textAlign: (context.locale.languageCode == "en")
+                  ? TextAlign.left
+                  : TextAlign.right,
             ),
           ),
         ],

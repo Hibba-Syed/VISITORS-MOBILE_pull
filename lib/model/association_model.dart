@@ -269,7 +269,7 @@ class Association {
         backgroundImageUrl: json["background_image_url"],
         logoImageUrl: json["logo_image_url"],
         fullAddress: json["full_address"],
-        unitsArea: double.parse(json["units_area"]?.toString() ?? ''),
+        unitsArea: double.tryParse(json["units_area"]?.toString() ?? ''),
         applicableArea: double.tryParse(json["applicable_area"]?.toString() ?? ''),
         suiteArea: double.tryParse(json["suite_area"]?.toString() ?? ''),
         balconyArea: double.tryParse(json["balcony_area"]?.toString() ?? ''),

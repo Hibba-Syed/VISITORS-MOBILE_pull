@@ -31,7 +31,11 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
     }
     super.didChangeDependencies();
   }
-
+@override
+  void initState() {
+  context.read<DirectoryCubit>().getUnits();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(

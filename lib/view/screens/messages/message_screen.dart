@@ -122,7 +122,6 @@ class _MessageScreenState extends State<MessageScreen> {
                                                     message?.attachments,
                                               )
                                             :
-                                            // Text('hibba'):
                                             MessageSenderCardWidget(
                                                 message: message?.message ?? "",
                                                 date: message?.createdAt
@@ -154,14 +153,21 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
           bottomNavigationBar: ChatBottomRowWidget(
             messageController: messageController,
-            onAttach: () async {
-              final result = await FilePicker.platform.pickFiles();
-              if (result != null && result.files.isNotEmpty) {
-                attachmentsList.addAll(
-                    result.files.map((file) => file.path ?? "").toList());
-                setState(() {});
-              }
-            },
+             onAttach: () async {
+               final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+               if (result != null && result.files.isNotEmpty) {
+                 const maxSizeInBytes = 10 * 1024 * 1024;
+                 final validFiles = result.files.where((file) =>
+                 (file.size <= maxSizeInBytes) && file.path != null);
+
+                 if (validFiles.length != result.files.length) {
+                   Fluttertoast.showToast(
+                       msg: AppUtils.languageTranslate('fileIsTooLargePleaseChooseAFileSmallerThan10MB'));
+                 }
+                 attachmentsList.addAll(validFiles.map((file) => file.path!).toList());
+                 setState(() {});
+               }
+             },
             onSend: () async {
               if (messageController.text.isEmpty) {
                 Fluttertoast.showToast(
