@@ -175,16 +175,17 @@ class _MessageScreenState extends State<MessageScreen> {
                     msg: AppUtils.languageTranslate('pleaseTypeMessageFirst'));
                 return;
               }
-              bool result = await context.read<MessageCubit>().sendMessage(
+             bool result = await
+              context.read<MessageCubit>().sendMessage(
                     context,
                     data: {'message': _messageController.text},
                     filesPaths:
                         _attachmentsList.isNotEmpty ? _attachmentsList : null,
                   );
-              if (result) {
+             if (result) {
                 _messageController.clear();
                 _attachmentsList.clear();
-              }
+             }
             },
           ),
         ),

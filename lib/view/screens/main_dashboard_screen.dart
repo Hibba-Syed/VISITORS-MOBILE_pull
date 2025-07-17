@@ -102,8 +102,6 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                             invert: true,
                             onPressed: () {
                               Navigator.pop(context, true);
-                              context
-                                  .read<MainDashboardCubit>().resetToDashboard();
                               context.read<AuthCubit>().logout(context);
                             })),
                   ],
@@ -275,6 +273,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         context.read<CheckOutCubit>().getCheckOuts();
         break;
       case AppConstants.directoryIndex:
+        context.read<DirectoryCubit>().resetOwnerAndResident();
         context.read<DirectoryCubit>().getUnits();
         break;
       default:

@@ -187,7 +187,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                       name: checkIns?.name ?? "--",
                                       profileImageUrl:
                                           checkIns?.visitor?.imageUrl ?? "",
-                                      type: AppUtils.getServiceableType(
+                                      type:
+                                      AppUtils.getServiceableType(
                                               checkIns?.serviceableType)
                                           .value,
                                       createdDate: DateTimeUtil.getFormattedDateTime(

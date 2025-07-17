@@ -4,6 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../../bloc/dashboard/dashboard_cubit.dart';
+import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
+import '../../../resource/constants/app_constants.dart';
 import '../../widgets/loader/loader_widget.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -17,9 +19,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     context.read<DashboardCubit>().getData(context);
+    context.read<MainDashboardCubit>().resetDashboard();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

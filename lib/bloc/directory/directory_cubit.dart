@@ -48,4 +48,8 @@ class DirectoryCubit extends Cubit<DirectoryState> {
       Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
+  void resetUnitData() {
+    emit(state.copyWith());
+  }
+
 }

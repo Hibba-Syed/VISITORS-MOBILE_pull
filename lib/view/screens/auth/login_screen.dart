@@ -62,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _gateController.dispose();
     _loginIdController.dispose();
   }
-
   Widget _loginUi(
     BuildContext context,
   ) {

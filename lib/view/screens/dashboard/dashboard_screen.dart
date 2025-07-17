@@ -844,9 +844,7 @@ class DashboardScreen extends StatelessWidget {
                                 : checkIns?.type ?? "",
                             name: checkIns?.name ?? "",
                             profileImageUrl: checkIns?.visitor?.imageUrl ?? "",
-                            type: AppUtils.getServiceableType(
-                                    checkIns?.serviceableType)
-                                .label,
+                            type: AppUtils.getServiceableType(checkIns?.serviceableType).label,
                             createdDate: DateTimeUtil.getFormattedDateTime(
                                 checkIns?.visitor?.createdAt),
                             phone: checkIns?.phone ?? "",

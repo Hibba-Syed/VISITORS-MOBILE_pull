@@ -49,13 +49,16 @@ class AppUtils {
       return AppColors.yellow;
     }
     if (type?.toLowerCase() == "community service") {
-      return AppColors.cyanBlue;
+      return AppColors.primary;
     }
     if (type?.toLowerCase() == "unit visit") {
-      return AppColors.green;
+      return AppColors.cyanBlue;
     }
     if (type?.toLowerCase() == "guest") {
-      return AppColors.primary;
+      return AppColors.green;
+    }
+    if (type?.toLowerCase() == "visitor_passes") {
+      return AppColors.yellow;
     }
 
     return AppColors.red;
@@ -105,6 +108,9 @@ class AppUtils {
     }
     else if (type == "guest") {
       return TypeModel(label: "Guests", value: Strings.keyGuest);
+    }
+    else if (type == null || type.isEmpty) {
+      return TypeModel(label: "Guest", value: Strings.keyGuest);
     }
     else {
       return TypeModel(label: "Select", value: "");

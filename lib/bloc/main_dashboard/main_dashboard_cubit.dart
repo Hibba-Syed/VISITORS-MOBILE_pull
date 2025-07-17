@@ -23,7 +23,7 @@ class MainDashboardCubit extends Cubit<MainDashboardState> {
       );
     }
   }
-  void resetToDashboard() {
+  void resetDashboard() {
     emit(state.copyWith(
       selectedIndex: AppConstants.dashboardIndex,
       navigationHistory: [],

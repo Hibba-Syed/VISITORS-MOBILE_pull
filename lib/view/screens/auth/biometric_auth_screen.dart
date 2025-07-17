@@ -12,6 +12,7 @@ import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
 import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
+import '../../widgets/loader/loader_widget.dart';
 
 class BiometricAuthScreen extends StatefulWidget {
   final Map<dynamic, dynamic>? notificationData;
@@ -140,10 +141,8 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.fingerprint,
-                size: 50,
-                color: AppColors.primary,
+              SvgPicture.asset(
+                AppImages.auth,
               ),
               SizedBox(height: 15),
               Text(
@@ -165,7 +164,7 @@ class _BiometricAuthScreenState extends State<BiometricAuthScreen> {
               ),
             ],
           ),
-        ),
+        )
       ),
     );
   }
