@@ -224,6 +224,11 @@ class NetworkApiServices implements BaseApiServices {
 
       };
       request.headers.addAll(headers);
+      // print('fields and files::');
+      // print(request.fields);
+      // for (var file in request.files) {
+      //   print('${file.field} , ${file.filename}');
+      // }
       var streamedResponse = await request
           .send()
           .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {

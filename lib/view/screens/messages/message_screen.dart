@@ -25,10 +25,9 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  final TextEditingController messageController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  List<String> attachmentsList = [];
-  bool isSending = false;
+  final List<String> _attachmentsList = [];
   Locale? _currentLocale;
 
   @override
@@ -121,8 +120,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                                 attachments:
                                                     message?.attachments,
                                               )
-                                            :
-                                            MessageSenderCardWidget(
+                                            : MessageSenderCardWidget(
                                                 message: message?.message ?? "",
                                                 date: message?.createdAt
                                                     .toString(),
@@ -140,7 +138,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                   },
                                 ),
                     ),
-                    attachmentsList.isNotEmpty
+                    _attachmentsList.isNotEmpty
                         ? Align(
                             alignment: Alignment.topLeft,
                             child: _buildAttachmentSection())
@@ -152,36 +150,41 @@ class _MessageScreenState extends State<MessageScreen> {
             },
           ),
           bottomNavigationBar: ChatBottomRowWidget(
-            messageController: messageController,
-             onAttach: () async {
-               final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-               if (result != null && result.files.isNotEmpty) {
-                 const maxSizeInBytes = 10 * 1024 * 1024;
-                 final validFiles = result.files.where((file) =>
-                 (file.size <= maxSizeInBytes) && file.path != null);
+            messageController: _messageController,
+            onAttach: () async {
+              final result =
+                  await FilePicker.platform.pickFiles(allowMultiple: true);
+              if (result != null && result.files.isNotEmpty) {
+                const maxSizeInBytes = 10 * 1024 * 1024;
+                final validFiles = result.files.where((file) =>
+                    (file.size <= maxSizeInBytes) && file.path != null);
 
-                 if (validFiles.length != result.files.length) {
-                   Fluttertoast.showToast(
-                       msg: AppUtils.languageTranslate('fileIsTooLargePleaseChooseAFileSmallerThan10MB'));
-                 }
-                 attachmentsList.addAll(validFiles.map((file) => file.path!).toList());
-                 setState(() {});
-               }
-             },
+                if (validFiles.length != result.files.length) {
+                  Fluttertoast.showToast(
+                      msg: AppUtils.languageTranslate(
+                          'fileIsTooLargePleaseChooseAFileSmallerThan10MB'));
+                }
+                _attachmentsList
+                    .addAll(validFiles.map((file) => file.path!).toList());
+                setState(() {});
+              }
+            },
             onSend: () async {
-              if (messageController.text.isEmpty) {
+              if (_messageController.text.isEmpty) {
                 Fluttertoast.showToast(
                     msg: AppUtils.languageTranslate('pleaseTypeMessageFirst'));
                 return;
               }
-              context.read<MessageCubit>().sendMessage(
+              bool result = await context.read<MessageCubit>().sendMessage(
                     context,
-                    data: {'message': messageController.text},
+                    data: {'message': _messageController.text},
                     filesPaths:
-                        attachmentsList.isNotEmpty ? attachmentsList : null,
+                        _attachmentsList.isNotEmpty ? _attachmentsList : null,
                   );
-              messageController.clear();
-              attachmentsList.clear();
+              if (result) {
+                _messageController.clear();
+                _attachmentsList.clear();
+              }
             },
           ),
         ),
@@ -202,10 +205,10 @@ class _MessageScreenState extends State<MessageScreen> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              ...attachmentsList.map((String? e) => AttachmentCardWidget(
+              ..._attachmentsList.map((String? e) => AttachmentCardWidget(
                     filePath: e?.toString() ?? "",
                     onDeletePressed: () {
-                      attachmentsList.removeWhere((item) => item == e);
+                      _attachmentsList.removeWhere((item) => item == e);
                       setState(() {});
                     },
                   ))

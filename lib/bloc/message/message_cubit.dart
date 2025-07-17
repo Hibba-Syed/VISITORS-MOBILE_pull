@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,9 +32,11 @@ class MessageCubit extends Cubit<MessageState> {
       emit(state.copyWith(messageModel: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingMessage'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingMessage'));
     }
   }
+
   Future<void> getMoreMessage({
     String? keyword,
   }) async {
@@ -46,7 +47,7 @@ class MessageCubit extends Cubit<MessageState> {
       page: state.page,
     )
         .onError(
-          (error, stackTrace) {
+      (error, stackTrace) {
         emit(state.copyWith(loadMore: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -61,20 +62,23 @@ class MessageCubit extends Cubit<MessageState> {
         checkIns.addAll(response.record as Iterable<MessageModel>);
         emit(state.copyWith(messageModel: checkIns));
       } else {
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreMessage'));
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('noMoreMessage'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingMessage'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingMessage'));
     }
   }
+
   Future<bool> sendMessage(
-      BuildContext context, {
-        required Map<String, dynamic> data,
-        List<String>? filesPaths,
-      }) async {
+    BuildContext context, {
+    required Map<String, dynamic> data,
+    List<String>? filesPaths,
+  }) async {
     emit(state.copyWith(
       isSendMessageLoading: true,
     ));
@@ -85,7 +89,8 @@ class MessageCubit extends Cubit<MessageState> {
         for (int i = 0; i < (filesPaths?.length ?? 0); i++) {
           if (filesPaths?[i].isNotEmpty ?? false) {
             multipartFiles.add(
-              await http.MultipartFile.fromPath('attachments[]', filesPaths?[i] ?? ""),
+              await http.MultipartFile.fromPath(
+                  'attachments[]', filesPaths?[i] ?? ""),
             );
           }
         }
@@ -105,12 +110,14 @@ class MessageCubit extends Cubit<MessageState> {
       emit(state.copyWith(isSendMessageLoading: false));
 
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg:AppUtils.languageTranslate('messageSentSuccessfully'));
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('messageSentSuccessfully'));
         getMessages();
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('somethingWentWrongWhileSendingMessage'));
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileSendingMessage'));
         return false;
       }
     } catch (e) {
@@ -119,5 +126,4 @@ class MessageCubit extends Cubit<MessageState> {
       return false;
     }
   }
-
 }
