@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -227,17 +225,9 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.yellow,
                 onTap: () {
-                  // context
-                  //     .read<CheckInsCubit>()
-                  //     .onChangeSelectedVisitorType(
-                  //     AppUtils.getServiceableType(
-                  //         Strings.keyGuest)
-                  // );
                   final type = AppUtils.getServiceableType(Strings.keyGuest);
-                  log("Filtering with type: ${type.value} hibba");
                   context.read<CheckInsCubit>().onChangeSelectedVisitorType(type);
                   context.read<CheckInsCubit>().getCheckIns();
-                  // context.read<CheckInsCubit>().getCheckIns();
                   context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);                },
               ),
               ActionsItemModel(

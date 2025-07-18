@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/auth/auth_cubit.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/bloc/work_order/work_order_cubit.dart';
@@ -139,14 +140,12 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           index: AppConstants.checkOutsIndex,
           title: AppUtils.languageTranslate('checkOuts'),
           iconPath: AppImages.menuCheckout),
+      if (context.read<DashboardCubit>().state.profileRecord?.association?.isVisitorDirHidden == 0)
       DrawerItemModel(
           index: AppConstants.directoryIndex,
           title: AppUtils.languageTranslate('directory'),
-          iconPath: AppImages.directory),
-      // DrawerItemModel(
-      //     index: AppConstants.logoutIndex,
-      //     title: AppUtils.languageTranslate('logout'),
-      //     iconPath: AppImages.logout),
+          iconPath: AppImages.directory)
+
     ];
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
@@ -189,7 +188,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                         .onChangeSelectedIndex(item.index);
                     // Optionally trigger specific cubits
                     gettingApiCall(context, item.index);
-                },
+                  },
               )),
           ListTile(
             dense: true,
