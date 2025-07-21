@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mlkit_document_scanner/google_mlkit_document_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,6 +72,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   DateTime? _selectedTravelDocumentExpiryDate;
   File? _personImage;
   TypeItemModel? _selectedDocumentType;
+  String? _scannedRawText;
+
   final List<TypeItemModel> _documentTypes = [
     TypeItemModel(
       value: 'Emirates ID',
@@ -1131,7 +1135,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           insetPadding: AppUtils.isTablet(context)
               ? const EdgeInsets.symmetric(horizontal: 35)
               : const EdgeInsets.symmetric(horizontal: 10),
-          title: 'Select Visitor',
+          title: AppUtils.languageTranslate('selectVisitor'),
           contentBuilder: (context, setState) {
             return _visitorNumberWidget(
               _phoneNumberController.text,
@@ -1282,7 +1286,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     String? recognizedText;
     if (ocrData != null) {
       recognizedText = ocrData.recognizedTExt;
+     // print(' EmiratesId Text: $recognizedText');
 
+      final scannedText = recognizedText?.toLowerCase() ?? '';
+      if (!scannedText.toLowerCase().contains('id number')) {
+        Fluttertoast.showToast(msg: 'Scanned document is not an Emirates ID.');
+        return;
+      }
       if (recognizedText?.isNotEmpty ?? false) {
         final Map<String, String> parsedText =
             _parseEmiratesIdExtractedText(recognizedText!);
@@ -1295,6 +1305,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           expiryDate: parsedText['Expiry Date'] ?? '',
           nationality: parsedText['Nationality'] ?? parsedText['nationality'],
         );
+
         clearData();
 
         setState(() {
@@ -1335,6 +1346,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     if (ocrData != null) {
       recognizedText = ocrData.recognizedTExt;
 
+      final scannedText = recognizedText?.toLowerCase() ?? '';
+      if (!scannedText.contains('driving')) {
+        Fluttertoast.showToast(msg: 'Scanned document is not a Driving License.');
+        return;
+      }
+
       if (recognizedText?.isNotEmpty ?? false) {
         DrivingLicenseModel? drivingLicenseData =
             _parseDrivingLicenseExtractedText(
@@ -1346,10 +1363,16 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           _photoIdNumberController.text =
               drivingLicenseData.licenseNumber ?? '';
           DateFormat format = DateFormat('dd/MM/yyyy');
-          _selectedPhotoIdIssueDate =
-              format.tryParse(drivingLicenseData.issueDate ?? '');
-          _selectedPhotoIdExpiryDate =
-              format.tryParse(drivingLicenseData.expiryDate ?? '');
+          // _selectedPhotoIdIssueDate =
+          //     format.tryParse(drivingLicenseData.issueDate ?? '');
+          _selectedPhotoIdIssueDate = drivingLicenseData.issueDate != null
+              ? DateTime.tryParse(drivingLicenseData.issueDate!)
+              : null;
+          _selectedPhotoIdExpiryDate = drivingLicenseData.expiryDate != null
+              ? DateTime.tryParse(drivingLicenseData.expiryDate!)
+              : null;
+          // _selectedPhotoIdExpiryDate =
+          //     format.tryParse(drivingLicenseData.expiryDate ?? '');
           List<Country>? countries =
               context.read<GuestCheckInCubit>().state.countries;
           if ((drivingLicenseData.nationality?.isNotEmpty ?? false) &&
@@ -1423,6 +1446,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           nationality:
               AppUtils.getNationalityName(result.nationalityCountryCode),
         );
+       //  print('document type:: ${result.documentType}');
+        if (
+            result.documentType.toLowerCase() != 'p') {
+          Fluttertoast.showToast(msg: 'The scanned document is not a Passport.');
+          return;
+        }
         clearData();
 
         setState(() {
@@ -1482,6 +1511,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         // );
       } else {
         debugPrint('No valid MRZ detected.');
+        Fluttertoast.showToast(msg: 'The scanned document is not a Passport.');
       }
     }
   }
@@ -1657,7 +1687,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
   DrivingLicenseModel _parseDrivingLicenseExtractedText(
       String rawText, File? imageFile) {
-    final lines = rawText.split('\n').map((line) => line.trim()).toList();
+    log('DrivingLicense rawText$rawText');
+// Split into lines
+    //final lines = rawText.split('\n').map((line) => line.trim()).toList();
+    final lines = rawText.split('\n').map((line) => line.trim()).where((line) => line.isNotEmpty).toList();
+
 
     String? licenseNumber;
     String? name;
@@ -1666,12 +1700,43 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     String? issueDate;
     String? expiryDate;
 
-    final dateRegex = RegExp(r'\d{2}/\d{2}/\d{4}');
+    // final dateRegex = RegExp(r'\d{2}/\d{2}/\d{4}');
+    final dateRegex = RegExp(
+        r'(\d{2}/\d{2}/\d{4})|'            // 12/05/2023
+        r'(\d{2}-\d{2}-\d{4})|'            // 19-01-1993
+        r'(\d{4}-\d{2}-\d{2})|'            // 2023-05-12
+        r'([A-Za-z]+ \d{1,2}, \d{4})|'     // May 12, 2023
+        r'(\d{1,2} [A-Za-z]+ \d{4})|'      // 12 May 2023
+        r'(\d{2}\.\d{2}\.\d{4})'           // 12.05.2023
+    );
+
+    String? normalizeDate(String input) {
+      final formats = [
+        DateFormat('dd/MM/yyyy'),
+        DateFormat('yyyy-MM-dd'),
+        DateFormat('dd-MM-yyyy'),
+        DateFormat('MMMM d, yyyy'),
+        DateFormat('dd MMM yyyy'),
+        DateFormat('dd.MM.yyyy'),
+        DateFormat('d MMMM yyyy'),
+      ];
+
+      for (final format in formats) {
+        try {
+          final date = format.parseStrict(input);
+          return DateFormat('yyyy-MM-dd').format(date);
+        } catch (_) {}
+      }
+
+      return null;
+    }
+
     final licenseRegex = RegExp(r'^\d{6,}$'); // Numeric and >= 6 digits
 
     for (int i = 0; i < lines.length; i++) {
       final line = lines[i];
-
+      // Debug: Print current line being processed
+      print('Processing line $i: "$line"');
       // License number
       if (licenseNumber == null && licenseRegex.hasMatch(line)) {
         licenseNumber = licenseRegex.firstMatch(line)!.group(0);
@@ -1687,29 +1752,71 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       }
 
       // Nationality
+      // if (nationality == null && line.toLowerCase().contains('nationality')) {
+      //   nationality = line
+      //       .replaceFirst(RegExp(r'nationality', caseSensitive: false), '')
+      //       .trim();
+      //   if (nationality.isEmpty && i + 1 < lines.length) {
+      //     print('nationality$nationality');
+      //     nationality = lines[i + 1].trim();
+      //   }
+      // }
+      /////
+
+
       if (nationality == null && line.toLowerCase().contains('nationality')) {
+        // Try to extract from the same line (e.g., "Nationality: INDIA")
         nationality = line
-            .replaceFirst(RegExp(r'nationality', caseSensitive: false), '')
+            .replaceAll(RegExp(r'nationality[:]?', caseSensitive: false), '')
             .trim();
-        if (nationality.isEmpty && i + 1 < lines.length) {
-          nationality = lines[i + 1].trim();
+
+        // If no value on the same line, check the next line
+        if (nationality.isEmpty || nationality == ':') {
+          if (i + 1 < lines.length) {
+            nationality = lines[i + 1]
+                .replaceAll(RegExp(r'[^a-zA-Z]'), '') // Remove non-alphabets
+                .trim();
+          }
         }
+        print('Extracted Nationality: "$nationality"'); // Debug
       }
 
-      // Dates (DOB, Issue, Expiry)
-      if (dateRegex.hasMatch(line)) {
-        final matches =
-            dateRegex.allMatches(line).map((m) => m.group(0)!).toList();
-        for (final date in matches) {
-          if (dateOfBirth == null) {
-            dateOfBirth = date;
-          } else if (issueDate == null) {
-            issueDate = date;
-          } else {
-            expiryDate ??= date;
+
+
+      final matches = dateRegex.allMatches(line);
+      for (final match in matches) {
+        final rawDate = match.group(0);
+        if (rawDate != null) {
+          final normalized = normalizeDate(rawDate);
+          if (normalized != null) {
+            if (dateOfBirth == null) {
+              dateOfBirth = normalized;
+            } else if (issueDate == null) {
+              issueDate = normalized;
+            } else if (expiryDate == null) {
+              expiryDate = normalized;
+            }
           }
         }
       }
+
+      // final matches = dateRegex.allMatches(line);
+      // for (final match in matches) {
+      //   final rawDate = match.group(0);
+      //   if (rawDate != null) {
+      //     final normalized = normalizeDate(rawDate);
+      //     if (normalized != null) {
+      //       if (dateOfBirth == null) {
+      //         dateOfBirth = normalized;
+      //       } else if (issueDate == null) {
+      //         issueDate = normalized;
+      //       } else if (expiryDate == null) {
+      //         expiryDate = normalized;
+      //       }
+      //     }
+      //   }
+      // }
+
     }
 
     return DrivingLicenseModel(
@@ -1722,8 +1829,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     );
   }
 
+
+
   PassportModel _parsePassportExtractedText(String rawText, File? imageFile) {
     final lines = rawText.split('\n').map((line) => line.trim()).toList();
+    print('Passport rawText$rawText');
 
     String? name;
     String? passportNumber;
