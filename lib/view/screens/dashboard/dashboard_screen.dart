@@ -593,7 +593,10 @@ class DashboardScreen extends StatelessWidget {
                                 reference: workOrder?.reference ?? "",
                                 vendorName:
                                     workOrder?.newVendor?.companyName ?? "",
-                                createdDate: workOrder?.startDate?.toString(),
+                                createdDate: DateTimeUtil.getFormattedDate(
+                                    workOrder?.startDate),
+                                updatedDate: DateTimeUtil.getFormattedDate(
+                                    workOrder?.finishDate),
                                 checkInPressed: () {
                                   Navigator.pushNamed(
                                       context, AppRoutes.guestCheckIn);
@@ -1010,10 +1013,10 @@ class DashboardScreen extends StatelessWidget {
                             reference: workOrder?.reference ?? "--",
                             vendorName:
                                 workOrder?.newVendor?.companyName ?? "--",
-                            createdDate: DateTimeUtil.getFormattedDateTime(
-                                workOrder?.startDate.toString()),
-                            updatedDate: DateTimeUtil.getFormattedDateTime(
-                                workOrder?.finishDate.toString()),
+                            createdDate: DateTimeUtil.getFormattedDate(
+                                workOrder?.startDate),
+                            updatedDate: DateTimeUtil.getFormattedDate(
+                                workOrder?.finishDate),
                             checkInPressed: () {
                               Navigator.pushNamed(
                                   context, AppRoutes.guestCheckIn);
