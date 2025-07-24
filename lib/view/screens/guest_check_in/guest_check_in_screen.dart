@@ -171,7 +171,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         'passport_expiry_date':
                             _selectedTravelDocumentExpiryDate?.toString(),
                       },
-                      'type': _selectedVisitType,
+                      'type': _selectedVisitType?.value,
                       'name': _nameController.text,
                       if (_selectedVisitType?.value == 'Unit Visit') ...{
                         'purpose': state.selectedPurpose?.purpose,
@@ -505,6 +505,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             AppUtils.languageTranslate('unitVisit')) ...[
                           Gap(5),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: SingleSelectedDropdownWidget<
@@ -527,7 +528,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         .onChangeSelectedPurpose(value);
                                   },
                                   validator: (value) {
-                                    if (value?.purpose?.isNotEmpty ?? false) {
+                                    if (value?.purpose?.isEmpty ?? true) {
                                       return 'required';
                                     }
                                     return null;
@@ -551,10 +552,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                         .onChangeSelectedUnit(value!);
                                   },
                                   validator: (value) {
-                                    if (value?.name?.isNotEmpty ?? false) {
+                                    if (value?.unitNumber?.isEmpty ?? true) {
                                       return AppUtils.languageTranslate(
                                           'required');
                                     }
+
                                     return null;
                                   },
                                 ),

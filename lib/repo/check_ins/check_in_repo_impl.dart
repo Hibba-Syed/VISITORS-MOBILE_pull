@@ -106,6 +106,7 @@ class CheckInRepoImpl implements CheckInRepo {
   }) async {
     try {
       String url = ApiUrl.guestCheckIn;
+      print('guestCheckIn$url');
       dynamic response =
       await _apiService.getAuthPostApiResponse(url, data);
       return GuestCheckInResponseModel.fromJson(response);
