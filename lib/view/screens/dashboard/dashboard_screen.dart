@@ -324,9 +324,6 @@ class DashboardScreen extends StatelessWidget {
                         textColor: AppColors.white,
                         image: AppImages.guestCheckIn,
                         onPressed: () {
-                          context.read<GuestCheckInCubit>().getCountries();
-                          context.read<GuestCheckInCubit>().getProfile();
-                          context.read<GuestCheckInCubit>().getUnits();
                           // context.read<GuestCheckInCubit>().getNumberInfo();
                           Navigator.pushNamed(context, AppRoutes.guestCheckIn);
                         }),
@@ -758,9 +755,6 @@ class DashboardScreen extends StatelessWidget {
                     textColor: AppColors.white,
                     image: AppImages.guestCheckIn,
                     onPressed: () {
-                      context.read<GuestCheckInCubit>().getUnits();
-                      context.read<GuestCheckInCubit>().getCountries();
-                      context.read<GuestCheckInCubit>().getProfile();
                       Navigator.pushNamed(context, AppRoutes.guestCheckIn);
                     }),
                 const Gap(10),

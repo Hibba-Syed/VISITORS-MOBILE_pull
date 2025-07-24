@@ -315,7 +315,7 @@ class _DeliveryPermitServiceDetailsScreenState
                                 disableCancelButtonBorder: true,
                                 cancelButtonTextColor: AppColors.white,
                                 cancelButtonColor: AppColors.primary,
-                                cancelButtonText: AppUtils.languageTranslate('scanId'),
+                                cancelButtonText: AppUtils.languageTranslate('scanEmiratesId'),
                                 confirmButtonText:AppUtils.languageTranslate('complete'),
                                 confirmButtonColor: AppColors.green,
                                 onConfirm: () async {
@@ -341,9 +341,12 @@ class _DeliveryPermitServiceDetailsScreenState
                                       'note': _noteController.text,
                                     },
                                   );
-                                  _noteController.clear();
-                                  _idController.clear();
-                                  _nameController.clear();
+                                  if(result){
+                                    _noteController.clear();
+                                    _idController.clear();
+                                    _nameController.clear();
+                                  }
+
                                   //print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
                                   return result;
                                 },

@@ -36,6 +36,8 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
   final TextEditingController _noteController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
  final TextEditingController _idController = TextEditingController();
+ final TextEditingController _newCardController = TextEditingController();
+ // final TextEditingController _oldCardController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -335,17 +337,17 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Complete HB2024080725',
+                              title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? "--"}',
                               disableCancelButtonBorder: true,
                               cancelButtonTextColor: AppColors.white,
-                              cancelButtonColor: AppColors.green,
-                              cancelButtonText: AppUtils.languageTranslate('complete'),
-                              confirmButtonText: AppUtils.languageTranslate('scanId'),
-                              confirmButtonColor: AppColors.primary,
-                              onConfirm: () async {
+                              cancelButtonColor: AppColors.primary,
+                              cancelButtonText: AppUtils.languageTranslate('scanEmiratesId'),
+                              confirmButtonText: AppUtils.languageTranslate('complete'),
+                              confirmButtonColor: AppColors.green,
+                              onCancel: () async {
                                 return false;
                               },
-                              onCancel: () async{
+                                onConfirm : () async{
                                 if (_nameController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
@@ -356,21 +358,32 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                       msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
                                   return false;
                                 }
+                                if (_newCardController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: AppUtils.languageTranslate('pleaseTypeNewCardNumberFirst'));
+                                  return false;
+                                }
 
                                 final result = await context
                                     .read<ServiceDetailsCubit>()
-                                    .completeService(
-                                  context,
+                                    .completeAccessDeviceService(
+                                  context,serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id,
                                   data: {
                                     'requester_name': _nameController.text,
                                     'id_number': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
                                     'note': _noteController.text,
+                                    'new_card': _newCardController.text,
+                                    'old_card': '',
+                                    'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}'
                                   },
+
                                 );
+                              if (result) {
                                 _noteController.clear();
                                 _idController.clear();
                                 _nameController.clear();
-
+                                _newCardController.clear();
+                              }
                                 return result;
                               },
                               contentBuilder: (context, setState) {
@@ -400,8 +413,13 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
                                     ),
                                     const Gap(5),
                                     TextFieldWidget(
+                                      label:  AppUtils.languageTranslate('newCardNumber'),
+                                      controller: _newCardController,
+                                    ),
+                                    const Gap(5),
+                                    TextFieldWidget(
                                       controller: _noteController,
-                                      label: AppUtils.languageTranslate('note'),
+                                      label: AppUtils.languageTranslate('servicesNote'),
                                     ),
                                   ],
                                 );

@@ -48,7 +48,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   void onChangeSelectedUnit(UnitModel unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
-
+  //
   Future<void> getCountries() async {
     emit(state.copyWith(isCountriesLoading: true));
     CountriesResponseModel? response =

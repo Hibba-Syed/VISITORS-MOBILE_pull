@@ -331,14 +331,15 @@ class _FacilityBookingServiceDetailsScreenState
                                 insetPadding: AppUtils.isTablet(context)
                                     ? EdgeInsets.symmetric(horizontal: 35)
                                     : EdgeInsets.symmetric(horizontal: 10),
-                                title: 'Complete HB2024080725',
+                                title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                                 disableCancelButtonBorder: true,
                                 cancelButtonTextColor: AppColors.white,
-                                cancelButtonColor: AppColors.green,
-                                cancelButtonText: AppUtils.languageTranslate('complete'),
-                                confirmButtonText: AppUtils.languageTranslate('scanId'),
-                                confirmButtonColor: AppColors.primary,
+                                cancelButtonColor: AppColors.primary,
+                                cancelButtonText: AppUtils.languageTranslate('scanEmiratesId'),
+                                confirmButtonText: AppUtils.languageTranslate('complete'),
+                                confirmButtonColor: AppColors.green,
                                 onConfirm: () async {
+
                                   if (_nameController.text.isEmpty) {
                                     Fluttertoast.showToast(
                                         msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
@@ -354,18 +355,18 @@ class _FacilityBookingServiceDetailsScreenState
                                       .completeService(
                                     context,
                                     data: {
-                                      'id':
-                                          '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                      'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
                                       'requester_name': _nameController.text,
                                       'id_number': _idController.text,
                                       'note': _noteController.text,
                                     },
                                   );
-                                  _noteController.clear();
-                                  _idController.clear();
-                                  _nameController.clear();
-
-                                  return result;
+                                  if(result){
+                                    _noteController.clear();
+                                    _idController.clear();
+                                    _nameController.clear();
+                                  }
+                                   return result;
                                 },
                                 contentBuilder: (context, setState) {
                                   return Column(

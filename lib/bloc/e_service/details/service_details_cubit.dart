@@ -88,7 +88,8 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     emit(state.copyWith(isCompleteServiceLoading: true));
     try {
       VisitorsServiceCompleteResponseModel? response = await _serviceRepo
-          .completeService(data: data)
+          .completeService(
+          data: data)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCompleteServiceLoading: false));
         Fluttertoast.showToast(
@@ -96,13 +97,50 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
         );
         return null;
       });
-
       emit(state.copyWith(isCompleteServiceLoading: false));
       // log("Service model RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
         Fluttertoast.showToast(msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
         if(context.mounted){
-          getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+          Navigator.pop(context);
+        }
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingCompletingServices'));
+        return false;
+      }
+    } catch (e) {
+      emit(state.copyWith(isCompleteServiceLoading: false));
+      Fluttertoast.showToast(msg: e.toString());
+      // log('cubit call ${e.toString()}');
+      return false;
+    }
+  }
+  Future<bool> completeAccessDeviceService(
+      BuildContext context, {
+        required Map<String, dynamic> data,
+         required int? serviceId
+      }) async {
+    emit(state.copyWith(isCompleteServiceLoading: true));
+    try {
+      VisitorsServiceCompleteResponseModel? response = await _serviceRepo
+          .completeAccessDeviceService(
+        data: data,
+        serviceId: serviceId)
+          .onError((error, stackTrace) {
+        emit(state.copyWith(isCompleteServiceLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        return null;
+      });
+      emit(state.copyWith(isCompleteServiceLoading: false));
+      // log("Service model RESPONSES:::: ${response?.toJson()}");
+      if (response != null && response.status == 'success') {
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
+        if(context.mounted){
+          Navigator.pop(context);
         }
         return true;
       } else {

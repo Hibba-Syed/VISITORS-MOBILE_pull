@@ -108,14 +108,14 @@
     "passportNumberHint": "رقم جواز السفر",
     "passportExpiry": "تاريخ انتهاء جواز السفر",
     "passportExpiryHint": "تاريخ انتهاء جواز السفر",
-    "idNumber": "رقم الهوية",
+    "idNumber": "رقم الهوية *",
     "idExpiry": "تاريخ انتهاء الهوية",
     "activityLog": "سجل النشاط",
     "complete": "إكمال",
     "scan": "مسح",
     "pleaseTypeNameFirst": "يرجى كتابة الاسم أولاً",
     "pleaseTypeIdFirst": "يرجى كتابة رقم الهوية أولاً",
-    "requesterName": "اسم مقدم الطلب",
+    "requesterName": "اسم مقدم الطلب *",
     "deliveryCompany": "شركة التوصيل",
     "requestedDate": "التاريخ المطلوب",
     "endTime": "وقت الانتهاء",
@@ -178,8 +178,6 @@
     "visitorRecordsFound": "تم العثور على سجلات الزوار لهذا الرقم",
     "entryLicenseNumber": "رقم رخصة الدخول",
     "unitedArabEmirates": "الإمارات العربية المتحدة",
-
-
     "somethingWentWrongPleaseTryAgainLater": "حدث خطأ ما، يرجى المحاولة مرة أخرى لاحقًا",
     "somethingWentWrongWhileFetchingVisitorsCheckins": "حدث خطأ أثناء جلب تسجيلات وصول الزوار",
     "noMoreCheckins": "لا توجد تسجيلات وصول إضافية",
@@ -261,7 +259,6 @@
     "visitorPass": "تصريح الزائر",
     "workOrdersRFPs": "أوامر العمل / طلبات تقديم العروض",
     "rfp": "طلب تقديم عرض",
-
     "scanEmiratesId": "مسح بطاقة الهوية الإماراتية",
     "scanPhotoId": "مسح بطاقة الهوية المصورة",
     "scanTravelDocument": "مسح وثيقة السفر",
@@ -274,7 +271,10 @@
     "expiryDate": "تاريخ الانتهاء",
     "selectExpiryDate": "اختر تاريخ الانتهاء",
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "الملف كبير جدًا. يرجى اختيار ملف أصغر من 10 ميغابايت",
-    "visitorsMobile": "جوال الزائرين"
+    "visitorsMobile": "جوال الزائرين",
+    "newCardNumber": "رقم البطاقة الجديد * ",
+    "pleaseTypeNewCardNumberFirst": "يرجى إدخال رقم البطاقة الجديد أولاً"
+
 
 
 }

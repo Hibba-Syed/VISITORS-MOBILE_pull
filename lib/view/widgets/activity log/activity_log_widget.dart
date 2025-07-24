@@ -105,7 +105,7 @@ class ActivityLogWidget extends StatelessWidget {
                     ),
 
                     const Gap(5),
-                    Text( description ?? "",
+                    Text( description ?? "--",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

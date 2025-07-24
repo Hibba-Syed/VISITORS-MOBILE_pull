@@ -107,14 +107,14 @@
     "passportNumberHint": "Passport number",
     "passportExpiry": "Passport Expiry",
     "passportExpiryHint": "Passport expiry",
-    "idNumber": "ID Number",
+    "idNumber": "ID Number *",
     "idExpiry": "ID Expiry",
     "activityLog": "Activity Log",
     "complete": "Complete",
     "scan": "Scan",
     "pleaseTypeNameFirst": "Please type name first",
     "pleaseTypeIdFirst": "Please type id first",
-    "requesterName": "Requester Name",
+    "requesterName": "Requester Name *",
     "deliveryCompany" : "Delivery Company",
     "requestedDate" : "Requested Date",
     "endTime": "End Time",
@@ -273,7 +273,10 @@
     "selectExpiryDate": "Select Expiry Date",
     "dateRange": "Date Range",
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "File is too large. Please choose a file smaller than 10 MB",
-    "visitorsMobile": "Visitors Mobile"
+    "visitorsMobile": "Visitors Mobile",
+    "newCardNumber": "New Card Number *",
+    "servicesNote": "Note",
+    "pleaseTypeNewCardNumberFirst": "Please type new card number first"
 }
 
 

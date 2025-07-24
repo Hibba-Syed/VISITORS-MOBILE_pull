@@ -19,6 +19,7 @@ class DashboardState {
   final List<CheckOutVisitor>? checkOutVisitors;
   final VisitorPassesCount? visitorPassesCount;
   final CountModel? countModel;
+
   DashboardState({
     this.isLoading = false,
     this.isCheckInLoading = false,

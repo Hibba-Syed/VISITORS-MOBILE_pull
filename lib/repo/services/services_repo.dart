@@ -22,6 +22,11 @@ abstract class ServiceRepo{
       });
   Future<VisitorsServiceCompleteResponseModel?> completeService(
       {required Map<String, dynamic> data,
+
+      });
+  Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService(
+      {required Map<String, dynamic> data,
+       required int? serviceId
       });
   Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({
       required int? id,

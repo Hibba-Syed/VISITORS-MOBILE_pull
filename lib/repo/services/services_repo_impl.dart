@@ -59,12 +59,26 @@ class ServiceRepoImpl implements ServiceRepo {
   }
 
   @override
-  Future<VisitorsServiceCompleteResponseModel?> completeService({required Map<String, dynamic> data}) async {
+  Future<VisitorsServiceCompleteResponseModel?> completeService({required Map<String, dynamic> data,}) async {
     try {
-     // print('service complete: ${ApiUrl.serviceComplete}');
+      print('service complete: ${ApiUrl.serviceComplete}'
+          //'/$serviceId'
+          );
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
-      // print('Raw API Response: $response');
+       print('Raw API Response: $response');
+      return VisitorsServiceCompleteResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService({required Map<String, dynamic> data,required int? serviceId}) async {
+    try {
+      print('completeAccessDeviceService ${ApiUrl.serviceAccessDeviceComplete}/$serviceId');
+      dynamic response =
+      await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
+       print('completeAccessDeviceService $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

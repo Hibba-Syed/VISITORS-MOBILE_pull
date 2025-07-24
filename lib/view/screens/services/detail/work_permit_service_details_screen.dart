@@ -350,9 +350,11 @@ final  TextEditingController _idController = TextEditingController();
                                       'note': _noteController.text,
                                     },
                                   );
-                                  // noteController.clear();
-                                  // idController.clear();
-                                  // nameController.clear();
+                                  if(result){
+                                    _noteController.clear();
+                                    _idController.clear();
+                                    _nameController.clear();
+                                  }
 
                                   return result;
                                 },

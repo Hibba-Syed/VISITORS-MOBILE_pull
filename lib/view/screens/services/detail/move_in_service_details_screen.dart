@@ -373,10 +373,11 @@ class _MoveInServiceDetailsScreenState
                                         'note': _noteController.text,
                                       },
                                     );
-                                    _noteController.clear();
-                                    _idController.clear();
-                                    _nameController.clear();
-
+                                    if(result){
+                                      _noteController.clear();
+                                      _idController.clear();
+                                      _nameController.clear();
+                                    }
                                     return result;
                                   },
                                   contentBuilder: (context, setState) {
@@ -423,7 +424,7 @@ class _MoveInServiceDetailsScreenState
                       .state
                       .serviceDetails
                       ?.status !=
-                  'Approved') ...[
+                  'approved') ...[
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
