@@ -273,7 +273,8 @@
     "selectExpiryDate": "Select Expiry Date",
     "dateRange": "Date Range",
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "File is too large. Please choose a file smaller than 10 MB",
-    "visitorsMobile": "Visitors Mobile"
+    "visitorsMobile": "Visitors Mobile",
+    "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "The scanned document is not valid. Please try again using a valid document."
 }
 
 

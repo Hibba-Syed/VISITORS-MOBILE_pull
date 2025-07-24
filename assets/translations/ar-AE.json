@@ -274,7 +274,9 @@
     "expiryDate": "تاريخ الانتهاء",
     "selectExpiryDate": "اختر تاريخ الانتهاء",
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "الملف كبير جدًا. يرجى اختيار ملف أصغر من 10 ميغابايت",
-    "visitorsMobile": "جوال الزائرين"
+    "visitorsMobile": "جوال الزائرين",
+    "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "المستند الممسوح ضوئيًا غير صالح. يرجى المحاولة مرة أخرى باستخدام مستند صالح"
+
 
 
 }
