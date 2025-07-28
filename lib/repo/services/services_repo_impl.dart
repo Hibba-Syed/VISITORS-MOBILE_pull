@@ -28,6 +28,7 @@ class ServiceRepoImpl implements ServiceRepo {
       String url =
           '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
           10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
+      print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);
     } catch (e) {
@@ -92,7 +93,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }) async {
     try {
       String url = '${ApiUrl.clearPayment}/$id';
-      // print('clearPayment^^ $url');
+       print('clearPayment^^ $url');
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,

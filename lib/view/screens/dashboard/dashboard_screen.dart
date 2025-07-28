@@ -273,24 +273,15 @@ class DashboardScreen extends StatelessWidget {
                     vertical: AppConstants.verticalPadding,
                     horizontal: AppConstants.horizontalPadding),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HeadingWidget(
-                              heading: AppUtils.languageTranslate("welcome"),
-                              style: AppTextStyles.style15DarkGrey600,
-                            ),
-                            HeadingWidget(
-                                heading:
-                                    "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
-                          ],
-                        ),
-                      ],
+                    HeadingWidget(
+                      heading: AppUtils.languageTranslate("welcome"),
+                      style: AppTextStyles.style15DarkGrey600,
                     ),
+                    HeadingWidget(
+                        heading:
+                        "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
                     const Gap(10),
                     GridView.builder(
                       padding: const EdgeInsets.only(bottom: 10),

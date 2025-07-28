@@ -34,14 +34,25 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        if (widget.initialDate != null) {
-          _dateController.text =
-              DateFormat('EEEE, dd MMMM, yyyy').format(widget.initialDate!);
-        }
-      });
-    });
+    if (widget.initialDate != null) {
+      _dateController.text =
+          DateFormat('EEEE, dd MMMM, yyyy').format(widget.initialDate!);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomDatePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDate != oldWidget.initialDate &&
+        widget.initialDate != null) {
+      _dateController.text =
+          DateFormat('EEEE, dd MMMM, yyyy').format(widget.initialDate!);
+    }
+
+    // Clear if the initialDate becomes null (e.g. reset)
+    if (widget.initialDate == null && oldWidget.initialDate != null) {
+      _dateController.clear();
+    }
   }
 
   @override

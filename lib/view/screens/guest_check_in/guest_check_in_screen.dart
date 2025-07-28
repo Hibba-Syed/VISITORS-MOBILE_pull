@@ -31,7 +31,7 @@ import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../helper/mrz_helper.dart';
-import '../../../bloc/check_ins/check_ins_cubit.dart';
+// import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/country/country_model.dart';
 import '../../../model/unit/unit_model.dart';
 import '../../../model/visitor_info/number_info_model.dart';
@@ -146,54 +146,62 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 image: AppImages.checkInButton,
                 buttonColor: AppColors.green,
                 text: AppUtils.languageTranslate('checkIn'),
-                onPressed: () {
-                  if ((_formKey.currentState?.validate() ?? false) &&
-                      (_phoneNumberKey.currentState?.validate() ?? false)) {
-                    Map<String, dynamic> formData = {
-                      if (_selectedDocumentType?.value == 'Emirates ID') ...{
-                        'id_number': _emiratesIdNumberController.text,
-                        'id_issue_date':
-                            _selectedEmiratesIdIssueDate?.toString(),
-                        'id_expiry_date':
-                            _selectedEmiratesIdExpiryDate?.toString(),
+                onPressed: state.isGuestCheckInLoading
+                    ? null
+                    : () {
+                        print(' state${state.selectedUnit?.id}');
+                        if ((_formKey.currentState?.validate() ?? false) &&
+                            (_phoneNumberKey.currentState?.validate() ??
+                                false)) {
+                          Map<String, dynamic> formData = {
+                            if (_selectedDocumentType?.value ==
+                                'Emirates ID') ...{
+                              'id_number': _emiratesIdNumberController.text,
+                              'id_issue_date':
+                                  _selectedEmiratesIdIssueDate?.toString(),
+                              'id_expiry_date':
+                                  _selectedEmiratesIdExpiryDate?.toString(),
+                            },
+                            if (_selectedDocumentType?.value == 'Photo ID') ...{
+                              'photo_id_number': _photoIdNumberController.text,
+                              'photo_id_issue_date':
+                                  _selectedPhotoIdIssueDate?.toString(),
+                              'photo_id_expiry_date':
+                                  _selectedPhotoIdExpiryDate?.toString(),
+                            },
+                            if (_selectedDocumentType?.value == 'Photo ID') ...{
+                              'passport_number':
+                                  _travelDocumentNumberController.text,
+                              'passport_issue_date':
+                                  _selectedTravelDocumentIssueDate?.toString(),
+                              'passport_expiry_date':
+                                  _selectedTravelDocumentExpiryDate?.toString(),
+                            },
+                            'type': _selectedVisitType?.value,
+                            'name': _nameController.text,
+                            if (_selectedVisitType?.value == 'Unit Visit') ...{
+                              'purpose': state.selectedPurpose?.purpose,
+                              'unit_id': state.selectedUnit?.id,
+                              'unit_number': state.selectedUnit?.toJson(),
+                            },
+                            'phone': _phoneNumberController.text,
+                            'email': _emailController.text,
+                            'entry_card_number':
+                                _entryCardNumberController.text,
+                            'nationality': state.selectedNationality?.name,
+                            'description': _descriptionController.text,
+                            'serviceable_id': null,
+                            'serviceable_type': null,
+                            'sms': false,
+                            'visitor_count': _visitorCountController.text,
+                            'visitor_id': null,
+                          };
+                          context
+                              .read<GuestCheckInCubit>()
+                              .guestCheckIn(context, data: formData);
+                        }
                       },
-                      if (_selectedDocumentType?.value == 'Photo ID') ...{
-                        'photo_id_number': _photoIdNumberController.text,
-                        'photo_id_issue_date':
-                            _selectedPhotoIdIssueDate?.toString(),
-                        'photo_id_expiry_date':
-                            _selectedPhotoIdExpiryDate?.toString(),
-                      },
-                      if (_selectedDocumentType?.value == 'Photo ID') ...{
-                        'passport_number': _travelDocumentNumberController.text,
-                        'passport_issue_date':
-                            _selectedTravelDocumentIssueDate?.toString(),
-                        'passport_expiry_date':
-                            _selectedTravelDocumentExpiryDate?.toString(),
-                      },
-                      'type': _selectedVisitType?.value,
-                      'name': _nameController.text,
-                      if (_selectedVisitType?.value == 'Unit Visit') ...{
-                        'purpose': state.selectedPurpose?.purpose,
-                        'unit_id': state.selectedUnit?.id,
-                        'unit_number': state.selectedUnit?.toJson(),
-                      },
-                      'phone': _phoneNumberController.text,
-                      'email': _emailController.text,
-                      'entry_card_number': _entryCardNumberController.text,
-                      'nationality': state.selectedNationality?.name,
-                      'description': _descriptionController.text,
-                      'serviceable_id': null,
-                      'serviceable_type': null,
-                      'sms': false,
-                      'visitor_count': _visitorCountController.text,
-                      'visitor_id': null,
-                    };
-                    context
-                        .read<GuestCheckInCubit>()
-                        .guestCheckIn(context, data: formData);
-                  }
-                },
+                loading: state.isGuestCheckInLoading,
               );
             },
           ),
@@ -385,7 +393,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         if (_selectedDocumentType?.value == 'Emirates ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('issueDate'),
                             hint: AppUtils.languageTranslate('selectIssueDate'),
                             initialDate: _selectedEmiratesIdIssueDate,
@@ -395,7 +402,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Photo ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('issueDate'),
                             hint: AppUtils.languageTranslate('selectIssueDate'),
                             initialDate: _selectedPhotoIdIssueDate,
@@ -405,7 +411,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Travel Document')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('issueDate'),
                             hint: AppUtils.languageTranslate('selectIssueDate'),
                             initialDate: _selectedTravelDocumentIssueDate,
@@ -416,7 +421,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         if (_selectedDocumentType?.value == 'Emirates ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('expiryDate'),
                             hint:
                                 AppUtils.languageTranslate('selectExpiryDate'),
@@ -428,7 +432,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Photo ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('expiryDate'),
                             hint:
                                 AppUtils.languageTranslate('selectExpiryDate'),
@@ -440,7 +443,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Travel Document')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('expiryDate'),
                             hint:
                                 AppUtils.languageTranslate('selectExpiryDate'),
@@ -549,7 +551,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   onChanged: (value) {
                                     context
                                         .read<GuestCheckInCubit>()
-                                        .onChangeSelectedUnit(value!);
+                                        .onChangeSelectedUnit(value);
                                   },
                                   validator: (value) {
                                     if (value?.unitNumber?.isEmpty ?? true) {
@@ -845,7 +847,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         if (_selectedDocumentType?.value == 'Emirates ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('issueDate'),
                             hint: AppUtils.languageTranslate('selectIssueDate'),
                             initialDate: _selectedEmiratesIdIssueDate,
@@ -855,7 +856,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Photo ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('issueDate'),
                             hint: AppUtils.languageTranslate('selectIssueDate'),
                             initialDate: _selectedPhotoIdIssueDate,
@@ -865,7 +865,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Travel Document')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('issueDate'),
                             hint: AppUtils.languageTranslate('selectIssueDate'),
                             initialDate: _selectedTravelDocumentIssueDate,
@@ -876,7 +875,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         const Gap(5),
                         if (_selectedDocumentType?.value == 'Emirates ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('expiryDate'),
                             hint:
                                 AppUtils.languageTranslate('selectExpiryDate'),
@@ -888,7 +886,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Photo ID')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('expiryDate'),
                             hint:
                                 AppUtils.languageTranslate('selectExpiryDate'),
@@ -900,7 +897,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         if (_selectedDocumentType?.value == 'Travel Document')
                           CustomDatePicker(
-                            key: UniqueKey(),
                             label: AppUtils.languageTranslate('expiryDate'),
                             hint:
                                 AppUtils.languageTranslate('selectExpiryDate'),
@@ -970,7 +966,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   .onChangeSelectedPurpose(value);
                             },
                             validator: (value) {
-                              if (value?.purpose?.isNotEmpty ?? false) {
+                              if (value?.purpose?.isEmpty ?? true) {
                                 return AppUtils.languageTranslate('required');
                               }
                               return null;
@@ -988,12 +984,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             compareFn: (unit, item) => unit.id == item.id,
                             items: state.units ?? [],
                             onChanged: (value) {
+                              print('value::: ${value?.toJson()}');
                               context
-                                  .read<CheckInsCubit>()
-                                  .onChangeSelectedUnit(value!);
+                                  .read<GuestCheckInCubit>()
+                                  .onChangeSelectedUnit(value);
+                              print('state value:: ${state.selectedUnit?.id}');
                             },
                             validator: (value) {
-                              if (value?.name?.isNotEmpty ?? false) {
+                              if (value?.unitNumber?.isEmpty ?? true) {
                                 return AppUtils.languageTranslate('required');
                               }
                               return null;
@@ -1773,8 +1771,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       // }
       /////
 
-      if (nationality == null &&
-          line.toLowerCase().contains('nationality')) {
+      if (nationality == null && line.toLowerCase().contains('nationality')) {
         // Look ahead for up to 5 lines to find a likely nationality value
         for (int j = 1; j <= 5 && i + j < lines.length; j++) {
           final nextLine = lines[i + j].trim();

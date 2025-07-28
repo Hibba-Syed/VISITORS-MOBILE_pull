@@ -273,8 +273,8 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                       .read<ServiceDetailsCubit>()
                       .state
                       .serviceDetails
-                      ?.status ==
-                      'Approved')...[
+                      ?.status?.toLowerCase() ==
+                      'approved')...[
                 const Gap(10),
                 Expanded(
                     child: CustomButton(
@@ -368,7 +368,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                         })
                 ), ],
 
-              if(context.read<ServiceDetailsCubit>().state.serviceDetails?.status != 'approved')...[
+              if(context.read<ServiceDetailsCubit>().state.serviceDetails?.status?.toLowerCase() != 'approved')...[
                 const Gap(10),
                 Expanded(
                   child: CustomButton(

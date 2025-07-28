@@ -28,7 +28,9 @@ import '../../../widgets/empty_widget.dart';
 
 class MoveInServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
-  const MoveInServiceDetailsScreen({super.key, required this.service});
+  const MoveInServiceDetailsScreen({super.key,
+    required this.service
+  });
 
   @override
   State<MoveInServiceDetailsScreen> createState() =>
@@ -46,6 +48,11 @@ class _MoveInServiceDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
+    print('status|| ${context
+        .read<ServiceDetailsCubit>()
+        .state
+        .serviceDetails
+        ?.status}');
     return SafeArea(
       child: Scaffold(
         appBar:  AppBarWidget(
@@ -80,7 +87,8 @@ class _MoveInServiceDetailsScreenState
                           ),
                         ),
                         StatusWidget(
-                            status: state.serviceDetails?.status ?? "--"),
+                            status: state.serviceDetails?.status ??
+                                "--"),
                       ],
                     ),
                     const Gap(3),
@@ -326,8 +334,8 @@ class _MoveInServiceDetailsScreenState
                           .read<ServiceDetailsCubit>()
                           .state
                           .serviceDetails
-                          ?.status ==
-                      'Approved') ...[
+                          ?.status?.toLowerCase() ==
+                      'approved') ...[
                 const Gap(10),
                 Expanded(
                     child: CustomButton(
@@ -423,7 +431,7 @@ class _MoveInServiceDetailsScreenState
                       .read<ServiceDetailsCubit>()
                       .state
                       .serviceDetails
-                      ?.status !=
+                      ?.status?.toLowerCase() !=
                   'approved') ...[
                 const Gap(10),
                 Expanded(
@@ -431,6 +439,11 @@ class _MoveInServiceDetailsScreenState
                       buttonColor: AppColors.yellow,
                       text: AppUtils.languageTranslate('clearPayment'),
                       onPressed: () {
+                        print('status|| ${context
+                            .read<ServiceDetailsCubit>()
+                            .state
+                            .serviceDetails
+                            ?.status}');
                         showDialog(
                             barrierDismissible: false,
                             context: context,
@@ -475,7 +488,10 @@ class _MoveInServiceDetailsScreenState
                                       'note': _noteController.text,
                                     },
                                   );
-                                  // noteController.clear();
+                                  if(result){
+                                    _noteController.clear();
+                                  }
+
                                   return result;
                                 },
                                 contentBuilder: (context, setState) {

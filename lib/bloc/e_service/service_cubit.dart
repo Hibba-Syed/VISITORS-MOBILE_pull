@@ -42,7 +42,7 @@ class ServiceCubit extends Cubit<ServiceState> {
   }
 
   Future<void> getServices({String? keyword}) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true,page: 1));
 
     ServiceResponseModel? response =
         await _serviceRepo.getServices(
@@ -50,7 +50,7 @@ class ServiceCubit extends Cubit<ServiceState> {
           keyword: state.searchKeyword,
           unitId: state.selectedUnit?.id,
           serviceType: state.selectCheckInTypeList?.value,
-          type: state.selectedType?.value
+          type: state.selectedType?.value,
         ).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -68,18 +68,17 @@ class ServiceCubit extends Cubit<ServiceState> {
           msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
-  Future<void> getMoreServices({
-    String? keyword,
-  }) async {
-    int page = state.page + 1;
+
+  Future<void> getMoreServices({ String? keyword,}) async {
+    int page = state.page+ 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     ServiceResponseModel? response = await _serviceRepo
         .getServices(
-      page: state.page,
-      keyword: state.searchKeyword,
-      unitId: state.selectedUnit?.id,
-      serviceType: state.selectedType?.value,
-
+          page: page,
+          keyword: state.searchKeyword,
+          unitId: state.selectedUnit?.id,
+          serviceType: state.selectedType?.value,
+          type: state.selectedType?.value,
     )
         .onError(
           (error, stackTrace) {
@@ -93,9 +92,9 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<ServiceModel> checkIns = state.serviceModel ?? [];
-        checkIns.addAll(response.record as Iterable<ServiceModel>);
-        emit(state.copyWith(serviceModel: checkIns));
+        List<ServiceModel> services = state.serviceModel ?? [];
+        services.addAll(response.record as Iterable<ServiceModel>);
+        emit(state.copyWith(serviceModel: services,page: page));
       } else {
         Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreService'));
         page = state.page - 1;
@@ -106,7 +105,6 @@ class ServiceCubit extends Cubit<ServiceState> {
           msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
-
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
     UnitsResponseModel? response = await _unitsRepo.getUnits().onError(

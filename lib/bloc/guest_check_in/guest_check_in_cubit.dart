@@ -45,7 +45,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     emit(state.copyWith(selectedPurpose: purpose));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
   //

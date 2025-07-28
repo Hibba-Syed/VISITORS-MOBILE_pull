@@ -10,7 +10,7 @@ class HeadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Text(heading ?? "",style: style ?? AppTextStyles.style20primary600);
+    return  Text(heading ?? "",style: style ?? AppTextStyles.style20primary600,maxLines: 2,overflow: TextOverflow.ellipsis,);
 
   }
 }

@@ -155,7 +155,9 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                         : state.checkInModel?.isNotEmpty ?? false
                             ? RefreshIndicator(
                                 onRefresh: () async {
-                                  context.read<CheckInsCubit>().getCheckIns();
+                                  context.read<CheckInsCubit>().getCheckIns(
+                                    keyword: _searchController.text
+                                  );
                                 },
                                 child: ListView.separated(
                                   physics: AlwaysScrollableScrollPhysics(),

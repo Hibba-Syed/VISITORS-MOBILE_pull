@@ -237,7 +237,8 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
-      // print('response::: ${response.body}');
+       print('response::: ${response.body}');
+       print('response::: ${response.statusCode}');
       responseJson = returnResponse(response);
 
       return responseJson;

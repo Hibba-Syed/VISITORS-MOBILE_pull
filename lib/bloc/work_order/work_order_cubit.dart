@@ -42,13 +42,15 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     );
   }
 
-  Future<void> getWorkOrder(
-      ) async {
+  Future<void> getWorkOrder({
+    String? keyword,
+  }) async {
     emit(state.copyWith(isLoading: true, page: 1));
     WorkOrderResponseModel? response = await _workOrderRFPRepo.getWorkOrder(
       keyword: state.searchKeyword,
       isAwarded: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
+      page: state.page
     ).onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -86,7 +88,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
           msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVendors'));
     }
   }
-  Future<void> getMoreWorkOrder() async {
+  Future<void> getMoreWorkOrder({ String? keyword,}) async {
     int page = state.page+ 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     WorkOrderResponseModel? response = await _workOrderRFPRepo
@@ -94,7 +96,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
       keyword: state.searchKeyword,
       isAwarded: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
-
+      page: state.page
     )
         .onError(
           (error, stackTrace) {
@@ -108,9 +110,9 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<WorkOrderModel> checkIns = state.workOrderModel ?? [];
-        checkIns.addAll(response.record as Iterable<WorkOrderModel>);
-        emit(state.copyWith(workOrderModel: checkIns));
+        List<WorkOrderModel> workOrders = state.workOrderModel ?? [];
+        workOrders.addAll(response.record as Iterable<WorkOrderModel>);
+        emit(state.copyWith(workOrderModel: workOrders));
       } else {
         Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreWorkOrder'));
         page = state.page - 1;

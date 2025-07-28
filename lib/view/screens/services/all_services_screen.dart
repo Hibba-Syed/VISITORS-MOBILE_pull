@@ -86,7 +86,9 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                           context
                               .read<ServiceCubit>()
                               .onChangeSearchKeyWord(value);
-                          context.read<ServiceCubit>().getServices();
+                          context.read<ServiceCubit>().getServices(
+
+                          );
                         },
                         isFilterApplied: (state.selectedUnit != null) ||
                                 (state.selectedType?.value.isNotEmpty ?? false)
@@ -105,7 +107,8 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                               ? RefreshIndicator(
                                   onRefresh: () async {
                                     context.read<ServiceCubit>().getServices(
-                                        keyword: _searchController.text);
+                                        keyword: _searchController.text,
+                                    );
                                   },
                                   child: ListView.separated(
                                     controller: _scrollController,

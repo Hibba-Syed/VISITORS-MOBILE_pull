@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/utils/app_utils.dart';
+import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -13,13 +16,14 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final TextAlign? textAlign;
   final double? borderRadius;
-  final VoidCallback? onPressed;
+final VoidCallback? onPressed;
   final int maxLines;
   final bool invert;
   final double? width;
   final double? height;
   final FontWeight? fontWeight;
   final double? fontSize;
+  final bool loading;
   const CustomButton({
     super.key,
     this.buttonColor,
@@ -36,6 +40,8 @@ class CustomButton extends StatelessWidget {
     this.fontWeight,
     this.borderRadius,
     this.imageHeight,
+    this.loading = false,
+    // this.onTap
   });
 
   @override
@@ -46,7 +52,7 @@ class CustomButton extends StatelessWidget {
     final double bothFontSize =
         fontSize ?? (AppUtils.isTablet(context) ? 15 : 12);
     return GestureDetector(
-      onTap: onPressed,
+      onTap: loading ? null : onPressed,
       child: Container(
         alignment: Alignment.center,
         width: width,
@@ -58,7 +64,17 @@ class CustomButton extends StatelessWidget {
                 ? Border.all(color: buttonColor ?? AppColors.primary, width: 1)
                 : null,
             color: invert == true ? null : buttonColor ?? AppColors.primary),
-        child: Row(
+        child:
+        loading
+        ? SizedBox(
+        width: 30,
+        height: 30,
+        child: LoaderWidget(
+          loaderColor: AppColors.white,
+        ),
+      )
+          :
+        Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

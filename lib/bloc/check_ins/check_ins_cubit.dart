@@ -37,8 +37,10 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(serviceableId: serviceableId));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
+
     emit(state.copyWith(selectedUnit: unit));
+    // print('unit::${state.selectedUnit?.toJson()}');
   }
 
   void onChangeSelectedVendors(VendorModel vendor) {
@@ -72,7 +74,9 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     ));
   }
 
-  Future<void> getCheckIns() async {
+  Future<void> getCheckIns({ String? keyword}
+
+      ) async {
     emit(state.copyWith(isLoading: true, page: 1));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(

@@ -272,7 +272,9 @@ final  TextEditingController _idController = TextEditingController();
                                     'note': _noteController.text,
                                   },
                                 );
-                                _noteController.clear();
+                                if(result){
+                                  _noteController.clear();
+                                }
 
                                 return result;
                               },

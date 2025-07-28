@@ -35,7 +35,9 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<WorkOrderCubit>().getMoreWorkOrder();
+        context.read<WorkOrderCubit>().getMoreWorkOrder(
+          keyword: _searchController.text
+        );
       }
     });
   }
@@ -95,7 +97,9 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async {
-                          context.read<WorkOrderCubit>().getWorkOrder();
+                          context.read<WorkOrderCubit>().getWorkOrder(
+                            keyword: _searchController.text
+                          );
                         },
                         child: state.isLoading
                             ? LoaderWidget()
