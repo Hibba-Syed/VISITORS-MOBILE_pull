@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
-import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/model/check_ins/check_in_model.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -241,7 +240,8 @@ class DashboardScreen extends StatelessWidget {
                       .read<CheckInsCubit>()
                       .onChangeSelectedVisitorType(
                       AppUtils.getServiceableType(
-                          Strings.keyServices));
+                          Strings.keyServices
+                      ));
                   context.read<CheckInsCubit>().getCheckIns();
                   context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
                 },
@@ -441,7 +441,7 @@ class DashboardScreen extends StatelessWidget {
                               width: 145,
                               child: VisitorPassesButton(
                                 verticalPadding: 4,
-                                horizontalPadding: 6,
+                                horizontalPadding: 9,
                                 count: state.visitorPassesCount?.count ?? 0,
                                 onPressed: () {
                                   onViewVisitorPasses(context);

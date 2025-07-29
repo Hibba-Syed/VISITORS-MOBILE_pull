@@ -82,7 +82,7 @@
     "from": "From",
     "purpose": "Purpose",
     "jobDetails": "Job Details",
-    "workOrder": "Work Order",
+    "workOrder": "Work Orders",
     "title": "Title",
     "category": "Category",
     "assets": "Assets",
@@ -134,7 +134,6 @@
     "cannotSelectMultipleFiles": "Cannot select multiple files",
     "chooseFile": "Choose File",
     "chequeFile": "Cheque File *",
-    "pleaseSelectCheckboxFirst": "Please select checkbox firstً",
     "pleaseChooseImageFileFirst": "Please choose image file firstً",
     "clearPayment": "Clear Payment",
     "requestedTime": "Requested Time",
@@ -277,7 +276,8 @@
     "newCardNumber": "New Card Number *",
     "servicesNote": "Note",
     "pleaseTypeNewCardNumberFirst": "Please type new card number first",
-    "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "The scanned document is not valid. Please try again using a valid document."
+    "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "The scanned document is not valid. Please try again using a valid document.",
+    "pleaseSelectCheckboxFirst": "Payment should be received. Please select checkbox first"
 }
 
 

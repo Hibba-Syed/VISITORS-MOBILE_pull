@@ -74,7 +74,7 @@ class JobCheckInsScreen extends StatelessWidget {
                             },
                           );
                         }),
-                  ),
+                  ) ,
                   const Gap(15),
                   Expanded(
                     child: RefreshIndicator(

@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +49,7 @@ final VoidCallback? onPressed;
     final double imageSize =
         imageHeight ?? (AppUtils.isTablet(context) ? 22 : 18);
     final double bothFontSize =
-        fontSize ?? (AppUtils.isTablet(context) ? 15 : 12);
+        fontSize ?? (AppUtils.isTablet(context) ? 15 : 14);
     return GestureDetector(
       onTap: loading ? null : onPressed,
       child: Container(

@@ -28,13 +28,13 @@ class StackCountContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int? parsedCount = int.tryParse(count ?? "");
-    final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 4 : 5;
+    final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 3 : 5;
     return Stack(
       clipBehavior: Clip.none,
       children: [
          NetworkImageWidget(
-            height: imageHeight ?? 90,
-            width: imageWidth ?? 90,
+            height: imageHeight ?? 80,
+            width: imageWidth ?? 80,
             url: imageUrl ?? "",
            imageBackgroundColor:  imageBackgroundColor ?? AppColors.gray,
 
@@ -50,8 +50,9 @@ class StackCountContainerWidget extends StatelessWidget {
                 border: Border.all(
                     color: AppColors.white, width: 2)),
             child:  Text(
+              textAlign: TextAlign.center,
               count?.toString() ?? "",
-              style:  AppUtils.isMobile(context) ? AppTextStyles.style12white400 : AppTextStyles.style13white400,
+              style:  AppUtils.isMobile(context) ? AppTextStyles.style13white400 : AppTextStyles.style14white400,
             ),
           ),
         ),

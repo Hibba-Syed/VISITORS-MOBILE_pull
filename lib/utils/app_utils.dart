@@ -60,6 +60,15 @@ class AppUtils {
     if (type?.toLowerCase() == "visitor_passes") {
       return AppColors.yellow;
     }
+    if (type?.toLowerCase() == "service") {
+      return AppColors.cyanBlue;
+    }
+    if (type?.toLowerCase() == "work order / rfp") {
+      return AppColors.cyanBlue;
+    }
+    if (type?.toLowerCase() == "visitor pass") {
+      return AppColors.yellow;
+    }
 
     return AppColors.red;
   }

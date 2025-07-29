@@ -11,8 +11,6 @@ import '../../model/check_out/check_out_model.dart';
 import '../../model/check_outs/check_out_visitor_response_model.dart';
 import '../../model/count/count_model.dart';
 import '../../model/count/count_response_model.dart';
-import '../../model/country/countries_response_model.dart';
-import '../../model/country/country_model.dart';
 import '../../model/profile/profile_response_model.dart';
 import '../../model/service/service_model.dart';
 import '../../model/visitor_passes/visitor_pass_model.dart';
@@ -22,8 +20,6 @@ import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
 import '../../repo/check_ins/check_in_repo.dart';
 import '../../repo/check_ins/check_in_repo_impl.dart';
-import '../../repo/countries/countries_repo.dart';
-import '../../repo/countries/countries_repo_impl.dart';
 import '../../repo/dashboard/dashboard_repo.dart';
 import '../../repo/dashboard/dashboard_repo_impl.dart';
 import '../../repo/profile/profile_repo.dart';
@@ -46,7 +42,6 @@ class DashboardCubit extends Cubit<DashboardState> {
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPRepoImpl();
   final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
-  final CountriesRepo _countriesRepo = CountriesRepoImpl();
 
   Future<bool> getProfile() async {
     emit(state.copyWith(isLoading: true));

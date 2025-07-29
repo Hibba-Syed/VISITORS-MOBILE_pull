@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart' show Fluttertoast;
+import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
@@ -162,6 +163,11 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate('checkOutAllVisitorsSuccessfully'));
       getCheckIns();
+      if(context.mounted){
+        context.read<DashboardCubit>().getDashboardCheckIns();
+        context.read<DashboardCubit>().getDashboardCount();
+
+      }
       return true;
     } else {
       Fluttertoast.showToast(

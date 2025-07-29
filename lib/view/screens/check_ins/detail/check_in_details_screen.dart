@@ -63,8 +63,10 @@ class CheckInDetailsScreen extends StatelessWidget {
                      HeadingWidget(
                       heading: '${AppUtils.getServiceableType(
                           checkIns?.serviceableType)
-                          .label} ${checkIns?.purpose ?? ""} ${AppUtils.languageTranslate('details')}',
+                          .label} ${AppUtils.languageTranslate('details')}',
                     ),
+                    (checkIns?.serviceableType == "job" || checkIns?.serviceableType == "application" ) ?
+                    Text(checkIns?.purpose ?? "",style: AppTextStyles.style16Black500,) : SizedBox.shrink(),
                     const Gap(10),
                     Container(
                       padding: const EdgeInsets.symmetric(

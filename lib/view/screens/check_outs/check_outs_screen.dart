@@ -37,7 +37,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<CheckOutCubit>().getMoreCheckOut();
+        context.read<CheckOutCubit>().getMoreCheckOut(
+          keyword: _searchController.text
+        );
       }
     });
   }
@@ -103,7 +105,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                     onRefresh: () async {
                                       await context
                                           .read<CheckOutCubit>()
-                                          .getCheckOuts();
+                                          .getCheckOuts(
+                                          keyword: _searchController.text
+                                      );
                                     },
                                     child: ListView.separated(
                                       controller: _scrollController,

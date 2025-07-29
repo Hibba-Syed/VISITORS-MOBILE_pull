@@ -21,7 +21,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
-  void onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel? vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 

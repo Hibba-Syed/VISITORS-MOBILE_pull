@@ -117,6 +117,7 @@ class _CheckOutsFilterBottomSheetState
                     itemAsString: (unit) => unit.unitNumber ?? "",
                     compareFn: (unit, item) => unit.id == item.id,
                     items: state.units ?? [],
+                    enabled: state.selectedVendor == null,
                     onChanged: (value) {
                       context
                           .read<CheckOutCubit>()
@@ -130,6 +131,7 @@ class _CheckOutsFilterBottomSheetState
                     itemAsString: (vendor) => vendor.companyName ?? "",
                     compareFn: (vendor, item) => vendor.id == item.id,
                     items: state.vendors ?? [],
+                    enabled: state.selectedUnit == null,
                     onChanged: (value) {
                       context
                           .read<CheckOutCubit>()

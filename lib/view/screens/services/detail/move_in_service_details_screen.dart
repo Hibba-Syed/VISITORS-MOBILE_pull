@@ -327,11 +327,9 @@ class _MoveInServiceDetailsScreenState
                           .read<ServiceDetailsCubit>()
                           .state
                           .serviceDetails
-                          ?.application
                           ?.securityDeposit ==
                       null &&
-                  context
-                          .read<ServiceDetailsCubit>()
+                  context.read<ServiceDetailsCubit>()
                           .state
                           .serviceDetails
                           ?.status?.toLowerCase() ==
@@ -355,7 +353,7 @@ class _MoveInServiceDetailsScreenState
                                   disableCancelButtonBorder: true,
                                   cancelButtonTextColor: AppColors.white,
                                   cancelButtonColor: AppColors.primary,
-                                  cancelButtonText:  AppUtils.languageTranslate('scanId'),
+                                  cancelButtonText:  AppUtils.languageTranslate('scanEmiratesId'),
                                   confirmButtonText: AppUtils.languageTranslate('complete'),
                                   confirmButtonColor: AppColors.green,
                                   onConfirm: () async {
@@ -418,7 +416,7 @@ class _MoveInServiceDetailsScreenState
                                         const Gap(5),
                                         TextFieldWidget(
                                           controller: _noteController,
-                                          label:  AppUtils.languageTranslate('note'),
+                                          label:  AppUtils.languageTranslate('servicesNote'),
                                         ),
                                       ],
                                     );
@@ -431,19 +429,13 @@ class _MoveInServiceDetailsScreenState
                       .read<ServiceDetailsCubit>()
                       .state
                       .serviceDetails
-                      ?.status?.toLowerCase() !=
-                  'approved') ...[
+                      ?.status?.toLowerCase() != 'approved') ...[
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
                       buttonColor: AppColors.yellow,
                       text: AppUtils.languageTranslate('clearPayment'),
                       onPressed: () {
-                        print('status|| ${context
-                            .read<ServiceDetailsCubit>()
-                            .state
-                            .serviceDetails
-                            ?.status}');
                         showDialog(
                             barrierDismissible: false,
                             context: context,
@@ -490,6 +482,8 @@ class _MoveInServiceDetailsScreenState
                                   );
                                   if(result){
                                     _noteController.clear();
+                                    selectedImages?.clear();
+                                    isPaymentReceived = null;
                                   }
 
                                   return result;
@@ -519,7 +513,7 @@ class _MoveInServiceDetailsScreenState
                                       ),
                                       const Gap(5),
                                       Text(AppUtils.languageTranslate('chequeFile'),
-                                          style: AppTextStyles.style14Black600),
+                                          style: AppTextStyles.style14DarkGrey600),
                                       const Gap(10),
                                       Row(
                                         mainAxisAlignment:
@@ -590,13 +584,15 @@ class _MoveInServiceDetailsScreenState
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          SizedBox(
-                                              height: 25,
+                                          Container(
+                                              padding: EdgeInsets.zero,
+                                              height: 20,
+                                              width: 20,
                                               child: Checkbox(
                                                   fillColor: WidgetStateProperty.all(AppColors.cyanBlue),
                                                   side: BorderSide(
-                                                      color: AppColors.gray,
-                                                      width: 2),
+                                                      color: Colors.transparent,
+                                                      width: 1),
                                                   value: isPaymentReceived ??
                                                       false,
                                                   onChanged: (value) {
@@ -607,7 +603,7 @@ class _MoveInServiceDetailsScreenState
                                            Text(
                                             AppUtils.languageTranslate('paymentReceived'),
                                             style:
-                                                AppTextStyles.style14Black600,
+                                                AppTextStyles.style14DarkGrey600,
                                           ),
                                         ],
                                       ),

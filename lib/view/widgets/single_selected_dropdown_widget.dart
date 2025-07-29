@@ -108,10 +108,11 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: AppColors.outLineGray,
+                borderSide: BorderSide(
+                  color: !enabled ? AppColors.red : AppColors.outLineGray,
                 ),
               ),
+
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(7),
                 borderSide: const BorderSide(

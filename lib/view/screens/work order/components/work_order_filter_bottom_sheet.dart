@@ -70,7 +70,8 @@ class _WorkOrderFilterBottomSheetState
                   onChanged: (value) {
                     context
                         .read<WorkOrderCubit>()
-                        .onChangeSelectedVendors(value!);
+                        .onChangeSelectedVendors(value);
+                    // print('vendor:::${value?.companyName}${value?.id}');
                   },
               enabled: context.watch<WorkOrderCubit>().state.selectedType?.value == '1' ? true : false
                   ),

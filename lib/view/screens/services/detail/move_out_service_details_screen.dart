@@ -267,7 +267,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
               if(context
                   .read<ServiceDetailsCubit>()
                   .state
-                  .serviceDetails?.application?.securityDeposit ==
+                  .serviceDetails?.securityDeposit ==
                   null &&
                   context
                       .read<ServiceDetailsCubit>()
@@ -294,7 +294,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                   disableCancelButtonBorder: true,
                                   cancelButtonTextColor: AppColors.white,
                                   cancelButtonColor: AppColors.primary,
-                                  cancelButtonText:  AppUtils.languageTranslate('scanId'),
+                                  cancelButtonText:  AppUtils.languageTranslate('scanEmiratesId'),
                                   confirmButtonText: AppUtils.languageTranslate('complete'),
                                   confirmButtonColor: AppColors.green,
                                   onConfirm: () async {
@@ -358,7 +358,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                         const Gap(5),
                                         TextFieldWidget(
                                           controller: _noteController,
-                                          label: AppUtils.languageTranslate('note'),
+                                          label: AppUtils.languageTranslate('servicesNote'),
                                         ),
                                       ],
                                     );
@@ -389,6 +389,11 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                 confirmButtonText:  AppUtils.languageTranslate('clearPayment'),
                                 confirmButtonColor: AppColors.yellow,
                                 onConfirm: () async {
+                                  if (_noteController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
+                                    return false;
+                                  }
                                   if (selectedImages?.isEmpty ?? false) {
                                     Fluttertoast.showToast(
                                         msg: AppUtils.languageTranslate('pleaseChooseImageFileFirst'));
@@ -414,7 +419,11 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                       'note': _noteController.text,
                                     },
                                   );
-                                  // noteController.clear();
+                                  if(result){
+                                    _noteController.clear();
+                                    selectedImages?.clear();
+                                    isPaymentReceived = null;
+                                  }
                                   return result;
                                 },
                                 contentBuilder: (context, setState) {
@@ -440,7 +449,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                         label: AppUtils.languageTranslate('note'),
                                       ),
                                       const Gap(5),
-                                      Text(AppUtils.languageTranslate('chequeFile'),style: AppTextStyles.style14Black600),
+                                      Text(AppUtils.languageTranslate('chequeFile'),style: AppTextStyles.style14DarkGrey600),
                                       const Gap(10),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -495,21 +504,25 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          SizedBox(
-                                              height: 25,
+                                          Container(
+                                              padding: EdgeInsets.zero,
+                                              height: 20,
+                                              width: 20,
                                               child: Checkbox(
                                                   fillColor: WidgetStateProperty.all(AppColors.cyanBlue),
-                                                  side: BorderSide(color: AppColors.gray, width: 2),
+                                                  side: BorderSide(color: Colors.transparent, width: 1),
                                                   value: isPaymentReceived??false,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       isPaymentReceived = value;
                                                     });
                                                   })),
-                                           Text( AppUtils.languageTranslate('paymentReceived'),style: AppTextStyles.style14Black600,
+                                           Gap(6),
+                                           Text( AppUtils.languageTranslate('paymentReceived'),style: AppTextStyles.style14DarkGrey600,
                                           ),
                                         ],
                                       ),
+
 
                                     ],
                                   );

@@ -106,10 +106,10 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                     ),
                   ),
                   const Gap(15),
+                  (state.checkInModel?.isNotEmpty ?? false ) ?
                   Align(
                     alignment: Alignment.bottomRight,
                     child:
-                (state.checkInModel?.isNotEmpty ?? false ) ?
                     CustomButton(
                       buttonColor: AppColors.red,
                       text: AppUtils.languageTranslate('checkoutAll'),
@@ -146,8 +146,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                           },
                         );
                       },
-                    ) : SizedBox.shrink(),
-                  ),
+                    )
+                  ) :SizedBox.shrink(),
                   const Gap(10),
                   Expanded(
                     child: state.isLoading
@@ -192,7 +192,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                       type:
                                       AppUtils.getServiceableType(
                                               checkIns?.serviceableType)
-                                          .value,
+                                          .label,
                                       createdDate: DateTimeUtil.getFormattedDateTime(
                                           checkIns?.visitor?.createdAt),
                                       checkOutOnPressed: () {

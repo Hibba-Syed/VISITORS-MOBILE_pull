@@ -12,7 +12,6 @@ import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
 import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
-import '../../widgets/loader/loader_widget.dart';
 
 class BiometricAuthScreen extends StatefulWidget {
   final Map<dynamic, dynamic>? notificationData;

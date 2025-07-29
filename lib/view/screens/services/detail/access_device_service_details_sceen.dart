@@ -321,7 +321,7 @@ class _AccessDeviceServiceDetailsScreenState extends State<AccessDeviceServiceDe
         if(context
         .read<ServiceDetailsCubit>()
         .state
-        .serviceDetails?.application?.securityDeposit ==
+        .serviceDetails?.securityDeposit ==
         null)...[
           const Gap(10),
               Expanded(

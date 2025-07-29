@@ -388,7 +388,7 @@ final  TextEditingController _idController = TextEditingController();
                                       const Gap(5),
                                       TextFieldWidget(
                                         controller: _noteController,
-                                        label: AppUtils.languageTranslate('note'),
+                                        label: AppUtils.languageTranslate('servicesNote'),
                                       ),
                                     ],
                                   );

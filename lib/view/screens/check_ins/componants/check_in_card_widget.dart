@@ -21,7 +21,6 @@ class CheckInCardWidget extends StatelessWidget {
   final String? count;
   final String? typeText;
   final String? typeImage;
-  // final Color? typeBackgroundColor;
   final VoidCallback checkOutOnPressed;
   final VoidCallback? detailsOnPressed;
   final bool isServiceable;
@@ -36,7 +35,6 @@ class CheckInCardWidget extends StatelessWidget {
     this.count,
     this.reference,
     this.purpose,
-    // this.typeBackgroundColor,
     required this.checkOutOnPressed,
     this.detailsOnPressed,
     this.phone,

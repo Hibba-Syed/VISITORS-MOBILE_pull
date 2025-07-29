@@ -351,7 +351,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
               if(context
                   .read<ServiceDetailsCubit>()
                   .state
-                  .serviceDetails?.application?.securityDeposit ==
+                  .serviceDetails?.securityDeposit ==
                   null)...[
                 const Gap(10),
                     Expanded(
@@ -432,7 +432,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                         const Gap(5),
                                         TextFieldWidget(
                                           controller: _noteController,
-                                          label: AppUtils.languageTranslate('note'),
+                                          label: AppUtils.languageTranslate('servicesNote'),
                                         ),
                                       ],
                                     );

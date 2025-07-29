@@ -257,7 +257,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                                 color: widget
                                                         .confirmButtonTextColor ??
                                                     Colors.white,
-                                              fontSize: widget.confirmButtonTextFontSize ?? 13,
+                                              fontSize: widget.confirmButtonTextFontSize ?? 14,
                                               fontWeight: widget.confirmButtonTextFontWeight ?? FontWeight.w600
 
                                             ),

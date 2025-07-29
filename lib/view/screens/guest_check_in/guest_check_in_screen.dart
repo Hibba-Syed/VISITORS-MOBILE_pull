@@ -72,7 +72,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   DateTime? _selectedTravelDocumentExpiryDate;
   File? _personImage;
   TypeItemModel? _selectedDocumentType;
-  String? _scannedRawText;
+
 
   final List<TypeItemModel> _documentTypes = [
     TypeItemModel(
@@ -1366,7 +1366,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           _nameController.text = drivingLicenseData.name ?? '';
           _photoIdNumberController.text =
               drivingLicenseData.licenseNumber ?? '';
-          DateFormat format = DateFormat('dd/MM/yyyy');
+          // DateFormat format = DateFormat('dd/MM/yyyy');
           // _selectedPhotoIdIssueDate =
           //     format.tryParse(drivingLicenseData.issueDate ?? '');
           _selectedPhotoIdIssueDate = drivingLicenseData.issueDate != null

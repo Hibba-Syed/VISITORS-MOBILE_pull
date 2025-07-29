@@ -135,7 +135,7 @@
     "cannotSelectMultipleFiles": "لا يمكنك تحديد أكثر من ملف واحد",
     "chooseFile": "اختر ملفًا",
     "chequeFile": "ملف الشيك *",
-    "pleaseSelectCheckboxFirst": "يرجى تحديد خانة الاختيار أولاً",
+    "pleaseSelectCheckboxFirst": "يجب استلام الدفعة يرجى تحديد خانة الاختيار أولاً",
     "pleaseChooseImageFileFirst": "يرجى اختيار ملف صورة أولاً",
     "clearPayment": "إلغاء الدفع",
     "requestedTime": "الوقت المطلوب",

@@ -24,7 +24,7 @@ import '../../view/screens/dashboard/dashboard_screen.dart';
 import '../../view/screens/main_dashboard_screen.dart';
 import '../../view/screens/services/detail/fit_out_service_details_screen.dart';
 import '../../view/screens/splash_screen.dart';
-import '../../view/screens/visitor passes/serviceable_check_ins_screen.dart';
+import '../../view/screens/services/serviceable_check_ins_screen.dart';
 import '../../view/screens/visitor passes/visitor_passes_screen.dart';
 import '../../view/screens/work order/detail/work_order_job_details_screen.dart';
 import '../../view/screens/work order/job_check_ins_screen.dart';

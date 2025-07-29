@@ -314,7 +314,7 @@ class _FacilityBookingServiceDetailsScreenState
               if (context
                       .read<ServiceDetailsCubit>()
                       .state
-                      .serviceDetails?.application
+                      .serviceDetails
                       ?.securityDeposit ==
                   null) ...[
                 const Gap(10),
@@ -397,7 +397,7 @@ class _FacilityBookingServiceDetailsScreenState
                                       const Gap(5),
                                       TextFieldWidget(
                                         controller: _noteController,
-                                        label: AppUtils.languageTranslate('note'),
+                                        label: AppUtils.languageTranslate('servicesNote'),
                                       ),
                                     ],
                                   );
