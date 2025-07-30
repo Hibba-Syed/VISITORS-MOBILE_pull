@@ -32,7 +32,7 @@ class ActivityLogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding ?? 0, vertical: verticalPadding ?? 0),
+          horizontal: horizontalPadding ?? 7, vertical: verticalPadding ?? 0),
       child: Column(
         children: [
           TimelineTile(
