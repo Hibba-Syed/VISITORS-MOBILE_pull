@@ -155,12 +155,12 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                     context: context,
                     builder: (context) {
                       return CustomAlertDialogBox(
-                        isCancelButtonDisable: true,
+                        isFirstButtonDisable: true,
                         insetPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
                         title: 'Add Log to ${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.reference ?? ""}',
-                        confirmButtonText: AppUtils.languageTranslate('addLog'),
-                        onConfirm: () async {
+                        secondButtonText: AppUtils.languageTranslate('addLog'),
+                        onSecondButtonPressed: () async {
                           if (noteController.text.isEmpty) {
                             Fluttertoast.showToast(
                                 msg: AppUtils.languageTranslate('pleaseTypeNoteFirst') );

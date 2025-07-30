@@ -270,14 +270,14 @@ class _MoveInServiceDetailsScreenState
                           context: context,
                           builder: (context) {
                             return CustomAlertDialogBox(
-                              isCancelButtonDisable: true,
+                              isFirstButtonDisable: true,
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title:
                                   'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: AppUtils.languageTranslate('addLog'),
-                              onConfirm: () async {
+                              secondButtonText: AppUtils.languageTranslate('addLog'),
+                              onSecondButtonPressed: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg:AppUtils.languageTranslate('pleaseTypeNoteFirst'));
@@ -350,13 +350,13 @@ class _MoveInServiceDetailsScreenState
                                       : EdgeInsets.symmetric(horizontal: 10),
                                   title:
                                       'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                                  disableCancelButtonBorder: true,
-                                  cancelButtonTextColor: AppColors.white,
-                                  cancelButtonColor: AppColors.primary,
-                                  cancelButtonText:  AppUtils.languageTranslate('scanEmiratesId'),
-                                  confirmButtonText: AppUtils.languageTranslate('complete'),
-                                  confirmButtonColor: AppColors.green,
-                                  onConfirm: () async {
+                                  disableFirstButtonBorder: true,
+                                  firstButtonTextColor: AppColors.white,
+                                  firstButtonColor: AppColors.primary,
+                                  firstButtonText:  AppUtils.languageTranslate('scanEmiratesId'),
+                                  secondButtonText: AppUtils.languageTranslate('complete'),
+                                  secondButtonColor: AppColors.green,
+                                  onSecondButtonPressed: () async {
                                     if (_nameController.text.isEmpty) {
                                       Fluttertoast.showToast(
                                           msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
@@ -444,13 +444,13 @@ class _MoveInServiceDetailsScreenState
                                 insetPadding: AppUtils.isTablet(context)
                                     ? EdgeInsets.symmetric(horizontal: 35)
                                     : EdgeInsets.symmetric(horizontal: 10),
-                                isCancelButtonDisable: true,
+                                isFirstButtonDisable: true,
                                 title:
                                     'Clear Payment for ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
-                                disableCancelButtonBorder: true,
-                                confirmButtonText: AppUtils.languageTranslate('clearPayment'),
-                                confirmButtonColor: AppColors.yellow,
-                                onConfirm: () async {
+                                disableFirstButtonBorder: true,
+                                secondButtonText: AppUtils.languageTranslate('clearPayment'),
+                                secondButtonColor: AppColors.yellow,
+                                onSecondButtonPressed: () async {
                                   if (selectedImages?.isEmpty ?? false) {
                                     Fluttertoast.showToast(
                                         msg: AppUtils.languageTranslate('pleaseChooseImageFileFirst'));

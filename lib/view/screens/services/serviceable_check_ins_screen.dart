@@ -60,11 +60,11 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                               return CustomAlertDialogBox(
                                 insetPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
-                                isCancelButtonDisable: true,
-                                confirmButtonColor: AppColors.red,
-                                confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                                isFirstButtonDisable: true,
+                                secondButtonColor: AppColors.red,
+                                secondButtonText: AppUtils.languageTranslate('checkoutAll'),
                                 title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
-                                onConfirm: ()async{
+                                onSecondButtonPressed: ()async{
                                   return context
                                       .read<CheckInsCubit>()
                                       .checkOutAll(context);
@@ -174,11 +174,11 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                   builder: (context) {
                     return CustomAlertDialogBox(
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
-                      isCancelButtonDisable: true,
-                      confirmButtonColor: AppColors.red,
-                      confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      isFirstButtonDisable: true,
+                      secondButtonColor: AppColors.red,
+                      secondButtonText: AppUtils.languageTranslate('checkoutAll'),
                       title:AppUtils.languageTranslate('checkOutForAllCheckIns'),
-                      onConfirm: () async {
+                      onSecondButtonPressed: () async {
                         final result = await context
                             .read<CheckInsCubit>()
                             .checkOutVisitors(context, id: checkIn?.id, data: {
@@ -201,11 +201,11 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                     return CustomAlertDialogBox(
                         insetPadding:
                         const EdgeInsets.symmetric(horizontal: 20),
-                        isCancelButtonDisable: true,
-                        confirmButtonColor: AppColors.red,
-                        confirmButtonText: AppUtils.languageTranslate('checkout'),
+                        isFirstButtonDisable: true,
+                        secondButtonColor: AppColors.red,
+                        secondButtonText: AppUtils.languageTranslate('checkout'),
                         title: AppUtils.languageTranslate('checkoutForVisitors'),
-                        onConfirm: () async {
+                        onSecondButtonPressed: () async {
                           final result = await context
                               .read<CheckInsCubit>()
                               .checkOutVisitors(context,

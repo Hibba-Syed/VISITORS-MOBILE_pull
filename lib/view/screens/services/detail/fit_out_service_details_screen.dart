@@ -297,13 +297,13 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                           builder: (context) {
 
                             return CustomAlertDialogBox(
-                              isCancelButtonDisable: true,
+                              isFirstButtonDisable: true,
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText:AppUtils.languageTranslate('addLog'),
-                              onConfirm: () async {
+                              secondButtonText:AppUtils.languageTranslate('addLog'),
+                              onSecondButtonPressed: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
@@ -369,13 +369,13 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                       ? EdgeInsets.symmetric(horizontal: 35)
                                       : EdgeInsets.symmetric(horizontal: 10),
                                   title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
-                                  disableCancelButtonBorder: true,
-                                  cancelButtonTextColor: AppColors.white,
-                                  cancelButtonColor: AppColors.primary,
-                                  cancelButtonText: AppUtils.languageTranslate('scanEmiratesId'),
-                                  confirmButtonText: AppUtils.languageTranslate('complete'),
-                                  confirmButtonColor: AppColors.green,
-                                  onConfirm: () async {
+                                  disableFirstButtonBorder: true,
+                                  firstButtonTextColor: AppColors.white,
+                                  firstButtonColor: AppColors.primary,
+                                  firstButtonText: AppUtils.languageTranslate('scanEmiratesId'),
+                                  secondButtonText: AppUtils.languageTranslate('complete'),
+                                  secondButtonColor: AppColors.green,
+                                  onSecondButtonPressed: () async {
                                     if (_nameController.text.isEmpty) {
                                       Fluttertoast.showToast(
                                           msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));

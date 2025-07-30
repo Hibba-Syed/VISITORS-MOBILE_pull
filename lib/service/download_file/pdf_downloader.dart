@@ -234,9 +234,9 @@ class FileDownloader {
       builder: (_) => CustomAlertDialogBox(
         insetPadding: EdgeInsets.all(10),
         title: AppUtils.languageTranslate('downloadComplete'),
-        confirmButtonText: AppUtils.languageTranslate('openFile'),
-        cancelButtonText: AppUtils.languageTranslate('no'),
-        onConfirm: () async {
+        secondButtonText: AppUtils.languageTranslate('openFile'),
+        firstButtonText: AppUtils.languageTranslate('no'),
+        onSecondButtonPressed: () async {
           openFile(filePath);
           return true;
         },

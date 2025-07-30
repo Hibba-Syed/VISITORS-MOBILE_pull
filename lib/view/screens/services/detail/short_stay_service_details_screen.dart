@@ -244,13 +244,13 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                           builder: (context) {
 
                             return CustomAlertDialogBox(
-                              isCancelButtonDisable: true,
+                              isFirstButtonDisable: true,
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText:  AppUtils.languageTranslate('addLog'),
-                              onConfirm: () async {
+                              secondButtonText:  AppUtils.languageTranslate('addLog'),
+                              onSecondButtonPressed: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
                                       msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));

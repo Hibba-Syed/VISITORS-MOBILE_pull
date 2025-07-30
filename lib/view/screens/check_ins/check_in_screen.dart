@@ -127,11 +127,11 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 30)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              isCancelButtonDisable: true,
-                              confirmButtonColor: AppColors.red,
-                              confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                              isFirstButtonDisable: true,
+                              secondButtonColor: AppColors.red,
+                              secondButtonText: AppUtils.languageTranslate('checkoutAll'),
                               title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
-                              onConfirm: () async {
+                              onSecondButtonPressed: () async {
                                 return context
                                     .read<CheckInsCubit>()
                                     .checkOutAll(context);
@@ -254,11 +254,11 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                   builder: (context) {
                     return CustomAlertDialogBox(
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
-                      isCancelButtonDisable: true,
-                      confirmButtonColor: AppColors.red,
-                      confirmButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      isFirstButtonDisable: true,
+                      secondButtonColor: AppColors.red,
+                      secondButtonText: AppUtils.languageTranslate('checkoutAll'),
                       title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
-                      onConfirm: () async {
+                      onSecondButtonPressed: () async {
                         final result = await context
                             .read<CheckInsCubit>()
                             .checkOutVisitors(context, id: checkIns?.id, data: {
@@ -288,11 +288,11 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                     return CustomAlertDialogBox(
                         insetPadding:
                             const EdgeInsets.symmetric(horizontal: 20),
-                        isCancelButtonDisable: true,
-                        confirmButtonColor: AppColors.red,
-                        confirmButtonText:  AppUtils.languageTranslate('Checkout'),
+                        isFirstButtonDisable: true,
+                        secondButtonColor: AppColors.red,
+                        secondButtonText:  AppUtils.languageTranslate('Checkout'),
                         title: AppUtils.languageTranslate('checkoutForVisitors'),
-                        onConfirm: () async {
+                        onSecondButtonPressed: () async {
                           final result = await context
                               .read<CheckInsCubit>()
                               .checkOutVisitors(context,

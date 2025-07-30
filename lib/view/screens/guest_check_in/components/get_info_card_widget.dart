@@ -87,10 +87,10 @@ class GetInfoCardWidget extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return CustomAlertDialogBox(
-                            isCancelButtonDisable: true,
-                            confirmButtonText: 'Delete',
-                            confirmButtonColor: AppColors.red,
-                            onConfirm: deleteOnPressed,
+                            isFirstButtonDisable: true,
+                            secondButtonText: 'Delete',
+                            secondButtonColor: AppColors.red,
+                            onSecondButtonPressed: deleteOnPressed,
                             insetPadding: AppUtils.isTablet(context)
                                 ? EdgeInsets.symmetric(horizontal: 50)
                                 : EdgeInsets.all(20),

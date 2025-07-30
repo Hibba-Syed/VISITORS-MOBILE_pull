@@ -5,12 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../bloc/e_service/details/service_details_cubit.dart';
+import '../../../../model/emirates_id_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/app_constants.dart';
 import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
+import '../../../../service/scaner/scanner_service.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../utils/date_time.dart';
 import '../../../widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
@@ -38,12 +40,13 @@ class _FacilityBookingServiceDetailsScreenState
   final TextEditingController _noteController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final GlobalKey<FormState> _completeFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:  AppBarWidget(
+        appBar: AppBarWidget(
           title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
@@ -99,13 +102,15 @@ class _FacilityBookingServiceDetailsScreenState
                                   state.serviceDetails?.application?.facility ??
                                       "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('natureOfFunction'),
+                            title:
+                                AppUtils.languageTranslate('natureOfFunction'),
                             value: state.serviceDetails?.application
                                     ?.natureOfFunction ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate('expectedGuests'),
+                              title:
+                                  AppUtils.languageTranslate('expectedGuests'),
                               value: state.serviceDetails?.application
                                       ?.expectedGuests
                                       ?.toString() ??
@@ -130,7 +135,7 @@ class _FacilityBookingServiceDetailsScreenState
                       ),
                     ),
                     const Gap(20),
-                     HeadingWidget(
+                    HeadingWidget(
                       heading: AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
@@ -144,7 +149,8 @@ class _FacilityBookingServiceDetailsScreenState
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title:  AppUtils.languageTranslate('requesterType'),
+                              title:
+                                  AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: AppUtils.languageTranslate('name'),
@@ -159,7 +165,8 @@ class _FacilityBookingServiceDetailsScreenState
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate('passportNumber'),
+                              title:
+                                  AppUtils.languageTranslate('passportNumber'),
                               value: state.serviceDetails?.passportNumber
                                       ?.toString() ??
                                   "--"),
@@ -184,7 +191,7 @@ class _FacilityBookingServiceDetailsScreenState
                       ),
                     ),
                     const Gap(20),
-                     Text(
+                    Text(
                       AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
@@ -235,8 +242,8 @@ class _FacilityBookingServiceDetailsScreenState
                             ),
                           )
                         : EmptyWidget(
-                            text: AppUtils.languageTranslate('noDataAvailable')
-                          ),
+                            text:
+                                AppUtils.languageTranslate('noDataAvailable')),
                   ],
                 );
               },
@@ -258,17 +265,19 @@ class _FacilityBookingServiceDetailsScreenState
                           context: context,
                           builder: (context) {
                             return CustomAlertDialogBox(
-                              isCancelButtonDisable: true,
+                              isFirstButtonDisable: true,
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title:
                                   'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: AppUtils.languageTranslate('addLog'),
-                              onConfirm: () async {
+                              secondButtonText:
+                                  AppUtils.languageTranslate('addLog'),
+                              onSecondButtonPressed: () async {
                                 if (_noteController.text.isEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
+                                      msg: AppUtils.languageTranslate(
+                                          'pleaseTypeNoteFirst'));
                                   return false;
                                 }
                                 final result = await context
@@ -302,7 +311,7 @@ class _FacilityBookingServiceDetailsScreenState
                                     const Gap(5),
                                     TextFieldWidget(
                                       controller: _noteController,
-                                      label:AppUtils.languageTranslate('note'),
+                                      label: AppUtils.languageTranslate('note'),
                                     ),
                                   ],
                                 );
@@ -311,12 +320,18 @@ class _FacilityBookingServiceDetailsScreenState
                           });
                     }),
               ),
-              if (context
-                      .read<ServiceDetailsCubit>()
-                      .state
-                      .serviceDetails
-                      ?.securityDeposit ==
-                  null) ...[
+              if ((context
+                          .read<ServiceDetailsCubit>()
+                          .state
+                          .serviceDetails
+                          ?.securityDeposit ==
+                      null) ||
+                  (context
+                          .read<ServiceDetailsCubit>()
+                          .state
+                          .serviceDetails
+                          ?.securityDeposit ==
+                      0)) ...[
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
@@ -331,75 +346,110 @@ class _FacilityBookingServiceDetailsScreenState
                                 insetPadding: AppUtils.isTablet(context)
                                     ? EdgeInsets.symmetric(horizontal: 35)
                                     : EdgeInsets.symmetric(horizontal: 10),
-                                title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                                disableCancelButtonBorder: true,
-                                cancelButtonTextColor: AppColors.white,
-                                cancelButtonColor: AppColors.primary,
-                                cancelButtonText: AppUtils.languageTranslate('scanEmiratesId'),
-                                confirmButtonText: AppUtils.languageTranslate('complete'),
-                                confirmButtonColor: AppColors.green,
-                                onConfirm: () async {
+                                title:
+                                    'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                                disableFirstButtonBorder: true,
+                                firstButtonTextColor: AppColors.white,
+                                firstButtonColor: AppColors.primary,
+                                firstButtonText: AppUtils.languageTranslate(
+                                    'scanEmiratesId'),
+                                secondButtonText:
+                                    AppUtils.languageTranslate('complete'),
+                                secondButtonColor: AppColors.green,
+                                onFirstButtonPressed: () async {
+                                  EmiratesIdModel? emiratesIdData =
+                                      await ScannerService()
+                                          .scanEmiratesIdAndPerformOcr();
+                                  if (emiratesIdData != null) {
+                                    // clearData();
 
-                                  if (_nameController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
-                                    return false;
+                                    setState(() {
+                                      _nameController.text =
+                                          emiratesIdData.name ?? '';
+                                      _idController.text =
+                                          emiratesIdData.idNumber ?? '';
+                                    });
                                   }
-                                  if (_idController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
-                                    return false;
+                                  return false;
+                                },
+                                onSecondButtonPressed: () async {
+                                  if (_completeFormKey.currentState
+                                          ?.validate() ??
+                                      false) {
+                                    final result = await context
+                                        .read<ServiceDetailsCubit>()
+                                        .completeService(
+                                      context,
+                                      data: {
+                                        'id':
+                                            '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                        'requester_name': _nameController.text,
+                                        'id_number': _idController.text,
+                                        'note': _noteController.text,
+                                      },
+                                    );
+                                    if (result) {
+                                      _noteController.clear();
+                                      _idController.clear();
+                                      _nameController.clear();
+                                    }
+                                    return result;
                                   }
-                                  final result = await context
-                                      .read<ServiceDetailsCubit>()
-                                      .completeService(
-                                    context,
-                                    data: {
-                                      'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                      'requester_name': _nameController.text,
-                                      'id_number': _idController.text,
-                                      'note': _noteController.text,
-                                    },
-                                  );
-                                  if(result){
-                                    _noteController.clear();
-                                    _idController.clear();
-                                    _nameController.clear();
-                                  }
-                                   return result;
+                                  return false;
                                 },
                                 contentBuilder: (context, setState) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Gap(5),
-                                      SvgPicture.asset(
-                                        AppImages.question,
-                                        height: 35,
-                                        width: 35,
-                                        colorFilter: const ColorFilter.mode(
-                                          AppColors.green,
-                                          BlendMode.srcIn,
+                                  return Form(
+                                    key: _completeFormKey,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Gap(5),
+                                        SvgPicture.asset(
+                                          AppImages.question,
+                                          height: 35,
+                                          width: 35,
+                                          colorFilter: const ColorFilter.mode(
+                                            AppColors.green,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate('requesterName'),
-                                        controller: _nameController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate('idNumber'),
-                                        controller: _idController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        controller: _noteController,
-                                        label: AppUtils.languageTranslate('servicesNote'),
-                                      ),
-                                    ],
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          label: AppUtils.languageTranslate(
+                                              'requesterName'),
+                                          controller: _nameController,
+                                          validator: (value) {
+                                            if (value?.trim().isEmpty ?? true) {
+                                              return AppUtils.languageTranslate(
+                                                  'fieldIsMandatory');
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          label: AppUtils.languageTranslate(
+                                              'idNumber'),
+                                          controller: _idController,
+                                          validator: (value) {
+                                            if (value?.trim().isEmpty ?? true) {
+                                              return AppUtils.languageTranslate(
+                                                  'fieldIsMandatory');
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          controller: _noteController,
+                                          label: AppUtils.languageTranslate(
+                                              'servicesNote'),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 },
                               );
