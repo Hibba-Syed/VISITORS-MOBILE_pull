@@ -257,7 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Gap(5),
                     Text(
-                      'OR',
+                      AppUtils.languageTranslate('or'),
                       style: AppTextStyles.style14Primary600,
                     ),
                     Gap(5),
@@ -272,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomButton(
                   height: AppUtils.isTablet(context) ? 60 : 42,
                   fontSize: AppUtils.isTablet(context) ? 20 : 15,
-                  text: "Biometric Login",
+                  text: AppUtils.languageTranslate('biometricLogin'),
                   invert: true,
                   onPressed: () async {
                     Navigator.pushNamedAndRemoveUntil(

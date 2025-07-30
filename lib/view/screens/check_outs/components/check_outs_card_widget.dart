@@ -101,7 +101,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Check-In',style: AppUtils.isTablet(context) ? AppTextStyles.style14Black600 : AppTextStyles.style13Black600 ),
+                                  Text(AppUtils.languageTranslate('checkIn'),style: AppUtils.isTablet(context) ? AppTextStyles.style14Black600 : AppTextStyles.style13Black600 ),
                                   const Gap(5),
                                   IconTextContainerWidget(
                                     image: AppImages.date,
@@ -115,7 +115,7 @@ class CheckOutsCardWidget extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text('Check-Out',style: AppUtils.isTablet(context) ?AppTextStyles.style14Black600 :  AppTextStyles.style13Black600,),
+                                   Text(AppUtils.languageTranslate('checkOut'),style: AppUtils.isTablet(context) ?AppTextStyles.style14Black600 :  AppTextStyles.style13Black600,),
                                   IconTextContainerWidget(
                                     image: AppImages.date,
                                     text: checkOutDate ?? "",

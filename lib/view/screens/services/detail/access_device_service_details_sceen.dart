@@ -41,6 +41,7 @@ class _AccessDeviceServiceDetailsScreenState
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _newCardController = TextEditingController();
+  final GlobalKey<FormState> _completeFormKey = GlobalKey<FormState>();
   // final TextEditingController _oldCardController = TextEditingController();
 
   @override
@@ -342,12 +343,18 @@ class _AccessDeviceServiceDetailsScreenState
                           });
                     }),
               ),
-              if (context
+              if ((context
                       .read<ServiceDetailsCubit>()
                       .state
                       .serviceDetails
                       ?.securityDeposit ==
-                  null) ...[
+                  null)  ||
+                  (context
+                      .read<ServiceDetailsCubit>()
+                      .state
+                      .serviceDetails
+                      ?.securityDeposit ==
+                      0))...[
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
@@ -377,8 +384,6 @@ class _AccessDeviceServiceDetailsScreenState
                                       await ScannerService()
                                           .scanEmiratesIdAndPerformOcr();
                                   if (emiratesIdData != null) {
-                                    // clearData();
-
                                     setState(() {
                                       _nameController.text =
                                           emiratesIdData.name ?? '';
@@ -389,25 +394,9 @@ class _AccessDeviceServiceDetailsScreenState
                                   return false;
                                 },
                                 onSecondButtonPressed: () async {
-                                  if (_nameController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate(
-                                            'pleaseTypeNameFirst'));
-                                    return false;
-                                  }
-                                  if (_idController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate(
-                                            'pleaseTypeIdFirst'));
-                                    return false;
-                                  }
-                                  if (_newCardController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate(
-                                            'pleaseTypeNewCardNumberFirst'));
-                                    return false;
-                                  }
-
+                                   if (_completeFormKey.currentState
+                                            ?.validate() ??
+                                       false) {
                                   final result = await context
                                       .read<ServiceDetailsCubit>()
                                       .completeAccessDeviceService(
@@ -435,48 +424,74 @@ class _AccessDeviceServiceDetailsScreenState
                                     _newCardController.clear();
                                   }
                                   return result;
+                                }
+                                   return false;
                                 },
                                 contentBuilder: (context, setState) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Gap(5),
-                                      SvgPicture.asset(
-                                        AppImages.question,
-                                        height: 35,
-                                        width: 35,
-                                        colorFilter: const ColorFilter.mode(
-                                          AppColors.green,
-                                          BlendMode.srcIn,
+                                  return Form(
+                                    key: _completeFormKey,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Gap(5),
+                                        SvgPicture.asset(
+                                          AppImages.question,
+                                          height: 35,
+                                          width: 35,
+                                          colorFilter: const ColorFilter.mode(
+                                            AppColors.green,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate(
-                                            'requesterName'),
-                                        controller: _nameController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate(
-                                            'idNumber'),
-                                        controller: _idController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate(
-                                            'newCardNumber'),
-                                        controller: _newCardController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        controller: _noteController,
-                                        label: AppUtils.languageTranslate(
-                                            'servicesNote'),
-                                      ),
-                                    ],
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          label: AppUtils.languageTranslate(
+                                              'requesterName'),
+                                          controller: _nameController,
+                                          validator: (value) {
+                                            if (value?.trim().isEmpty ?? true) {
+                                              return AppUtils.languageTranslate(
+                                                  'fieldIsMandatory');
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          label: AppUtils.languageTranslate(
+                                              'idNumber'),
+                                          controller: _idController,
+                                          validator: (value) {
+                                            if (value?.trim().isEmpty ?? true) {
+                                              return AppUtils.languageTranslate(
+                                                  'fieldIsMandatory');
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          label: AppUtils.languageTranslate(
+                                              'newCardNumber'),
+                                          controller: _newCardController,
+                                          validator: (value) {
+                                            if (value?.trim().isEmpty ?? true) {
+                                              return AppUtils.languageTranslate(
+                                                  'fieldIsMandatory');
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const Gap(5),
+                                        TextFieldWidget(
+                                          controller: _noteController,
+                                          label: AppUtils.languageTranslate(
+                                              'servicesNote'),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 },
                               );

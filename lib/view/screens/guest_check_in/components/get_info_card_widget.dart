@@ -111,7 +111,7 @@ class GetInfoCardWidget extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
                                       child: Text(
-                                          'Are you sure you want to delete this visitor record  forever?',
+                                          AppUtils.languageTranslate('areYouSureYouWantToDeleteThisVisitorRecordForever'),
                                           textAlign: TextAlign.center,
                                           style: AppTextStyles.style15Red600),
                                     ),

@@ -242,7 +242,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
         return CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: 'Checkout for ${checkIns?.name ?? ""}',
+          title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
               visitorsCount: checkIns?.visitorCount ?? "",

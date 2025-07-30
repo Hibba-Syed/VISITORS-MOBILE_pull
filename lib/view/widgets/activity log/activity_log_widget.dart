@@ -91,7 +91,7 @@ class ActivityLogWidget extends StatelessWidget {
                         Flexible(
                           child: Row(
                             children: [
-                              Text(' By'  ,
+                              Text(' ${AppUtils.languageTranslate('by')}'  ,
                                   style: AppUtils.isTablet(context)
                                       ? AppTextStyles.style16black600
                                       : AppTextStyles.style14Black600),

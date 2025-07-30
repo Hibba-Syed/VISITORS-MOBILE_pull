@@ -361,8 +361,6 @@ class _FacilityBookingServiceDetailsScreenState
                                       await ScannerService()
                                           .scanEmiratesIdAndPerformOcr();
                                   if (emiratesIdData != null) {
-                                    // clearData();
-
                                     setState(() {
                                       _nameController.text =
                                           emiratesIdData.name ?? '';

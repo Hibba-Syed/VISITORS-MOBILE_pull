@@ -162,7 +162,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
         return  CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: 'Checkout for ${checkIn?.name ?? ""}',
+          title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIn?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
               visitorsCount: checkIn?.visitorCount ?? "",

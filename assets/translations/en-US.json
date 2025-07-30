@@ -277,7 +277,15 @@
     "servicesNote": "Note",
     "pleaseTypeNewCardNumberFirst": "Please type new card number first",
     "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "The scanned document is not valid. Please try again using a valid document.",
-    "pleaseSelectCheckboxFirst": "Payment should be received. Please select checkbox first"
+    "pleaseSelectCheckboxFirst": "Payment should be received. Please select checkbox first",
+    "or": "OR",
+    "biometricLogin" : "Biometric Login",
+    "showLess": "Show Less",
+    "showMore": "Show More",
+    "checkoutFor": "Checkout For",
+    "checkOut": "Check-Out",
+    "areYouSureYouWantToDeleteThisVisitorRecordForever": "Are you sure you want to delete this visitor record  forever?",
+    "by": "By"
 }
 
 

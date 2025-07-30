@@ -273,7 +273,15 @@
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "الملف كبير جدًا. يرجى اختيار ملف أصغر من 10 ميغابايت",
     "visitorsMobile": "جوال الزائرين",
     "newCardNumber": "رقم البطاقة الجديد * ",
-    "pleaseTypeNewCardNumberFirst": "يرجى إدخال رقم البطاقة الجديد أولاً"
+    "pleaseTypeNewCardNumberFirst": "يرجى إدخال رقم البطاقة الجديد أولاً",
+    "or": "أو",
+    "biometricLogin": "تسجيل الدخول البيومتري",
+    "showLess": "عرض أقل",
+    "showMore": "عرض المزيد",
+    "checkoutFor": "تسجيل خروج لـ",
+    "checkOut": "تسجيل الخروج",
+    "areYouSureYouWantToDeleteThisVisitorRecordForever": "هل أنت متأكد أنك تريد حذف سجل الزائر هذا نهائيًا؟",
+    "by": "بواسطة"
 
 
 
