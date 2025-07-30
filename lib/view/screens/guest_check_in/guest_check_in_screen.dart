@@ -98,14 +98,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       label: AppUtils.languageTranslate('communityVisit'),
     ),
   ];
-
   @override
   void initState() {
     super.initState();
     _selectedDocumentType = _documentTypes.first;
     _selectedVisitType = _visitTypes.first;
   }
-
   void clearData() {
     _personImage = null;
     _emiratesIdNumberController.clear();
@@ -117,7 +115,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     _selectedPhotoIdExpiryDate = null;
     _selectedTravelDocumentIssueDate = null;
     _selectedTravelDocumentExpiryDate = null;
-
     context.read<GuestCheckInCubit>().onChangeSelectedNationality(Country());
   }
 

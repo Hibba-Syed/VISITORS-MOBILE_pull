@@ -123,6 +123,9 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                             purpose: checkIn?.serviceableType == "visitor_passes" ? checkIn?.purpose :
                             checkIn?.description ?? "--",
                             checkOutOnPressed: () {
+                              context
+                                  .read<CheckInsDetailsCubit>()
+                                  .getCheckInDetailsLog(id: checkIn?.id);
                               _showCheckoutDialog(context,checkIn);
                             },
                             detailsOnPressed: () {

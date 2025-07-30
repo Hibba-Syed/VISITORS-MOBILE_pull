@@ -327,7 +327,7 @@ final  TextEditingController _idController = TextEditingController();
                                 disableCancelButtonBorder: true,
                                 cancelButtonTextColor: AppColors.white,
                                 cancelButtonColor: AppColors.primary,
-                                cancelButtonText: AppUtils.languageTranslate('scanId'),
+                                cancelButtonText: AppUtils.languageTranslate('scanEmiratesId'),
                                 confirmButtonText: AppUtils.languageTranslate('complete'),
                                 confirmButtonColor: AppColors.green,
                                 onConfirm: () async {

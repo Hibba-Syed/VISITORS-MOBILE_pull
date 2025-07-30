@@ -25,13 +25,14 @@ class ActivityLogWidget extends StatelessWidget {
       this.dateTime,
       this.isLast,
       this.verticalPadding,
-      this.horizontalPadding});
+      this.horizontalPadding
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding ?? 10, vertical: verticalPadding ?? 0),
+          horizontal: horizontalPadding ?? 0, vertical: verticalPadding ?? 0),
       child: Column(
         children: [
           TimelineTile(

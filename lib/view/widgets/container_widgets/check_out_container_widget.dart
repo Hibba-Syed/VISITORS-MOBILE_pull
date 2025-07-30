@@ -84,7 +84,6 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                     child: CustomButton(
                       borderRadius: 6,
                       invert: true,
-                      height: 42,
                       buttonColor: AppColors.red,
                   textColor: AppColors.red,
                       text: AppUtils.languageTranslate('checkout'),
@@ -98,7 +97,6 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                     child: CustomButton(
                       borderRadius: 6,
                       buttonColor: AppColors.red,
-                      height: 42,
                       text: AppUtils.languageTranslate('checkoutAll'),
                       onPressed: widget.checkOutAllOnPress,
                     ),
@@ -108,7 +106,6 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
             : CustomButton(
                 borderRadius: 6,
                 buttonColor: AppColors.red,
-                height: 42,
                 text: AppUtils.languageTranslate('checkoutAll'),
                 onPressed: widget.checkOutAllOnPress,
               ),
@@ -133,6 +130,7 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                 EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable'));
               }
               return ListView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 primary: false,
                 itemCount: state.checkInLogs?.length,
