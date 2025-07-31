@@ -131,7 +131,8 @@ class DashboardScreen extends StatelessWidget {
           title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              visitorsCount: checkIns?.visitorCount ?? "",
+              visitorsCount: //int.tryParse(checkIns?.visitorCount ?? ''),
+              checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -142,7 +143,7 @@ class DashboardScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
-                      secondButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      secondButtonText: AppUtils.languageTranslate('yes'),
                       title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onSecondButtonPressed: () async {
                         final result = await context
@@ -176,7 +177,7 @@ class DashboardScreen extends StatelessWidget {
                             const EdgeInsets.symmetric(horizontal: 20),
                         isFirstButtonDisable: true,
                         secondButtonColor: AppColors.red,
-                        secondButtonText: AppUtils.languageTranslate('checkout'),
+                        secondButtonText: AppUtils.languageTranslate('yes'),
                         title: AppUtils.languageTranslate('checkoutForVisitors'),
                         onSecondButtonPressed: () async {
                           final result = await context
@@ -570,11 +571,9 @@ class DashboardScreen extends StatelessWidget {
                               return WorkOrderRFPCardWidget(
                                 isAwarded: workOrder?.isAwarded,
                                 isActiveCheckins:
-                                    (workOrder?.activeCheckIns?.isNotEmpty ??
-                                            true)
+                                    (workOrder?.activeCheckIns?.isNotEmpty ?? true)
                                         ? true
                                         : false,
-                                typeText: 'Work Order',
                                 typeAssetImage: AppImages.hammer,
                                 status: workOrder?.status ?? "",
                                 title: workOrder?.title ?? "",
@@ -991,7 +990,6 @@ class DashboardScreen extends StatelessWidget {
                                 (workOrder?.activeCheckIns?.isNotEmpty ?? true)
                                     ? true
                                     : false,
-                            typeText: 'Work Order',
                             typeAssetImage: AppImages.hammer,
                             status: workOrder?.status ?? "--",
                             title: workOrder?.title ?? "--",

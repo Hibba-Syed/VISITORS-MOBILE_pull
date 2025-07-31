@@ -199,7 +199,8 @@ class CheckInDetailsScreen extends StatelessWidget {
           title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? "--"}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              visitorsCount: checkIns?.visitorCount ?? "",
+              visitorsCount:  //int.tryParse(checkIns?.visitorCount ?? ''),
+              checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -210,7 +211,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
-                      secondButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      secondButtonText: AppUtils.languageTranslate('yes'),
                       title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onSecondButtonPressed: ()async{
                         final result = await context.read<CheckInsDetailsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
@@ -242,7 +243,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                         insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                         isFirstButtonDisable: true,
                         secondButtonColor: AppColors.red,
-                        secondButtonText: AppUtils.languageTranslate("checkout"),
+                        secondButtonText: AppUtils.languageTranslate("yes"),
                         secondButtonTextFontSize: AppUtils.isTablet(context) ? 15 : 13,
                         title: AppUtils.languageTranslate('checkoutForVisitors'),
                         onSecondButtonPressed: ()async{
@@ -253,7 +254,6 @@ class CheckInDetailsScreen extends StatelessWidget {
                           visitorsNoController.clear();
                           return result;
                         });
-
                   },
                 );
               },

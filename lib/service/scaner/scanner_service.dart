@@ -161,25 +161,29 @@ class ScannerService {
   }
 
   Future<OcrModel?> _scanDocumentAndPerformOCR() async {
-    DocumentScannerOptions documentOptions = DocumentScannerOptions(
-      documentFormat: DocumentFormat.jpeg, // set output document format
-      mode: ScannerMode.base, // to control what features are enabled
-      pageLimit: 1, // setting a limit to the number of pages scanned
-      isGalleryImport: false, // importing from the photo gallery
-    );
-    final documentScanner = DocumentScanner(options: documentOptions);
-    DocumentScanningResult result = await documentScanner.scanDocument();
-    File? scannedImageFile;
-    final List<String> images = result.images;
-    if (images.isNotEmpty && images.first.isNotEmpty) {
-      scannedImageFile = File(images.first);
+    try {
+      DocumentScannerOptions documentOptions = DocumentScannerOptions(
+        documentFormat: DocumentFormat.jpeg, // set output document format
+        mode: ScannerMode.base, // to control what features are enabled
+        pageLimit: 1, // setting a limit to the number of pages scanned
+        isGalleryImport: false, // importing from the photo gallery
+      );
+      final documentScanner = DocumentScanner(options: documentOptions);
+      DocumentScanningResult result = await documentScanner.scanDocument();
+      File? scannedImageFile;
+      final List<String> images = result.images;
+      if (images.isNotEmpty && images.first.isNotEmpty) {
+        scannedImageFile = File(images.first);
 
-      return await _performOCR(scannedImageFile);
+        return await _performOCR(scannedImageFile);
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
-    return null;
   }
 
-  Future<OcrModel> _performOCR(File imageFile) async {
+  Future<OcrModel?> _performOCR(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
     TextRecognizer textDetector =
         TextRecognizer(script: TextRecognitionScript.latin);
@@ -199,7 +203,11 @@ class ScannerService {
     final File? extractedPersonImage = _extractPersonImage(imageFile, faces);
     textDetector.close();
     faceDetector.close();
-    return OcrModel(personImage: extractedPersonImage, recognizedTExt: text);
+    if (text.isNotEmpty && extractedPersonImage != null) {
+      return OcrModel(personImage: extractedPersonImage, recognizedTExt: text);
+    } else {
+      return null;
+    }
   }
 
   File? _extractPersonImage(File originalImage, List<Face> faces) {
@@ -334,7 +342,6 @@ class ScannerService {
     for (int i = 0; i < lines.length; i++) {
       final line = lines[i];
       // Debug: Print current line being processed
-      print('Processing line $i: "$line"');
       // License number
       if (licenseNumber == null && licenseRegex.hasMatch(line)) {
         licenseNumber = licenseRegex.firstMatch(line)!.group(0);
@@ -373,8 +380,6 @@ class ScannerService {
             break;
           }
         }
-
-        print('Extracted Nationality: "$nationality"');
       }
 
       final matches = dateRegex.allMatches(line);
@@ -424,7 +429,6 @@ class ScannerService {
 
   PassportModel _parsePassportExtractedText(String rawText, File? imageFile) {
     final lines = rawText.split('\n').map((line) => line.trim()).toList();
-    print('Passport rawText$rawText');
 
     String? name;
     String? passportNumber;

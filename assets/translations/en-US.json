@@ -112,8 +112,6 @@
     "activityLog": "Activity Log",
     "complete": "Complete",
     "scan": "Scan",
-    "pleaseTypeNameFirst": "Please type name first",
-    "pleaseTypeIdFirst": "Please type id first",
     "requesterName": "Requester Name *",
     "deliveryCompany" : "Delivery Company",
     "requestedDate" : "Requested Date",
@@ -175,8 +173,6 @@
     "visitorRecordsFound": "Visitor records found for this number",
     "entryLicenseNumber": "Entry license number",
     "unitedArabEmirates": "United Arab Emirates",
-
-
     "somethingWentWrongPleaseTryAgainLater": "Something went wrong, please try again later",
     "somethingWentWrongWhileFetchingVisitorsCheckins": "Something went wrong while fetching visitors check-ins",
     "noMoreCheckins": "No more check-ins",
@@ -225,7 +221,6 @@
     "pleaseAuthenticateToProceed": "Please authenticate to proceed",
     "authenticationError": "Authentication Error",
     "somethingWentWrongWhileFetchingWorkOrderDetails": "Something went wrong while fetching work order details",
-
     "error": "Error",
     "ok": "OK",
     "fileDownloadedSuccessfully": "File downloaded successfully",
@@ -285,7 +280,11 @@
     "checkoutFor": "Checkout For",
     "checkOut": "Check-Out",
     "areYouSureYouWantToDeleteThisVisitorRecordForever": "Are you sure you want to delete this visitor record  forever?",
-    "by": "By"
+    "by": "By",
+    "deleteVisitorRecord": "Delete Visitor Record",
+    "delete": "Delete",
+    "addLogTo": "Add Log To",
+    "clearPaymentFor": "Clear payment for"
 }
 
 

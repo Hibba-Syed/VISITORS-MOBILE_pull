@@ -202,7 +202,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         if (context.mounted) {
           Navigator.pop(context);
         }
-        getDashboardCheckIns();
+        getDashboardCheckIns(limit: 3);
         Fluttertoast.showToast(
             msg: (data['checkout'] != null)
                 ? '${AppUtils.languageTranslate('checkout')} ${data['checkout'].toString()} ${AppUtils.languageTranslate('visitorsSuccessfully')}'

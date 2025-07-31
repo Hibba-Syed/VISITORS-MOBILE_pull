@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,13 +16,16 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
   ServiceDetailsCubit() : super(ServiceDetailsState());
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
 
-  Future<ServiceDetailsResponseModel?> getServiceDetails({required int? serviceId,String? type}) async {
+  void clearData() {
+    emit(state.copyWith(serviceDetails: ServiceDetailsModel()));
+  }
+
+  Future<ServiceDetailsResponseModel?> getServiceDetails(
+      {required int? serviceId, String? type}) async {
     emit(state.copyWith(isLoading: true));
     ServiceDetailsResponseModel? response =
-    await _serviceRepo.getServiceDetails(
-      serviceId: serviceId
-    ).onError(
-          (error, stackTrace) {
+        await _serviceRepo.getServiceDetails(serviceId: serviceId).onError(
+      (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -39,17 +41,17 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return response;
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingServiceDetails')
-      );
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingServiceDetails'));
       emit(state.copyWith(isLoading: false));
       return null;
     }
   }
 
   Future<bool> addServiceLog(
-      BuildContext context, {
-        required Map<String, dynamic> data,
-      }) async {
+    BuildContext context, {
+    required Map<String, dynamic> data,
+  }) async {
     emit(state.copyWith(isAddLogLoading: true));
     try {
       AddServiceLogResponseModel? response = await _serviceRepo
@@ -65,14 +67,18 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       emit(state.copyWith(isAddLogLoading: false));
 
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('logAddedSuccessfully'));
-        if(context.mounted){
-          getServiceDetails(serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('logAddedSuccessfully'));
+        if (context.mounted) {
+          getServiceDetails(
+              serviceId:
+                  context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
         }
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingLog'));
+            msg:
+                AppUtils.languageTranslate('somethingWentWrongWhileAddingLog'));
         return false;
       }
     } catch (e) {
@@ -81,15 +87,15 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return false;
     }
   }
+
   Future<bool> completeService(
-      BuildContext context, {
-        required Map<String, dynamic> data,
-      }) async {
+    BuildContext context, {
+    required Map<String, dynamic> data,
+  }) async {
     emit(state.copyWith(isCompleteServiceLoading: true));
     try {
       VisitorsServiceCompleteResponseModel? response = await _serviceRepo
-          .completeService(
-          data: data)
+          .completeService(data: data)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCompleteServiceLoading: false));
         Fluttertoast.showToast(
@@ -100,14 +106,16 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       emit(state.copyWith(isCompleteServiceLoading: false));
       // log("Service model RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
-        if(context.mounted){
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
+        if (context.mounted) {
           Navigator.pop(context);
         }
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingCompletingServices'));
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileAddingCompletingServices'));
         return false;
       }
     } catch (e) {
@@ -117,17 +125,13 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return false;
     }
   }
-  Future<bool> completeAccessDeviceService(
-      BuildContext context, {
-        required Map<String, dynamic> data,
-         required int? serviceId
-      }) async {
+
+  Future<bool> completeAccessDeviceService(BuildContext context,
+      {required Map<String, dynamic> data, required int? serviceId}) async {
     emit(state.copyWith(isCompleteServiceLoading: true));
     try {
       VisitorsServiceCompleteResponseModel? response = await _serviceRepo
-          .completeAccessDeviceService(
-        data: data,
-        serviceId: serviceId)
+          .completeAccessDeviceService(data: data, serviceId: serviceId)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCompleteServiceLoading: false));
         Fluttertoast.showToast(
@@ -138,14 +142,16 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       emit(state.copyWith(isCompleteServiceLoading: false));
       // log("Service model RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
-        if(context.mounted){
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
+        if (context.mounted) {
           Navigator.pop(context);
         }
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingCompletingServices'));
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileAddingCompletingServices'));
         return false;
       }
     } catch (e) {
@@ -155,35 +161,39 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       return false;
     }
   }
+
   Future<bool> clearPayment(
-      BuildContext context, {
-        required int? id,
-        required Map<String, dynamic> data,
-        required List<String>? file,
-      }) async {
+    BuildContext context, {
+    required int? id,
+    required Map<String, dynamic> data,
+    required List<String>? file,
+  }) async {
     emit(state.copyWith(isClearPaymentLoading: true));
 
-    if (file?.isEmpty??true) {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('pleaseSelectAFile'));
+    if (file?.isEmpty ?? true) {
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('pleaseSelectAFile'));
       emit(state.copyWith(isClearPaymentLoading: false));
       return false;
     }
     List<http.MultipartFile> multipartFiles = [];
-    if (file?.isNotEmpty??false) {
-      for (int i = 0; i < (file?.length??0); i++) {
-        if (file?[i].isNotEmpty??false) {
+    if (file?.isNotEmpty ?? false) {
+      for (int i = 0; i < (file?.length ?? 0); i++) {
+        if (file?[i].isNotEmpty ?? false) {
           multipartFiles.add(
-            await http.MultipartFile.fromPath('file', file?[i]??""),
+            await http.MultipartFile.fromPath('file', file?[i] ?? ""),
           );
         }
       }
     }
 
-    final response = await _serviceRepo.clearPayment(
+    final response = await _serviceRepo
+        .clearPayment(
       id: id,
       data: data,
       files: multipartFiles,
-    ).onError((error, stackTrace) {
+    )
+        .onError((error, stackTrace) {
       emit(state.copyWith(isClearPaymentLoading: false));
       Fluttertoast.showToast(msg: error.toString());
       return null;
@@ -192,18 +202,18 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     emit(state.copyWith(isClearPaymentLoading: false));
 
     if (response != null && response.status == 'success') {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('paymentClearedSuccessfully'));
-     if(context.mounted){
-       getServiceDetails(
-           serviceId: context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
-
-     }
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('paymentClearedSuccessfully'));
+      if (context.mounted) {
+        getServiceDetails(
+            serviceId:
+                context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
+      }
       return true;
     }
 
-    Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrong'));
+    Fluttertoast.showToast(
+        msg: AppUtils.languageTranslate('somethingWentWrong'));
     return false;
   }
 }
-
-

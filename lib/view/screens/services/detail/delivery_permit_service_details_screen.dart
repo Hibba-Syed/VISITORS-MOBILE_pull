@@ -20,9 +20,13 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../../../model/emirates_id_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
+import '../../../../service/scaner/scanner_service.dart';
 import '../../../widgets/empty_widget.dart';
+import '../components/add_log_action_design_widget.dart';
+import '../components/complete_action_design_widget.dart';
 
 class DeliveryPermitServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
@@ -38,6 +42,7 @@ class _DeliveryPermitServiceDetailsScreenState
   final TextEditingController _noteController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -230,6 +235,7 @@ class _DeliveryPermitServiceDetailsScreenState
               Expanded(
                 child: CustomButton(
                     text: AppUtils.languageTranslate('addLog'),
+                    buttonColor: AppColors.cyanBlue,
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -241,61 +247,58 @@ class _DeliveryPermitServiceDetailsScreenState
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title:
-                                  'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                                  '${AppUtils.languageTranslate('addLogTo')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                               secondButtonText: AppUtils.languageTranslate('addLog'),
+                              secondButtonColor: AppColors.cyanBlue,
                               onSecondButtonPressed: () async {
-                                if (_noteController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg:  AppUtils.languageTranslate('pleaseTypeNoteFirst'));
-                                  return false;
+                                if (_actionFormKey.currentState
+                                    ?.validate() ??
+                                    false) {
+                                  final result = await context
+                                      .read<ServiceDetailsCubit>()
+                                      .addServiceLog(
+                                    context,
+                                    data: {
+                                      'application_id':
+                                      '${context
+                                          .read<ServiceDetailsCubit>()
+                                          .state
+                                          .serviceDetails
+                                          ?.id}',
+                                      'note': _noteController.text,
+                                    },
+                                  );
+                                 if(result){
+                                   _noteController.clear();
+                                 }
+                                 return result;
                                 }
-                                // print('add^^^${_noteController.text}');
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .addServiceLog(
-                                  context,
-                                  data: {
-                                    'application_id':
-                                        '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                _noteController.clear();
-
-                                return result;
+                                return
+                                false;
                               },
                               contentBuilder: (context, setState) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: AppUtils.languageTranslate('note'),
-                                    ),
-                                  ],
+                                return Form(
+                                  key: _actionFormKey,
+                                  child: AddLogActionDesignWidget(
+                                      noteController: _noteController),
                                 );
                               },
                             );
                           });
                     }),
               ),
-              if (context
+              if ((context
                       .read<ServiceDetailsCubit>()
                       .state
                       .serviceDetails
                       ?.securityDeposit ==
-                  null) ...[
+                  null ) ||
+                  (context
+                      .read<ServiceDetailsCubit>()
+                      .state
+                      .serviceDetails
+                      ?.securityDeposit ==
+                      0)) ...[
                 const Gap(10),
                 Expanded(
                   child: CustomButton(
@@ -311,77 +314,63 @@ class _DeliveryPermitServiceDetailsScreenState
                                     ? EdgeInsets.symmetric(horizontal: 35)
                                     : EdgeInsets.symmetric(horizontal: 10),
                                 title:
-                                    'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
+                                    '${AppUtils.languageTranslate('complete')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
                                 disableFirstButtonBorder: true,
                                 firstButtonTextColor: AppColors.white,
                                 firstButtonColor: AppColors.primary,
                                 firstButtonText: AppUtils.languageTranslate('scanEmiratesId'),
                                 secondButtonText:AppUtils.languageTranslate('complete'),
                                 secondButtonColor: AppColors.green,
+                                onFirstButtonPressed: ()async{
+                                  EmiratesIdModel? emiratesIdData =
+                                      await ScannerService()
+                                      .scanEmiratesIdAndPerformOcr();
+                                  if (emiratesIdData != null) {
+                                    setState(() {
+                                      _nameController.text =
+                                          emiratesIdData.name ?? '';
+                                      _idController.text =
+                                          emiratesIdData.idNumber ?? '';
+                                    });
+                                  }
+                                  return false;
+                                },
                                 onSecondButtonPressed: () async {
-                                  if (_nameController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
-                                    return false;
+                                  if (_actionFormKey.currentState
+                                      ?.validate() ??
+                                      false) {
+                                    final result = await context
+                                        .read<ServiceDetailsCubit>()
+                                        .completeService(
+                                      context,
+                                      data: {
+                                        'id':
+                                        '${context
+                                            .read<ServiceDetailsCubit>()
+                                            .state
+                                            .serviceDetails
+                                            ?.id}',
+                                        'requester_name': _nameController.text,
+                                        'id_number': _idController.text,
+                                        'note': _noteController.text,
+                                      },
+                                    );
+                                    if (result) {
+                                      _noteController.clear();
+                                      _idController.clear();
+                                      _nameController.clear();
+                                    }
+                                    return result;
                                   }
-                                  if (_idController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
-                                    return false;
-                                  }
-                                  final result = await context
-                                      .read<ServiceDetailsCubit>()
-                                      .completeService(
-                                    context,
-                                    data: {
-                                      'id':
-                                          '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                      'requester_name': _nameController.text,
-                                      'id_number': _idController.text,
-                                      'note': _noteController.text,
-                                    },
-                                  );
-                                  if(result){
-                                    _noteController.clear();
-                                    _idController.clear();
-                                    _nameController.clear();
-                                  }
-
-                                  //print('id service ${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}');
-                                  return result;
+                                  return false;
                                 },
                                 contentBuilder: (context, setState) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Gap(5),
-                                      SvgPicture.asset(
-                                        AppImages.question,
-                                        height: 35,
-                                        width: 35,
-                                        colorFilter: const ColorFilter.mode(
-                                          AppColors.green,
-                                          BlendMode.srcIn,
-                                        ),
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate('requesterName'),
-                                        controller: _nameController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        label: AppUtils.languageTranslate('idNumber'),
-                                        controller: _idController,
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        controller: _noteController,
-                                        label: AppUtils.languageTranslate('servicesNote'),
-                                      ),
-                                    ],
+                                  return Form(
+                                    key: _actionFormKey,
+                                    child: CompleteActionDesignWidget(
+                                        nameController: _nameController,
+                                        idController: _idController,
+                                        noteController: _noteController),
                                   );
                                 },
                               );

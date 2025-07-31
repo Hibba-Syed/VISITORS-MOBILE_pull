@@ -129,7 +129,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                   : EdgeInsets.symmetric(horizontal: 10),
                               isFirstButtonDisable: true,
                               secondButtonColor: AppColors.red,
-                              secondButtonText: AppUtils.languageTranslate('checkoutAll'),
+                              secondButtonText: AppUtils.languageTranslate('yes'),
                               title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                               onSecondButtonPressed: () async {
                                 return context
@@ -245,7 +245,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
           title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              visitorsCount: checkIns?.visitorCount ?? "",
+              visitorsCount:  //int.tryParse(checkIns?.visitorCount ?? ''),
+              checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -256,7 +257,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
-                      secondButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      secondButtonText: AppUtils.languageTranslate('yes'),
                       title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onSecondButtonPressed: () async {
                         final result = await context
@@ -290,7 +291,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                             const EdgeInsets.symmetric(horizontal: 20),
                         isFirstButtonDisable: true,
                         secondButtonColor: AppColors.red,
-                        secondButtonText:  AppUtils.languageTranslate('Checkout'),
+                        secondButtonText:  AppUtils.languageTranslate('yes'),
                         title: AppUtils.languageTranslate('checkoutForVisitors'),
                         onSecondButtonPressed: () async {
                           final result = await context

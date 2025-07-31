@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +26,8 @@ import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../../service/scaner/scanner_service.dart';
 import '../../../widgets/empty_widget.dart';
+import '../components/add_log_action_design_widget.dart';
+import '../components/complete_action_design_widget.dart';
 
 class AccessDeviceServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
@@ -41,7 +44,7 @@ class _AccessDeviceServiceDetailsScreenState
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _newCardController = TextEditingController();
-  final GlobalKey<FormState> _completeFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
   // final TextEditingController _oldCardController = TextEditingController();
 
   @override
@@ -120,42 +123,6 @@ class _AccessDeviceServiceDetailsScreenState
                             [],
                       ),
                     ),
-                    // const Gap(20),
-                    // const HeadingWidget(
-                    //   heading: 'Documents',
-                    // ),
-                    // const Gap(10),
-                    // Container(
-                    //   padding:
-                    //   EdgeInsets.symmetric(horizontal: 7, vertical: 10),
-                    //   decoration: BoxDecoration(
-                    //     color: AppColors.white,
-                    //     borderRadius: BorderRadius.circular(10),
-                    //   ),
-                    //   child:
-                    //   state.serviceDetails?.documents?.isNotEmpty ?? true ?
-                    //   ListView.separated(
-                    //     shrinkWrap: true,
-                    //     primary: false,
-                    //     itemCount:
-                    //     state.serviceDetails?.documents?.length ??
-                    //         0,
-                    //     itemBuilder: (context, index) {
-                    //       Document? document =
-                    //       state.serviceDetails?.documents?[index];
-                    //       return ServicesDocumentsCardWidget(
-                    //         name: document?.name,
-                    //         url: document?.pathUrl ?? "",
-                    //       );
-                    //     },
-                    //     separatorBuilder: (context, index) {
-                    //       return Divider(
-                    //         color: AppColors.gray,
-                    //       );
-                    //     },
-                    //   )
-                    //       : EmptyWidget(text: 'No data available',) ,
-                    // ),
                     const Gap(20),
                     HeadingWidget(
                       heading: AppUtils.languageTranslate('applicantDetails'),
@@ -282,6 +249,7 @@ class _AccessDeviceServiceDetailsScreenState
               Expanded(
                 child: CustomButton(
                     text: AppUtils.languageTranslate('addLog'),
+                    buttonColor: AppColors.cyanBlue,
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
@@ -293,50 +261,39 @@ class _AccessDeviceServiceDetailsScreenState
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
                               title:
-                                  'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                                  '${AppUtils.languageTranslate('addLogTo')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                               secondButtonText:
                                   AppUtils.languageTranslate('addLog'),
+                              secondButtonColor: AppColors.cyanBlue,
                               onSecondButtonPressed: () async {
-                                if (_noteController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: AppUtils.languageTranslate(
-                                          'pleaseTypeNoteFirst'));
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .addServiceLog(
-                                  context,
-                                  data: {
-                                    'application_id':
-                                        '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                _noteController.clear();
-
-                                return result;
+                                if (_actionFormKey.currentState
+                                    ?.validate() ??
+                                    false) {
+                                  final result = await context
+                                      .read<ServiceDetailsCubit>()
+                                      .addServiceLog(
+                                    context,
+                                    data: {
+                                      'application_id':
+                                      '${context
+                                          .read<ServiceDetailsCubit>()
+                                          .state
+                                          .serviceDetails
+                                          ?.id}',
+                                      'note': _noteController.text,
+                                    },
+                                  );
+                                  if(result){
+                                    _noteController.clear();
+                                  }
+                                  return result;
+                                }return false;
                               },
                               contentBuilder: (context, setState) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: AppUtils.languageTranslate('note'),
-                                    ),
-                                  ],
+                                return Form(
+                                  key: _actionFormKey,
+                                  child: AddLogActionDesignWidget(
+                                      noteController: _noteController),
                                 );
                               },
                             );
@@ -370,7 +327,7 @@ class _AccessDeviceServiceDetailsScreenState
                                     ? EdgeInsets.symmetric(horizontal: 35)
                                     : EdgeInsets.symmetric(horizontal: 10),
                                 title:
-                                    'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? "--"}',
+                                    '${AppUtils.languageTranslate('complete')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? "--"}',
                                 disableFirstButtonBorder: true,
                                 firstButtonTextColor: AppColors.white,
                                 firstButtonColor: AppColors.primary,
@@ -394,7 +351,7 @@ class _AccessDeviceServiceDetailsScreenState
                                   return false;
                                 },
                                 onSecondButtonPressed: () async {
-                                   if (_completeFormKey.currentState
+                                   if (_actionFormKey.currentState
                                             ?.validate() ??
                                        false) {
                                   final result = await context
@@ -429,69 +386,15 @@ class _AccessDeviceServiceDetailsScreenState
                                 },
                                 contentBuilder: (context, setState) {
                                   return Form(
-                                    key: _completeFormKey,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        const Gap(5),
-                                        SvgPicture.asset(
-                                          AppImages.question,
-                                          height: 35,
-                                          width: 35,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColors.green,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label: AppUtils.languageTranslate(
-                                              'requesterName'),
-                                          controller: _nameController,
-                                          validator: (value) {
-                                            if (value?.trim().isEmpty ?? true) {
-                                              return AppUtils.languageTranslate(
-                                                  'fieldIsMandatory');
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label: AppUtils.languageTranslate(
-                                              'idNumber'),
-                                          controller: _idController,
-                                          validator: (value) {
-                                            if (value?.trim().isEmpty ?? true) {
-                                              return AppUtils.languageTranslate(
-                                                  'fieldIsMandatory');
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label: AppUtils.languageTranslate(
-                                              'newCardNumber'),
-                                          controller: _newCardController,
-                                          validator: (value) {
-                                            if (value?.trim().isEmpty ?? true) {
-                                              return AppUtils.languageTranslate(
-                                                  'fieldIsMandatory');
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          controller: _noteController,
-                                          label: AppUtils.languageTranslate(
-                                              'servicesNote'),
-                                        ),
-                                      ],
+                                    key: _actionFormKey,
+                                    child: CompleteActionDesignWidget(
+                                        isAccessDevice: true,
+                                        nameController: _nameController,
+                                        idController: _idController,
+                                        noteController: _noteController,
+                                        newCardController: _newCardController,
                                     ),
+
                                   );
                                 },
                               );

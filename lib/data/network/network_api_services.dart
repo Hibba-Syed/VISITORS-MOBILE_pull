@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class NetworkApiServices implements BaseApiServices {
         throw FetchDataException(
             "Connection timeout, please check your internet");
       });
-      debugPrint(
+      log(
           'get status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
     } on SocketException {
@@ -284,8 +285,6 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   dynamic returnResponse(http.Response response) {
-    print('ress Code:: ${response.statusCode}');
-    print('ress:: ${response.body}');
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
     // print('body:: $body');

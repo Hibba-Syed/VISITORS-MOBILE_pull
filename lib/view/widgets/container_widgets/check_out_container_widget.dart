@@ -23,7 +23,6 @@ class CheckOutContainerWidget extends StatefulWidget {
   final String? logDescription;
   final VoidCallback checkOutAllOnPress;
   final VoidCallback? checkOutOnPress;
-  //final Future<bool> Function(bool value)? checkOutOnPress;
   final bool? logIsLast;
   final double? horizontalPadding;
   const CheckOutContainerWidget({
@@ -46,10 +45,14 @@ class CheckOutContainerWidget extends StatefulWidget {
 
 class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final enteredCount = int.tryParse(widget.controller.text.trim());
     final availableCount = int.tryParse(widget.visitorsCount ?? '') ?? 0;
+
+    final isVisitorCountOne = availableCount == 1;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -58,38 +61,47 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
           style: AppTextStyles.style36Red500,
         ),
         const Gap(5),
-        Form(
-          key: _formKey,
-          child: TextFieldWidget(
-            controller: widget.controller,
-            keyboardType: TextInputType.number,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            hint: AppUtils.languageTranslate('noOfVisitorsCheckingOut'),
-            validator: (value){
-              if ( (enteredCount??0) > availableCount) {
-                return AppUtils.languageTranslate('enterValidCount');
-              }
-              return null;
-            },
-            onChanged: (value) {
-              setState(() {});
-            },
+        if (isVisitorCountOne) ...[
+          CustomButton(
+            borderRadius: 6,
+            buttonColor: AppColors.red,
+            text: AppUtils.languageTranslate('checkout'),
+            onPressed: widget.checkOutAllOnPress,
           ),
-        ),
-        const Gap(20),
-        (widget.controller.text.isNotEmpty)
-            ? Row(
+        ] else
+          ...[
+            Form(
+              key: _formKey,
+              child: TextFieldWidget(
+                controller: widget.controller,
+                keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                hint: AppUtils.languageTranslate('noOfVisitorsCheckingOut'),
+                validator: (value) {
+                  if ((enteredCount ?? 0) > availableCount) {
+                    return AppUtils.languageTranslate('enterValidCount');
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+            ),
+            const Gap(20),
+            if (widget.controller.text.isNotEmpty) ...[
+              Row(
                 children: [
                   Expanded(
                     child: CustomButton(
                       borderRadius: 6,
                       invert: true,
                       buttonColor: AppColors.red,
-                  textColor: AppColors.red,
+                      textColor: AppColors.red,
                       text: AppUtils.languageTranslate('checkout'),
-                      onPressed: (){
+                      onPressed: () {
                         widget.checkOutOnPress?.call();
-                      }
+                      },
                     ),
                   ),
                   const Gap(8),
@@ -102,32 +114,37 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                     ),
                   ),
                 ],
-              )
-            : CustomButton(
-                borderRadius: 6,
-                buttonColor: AppColors.red,
-                text: AppUtils.languageTranslate('checkoutAll'),
-                onPressed: widget.checkOutAllOnPress,
               ),
+            ] else
+              ...[
+                CustomButton(
+                  borderRadius: 6,
+                  buttonColor: AppColors.red,
+                  text: AppUtils.languageTranslate('checkoutAll'),
+                  onPressed: widget.checkOutAllOnPress,
+                ),
+              ]
+          ],
         const Gap(10),
         Align(
           alignment: Alignment.topLeft,
           child: Text(
-           AppUtils.languageTranslate('checkInLog'),
+            AppUtils.languageTranslate('checkInLog'),
             style: AppTextStyles.style16black600,
           ),
         ),
         const Divider(color: AppColors.gray),
-         const Gap(10),
+        const Gap(10),
         ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 240),
           child: BlocBuilder<CheckInsDetailsCubit, CheckInsDetailsState>(
             builder: (context, state) {
-              if(state.isLoading ) {
+              if (state.isLoading) {
                 return LoaderWidget();
               }
-              if(state.checkInLogs?.isEmpty ?? true){
-                EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable'));
+              if (state.checkInLogs?.isEmpty ?? true) {
+                return EmptyWidget(
+                    text: AppUtils.languageTranslate('noDataAvailable'));
               }
               return ListView.builder(
                 padding: EdgeInsets.zero,
@@ -135,16 +152,17 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
                 primary: false,
                 itemCount: state.checkInLogs?.length,
                 itemBuilder: (context, index) {
-                  CheckInLogs? checkInLog = state.checkInLogs?[index];
-                  bool isLast = (state.checkInLogs?.length ?? 0) - 1 == index;
+                  final checkInLog = state.checkInLogs?[index];
+                  final isLast = (state.checkInLogs?.length ?? 0) - 1 == index;
                   return ActivityLogWidget(
-                      horizontalPadding: 0,
-                      isLast: isLast ? true : false,
-                      status: checkInLog?.status ?? "",
-                      byValue:  "",
-                      description: checkInLog?.description ?? "",
-                      dateTime:
-                          DateTimeUtil.getFormattedDateTime(checkInLog?.updatedAt));
+                    horizontalPadding: 0,
+                    isLast: isLast,
+                    status: checkInLog?.status ?? "",
+                    byValue: "",
+                    description: checkInLog?.description ?? "",
+                    dateTime: DateTimeUtil.getFormattedDateTime(
+                        checkInLog?.updatedAt),
+                  );
                 },
               );
             },
@@ -154,3 +172,111 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
     );
   }
 }
+//   @override
+//   Widget build(BuildContext context) {
+//     final enteredCount = int.tryParse(widget.controller.text.trim());
+//     final availableCount = int.tryParse(widget.visitorsCount ?? '') ?? 0;
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         Text(
+//           widget.visitorsCount?.toString() ?? "",
+//           style: AppTextStyles.style36Red500,
+//         ),
+//         const Gap(5),
+//         Form(
+//           key: _formKey,
+//           child: TextFieldWidget(
+//             controller: widget.controller,
+//             keyboardType: TextInputType.number,
+//             autovalidateMode: AutovalidateMode.onUserInteraction,
+//             hint: AppUtils.languageTranslate('noOfVisitorsCheckingOut'),
+//             validator: (value){
+//               if ( (enteredCount??0) > availableCount) {
+//                 return AppUtils.languageTranslate('enterValidCount');
+//               }
+//               return null;
+//             },
+//             onChanged: (value) {
+//               setState(() {});
+//             },
+//           ),
+//         ),
+//         const Gap(20),
+//         (widget.controller.text.isNotEmpty)
+//             ? Row(
+//                 children: [
+//                   Expanded(
+//                     child: CustomButton(
+//                       borderRadius: 6,
+//                       invert: true,
+//                       buttonColor: AppColors.red,
+//                   textColor: AppColors.red,
+//                       text: AppUtils.languageTranslate('checkout'),
+//                       onPressed: (){
+//                         widget.checkOutOnPress?.call();
+//                       }
+//                     ),
+//                   ),
+//                   const Gap(8),
+//                   Expanded(
+//                     child: CustomButton(
+//                       borderRadius: 6,
+//                       buttonColor: AppColors.red,
+//                       text: AppUtils.languageTranslate('checkoutAll'),
+//                       onPressed: widget.checkOutAllOnPress,
+//                     ),
+//                   ),
+//                 ],
+//               )
+//             : CustomButton(
+//                 borderRadius: 6,
+//                 buttonColor: AppColors.red,
+//                 text: AppUtils.languageTranslate('checkoutAll'),
+//                 onPressed: widget.checkOutAllOnPress,
+//               ),
+//         const Gap(10),
+//         Align(
+//           alignment: Alignment.topLeft,
+//           child: Text(
+//            AppUtils.languageTranslate('checkInLog'),
+//             style: AppTextStyles.style16black600,
+//           ),
+//         ),
+//         const Divider(color: AppColors.gray),
+//          const Gap(10),
+//         ConstrainedBox(
+//           constraints: const BoxConstraints(maxHeight: 240),
+//           child: BlocBuilder<CheckInsDetailsCubit, CheckInsDetailsState>(
+//             builder: (context, state) {
+//               if(state.isLoading ) {
+//                 return LoaderWidget();
+//               }
+//               if(state.checkInLogs?.isEmpty ?? true){
+//                 EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable'));
+//               }
+//               return ListView.builder(
+//                 padding: EdgeInsets.zero,
+//                 shrinkWrap: true,
+//                 primary: false,
+//                 itemCount: state.checkInLogs?.length,
+//                 itemBuilder: (context, index) {
+//                   CheckInLogs? checkInLog = state.checkInLogs?[index];
+//                   bool isLast = (state.checkInLogs?.length ?? 0) - 1 == index;
+//                   return ActivityLogWidget(
+//                       horizontalPadding: 0,
+//                       isLast: isLast ? true : false,
+//                       status: checkInLog?.status ?? "",
+//                       byValue:  "",
+//                       description: checkInLog?.description ?? "",
+//                       dateTime:
+//                           DateTimeUtil.getFormattedDateTime(checkInLog?.updatedAt));
+//                 },
+//               );
+//             },
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

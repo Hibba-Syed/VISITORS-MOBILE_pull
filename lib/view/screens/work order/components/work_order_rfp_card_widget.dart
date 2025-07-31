@@ -17,7 +17,6 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
   final String? updatedDate;
   final String? status;
   final String? reference;
-  final String? typeText;
   final String? typeAssetImage;
   final VoidCallback checkInPressed;
   final VoidCallback detailsOnPressed;
@@ -31,7 +30,6 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
     this.vendorName,
     this.createdDate,
     this.reference,
-    this.typeText,
     required this.checkInPressed,
     required this.detailsOnPressed,
     this.typeAssetImage,

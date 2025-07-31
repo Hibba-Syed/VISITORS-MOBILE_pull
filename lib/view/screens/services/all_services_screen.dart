@@ -155,8 +155,10 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                               AppRoutes.serviceableCheckIns);
                                         },
                                         detailsOnPressed: () {
-                                          context
-                                              .read<ServiceDetailsCubit>()
+                                          ServiceDetailsCubit serviceDetailsCubit = context
+                                              .read<ServiceDetailsCubit>();
+                                          serviceDetailsCubit.clearData();
+                                          serviceDetailsCubit
                                               .getServiceDetails(
                                                   serviceId: service?.id);
                                           Navigator.push(

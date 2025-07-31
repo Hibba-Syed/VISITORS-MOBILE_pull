@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
@@ -76,7 +77,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         }
         if (context.mounted) {
           Navigator.pop(context);
-          context.read<CheckInsCubit>().getCheckIns();
+          context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
           Navigator.pop(context);
         }
         getCheckInDetailsLog(id: id);

@@ -1,4 +1,3 @@
-
 {
     "welcome": "مرحباً",
     "allCheckIns": "جميع تسجيلات الوصول",
@@ -113,8 +112,6 @@
     "activityLog": "سجل النشاط",
     "complete": "إكمال",
     "scan": "مسح",
-    "pleaseTypeNameFirst": "يرجى كتابة الاسم أولاً",
-    "pleaseTypeIdFirst": "يرجى كتابة رقم الهوية أولاً",
     "requesterName": "اسم مقدم الطلب *",
     "deliveryCompany": "شركة التوصيل",
     "requestedDate": "التاريخ المطلوب",
@@ -281,8 +278,9 @@
     "checkoutFor": "تسجيل خروج لـ",
     "checkOut": "تسجيل الخروج",
     "areYouSureYouWantToDeleteThisVisitorRecordForever": "هل أنت متأكد أنك تريد حذف سجل الزائر هذا نهائيًا؟",
-    "by": "بواسطة"
-
-
-
+    "by": "بواسطة",
+    "deleteVisitorRecord": "حذف سجل الزائر",
+    "delete": "حذف",
+    "addLogTo": "إضافة سجل إلى",
+    "clearPaymentFor": "تسوية الدفع لـ"
 }

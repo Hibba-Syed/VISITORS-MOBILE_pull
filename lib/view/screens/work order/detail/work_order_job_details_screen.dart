@@ -20,6 +20,8 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../services/components/add_log_action_design_widget.dart';
+
 class WorkOrderJobDetailsScreen extends StatefulWidget {
   const WorkOrderJobDetailsScreen({super.key});
 
@@ -28,8 +30,9 @@ class WorkOrderJobDetailsScreen extends StatefulWidget {
 }
 
 class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
-  TextEditingController noteController =
+  final TextEditingController _noteController =
   TextEditingController();
+  final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +152,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
               vertical: AppConstants.horizontalPadding),
           child: CustomButton(
               text: AppUtils.languageTranslate('addLog'),
+              buttonColor: AppColors.cyanBlue,
               onPressed: () {
                 showDialog(
                     barrierDismissible: false,
@@ -158,50 +162,35 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                         isFirstButtonDisable: true,
                         insetPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
-                        title: 'Add Log to ${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.reference ?? ""}',
+                        title: '${AppUtils.languageTranslate('addLogTo')} ${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.reference ?? ""}',
                         secondButtonText: AppUtils.languageTranslate('addLog'),
+                        secondButtonColor: AppColors.cyanBlue,
                         onSecondButtonPressed: () async {
-                          if (noteController.text.isEmpty) {
-                            Fluttertoast.showToast(
-                                msg: AppUtils.languageTranslate('pleaseTypeNoteFirst') );
-                            return false;
+                          if(_actionFormKey.currentState?.validate() ?? false){
+                            final result = await context
+                                .read<WorkOrderDetailsCubit>()
+                                .addWorkOrderLog(
+                              context,
+                              data: {
+                                'job_id':
+                                '${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.id}',
+                                'note': _noteController.text,
+                              },
+                            );
+                            if(result){
+                              _noteController.clear();
+                            }
+                            return result;
                           }
-                          // print('add##${noteController.text}');
-                          final result = await context
-                              .read<WorkOrderDetailsCubit>()
-                              .addWorkOrderLog(
-                            context,
-                            data: {
-                              'job_id':
-                                  '${context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.id}',
-                              'note': noteController.text,
-                            },
-                          );
-                          noteController.clear();
-                          return result;
+                          return false;
+
                         },
 
                         contentBuilder: (context, setState) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Gap(5),
-                              SvgPicture.asset(
-                                AppImages.question,
-                                height: 35,
-                                width: 35,
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.primary,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              const Gap(5),
-                              TextFieldWidget(
-                                controller: noteController,
-                                label: AppUtils.languageTranslate('note'),
-                              ),
-                            ],
+                          return  Form(
+                            key: _actionFormKey,
+                            child: AddLogActionDesignWidget(
+                                noteController: _noteController),
                           );
                         },
                       );

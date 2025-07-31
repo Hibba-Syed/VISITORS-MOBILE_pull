@@ -21,31 +21,38 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../../../model/emirates_id_model.dart';
 import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
+import '../../../../service/scaner/scanner_service.dart';
 import '../../../widgets/empty_widget.dart';
+import '../components/add_log_action_design_widget.dart';
+import '../components/complete_action_design_widget.dart';
 import '../components/services_documents_card_widget.dart';
 
 class FitOutServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
- const  FitOutServiceDetailsScreen({super.key, this.service});
+  const FitOutServiceDetailsScreen({super.key, this.service});
 
   @override
-  State<FitOutServiceDetailsScreen> createState() => _FitOutServiceDetailsScreenState();
+  State<FitOutServiceDetailsScreen> createState() =>
+      _FitOutServiceDetailsScreenState();
 }
 
-class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen> {
- final TextEditingController _noteController = TextEditingController();
- final TextEditingController _nameController = TextEditingController();
- final TextEditingController _idController = TextEditingController();
+class _FitOutServiceDetailsScreenState
+    extends State<FitOutServiceDetailsScreen> {
+  final TextEditingController _noteController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:  AppBarWidget(
-          title:  AppUtils.languageTranslate('serviceDetails'),
+        appBar: AppBarWidget(
+          title: AppUtils.languageTranslate('serviceDetails'),
           titleColor: AppColors.black,
           iconColor: AppColors.black,
         ),
@@ -55,9 +62,10 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
           child: SingleChildScrollView(
             child: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
               builder: (context, state) {
-                if(state.isLoading){
+                if (state.isLoading) {
                   return Padding(
-                    padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height / 3),
                     child: LoaderWidget(),
                   );
                 }
@@ -84,7 +92,6 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       style: AppTextStyles.style14Black600,
                     ),
                     const Gap(10),
-
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 10),
@@ -95,12 +102,14 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate('contractorName'),
+                              title:
+                                  AppUtils.languageTranslate('contractorName'),
                               value: state.serviceDetails?.application
                                       ?.contractorName ??
                                   "--"),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('contractorPhone'),
+                            title:
+                                AppUtils.languageTranslate('contractorPhone'),
                             value: state.serviceDetails?.application
                                     ?.contractorPhone ??
                                 "--",
@@ -110,13 +119,15 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                               value: DateTimeUtil.getFormattedDateTime(state
                                   .serviceDetails?.application?.startDate)),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('contractorContactPerson'),
+                            title: AppUtils.languageTranslate(
+                                'contractorContactPerson'),
                             value: state.serviceDetails?.application
                                     ?.contactPerson ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('numberOfStaffExpected'),
+                            title: AppUtils.languageTranslate(
+                                'numberOfStaffExpected'),
                             value: state.serviceDetails?.application
                                     ?.noOfStaffExpected
                                     ?.toString() ??
@@ -128,60 +139,64 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                 state.serviceDetails?.application?.endDate),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('securityDeposit'),
+                            title:
+                                AppUtils.languageTranslate('securityDeposit'),
                             value: state.serviceDetails?.securityDeposit
                                     ?.toString() ??
                                 "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
                             isLast: true,
-                            title: AppUtils.languageTranslate('temporaryElectricityRequired'),
+                            title: AppUtils.languageTranslate(
+                                'temporaryElectricityRequired'),
                             valueIcon: Icons.clear,
                           ),
                         ],
                       ),
                     ),
-                    if( state.serviceDetails?.documents?.isNotEmpty ?? true) ...[
+                    if (state.serviceDetails?.documents?.isNotEmpty ??
+                        true) ...[
                       const Gap(20),
                       HeadingWidget(
-                        heading:AppUtils.languageTranslate('documents') ,
+                        heading: AppUtils.languageTranslate('documents'),
                       ),
                       const Gap(10),
                       Container(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child:
-                        state.serviceDetails?.documents?.isNotEmpty ?? true ?
-                        ListView.separated(
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount:
-                          state.serviceDetails?.documents?.length ??
-                              0,
-                          itemBuilder: (context, index) {
-                            Document? document =
-                            state.serviceDetails?.documents?[index];
-                            return ServicesDocumentsCardWidget(
-                              name: document?.name,
-                              url: document?.pathUrl ?? "",
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Divider(
-                              color: AppColors.gray,
-                            );
-                          },
-                        )
-                            : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')) ,
+                        child: state.serviceDetails?.documents?.isNotEmpty ??
+                                true
+                            ? ListView.separated(
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount:
+                                    state.serviceDetails?.documents?.length ??
+                                        0,
+                                itemBuilder: (context, index) {
+                                  Document? document =
+                                      state.serviceDetails?.documents?[index];
+                                  return ServicesDocumentsCardWidget(
+                                    name: document?.name,
+                                    url: document?.pathUrl ?? "",
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Divider(
+                                    color: AppColors.gray,
+                                  );
+                                },
+                              )
+                            : EmptyWidget(
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable')),
                       ),
                     ],
-
                     const Gap(20),
-                     HeadingWidget(
+                    HeadingWidget(
                       heading: AppUtils.languageTranslate('applicantDetails'),
                     ),
                     const Gap(10),
@@ -195,22 +210,24 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       child: Column(
                         children: [
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate('requesterType'),
+                              title:
+                                  AppUtils.languageTranslate('requesterType'),
                               value: state.serviceDetails?.clientType ?? "--"),
                           TitleValueRowDividerDetailsContainerWidget(
                             title: AppUtils.languageTranslate('name'),
                             value: state.serviceDetails?.clientName ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('phone'),
+                            title: AppUtils.languageTranslate('phone'),
                             value: state.serviceDetails?.clientPhone ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title:AppUtils.languageTranslate('email'),
+                            title: AppUtils.languageTranslate('email'),
                             value: state.serviceDetails?.clientEmail ?? "--",
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate('passportNumber'),
+                              title:
+                                  AppUtils.languageTranslate('passportNumber'),
                               value: state.serviceDetails?.passportNumber
                                       ?.toString() ??
                                   "--"),
@@ -220,7 +237,7 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                                 state.serviceDetails?.clientIdExpiry),
                           ),
                           TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('idNumber'),
+                            title: AppUtils.languageTranslate('idNumber'),
                             value: state.serviceDetails?.clientIdNumber
                                     ?.toString() ??
                                 "--",
@@ -235,46 +252,59 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
                       ),
                     ),
                     const Gap(20),
-                     Text(
+                    Text(
                       AppUtils.languageTranslate('activityLog'),
                       style: AppTextStyles.style20primary600,
                     ),
                     const Gap(10),
-                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
-                    Container(
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(top: 10),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount:
-                            state.serviceDetails?.statusHistory?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          StatusHistory? statusHistory = state.serviceDetails?.statusHistory?[index];
-                          bool isLast = (state.serviceDetails?.statusHistory?.length ?? 0) - 1 == index;
-                          return ActivityLogWidget(
-                            horizontalPadding: 8,
-                            isLast: isLast,
-                            status:(statusHistory?.status != 'Pending') ? statusHistory?.status ?? "" : "Request Received",
-                            byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
-                                ?   ' ${statusHistory.user?.fullName ?? ""}'
-                                : " System",
-                            description: statusHistory?.note
-                                ?.replaceAll('\n\n', ' ')
-                                .trim()
-                                .split('.')
-                                .first
-                                .trim(),
-
-                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
-                          );
-                        },
-
-                      ),
-                    ) : EmptyWidget(text:  AppUtils.languageTranslate('noDataAvailable')),
+                    state.serviceDetails?.statusHistory?.isNotEmpty ?? true
+                        ? Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListView.builder(
+                              padding: EdgeInsets.only(top: 10),
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount:
+                                  state.serviceDetails?.statusHistory?.length ??
+                                      0,
+                              itemBuilder: (context, index) {
+                                StatusHistory? statusHistory =
+                                    state.serviceDetails?.statusHistory?[index];
+                                bool isLast = (state.serviceDetails
+                                                ?.statusHistory?.length ??
+                                            0) -
+                                        1 ==
+                                    index;
+                                return ActivityLogWidget(
+                                  horizontalPadding: 8,
+                                  isLast: isLast,
+                                  status: (statusHistory?.status != 'Pending')
+                                      ? statusHistory?.status ?? ""
+                                      : "Request Received",
+                                  byValue: (statusHistory?.user?.fullName !=
+                                              null &&
+                                          statusHistory!
+                                              .user!.fullName!.isNotEmpty)
+                                      ? ' ${statusHistory.user?.fullName ?? ""}'
+                                      : " System",
+                                  description: statusHistory?.note
+                                      ?.replaceAll('\n\n', ' ')
+                                      .trim()
+                                      .split('.')
+                                      .first
+                                      .trim(),
+                                  dateTime: DateTimeUtil.getFormattedDateTime(
+                                      statusHistory?.createdAt),
+                                );
+                              },
+                            ),
+                          )
+                        : EmptyWidget(
+                            text:
+                                AppUtils.languageTranslate('noDataAvailable')),
                   ],
                 );
               },
@@ -290,158 +320,142 @@ class _FitOutServiceDetailsScreenState extends State<FitOutServiceDetailsScreen>
               Expanded(
                 child: CustomButton(
                     text: AppUtils.languageTranslate('addLog'),
+                    buttonColor: AppColors.cyanBlue,
                     onPressed: () {
                       showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
-
                             return CustomAlertDialogBox(
                               isFirstButtonDisable: true,
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              secondButtonText:AppUtils.languageTranslate('addLog'),
+                              title:
+                                  '${AppUtils.languageTranslate('addLogTo')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                              secondButtonText:
+                                  AppUtils.languageTranslate('addLog'),
+                              secondButtonColor: AppColors.cyanBlue,
                               onSecondButtonPressed: () async {
-                                if (_noteController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .addServiceLog(
-                                  context,
-                                  data: {
-                                    'application_id':
-                                    '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                  _noteController.clear();
+                                if (_actionFormKey.currentState?.validate() ??
+                                    false) {
+                                  final result = await context
+                                      .read<ServiceDetailsCubit>()
+                                      .addServiceLog(
+                                    context,
+                                    data: {
+                                      'application_id':
+                                          '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                      'note': _noteController.text,
+                                    },
+                                  );
+                                  if(result){
+                                    _noteController.clear();
+                                  }
 
-                                return result;
+                                  return result;
+                                }
+                                return false;
                               },
                               contentBuilder: (context, setState) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: AppUtils.languageTranslate('note'),
-                                    ),
-                                  ],
+                                return Form(
+                                  key: _actionFormKey,
+                                  child: AddLogActionDesignWidget(
+                                      noteController: _noteController),
                                 );
                               },
                             );
                           });
                     }),
               ),
-              if(context
+              if ((context
+                      .read<ServiceDetailsCubit>()
+                      .state
+                      .serviceDetails
+                      ?.securityDeposit ==
+                  null) ||(context
                   .read<ServiceDetailsCubit>()
                   .state
-                  .serviceDetails?.securityDeposit ==
-                  null)...[
+                  .serviceDetails
+                  ?.securityDeposit ==
+                  0))...[
                 const Gap(10),
-                    Expanded(
-                    child: CustomButton(
-                        buttonColor: AppColors.green,
-                        text: AppUtils.languageTranslate('complete'),
-                        onPressed: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                return CustomAlertDialogBox(
-                                  insetPadding: AppUtils.isTablet(context)
-                                      ? EdgeInsets.symmetric(horizontal: 35)
-                                      : EdgeInsets.symmetric(horizontal: 10),
-                                  title: 'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
-                                  disableFirstButtonBorder: true,
-                                  firstButtonTextColor: AppColors.white,
-                                  firstButtonColor: AppColors.primary,
-                                  firstButtonText: AppUtils.languageTranslate('scanEmiratesId'),
-                                  secondButtonText: AppUtils.languageTranslate('complete'),
-                                  secondButtonColor: AppColors.green,
-                                  onSecondButtonPressed: () async {
-                                    if (_nameController.text.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: AppUtils.languageTranslate('pleaseTypeNameFirst'));
-                                      return false;
-                                    }
-                                    if (_idController.text.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: AppUtils.languageTranslate('pleaseTypeIdFirst'));
-                                      return false;
-                                    }
+                Expanded(
+                  child: CustomButton(
+                      buttonColor: AppColors.green,
+                      text: AppUtils.languageTranslate('complete'),
+                      onPressed: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialogBox(
+                                insetPadding: AppUtils.isTablet(context)
+                                    ? EdgeInsets.symmetric(horizontal: 35)
+                                    : EdgeInsets.symmetric(horizontal: 10),
+                                title:
+                                    '${AppUtils.languageTranslate('complete')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
+                                disableFirstButtonBorder: true,
+                                firstButtonTextColor: AppColors.white,
+                                firstButtonColor: AppColors.primary,
+                                firstButtonText: AppUtils.languageTranslate(
+                                    'scanEmiratesId'),
+                                secondButtonText:
+                                    AppUtils.languageTranslate('complete'),
+                                secondButtonColor: AppColors.green,
+                                onFirstButtonPressed: () async {
+                                  EmiratesIdModel? emiratesIdData =
+                                  await ScannerService()
+                                      .scanEmiratesIdAndPerformOcr();
+                                  if (emiratesIdData != null) {
+                                    setState(() {
+                                      _nameController.text =
+                                          emiratesIdData.name ?? '';
+                                      _idController.text =
+                                          emiratesIdData.idNumber ?? '';
+                                    });
+                                  }
+                                  return false;
+                                },
+                                onSecondButtonPressed: () async {
+                                  if (_actionFormKey.currentState?.validate() ??
+                                      false) {
                                     final result = await context
                                         .read<ServiceDetailsCubit>()
                                         .completeService(
                                       context,
                                       data: {
-                                        'id': '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                        'id':
+                                            '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
                                         'requester_name': _nameController.text,
                                         'id_number': _idController.text,
                                         'note': _noteController.text,
                                       },
                                     );
-                                    if(result){
+                                    if (result) {
                                       _noteController.clear();
                                       _idController.clear();
                                       _nameController.clear();
                                     }
 
                                     return result;
-                                  },
-                                  contentBuilder: (context, setState) {
-                                    return Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Gap(5),
-                                        SvgPicture.asset(
-                                          AppImages.question,
-                                          height: 35,
-                                          width: 35,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColors.green,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label:  AppUtils.languageTranslate('requesterName'),
-                                          controller: _nameController,
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label:  AppUtils.languageTranslate('idNumber'),
-                                          controller: _idController,
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          controller: _noteController,
-                                          label: AppUtils.languageTranslate('servicesNote'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              });
-                        }),
-                  )],
+                                  }
+                                  return false;
+                                },
+                                contentBuilder: (context, setState) {
+                                  return Form(
+                                    key: _actionFormKey,
+                                    child: CompleteActionDesignWidget(
+                                        nameController: _nameController,
+                                        idController: _idController,
+                                        noteController: _noteController),
+                                  );
+                                },
+                              );
+                            });
+                      }),
+                )
+              ],
             ],
           ),
         ),

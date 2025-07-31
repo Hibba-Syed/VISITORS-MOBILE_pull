@@ -23,6 +23,7 @@ import 'package:visitors/utils/app_utils.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../widgets/empty_widget.dart';
+import '../components/add_log_action_design_widget.dart';
 
 class ShortStayServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
@@ -34,6 +35,8 @@ class ShortStayServiceDetailsScreen extends StatefulWidget {
 
 class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsScreen> {
   final TextEditingController _noteController = TextEditingController();
+  final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
+
 
 
   @override
@@ -236,6 +239,7 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
             children: [
               Expanded(
                 child: CustomButton(
+                    buttonColor: AppColors.cyanBlue,
                     text:  AppUtils.languageTranslate('addLog'),
                     onPressed: () {
                       showDialog(
@@ -248,48 +252,34 @@ class _ShortStayServiceDetailsScreenState extends State<ShortStayServiceDetailsS
                               insetPadding: AppUtils.isTablet(context)
                                   ? EdgeInsets.symmetric(horizontal: 35)
                                   : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
+                              title: '${AppUtils.languageTranslate('addLogTo')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
                               secondButtonText:  AppUtils.languageTranslate('addLog'),
+                              secondButtonColor: AppColors.cyanBlue,
                               onSecondButtonPressed: () async {
-                                if (_noteController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: AppUtils.languageTranslate('pleaseTypeNoteFirst'));
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .addServiceLog(
-                                  context,
-                                  data: {
-                                    'application_id':
-                                    '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                _noteController.clear();
+                               if(_actionFormKey.currentState?.validate() ?? false){
+                                 final result = await context
+                                     .read<ServiceDetailsCubit>()
+                                     .addServiceLog(
+                                   context,
+                                   data: {
+                                     'application_id':
+                                     '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
+                                     'note': _noteController.text,
+                                   },
+                                 );
+                                 if(result){
+                                   _noteController.clear();
+                                 }
 
-                                return result;
+                                 return result;
+                               }
+                               return false;
                               },
                               contentBuilder: (context, setState) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label:  AppUtils.languageTranslate('note'),
-                                    ),
-                                  ],
+                                return Form(
+                                  key: _actionFormKey,
+                                  child: AddLogActionDesignWidget(
+                                      noteController: _noteController),
                                 );
                               },
                             );

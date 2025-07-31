@@ -39,7 +39,7 @@ class StatusWidget extends StatelessWidget {
               style:  TextStyle(
                 color: AppUtils.getStatusColor(status),
                 fontWeight:  FontWeight.w500,
-                fontSize: AppUtils.isMobile(context) ?  12 : 14,
+                fontSize: AppUtils.isMobile(context) ?  13 : 14,
               ),
             ),
           ),

@@ -88,13 +88,13 @@ class GetInfoCardWidget extends StatelessWidget {
                         builder: (context) {
                           return CustomAlertDialogBox(
                             isFirstButtonDisable: true,
-                            secondButtonText: 'Delete',
+                            secondButtonText: AppUtils.languageTranslate('delete'),
                             secondButtonColor: AppColors.red,
                             onSecondButtonPressed: deleteOnPressed,
                             insetPadding: AppUtils.isTablet(context)
                                 ? EdgeInsets.symmetric(horizontal: 50)
                                 : EdgeInsets.all(20),
-                            title: 'Delete Visitor Record',
+                            title: AppUtils.languageTranslate('deleteVisitorRecord'),
                             contentBuilder: (context, setState) {
                               return Align(
                                 alignment: Alignment.center,

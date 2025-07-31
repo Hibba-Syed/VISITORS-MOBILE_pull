@@ -62,7 +62,7 @@ class JobCheckInsScreen extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 isFirstButtonDisable: true,
                                 secondButtonColor: AppColors.red,
-                                secondButtonText: AppUtils.languageTranslate('checkoutAll'),
+                                secondButtonText: AppUtils.languageTranslate('yes'),
                                 title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                                 contentBuilder: (context, setState) {
                                   return const Align(
@@ -159,7 +159,8 @@ class JobCheckInsScreen extends StatelessWidget {
           title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              visitorsCount: checkIns?.visitorCount ?? "",
+              visitorsCount: //int.tryParse(checkIns?.visitorCount ?? ''),
+              checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -170,7 +171,7 @@ class JobCheckInsScreen extends StatelessWidget {
                       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
-                      secondButtonText: AppUtils.languageTranslate('checkoutAll'),
+                      secondButtonText: AppUtils.languageTranslate('yes'),
                       title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onSecondButtonPressed: () async {
                         final result = await context
