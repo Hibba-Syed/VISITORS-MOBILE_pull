@@ -9,6 +9,7 @@ import '../../../model/service/service_details_response_model.dart';
 import '../../../model/service/visitors_service_complete_response_model.dart';
 import '../../../repo/services/services_repo.dart';
 import '../../../repo/services/services_repo_impl.dart';
+import '../service_cubit.dart';
 
 part 'service_details_state.dart';
 
@@ -109,6 +110,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
         Fluttertoast.showToast(
             msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
         if (context.mounted) {
+          context.read<ServiceCubit>().getServices();
           Navigator.pop(context);
         }
         return true;

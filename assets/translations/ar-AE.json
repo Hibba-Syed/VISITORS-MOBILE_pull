@@ -282,5 +282,6 @@
     "deleteVisitorRecord": "حذف سجل الزائر",
     "delete": "حذف",
     "addLogTo": "إضافة سجل إلى",
-    "clearPaymentFor": "تسوية الدفع لـ"
+    "clearPaymentFor": "تسوية الدفع لـ",
+    "detailsIdNumber": "رقم الهوية"
 }

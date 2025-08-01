@@ -245,7 +245,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
           title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              visitorsCount:  //int.tryParse(checkIns?.visitorCount ?? ''),
+              visitorsCount:
               checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {

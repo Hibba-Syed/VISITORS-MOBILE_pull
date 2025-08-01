@@ -62,20 +62,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   File? _personImage;
   TypeItemModel? _selectedDocumentType;
 
-  final List<TypeItemModel> _documentTypes = [
-    TypeItemModel(
-      value: 'Emirates ID',
-      label: AppUtils.languageTranslate('emiratesId'),
-    ),
-    TypeItemModel(
-      value: 'Photo ID',
-      label: AppUtils.languageTranslate('photoId'),
-    ),
-    TypeItemModel(
-      value: 'Travel Document',
-      label: AppUtils.languageTranslate('travelDocument'),
-    ),
-  ];
   final List<TypeItemModel> _visitTypes = [
     TypeItemModel(
       value: 'Unit Visit',
@@ -89,7 +75,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDocumentType = _documentTypes.first;
+    _selectedDocumentType = AppConstants.documentTypes.first;
     _selectedVisitType = _visitTypes.first;
   }
 
@@ -335,7 +321,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           fillColor: AppColors.white,
                           selectedItem: _selectedDocumentType,
                           compareFn: (p0, p1) => p0.value == p1.value,
-                          items: _documentTypes,
+                          items: AppConstants.documentTypes,
                           itemAsString: (item) => item.label,
                           onChanged: (value) {
                             _selectedDocumentType = value;
@@ -730,50 +716,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       } else {
                         _onScanPassportTap(context);
                       }
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context) {
-                      //     return CustomAlertDialogBox(
-                      //       insetPadding: EdgeInsets.all(10),
-                      //       hideBothButtons: true,
-                      //       title: AppUtils.languageTranslate('selectType'),
-                      //       contentBuilder: (context, setState) {
-                      //         return Column(
-                      //           crossAxisAlignment: CrossAxisAlignment.start,
-                      //           children: [
-                      //             Row(
-                      //               mainAxisAlignment:
-                      //               MainAxisAlignment.spaceBetween,
-                      //               children: [
-                      //                 ScanTypeContainerWidget(
-                      //                   text: AppUtils.languageTranslate(
-                      //                       'emiratesId'),
-                      //                   onTap: () {
-                      //                     _onScanEmiratesIdTap();
-                      //                   },
-                      //                 ),
-                      //                 ScanTypeContainerWidget(
-                      //                   text: AppUtils.languageTranslate(
-                      //                       'passport'),
-                      //                   onTap: () {
-                      //                     _onScanPassportTap(context);
-                      //                   },
-                      //                 ),
-                      //                 ScanTypeContainerWidget(
-                      //                   text: AppUtils.languageTranslate(
-                      //                       'drivingLicense'),
-                      //                   onTap: () {
-                      //                     _onScanDrivingLicenseTap();
-                      //                   },
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ],
-                      //         );
-                      //       },
-                      //     );
-                      //   },
-                      // );
                     },
                   ),
                   const Gap(20),
@@ -789,7 +731,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           fillColor: AppColors.white,
                           selectedItem: _selectedDocumentType,
                           compareFn: (p0, p1) => p0.value == p1.value,
-                          items: _documentTypes,
+                          items: AppConstants.documentTypes,
                           itemAsString: (item) => item.label,
                           onChanged: (value) {
                             _selectedDocumentType = value;

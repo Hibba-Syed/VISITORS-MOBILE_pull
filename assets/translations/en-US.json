@@ -284,7 +284,8 @@
     "deleteVisitorRecord": "Delete Visitor Record",
     "delete": "Delete",
     "addLogTo": "Add Log To",
-    "clearPaymentFor": "Clear payment for"
+    "clearPaymentFor": "Clear payment for",
+    "detailsIdNumber": "ID Number"
 }
 
 

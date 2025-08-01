@@ -60,7 +60,6 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-
   void resetFilterData() {
     emit(CheckInsState(
       checkInModel: state.checkInModel,
@@ -213,6 +212,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
           emit(state.copyWith(checkOutVisitors: updatedList));
         }
         if (context.mounted) {
+          getCheckIns();
           Navigator.pop(context);
         }
         getCheckIns();

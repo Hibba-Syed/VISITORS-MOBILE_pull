@@ -148,9 +148,9 @@ class AppTextStyles {
     fontSize: 11,
     fontWeight: FontWeight.w400,
   );
-  static const TextStyle style14white400 = TextStyle(
+  static const TextStyle style12white400 = TextStyle(
     color: AppColors.white,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: FontWeight.w400,
   );
 

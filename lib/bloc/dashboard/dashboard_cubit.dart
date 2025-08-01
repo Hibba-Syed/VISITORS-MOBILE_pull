@@ -200,9 +200,9 @@ class DashboardCubit extends Cubit<DashboardState> {
           emit(state.copyWith(checkOutVisitors: updatedList));
         }
         if (context.mounted) {
+          getDashboardCheckIns(limit: 3);
           Navigator.pop(context);
         }
-        getDashboardCheckIns(limit: 3);
         Fluttertoast.showToast(
             msg: (data['checkout'] != null)
                 ? '${AppUtils.languageTranslate('checkout')} ${data['checkout'].toString()} ${AppUtils.languageTranslate('visitorsSuccessfully')}'

@@ -76,13 +76,14 @@ class ActivityLogWidget extends StatelessWidget {
                 maxWidth: double.infinity,
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 6),
+                padding: const EdgeInsets.only(left: 3),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Gap(3),
                         Text(status ?? "",
                             style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style16black600

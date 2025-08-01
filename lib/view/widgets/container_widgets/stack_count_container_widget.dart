@@ -37,15 +37,14 @@ class StackCountContainerWidget extends StatelessWidget {
             width: imageWidth ?? 80,
             url: imageUrl ?? "",
            imageBackgroundColor:  imageBackgroundColor ?? AppColors.gray,
-
          ),
         Positioned(
           top: countTopPositioned ?? -1,
           right: countRightPositioned ?? -1,
           child: Container(
             alignment: Alignment.center,
-            height: 20,
-            width: 20,
+            height: AppUtils.isMobile(context) ? 20 : 22,
+            width: AppUtils.isMobile(context) ? 20 : 22,
             padding: EdgeInsets.all(1),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -57,9 +56,8 @@ class StackCountContainerWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               count?.toString() ?? "",
               style:  AppUtils.isMobile(context) ?
-              AppTextStyles.style11white400
-                  :
-              AppTextStyles.style14white400,
+              AppTextStyles.style11white400 :
+              AppTextStyles.style12white400,
             ),
           ),
         ),

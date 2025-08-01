@@ -2,46 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../resource/constants/app_colors.dart';
-import '../../../../resource/constants/images.dart';
-import '../../../../utils/app_utils.dart';
-import '../../../widgets/text field/text_field_widget.dart';
-class CompleteActionDesignWidget extends StatelessWidget {
-  final TextEditingController nameController;
-  final TextEditingController idController;
+import '../../resource/constants/app_colors.dart';
+import '../../resource/constants/images.dart';
+import '../../utils/app_utils.dart';
+import 'text field/text_field_widget.dart';
+class AddLogCompleteActionDesignWidget extends StatelessWidget {
   final TextEditingController noteController;
+  final TextEditingController? nameController;
+  final TextEditingController? idController;
   final TextEditingController? newCardController;
   final bool isAccessDevice;
-  const  CompleteActionDesignWidget({super.key,
-    required this.nameController,
-    required this.idController,
+
+  const AddLogCompleteActionDesignWidget({super.key,
     required this.noteController,
-     this.newCardController,
-    this.isAccessDevice = false,
+     this.isAccessDevice = false,
+    this.newCardController,
+     this.idController,
+    this.nameController
 
   });
-
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return  Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment:
-      CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Gap(5),
         SvgPicture.asset(
           AppImages.question,
           height: 35,
           width: 35,
-          colorFilter: const ColorFilter.mode(
-            AppColors.green,
+          colorFilter:  ColorFilter.mode(
+            isAccessDevice ? AppColors.green : AppColors.cyanBlue,
             BlendMode.srcIn,
           ),
-        ),
+        ), if (isAccessDevice) ...[
         const Gap(5),
         TextFieldWidget(
-          label: AppUtils.languageTranslate(
-              'requesterName'),
+          label: AppUtils.languageTranslate('requesterName'),
           controller: nameController,
           validator: (value) {
             if (value?.trim().isEmpty ?? true) {
@@ -53,8 +51,7 @@ class CompleteActionDesignWidget extends StatelessWidget {
         ),
         const Gap(5),
         TextFieldWidget(
-          label: AppUtils.languageTranslate(
-              'idNumber'),
+          label: AppUtils.languageTranslate('idNumber'),
           controller: idController,
           validator: (value) {
             if (value?.trim().isEmpty ?? true) {
@@ -64,11 +61,9 @@ class CompleteActionDesignWidget extends StatelessWidget {
             return null;
           },
         ),
-        if(isAccessDevice) ...[
           const Gap(5),
           TextFieldWidget(
-            label: AppUtils.languageTranslate(
-                'newCardNumber'),
+            label: AppUtils.languageTranslate('newCardNumber'),
             controller: newCardController,
             validator: (value) {
               if (value?.trim().isEmpty ?? true) {
@@ -82,8 +77,16 @@ class CompleteActionDesignWidget extends StatelessWidget {
         const Gap(5),
         TextFieldWidget(
           controller: noteController,
-          label: AppUtils.languageTranslate(
-              'servicesNote'),
+          label: isAccessDevice ? AppUtils.languageTranslate('servicesNote') : AppUtils.languageTranslate('note'),
+          validator: (value) {
+            if (isAccessDevice) return null;
+            if (value?.trim().isEmpty ?? true) {
+              return AppUtils.languageTranslate(
+                  'fieldIsMandatory');
+            }
+            return null;
+          },
+
         ),
       ],
     );

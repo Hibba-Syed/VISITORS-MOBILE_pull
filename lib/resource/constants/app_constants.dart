@@ -1,4 +1,5 @@
 import '../../utils/app_utils.dart';
+import '../../view/screens/guest_check_in/guest_check_in_screen.dart';
 
 class AppConstants {
   static const int dashboardIndex = 0;
@@ -20,7 +21,6 @@ class AppConstants {
     AppUtils.languageTranslate('last30Days'),
     AppUtils.languageTranslate('last60Days'),
     AppUtils.languageTranslate('last90Days'),
-
   ];
 
   static const Map<String, String> nationalityMap = {
@@ -68,4 +68,18 @@ class AppConstants {
     "USA": "United States",
     "YEM": "Yemen",
   };
+  static List<TypeItemModel> documentTypes = [
+    TypeItemModel(
+      value: 'Emirates ID',
+      label: AppUtils.languageTranslate('emiratesId'),
+    ),
+    TypeItemModel(
+      value: 'Photo ID',
+      label: AppUtils.languageTranslate('photoId'),
+    ),
+    TypeItemModel(
+      value: 'Travel Document',
+      label: AppUtils.languageTranslate('travelDocument'),
+    ),
+  ];
 }

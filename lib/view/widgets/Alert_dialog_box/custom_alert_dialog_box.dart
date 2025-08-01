@@ -222,13 +222,17 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                             ),
                                             child: Text(
                                               textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               widget.firstButtonText ??
                                                   AppUtils.languageTranslate(
                                                       'cancel'),
                                               style: TextStyle(
                                                   color: widget
                                                           .firstButtonTextColor ??
-                                                      Colors.black),
+                                                      Colors.black,
+
+                                              ),
                                             ),
                                           ),
                                   ),

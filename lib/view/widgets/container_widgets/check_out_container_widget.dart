@@ -10,8 +10,6 @@ import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
-
-import '../../../model/check_ins/check_in_log_model.dart';
 import '../loader/loader_widget.dart';
 
 class CheckOutContainerWidget extends StatefulWidget {

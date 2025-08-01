@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../bloc/e_service/details/service_details_cubit.dart';
-import '../../../../model/emirates_id_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/app_constants.dart';
-import '../../../../resource/constants/images.dart';
 import '../../../../resource/styles/styles.dart';
-import '../../../../service/scaner/scanner_service.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../utils/date_time.dart';
-import '../../../widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import '../../../widgets/activity log/activity_log_widget.dart';
 import '../../../widgets/app_bar/appbar_widget.dart';
 import '../../../widgets/button/custom_button.dart';
@@ -24,9 +18,6 @@ import '../../../widgets/empty_widget.dart';
 import '../../../widgets/heading_widget.dart';
 import '../../../widgets/loader/loader_widget.dart';
 import '../../../widgets/status/status_widget.dart';
-import '../../../widgets/text field/text_field_widget.dart';
-import '../components/add_log_action_design_widget.dart';
-import '../components/complete_action_design_widget.dart';
 
 class FacilityBookingServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
@@ -39,10 +30,6 @@ class FacilityBookingServiceDetailsScreen extends StatefulWidget {
 
 class _FacilityBookingServiceDetailsScreenState
     extends State<FacilityBookingServiceDetailsScreen> {
-  final TextEditingController _noteController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _idController = TextEditingController();
-  final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -282,54 +269,10 @@ class _FacilityBookingServiceDetailsScreenState
                               text: AppUtils.languageTranslate('addLog'),
                               buttonColor: AppColors.cyanBlue,
                               onPressed: () {
-                                showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return CustomAlertDialogBox(
-                                        isFirstButtonDisable: true,
-                                        insetPadding: AppUtils.isTablet(context)
-                                            ? EdgeInsets.symmetric(
-                                                horizontal: 35)
-                                            : EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                        title:
-                                            '${AppUtils.languageTranslate('addLogTo')} ${state.serviceDetails?.reference ?? ""}',
-                                        secondButtonText:
-                                            AppUtils.languageTranslate(
-                                                'addLog'),
-                                        secondButtonColor: AppColors.cyanBlue,
-                                        onSecondButtonPressed: () async {
-                                          if (_actionFormKey.currentState
-                                                  ?.validate() ??
-                                              false) {
-                                            final result = await context
-                                                .read<ServiceDetailsCubit>()
-                                                .addServiceLog(
-                                              context,
-                                              data: {
-                                                'application_id':
-                                                    '${state.serviceDetails?.id}',
-                                                'note': _noteController.text,
-                                              },
-                                            );
-                                            if (result) {
-                                              _noteController.clear();
-                                            }
-                                            return result;
-                                          }
-                                          return false;
-                                        },
-                                        contentBuilder: (context, setState) {
-                                          return Form(
-                                            key: _actionFormKey,
-                                            child: AddLogActionDesignWidget(
-                                                noteController:
-                                                    _noteController),
-                                          );
-                                        },
-                                      );
-                                    });
+                                AppUtils.addLogServiceAction(
+                                  context: context,
+                                  state: state,
+                                );
                               }),
                         ),
                         if ((state.serviceDetails?.securityDeposit == null) ||
@@ -340,85 +283,10 @@ class _FacilityBookingServiceDetailsScreenState
                                 buttonColor: AppColors.green,
                                 text: AppUtils.languageTranslate('complete'),
                                 onPressed: () {
-                                  showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return CustomAlertDialogBox(
-                                          insetPadding:
-                                              AppUtils.isTablet(context)
-                                                  ? EdgeInsets.symmetric(
-                                                      horizontal: 35)
-                                                  : EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                          title:
-                                              '${AppUtils.languageTranslate('complete')} ${state.serviceDetails?.reference ?? ""}',
-                                          disableFirstButtonBorder: true,
-                                          firstButtonTextColor: AppColors.white,
-                                          firstButtonColor: AppColors.primary,
-                                          firstButtonText:
-                                              AppUtils.languageTranslate(
-                                                  'scanEmiratesId'),
-                                          secondButtonText:
-                                              AppUtils.languageTranslate(
-                                                  'complete'),
-                                          secondButtonColor: AppColors.green,
-                                          onFirstButtonPressed: () async {
-                                            // print('hjkhkhkjh');
-                                            EmiratesIdModel? emiratesIdData =
-                                                await ScannerService()
-                                                    .scanEmiratesIdAndPerformOcr();
-                                            // print('data:::::$emiratesIdData');
-                                            if (emiratesIdData != null) {
-                                              setState(() {
-                                                _nameController.text =
-                                                    emiratesIdData.name ?? '';
-                                                _idController.text =
-                                                    emiratesIdData.idNumber ??
-                                                        '';
-                                              });
-                                            }
-                                            return false;
-                                          },
-                                          onSecondButtonPressed: () async {
-                                            if (_actionFormKey.currentState
-                                                    ?.validate() ??
-                                                false) {
-                                              final result = await context
-                                                  .read<ServiceDetailsCubit>()
-                                                  .completeService(
-                                                context,
-                                                data: {
-                                                  'id':
-                                                      '${state.serviceDetails?.id}',
-                                                  'requester_name':
-                                                      _nameController.text,
-                                                  'id_number':
-                                                      _idController.text,
-                                                  'note': _noteController.text,
-                                                },
-                                              );
-                                              if (result) {
-                                                _noteController.clear();
-                                                _idController.clear();
-                                                _nameController.clear();
-                                              }
-                                              return result;
-                                            }
-                                            return false;
-                                          },
-                                          contentBuilder: (context, setState) {
-                                            return Form(
-                                              key: _actionFormKey,
-                                              child: CompleteActionDesignWidget(
-                                                nameController: _nameController,
-                                                idController: _idController,
-                                                noteController: _noteController,
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      });
+                                 AppUtils.completeServiceAction(
+                                    context: context,
+                                    state: state,
+                                  );
                                 }),
                           )
                         ],
