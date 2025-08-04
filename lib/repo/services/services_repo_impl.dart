@@ -62,9 +62,9 @@ class ServiceRepoImpl implements ServiceRepo {
   @override
   Future<VisitorsServiceCompleteResponseModel?> completeService({required Map<String, dynamic> data,}) async {
     try {
-      print('service complete: ${ApiUrl.serviceComplete}'
+     // print('service complete: ${ApiUrl.serviceComplete}'
           //'/$serviceId'
-          );
+          // );
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
        // print('Raw API Response: $response');

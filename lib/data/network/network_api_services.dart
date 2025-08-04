@@ -223,7 +223,6 @@ class NetworkApiServices implements BaseApiServices {
         "content-type": "application/json",
         'Accept': 'application/json',
         "Authorization": 'Bearer ${Globals().token}'
-
       };
       request.headers.addAll(headers);
       // print('fields and files::');

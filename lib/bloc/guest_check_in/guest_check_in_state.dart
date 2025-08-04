@@ -14,7 +14,7 @@ class GuestCheckInState {
   final ProfileRecord? profileRecord;
   final List<UnitModel>? units;
   final List<NumberInfo>? numberInfo;
-  final UnitModel? selectedUnit;
+   final UnitModel? selectedUnit;
   final CheckInModel? checkInModel;
 
   GuestCheckInState({

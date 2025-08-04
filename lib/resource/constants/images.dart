@@ -43,7 +43,7 @@ class AppImages {
   static const String link = "${baseSvgPath}link.svg";
   static const String search = "${baseSvgPath}search.svg";
   static const String phone = "${baseSvgPath}phone.svg";
-  static const String profile = "${baseSvgPath}profile.svg";
+  static const String placeHolder = "${baseSvgPath}place_holder.svg";
   static const String log = "${baseSvgPath}log.svg";
   static const String scan = "${baseSvgPath}scan.svg";
   static const String noFilter = "${baseSvgPath}no_filter.svg";

@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
@@ -28,7 +30,12 @@ import '../../../model/visitor_info/visitors_purpose_model.dart';
 import '../../widgets/button/custom_button.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
-  const GuestCheckInScreen({super.key});
+  final String? workOrderType;
+  final String? serviceType;
+  final String? workOrderPurpose;
+  final String? servicesPurpose;
+  const GuestCheckInScreen({super.key, this.workOrderType, this.serviceType,this.servicesPurpose,this.workOrderPurpose
+  });
 
   @override
   State<GuestCheckInScreen> createState() => _GuestCheckInScreenState();
@@ -91,10 +98,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     _selectedTravelDocumentIssueDate = null;
     _selectedTravelDocumentExpiryDate = null;
     context.read<GuestCheckInCubit>().onChangeSelectedNationality(Country());
+     context.read<GuestCheckInCubit>().onChangeSelectedPurpose(VisitorsPurpose());
+     context.read<GuestCheckInCubit>().onChangeSelectedUnit(UnitModel());
   }
 
   @override
   Widget build(BuildContext context) {
+    print('widget.serviceType:::${widget.serviceType}');
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
@@ -120,11 +130,15 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 text: AppUtils.languageTranslate('checkIn'),
                 onPressed: state.isGuestCheckInLoading
                     ? null
-                    : () {
+                    : ()async {
                         // print(' state${state.selectedUnit?.id}');
                         if ((_formKey.currentState?.validate() ?? false) &&
                             (_phoneNumberKey.currentState?.validate() ??
                                 false)) {
+                          String? base64Image;
+                          if (_personImage != null && _personImage!.path.isNotEmpty) {
+                            base64Image = await encodeImageToBase64(_personImage!);
+                          }
                           Map<String, dynamic> formData = {
                             if (_selectedDocumentType?.value ==
                                 'Emirates ID') ...{
@@ -149,7 +163,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               'passport_expiry_date':
                                   _selectedTravelDocumentExpiryDate?.toString(),
                             },
-                            'type': _selectedVisitType?.value,
+                            'type': _selectedVisitType?.value ?? widget.workOrderType ?? widget.serviceType,
+                            //_selectedVisitType?.value,
                             'name': _nameController.text,
                             if (_selectedVisitType?.value == 'Unit Visit') ...{
                               'purpose': state.selectedPurpose?.purpose,
@@ -167,10 +182,15 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             'sms': false,
                             'visitor_count': _visitorCountController.text,
                             'visitor_id': null,
+                            if(_personImage?.path.isNotEmpty??false)
+                              if (base64Image != null)
+                                'user_photo': base64Image,
                           };
-                          context
-                              .read<GuestCheckInCubit>()
-                              .guestCheckIn(context, data: formData);
+                          if(context.mounted){
+                            context
+                                .read<GuestCheckInCubit>()
+                                .guestCheckIn(context, data: formData);
+                          }
                         }
                       },
                 loading: state.isGuestCheckInLoading,
@@ -210,10 +230,17 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               _personImage!,
                               fit: BoxFit.fill,
                             )
-                          : Icon(
-                              Icons.person_outline_rounded,
-                              size: MediaQuery.of(context).size.width / 4,
-                            ),
+                          : SvgPicture.asset(
+                        AppImages.placeHolder,
+                        colorFilter:  const ColorFilter.mode(
+                          AppColors.placeHolder,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      // Icon(
+                      //         Icons.person_outline_rounded,
+                      //         size: MediaQuery.of(context).size.width / 4,
+                      //       ),
                     ),
                   ),
                   const Gap(25),
@@ -684,17 +711,24 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.darkGrey),
+                        border: Border.all(color: AppColors.gray),
                       ),
                       child: (_personImage?.path.isNotEmpty ?? false)
                           ? Image.file(
                               _personImage!,
                               fit: BoxFit.fill,
                             )
-                          : Icon(
-                              Icons.person_outline_rounded,
-                              size: MediaQuery.of(context).size.width / 4,
-                            ),
+                          :  SvgPicture.asset(
+                        AppImages.placeHolder,
+                        colorFilter:  const ColorFilter.mode(
+                          AppColors.placeHolder,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      // Icon(
+                      //         Icons.person_outline_rounded,
+                      //         size: MediaQuery.of(context).size.width / 4,
+                      //       ),
                     ),
                   ),
                   const Gap(20),
@@ -835,31 +869,34 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                           ),
                         const Gap(5),
-                        SingleSelectedDropdownWidget<TypeItemModel>(
-                          label: "${AppUtils.languageTranslate('type')}*",
-                          isClearButtonVisible: false,
-                          outLineColor: AppColors.outLineGray,
-                          hint: AppUtils.languageTranslate('selectType'),
-                          fillColor: AppColors.white,
-                          selectedItem: _selectedVisitType,
-                          compareFn: (p0, p1) => p0.value == p1.value,
-                          items: _visitTypes,
-                          itemAsString: (item) => item.label,
-                          onChanged: (value) {
-                            Future.delayed(Duration(milliseconds: 500), () {
-                              setState(() {
-                                _selectedVisitType = value;
+                        (widget.serviceType != null || widget.workOrderType != null)
+                            ? SizedBox.shrink()
+                            :  SingleSelectedDropdownWidget<TypeItemModel>(
+                            label: "${AppUtils.languageTranslate('type')}*",
+                            isClearButtonVisible: false,
+                            outLineColor: AppColors.outLineGray,
+                            hint: AppUtils.languageTranslate('selectType'),
+                            fillColor: AppColors.white,
+                            selectedItem: _selectedVisitType,
+                            compareFn: (p0, p1) => p0.value == p1.value,
+                            items: _visitTypes,
+                            itemAsString: (item) => item.label,
+                            onChanged: (value) {
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                setState(() {
+                                  _selectedVisitType = value;
+                                });
                               });
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return AppUtils.languageTranslate('required');
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
+                            },
+                            validator: (value) {
+                              if (value == null) {
+                                return AppUtils.languageTranslate('required');
+                              }
+                              return null;
+                            },
+                          ),
+                          const Gap(5),
+
                         TextFieldWidget(
                           outLineColor: AppColors.outLineGray,
                           controller: _visitorCountController,
@@ -1308,6 +1345,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       });
     }
   }
+  Future<String> encodeImageToBase64(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    final base64Image = base64Encode(bytes);
+
+    final ext = imageFile.path.split('.').last.toLowerCase();
+    String mime = 'image/jpeg';
+    if (ext == 'png') mime = 'image/png';
+    if (ext == 'bmp') mime = 'image/bmp';
+    if (ext == 'jpg' || ext == 'jpeg') mime = 'image/jpeg';
+
+    return 'data:$mime;base64,$base64Image';
+  }
+
 }
 
 class TypeItemModel {
