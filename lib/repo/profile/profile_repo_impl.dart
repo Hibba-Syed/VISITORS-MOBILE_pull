@@ -15,7 +15,7 @@ class ProfileRepoImpl implements ProfileRepo {
       dynamic response = await _apiService.getAuthGetApiResponse(
         ApiUrl.profile,
       );
-      print('getProfile${response.toString()}');
+      // print('getProfile${response.toString()}');
       return ProfileResponseModel.fromJson(response);
 
     } catch (e) {

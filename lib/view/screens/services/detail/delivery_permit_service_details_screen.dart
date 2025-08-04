@@ -247,7 +247,7 @@ class _DeliveryPermitServiceDetailsScreenState
                                 onPressed: () {
                                   AppUtils.completeServiceAction(
                                     context: context,
-                                    state: context.read<ServiceDetailsCubit>().state,
+                                    state: state,
                                   );
                                 }),
                           ),

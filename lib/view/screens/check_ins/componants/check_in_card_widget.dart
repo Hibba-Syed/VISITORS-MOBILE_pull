@@ -73,7 +73,6 @@ class CheckInCardWidget extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
                 bottomRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
               ),

@@ -28,7 +28,7 @@ class ServiceRepoImpl implements ServiceRepo {
       String url =
           '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
           10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
-      print('services^^ $url');
+      // print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);
     } catch (e) {
@@ -67,7 +67,7 @@ class ServiceRepoImpl implements ServiceRepo {
           );
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
-       print('Raw API Response: $response');
+       // print('Raw API Response: $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -76,10 +76,10 @@ class ServiceRepoImpl implements ServiceRepo {
   @override
   Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService({required Map<String, dynamic> data,required int? serviceId}) async {
     try {
-      print('completeAccessDeviceService ${ApiUrl.serviceAccessDeviceComplete}/$serviceId');
+      // print('completeAccessDeviceService ${ApiUrl.serviceAccessDeviceComplete}/$serviceId');
       dynamic response =
       await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
-       print('completeAccessDeviceService $response');
+       // print('completeAccessDeviceService $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -93,7 +93,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }) async {
     try {
       String url = '${ApiUrl.clearPayment}/$id';
-       print('clearPayment^^ $url');
+       // print('clearPayment^^ $url');
       dynamic response = await _apiService.getAuthPostApiMultipartResponse(
         url,
         data,

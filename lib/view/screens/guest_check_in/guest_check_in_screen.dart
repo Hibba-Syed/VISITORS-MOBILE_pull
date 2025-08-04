@@ -121,7 +121,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 onPressed: state.isGuestCheckInLoading
                     ? null
                     : () {
-                        print(' state${state.selectedUnit?.id}');
+                        // print(' state${state.selectedUnit?.id}');
                         if ((_formKey.currentState?.validate() ?? false) &&
                             (_phoneNumberKey.currentState?.validate() ??
                                 false)) {
@@ -912,11 +912,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             compareFn: (unit, item) => unit.id == item.id,
                             items: state.units ?? [],
                             onChanged: (value) {
-                              print('value::: ${value?.toJson()}');
+                              // print('value::: ${value?.toJson()}');
                               context
                                   .read<GuestCheckInCubit>()
                                   .onChangeSelectedUnit(value);
-                              print('state value:: ${state.selectedUnit?.id}');
+                              // print('state value:: ${state.selectedUnit?.id}');
                             },
                             validator: (value) {
                               if (value?.unitNumber?.isEmpty ?? true) {
