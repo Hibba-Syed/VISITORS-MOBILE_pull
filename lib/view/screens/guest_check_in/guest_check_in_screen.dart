@@ -83,6 +83,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   void initState() {
     super.initState();
     _selectedDocumentType = AppConstants.documentTypes.first;
+
     _selectedVisitType = _visitTypes.first;
   }
 
@@ -869,9 +870,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                           ),
                         const Gap(5),
-                        (widget.serviceType != null || widget.workOrderType != null)
-                            ? SizedBox.shrink()
-                            :  SingleSelectedDropdownWidget<TypeItemModel>(
+                        // (widget.serviceType != null || widget.workOrderType != null)
+                        //     ? SizedBox.shrink()
+                        //     :
+                        SingleSelectedDropdownWidget<TypeItemModel>(
                             label: "${AppUtils.languageTranslate('type')}*",
                             isClearButtonVisible: false,
                             outLineColor: AppColors.outLineGray,
