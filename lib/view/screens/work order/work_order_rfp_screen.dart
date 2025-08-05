@@ -35,28 +35,30 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<WorkOrderCubit>().getMoreWorkOrder(
-          keyword: _searchController.text
-        );
+        context
+            .read<WorkOrderCubit>()
+            .getMoreWorkOrder(keyword: _searchController.text);
       }
     });
   }
+
   @override
   void didChangeDependencies() {
     final locale = Localizations.localeOf(context);
-    if (locale != _currentLocale) {    _currentLocale = locale;
-    setState(() {});  }
+    if (locale != _currentLocale) {
+      _currentLocale = locale;
+      setState(() {});
+    }
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic) async {
         if (didPop) return;
-        context
-            .read<MainDashboardCubit>()
-            .onBackButtonPressed();
+        context.read<MainDashboardCubit>().onBackButtonPressed();
       },
       child: SafeArea(
         child: Scaffold(
@@ -97,9 +99,9 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async {
-                          context.read<WorkOrderCubit>().getWorkOrder(
-                            keyword: _searchController.text
-                          );
+                          context
+                              .read<WorkOrderCubit>()
+                              .getWorkOrder(keyword: _searchController.text);
                         },
                         child: state.isLoading
                             ? LoaderWidget()
@@ -136,17 +138,27 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                             : false,
                                         checkInPressed: () {
                                           Navigator.pushNamed(context,
-                                              AppRoutes.guestCheckIn);
+                                                  AppRoutes.guestCheckIn)
+                                              .then(
+                                            (value) {
+                                              if (value == true) {
+                                                context
+                                                    .read<WorkOrderCubit>()
+                                                    .getWorkOrder(
+                                                        keyword:
+                                                            _searchController
+                                                                .text);
+                                              }
+                                            },
+                                          );
                                         },
                                         detailsOnPressed: () {
                                           context
                                               .read<WorkOrderDetailsCubit>()
                                               .getWorkOrderDetails(
                                                   workOrderId: workOrder?.id);
-                                          Navigator.pushNamed(
-                                              context,
-                                              AppRoutes
-                                                  .workOrderJobDetails);
+                                          Navigator.pushNamed(context,
+                                              AppRoutes.workOrderJobDetails);
                                         },
                                         jobCheckInOnPressed: () {
                                           context
@@ -161,8 +173,8 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                           context
                                               .read<CheckInsCubit>()
                                               .getCheckIns();
-                                          Navigator.pushNamed(context,
-                                              AppRoutes.jobCheckIns);
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.jobCheckIns);
                                         },
                                       );
                                     },
@@ -172,7 +184,8 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                     },
                                   )
                                 : EmptyWidget(
-                                    text: AppUtils.languageTranslate('noDataAvailable'),
+                                    text: AppUtils.languageTranslate(
+                                        'noDataAvailable'),
                                   ),
                       ),
                     ),

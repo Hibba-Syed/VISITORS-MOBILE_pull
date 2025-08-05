@@ -86,9 +86,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                           context
                               .read<ServiceCubit>()
                               .onChangeSearchKeyWord(value);
-                          context.read<ServiceCubit>().getServices(
-
-                          );
+                          context.read<ServiceCubit>().getServices();
                         },
                         isFilterApplied: (state.selectedUnit != null) ||
                                 (state.selectedType?.value.isNotEmpty ?? false)
@@ -107,8 +105,8 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                               ? RefreshIndicator(
                                   onRefresh: () async {
                                     context.read<ServiceCubit>().getServices(
-                                        keyword: _searchController.text,
-                                    );
+                                          keyword: _searchController.text,
+                                        );
                                   },
                                   child: ListView.separated(
                                     controller: _scrollController,
@@ -135,8 +133,20 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                             service?.applicationTitle ?? "--",
                                         name: service?.clientName ?? "--",
                                         checkInOnPressed: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.guestCheckIn);
+                                          Navigator.pushNamed(context,
+                                                  AppRoutes.guestCheckIn)
+                                              .then(
+                                            (value) {
+                                              if (value == true) {
+                                                context
+                                                    .read<ServiceCubit>()
+                                                    .getServices(
+                                                      keyword: _searchController
+                                                          .text,
+                                                    );
+                                              }
+                                            },
+                                          );
                                         },
                                         serviceableCheckInOnPressed: () {
                                           context
@@ -155,12 +165,12 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                               AppRoutes.serviceableCheckIns);
                                         },
                                         detailsOnPressed: () {
-                                          ServiceDetailsCubit serviceDetailsCubit = context
-                                              .read<ServiceDetailsCubit>();
+                                          ServiceDetailsCubit
+                                              serviceDetailsCubit = context
+                                                  .read<ServiceDetailsCubit>();
                                           serviceDetailsCubit.clearData();
-                                          serviceDetailsCubit
-                                              .getServiceDetails(
-                                                  serviceId: service?.id);
+                                          serviceDetailsCubit.getServiceDetails(
+                                              serviceId: service?.id);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

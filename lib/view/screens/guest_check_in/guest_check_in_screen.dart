@@ -24,17 +24,16 @@ import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../../model/country/country_model.dart';
+import '../../../model/service/service_model.dart';
 import '../../../model/unit/unit_model.dart';
 import '../../../model/visitor_info/number_info_model.dart';
 import '../../../model/visitor_info/visitors_purpose_model.dart';
+import '../../../model/work_order/work_order_model.dart';
 import '../../widgets/button/custom_button.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
-  final String? workOrderType;
-  final String? serviceType;
-  final String? workOrderPurpose;
-  final String? servicesPurpose;
-  const GuestCheckInScreen({super.key, this.workOrderType, this.serviceType,this.servicesPurpose,this.workOrderPurpose
+  const GuestCheckInScreen({
+    super.key,
   });
 
   @override
@@ -68,6 +67,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   DateTime? _selectedTravelDocumentExpiryDate;
   File? _personImage;
   TypeItemModel? _selectedDocumentType;
+  ServiceModel? _service;
+  WorkOrderModel? _workOrder;
 
   final List<TypeItemModel> _visitTypes = [
     TypeItemModel(
@@ -82,9 +83,34 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDocumentType = AppConstants.documentTypes.first;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeArgs = ModalRoute.of(context)?.settings.arguments;
+      if (routeArgs != null) {
+        final args = routeArgs as Map<String, dynamic>;
+        if (args['service'] != null) {
+          _service = args['service'] as ServiceModel;
+        } else if (args['work_order'] != null) {
+          _workOrder = args['work_order'] as WorkOrderModel;
+        }
+      }
+      if (_service?.id != null) {
+        _selectedVisitType = TypeItemModel(
+          value: 'Unit Service',
+          label: AppUtils.languageTranslate('unitService'),
+        );
+      } else if (_workOrder?.id != null) {
+        _selectedVisitType = TypeItemModel(
+          value: 'Community Service',
+          label: AppUtils.languageTranslate('communityService'),
+        );
+      } else {
+        _selectedVisitType = _visitTypes.first;
+      }
 
-    _selectedVisitType = _visitTypes.first;
+      setState(() {});
+    });
+
+    _selectedDocumentType = AppConstants.documentTypes.first;
   }
 
   void clearData() {
@@ -99,13 +125,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     _selectedTravelDocumentIssueDate = null;
     _selectedTravelDocumentExpiryDate = null;
     context.read<GuestCheckInCubit>().onChangeSelectedNationality(Country());
-     context.read<GuestCheckInCubit>().onChangeSelectedPurpose(VisitorsPurpose());
-     context.read<GuestCheckInCubit>().onChangeSelectedUnit(UnitModel());
+    context
+        .read<GuestCheckInCubit>()
+        .onChangeSelectedPurpose(VisitorsPurpose());
+    context.read<GuestCheckInCubit>().onChangeSelectedUnit(UnitModel());
   }
 
   @override
   Widget build(BuildContext context) {
-    print('widget.serviceType:::${widget.serviceType}');
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
@@ -131,14 +158,16 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                 text: AppUtils.languageTranslate('checkIn'),
                 onPressed: state.isGuestCheckInLoading
                     ? null
-                    : ()async {
+                    : () async {
                         // print(' state${state.selectedUnit?.id}');
                         if ((_formKey.currentState?.validate() ?? false) &&
                             (_phoneNumberKey.currentState?.validate() ??
                                 false)) {
                           String? base64Image;
-                          if (_personImage != null && _personImage!.path.isNotEmpty) {
-                            base64Image = await encodeImageToBase64(_personImage!);
+                          if (_personImage != null &&
+                              _personImage!.path.isNotEmpty) {
+                            base64Image =
+                                await encodeImageToBase64(_personImage!);
                           }
                           Map<String, dynamic> formData = {
                             if (_selectedDocumentType?.value ==
@@ -164,13 +193,28 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               'passport_expiry_date':
                                   _selectedTravelDocumentExpiryDate?.toString(),
                             },
-                            'type': _selectedVisitType?.value ?? widget.workOrderType ?? widget.serviceType,
-                            //_selectedVisitType?.value,
+
+                            ///
+                            'type': _selectedVisitType?.value,
                             'name': _nameController.text,
-                            if (_selectedVisitType?.value == 'Unit Visit') ...{
+                            if (_selectedVisitType?.value == 'Unit Visit' &&
+                                _service?.id == null &&
+                                _workOrder?.id == null) ...{
                               'purpose': state.selectedPurpose?.purpose,
                               'unit_id': state.selectedUnit?.id,
                               'unit_number': state.selectedUnit?.toJson(),
+                            },
+                            if (_service?.id != null &&
+                                _workOrder?.id == null) ...{
+                              'purpose': _service?.reference,
+                              'unit_id': _service?.unit?.id,
+                              'unit_number': _service?.unit?.unitNumber,
+                            },
+                            if (_workOrder?.id != null &&
+                                _service?.id == null) ...{
+                              'purpose': _workOrder?.reference,
+                              'unit_id': null,
+                              'unit_number': null,
                             },
                             'phone': _phoneNumberController.text,
                             'email': _emailController.text,
@@ -178,16 +222,21 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 _entryCardNumberController.text,
                             'nationality': state.selectedNationality?.name,
                             'description': _descriptionController.text,
-                            'serviceable_id': null,
-                            'serviceable_type': null,
+                            'serviceable_id': _service?.id ?? _workOrder?.id,
+                            'serviceable_type': _service?.id != null
+                                ? 'application'
+                                : _workOrder?.id != null
+                                    ? 'job'
+                                    : null,
+
                             'sms': false,
                             'visitor_count': _visitorCountController.text,
                             'visitor_id': null,
-                            if(_personImage?.path.isNotEmpty??false)
+                            if (_personImage?.path.isNotEmpty ?? false)
                               if (base64Image != null)
                                 'user_photo': base64Image,
                           };
-                          if(context.mounted){
+                          if (context.mounted) {
                             context
                                 .read<GuestCheckInCubit>()
                                 .guestCheckIn(context, data: formData);
@@ -232,16 +281,12 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               fit: BoxFit.fill,
                             )
                           : SvgPicture.asset(
-                        AppImages.placeHolder,
-                        colorFilter:  const ColorFilter.mode(
-                          AppColors.placeHolder,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      // Icon(
-                      //         Icons.person_outline_rounded,
-                      //         size: MediaQuery.of(context).size.width / 4,
-                      //       ),
+                              AppImages.placeHolder,
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.placeHolder,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                     ),
                   ),
                   const Gap(25),
@@ -449,42 +494,46 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             initialDate: _selectedTravelDocumentExpiryDate,
                             onDatePicked: (value) {
                               _selectedTravelDocumentExpiryDate = value;
-                              //print('Selected Date: $value');
                             },
                           ),
                         const Gap(5),
                         Row(
                           children: [
-                            Expanded(
-                              child:
-                                  SingleSelectedDropdownWidget<TypeItemModel>(
-                                label: "${AppUtils.languageTranslate('type')}*",
-                                isClearButtonVisible: false,
-                                outLineColor: AppColors.outLineGray,
-                                hint: AppUtils.languageTranslate('selectType'),
-                                fillColor: AppColors.white,
-                                selectedItem: _selectedVisitType,
-                                compareFn: (p0, p1) => p0.value == p1.value,
-                                items: _visitTypes,
-                                itemAsString: (item) => item.label,
-                                onChanged: (value) {
-                                  Future.delayed(Duration(milliseconds: 500),
-                                      () {
-                                    setState(() {
-                                      _selectedVisitType = value;
+                            if (_service?.id == null &&
+                                _workOrder?.id == null) ...[
+                              Expanded(
+                                child:
+                                    SingleSelectedDropdownWidget<TypeItemModel>(
+                                  label:
+                                      "${AppUtils.languageTranslate('type')}*",
+                                  isClearButtonVisible: false,
+                                  outLineColor: AppColors.outLineGray,
+                                  hint:
+                                      AppUtils.languageTranslate('selectType'),
+                                  fillColor: AppColors.white,
+                                  selectedItem: _selectedVisitType,
+                                  compareFn: (p0, p1) => p0.value == p1.value,
+                                  items: _visitTypes,
+                                  itemAsString: (item) => item.label,
+                                  onChanged: (value) {
+                                    Future.delayed(Duration(milliseconds: 500),
+                                        () {
+                                      setState(() {
+                                        _selectedVisitType = value;
+                                      });
                                     });
-                                  });
-                                },
-                                validator: (value) {
-                                  if (value == null) {
-                                    return AppUtils.languageTranslate(
-                                        'required');
-                                  }
-                                  return null;
-                                },
+                                  },
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return AppUtils.languageTranslate(
+                                          'required');
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
-                            ),
-                            const Gap(8),
+                              const Gap(8),
+                            ],
                             Expanded(
                               child: TextFieldWidget(
                                 controller: _visitorCountController,
@@ -504,7 +553,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ],
                         ),
                         if (_selectedVisitType?.value ==
-                            AppUtils.languageTranslate('unitVisit')) ...[
+                                AppUtils.languageTranslate('unitVisit') ||
+                            (_service?.id == null &&
+                                _workOrder?.id == null)) ...[
                           Gap(5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -719,13 +770,13 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               _personImage!,
                               fit: BoxFit.fill,
                             )
-                          :  SvgPicture.asset(
-                        AppImages.placeHolder,
-                        colorFilter:  const ColorFilter.mode(
-                          AppColors.placeHolder,
-                          BlendMode.srcIn,
-                        ),
-                      ),
+                          : SvgPicture.asset(
+                              AppImages.placeHolder,
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.placeHolder,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                       // Icon(
                       //         Icons.person_outline_rounded,
                       //         size: MediaQuery.of(context).size.width / 4,
@@ -870,10 +921,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                           ),
                         const Gap(5),
-                        // (widget.serviceType != null || widget.workOrderType != null)
-                        //     ? SizedBox.shrink()
-                        //     :
-                        SingleSelectedDropdownWidget<TypeItemModel>(
+                        if (_service?.id == null && _workOrder?.id == null) ...[
+                          SingleSelectedDropdownWidget<TypeItemModel>(
                             label: "${AppUtils.languageTranslate('type')}*",
                             isClearButtonVisible: false,
                             outLineColor: AppColors.outLineGray,
@@ -898,7 +947,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             },
                           ),
                           const Gap(5),
-
+                        ],
                         TextFieldWidget(
                           outLineColor: AppColors.outLineGray,
                           controller: _visitorCountController,
@@ -915,7 +964,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         if (_selectedVisitType?.value ==
-                            AppUtils.languageTranslate('unitVisit')) ...[
+                                AppUtils.languageTranslate('unitVisit') ||
+                            (_service?.id == null &&
+                                _workOrder?.id == null)) ...[
                           SingleSelectedDropdownWidget<VisitorsPurpose>(
                             label: "${AppUtils.languageTranslate('purpose')}*",
                             hint: AppUtils.languageTranslate('selectPurpose'),
@@ -1347,6 +1398,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       });
     }
   }
+
   Future<String> encodeImageToBase64(File imageFile) async {
     final bytes = await imageFile.readAsBytes();
     final base64Image = base64Encode(bytes);
@@ -1359,7 +1411,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
 
     return 'data:$mime;base64,$base64Image';
   }
-
 }
 
 class TypeItemModel {

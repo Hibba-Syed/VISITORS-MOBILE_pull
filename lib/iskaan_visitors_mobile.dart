@@ -6,8 +6,9 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/utils/routes/app_pages.dart';
 
-import '../../resource/globals.dart';
-import '../../utils/routes/app_routes.dart';
+import 'resource/globals.dart';
+import 'utils/routes/app_routes.dart';
+
 class IskaanVisitorsMobile extends StatefulWidget {
   const IskaanVisitorsMobile({super.key});
 
@@ -17,22 +18,12 @@ class IskaanVisitorsMobile extends StatefulWidget {
 
 class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
   @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     title: 'Iskaan Visitors',
-  //     theme: ThemeData(
-  //       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-  //       useMaterial3: true,
-  //     ),
-  //     home: const EmiratesIDScanner(),
-  //   );
-  // }
   Widget build(BuildContext context) {
     Globals.setContext(context);
     return MultiBlocProvider(
         providers: [...AppPages.getAllBlocProviders(context)],
-        child:  GestureDetector(
-          onTap: (){
+        child: GestureDetector(
+          onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp(
@@ -61,7 +52,6 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
             initialRoute: AppRoutes.splash,
             debugShowCheckedModeBanner: false,
           ),
-        )
-    );
+        ));
   }
 }

@@ -93,7 +93,7 @@ class DashboardScreen extends StatelessWidget {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                 Text(AppUtils.languageTranslate('areYouSureYouWantToExit?'),
+                Text(AppUtils.languageTranslate('areYouSureYouWantToExit?'),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
@@ -129,11 +129,12 @@ class DashboardScreen extends StatelessWidget {
         return CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
+          title:
+              '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
               visitorsCount: //int.tryParse(checkIns?.visitorCount ?? ''),
-              checkIns?.visitorCount ?? "",
+                  checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -145,7 +146,8 @@ class DashboardScreen extends StatelessWidget {
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
                       secondButtonText: AppUtils.languageTranslate('yes'),
-                      title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
+                      title:
+                          AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onSecondButtonPressed: () async {
                         final result = await context
                             .read<DashboardCubit>()
@@ -162,11 +164,14 @@ class DashboardScreen extends StatelessWidget {
                 );
               },
               checkOutOnPress: () async {
-                final enteredCount = int.tryParse(visitorsNoController.text.trim());
-                final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
-                if ( (enteredCount??0) > availableCount) {
+                final enteredCount =
+                    int.tryParse(visitorsNoController.text.trim());
+                final availableCount =
+                    int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
+                if ((enteredCount ?? 0) > availableCount) {
                   Fluttertoast.showToast(
-                      msg: AppUtils.languageTranslate('availableCountIs $availableCount'));
+                      msg: AppUtils.languageTranslate(
+                          'availableCountIs $availableCount'));
                   return;
                 }
                 showDialog(
@@ -179,7 +184,8 @@ class DashboardScreen extends StatelessWidget {
                         isFirstButtonDisable: true,
                         secondButtonColor: AppColors.red,
                         secondButtonText: AppUtils.languageTranslate('yes'),
-                        title: AppUtils.languageTranslate('checkoutForVisitors'),
+                        title:
+                            AppUtils.languageTranslate('checkoutForVisitors'),
                         onSecondButtonPressed: () async {
                           final result = await context
                               .read<DashboardCubit>()
@@ -227,9 +233,14 @@ class DashboardScreen extends StatelessWidget {
                 forGroundColor: AppColors.yellow,
                 onTap: () {
                   final type = AppUtils.getServiceableType(Strings.keyGuest);
-                  context.read<CheckInsCubit>().onChangeSelectedVisitorType(type);
+                  context
+                      .read<CheckInsCubit>()
+                      .onChangeSelectedVisitorType(type);
                   context.read<CheckInsCubit>().getCheckIns();
-                  context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);                },
+                  context
+                      .read<MainDashboardCubit>()
+                      .onChangeSelectedIndex(AppConstants.checkInsIndex);
+                },
               ),
               ActionsItemModel(
                 title: AppUtils.languageTranslate("eServices"),
@@ -238,14 +249,12 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.cyanBlue,
                 onTap: () {
-                  context
-                      .read<CheckInsCubit>()
-                      .onChangeSelectedVisitorType(
-                      AppUtils.getServiceableType(
-                          Strings.keyServices
-                      ));
+                  context.read<CheckInsCubit>().onChangeSelectedVisitorType(
+                      AppUtils.getServiceableType(Strings.keyServices));
                   context.read<CheckInsCubit>().getCheckIns();
-                  context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
+                  context
+                      .read<MainDashboardCubit>()
+                      .onChangeSelectedIndex(AppConstants.checkInsIndex);
                 },
               ),
               ActionsItemModel(
@@ -255,14 +264,12 @@ class DashboardScreen extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 forGroundColor: AppColors.primary,
                 onTap: () {
-                  context
-                      .read<CheckInsCubit>()
-                      .onChangeSelectedVisitorType(
-                      AppUtils.getServiceableType(
-                          Strings.keyWorkOrder));
+                  context.read<CheckInsCubit>().onChangeSelectedVisitorType(
+                      AppUtils.getServiceableType(Strings.keyWorkOrder));
                   context.read<CheckInsCubit>().getCheckIns();
-                  context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
-
+                  context
+                      .read<MainDashboardCubit>()
+                      .onChangeSelectedIndex(AppConstants.checkInsIndex);
                 },
               ),
             ];
@@ -283,7 +290,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     HeadingWidget(
                         heading:
-                        "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
+                            "${state.profileRecord?.association?.name ?? ''} (${state.profileRecord?.gate ?? ''})"),
                     const Gap(10),
                     GridView.builder(
                       padding: const EdgeInsets.only(bottom: 10),
@@ -317,27 +324,35 @@ class DashboardScreen extends StatelessWidget {
                         textColor: AppColors.white,
                         image: AppImages.guestCheckIn,
                         onPressed: () {
-                          // context.read<GuestCheckInCubit>().getNumberInfo();
-                          Navigator.pushNamed(context, AppRoutes.guestCheckIn);
+                          Navigator.pushNamed(context, AppRoutes.guestCheckIn)
+                              .then(
+                            (value) {
+                              if (value == true) {
+                                context
+                                    .read<DashboardCubit>()
+                                    .refreshData(context);
+                              }
+                            },
+                          );
                         }),
                     const Gap(10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Flexible(
-                           child: Text(
-                              AppUtils.languageTranslate("checkIns"),
+                        Flexible(
+                          child: Text(
+                            AppUtils.languageTranslate("checkIns"),
                             style: AppTextStyles.style19Primary600,
-                             maxLines: 1,
-                             overflow: TextOverflow.ellipsis,
-                                                   ),
-                         ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         Row(
                           children: [
                             CustomButton(
                                 buttonColor: AppColors.red,
                                 fontWeight: FontWeight.w500,
-                                text:  AppUtils.languageTranslate("checkOuts"),
+                                text: AppUtils.languageTranslate("checkOuts"),
                                 fontSize: 14,
                                 height: 41,
                                 borderRadius: 6,
@@ -367,8 +382,9 @@ class DashboardScreen extends StatelessWidget {
                     state.checkInsModel?.isEmpty ?? true
                         ? SizedBox(
                             height: 100,
-                            child:  EmptyWidget(
-                              text: AppUtils.languageTranslate('noDataAvailable'),
+                            child: EmptyWidget(
+                              text:
+                                  AppUtils.languageTranslate('noDataAvailable'),
                             ),
                           )
                         : ListView.separated(
@@ -430,7 +446,6 @@ class DashboardScreen extends StatelessWidget {
                         Flexible(
                           child: Text(
                             AppUtils.languageTranslate("eServices"),
-
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.style19Primary600,
@@ -471,8 +486,9 @@ class DashboardScreen extends StatelessWidget {
                     state.serviceModel?.isEmpty ?? true
                         ? SizedBox(
                             height: 100,
-                            child:  EmptyWidget(
-                              text:  AppUtils.languageTranslate('noDataAvailable'),
+                            child: EmptyWidget(
+                              text:
+                                  AppUtils.languageTranslate('noDataAvailable'),
                             ),
                           )
                         : ListView.separated(
@@ -496,10 +512,19 @@ class DashboardScreen extends StatelessWidget {
                                 serviceType: service?.applicationType ?? "--",
                                 name: service?.clientName ?? "--",
                                 checkInOnPressed: () {
-                                  print('applicationType:::${service?.applicationType}');
-                                  // Navigator.pushNamed(
-                                  //     context, AppRoutes.guestCheckIn);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => GuestCheckInScreen(serviceType: 'Unit Service',servicesPurpose: service?.reference,)));
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.guestCheckIn,
+                                    arguments: {"service": service},
+                                  ).then(
+                                    (value) {
+                                      if (value == true) {
+                                        context
+                                            .read<DashboardCubit>()
+                                            .refreshData(context);
+                                      }
+                                    },
+                                  );
                                 },
                                 serviceableCheckInOnPressed: () {
                                   context
@@ -538,14 +563,14 @@ class DashboardScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Text(
-                        AppUtils.languageTranslate("workOrderRFPs"),
+                        Text(
+                          AppUtils.languageTranslate("workOrderRFPs"),
                           style: AppTextStyles.style19Primary600,
                         ),
                         CustomButton(
                             buttonColor: AppColors.primary,
                             fontSize: 14,
-                            text:  AppUtils.languageTranslate("viewAll"),
+                            text: AppUtils.languageTranslate("viewAll"),
                             height: 41,
                             fontWeight: FontWeight.w500,
                             borderRadius: 6,
@@ -560,8 +585,9 @@ class DashboardScreen extends StatelessWidget {
                     state.workOrderModel?.isEmpty ?? true
                         ? SizedBox(
                             height: 100,
-                            child:  EmptyWidget(
-                              text:  AppUtils.languageTranslate('noDataAvailable'),
+                            child: EmptyWidget(
+                              text:
+                                  AppUtils.languageTranslate('noDataAvailable'),
                             ),
                           )
                         : ListView.separated(
@@ -574,7 +600,8 @@ class DashboardScreen extends StatelessWidget {
                               return WorkOrderRFPCardWidget(
                                 isAwarded: workOrder?.isAwarded,
                                 isActiveCheckins:
-                                    (workOrder?.activeCheckIns?.isNotEmpty ?? true)
+                                    (workOrder?.activeCheckIns?.isNotEmpty ??
+                                            true)
                                         ? true
                                         : false,
                                 typeAssetImage: AppImages.hammer,
@@ -589,7 +616,20 @@ class DashboardScreen extends StatelessWidget {
                                     workOrder?.finishDate),
                                 checkInPressed: () {
                                   Navigator.pushNamed(
-                                      context, AppRoutes.guestCheckIn);
+                                    context,
+                                    AppRoutes.guestCheckIn,
+                                    arguments: {
+                                      "work_order": workOrder,
+                                    },
+                                  ).then(
+                                    (value) {
+                                      if (value == true) {
+                                        context
+                                            .read<DashboardCubit>()
+                                            .refreshData(context);
+                                      }
+                                    },
+                                  );
                                 },
                                 detailsOnPressed: () {
                                   context
@@ -652,14 +692,12 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.yellow,
           onTap: () {
-            context
-                .read<CheckInsCubit>()
-                .onChangeSelectedVisitorType(
-                AppUtils.getServiceableType(
-                    Strings.keyGuest));
+            context.read<CheckInsCubit>().onChangeSelectedVisitorType(
+                AppUtils.getServiceableType(Strings.keyGuest));
             context.read<CheckInsCubit>().getCheckIns();
-            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
-
+            context
+                .read<MainDashboardCubit>()
+                .onChangeSelectedIndex(AppConstants.checkInsIndex);
           },
         ),
         ActionsItemModel(
@@ -669,13 +707,12 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.cyanBlue,
           onTap: () {
-            context
-                .read<CheckInsCubit>()
-                .onChangeSelectedVisitorType(
-                AppUtils.getServiceableType(
-                    Strings.keyServices));
+            context.read<CheckInsCubit>().onChangeSelectedVisitorType(
+                AppUtils.getServiceableType(Strings.keyServices));
             context.read<CheckInsCubit>().getCheckIns();
-            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
+            context
+                .read<MainDashboardCubit>()
+                .onChangeSelectedIndex(AppConstants.checkInsIndex);
           },
         ),
         ActionsItemModel(
@@ -685,13 +722,12 @@ class DashboardScreen extends StatelessWidget {
           backgroundColor: AppColors.white,
           forGroundColor: AppColors.primary,
           onTap: () {
-            context
-                .read<CheckInsCubit>()
-                .onChangeSelectedVisitorType(
-                AppUtils.getServiceableType(
-                    Strings.keyWorkOrder));
+            context.read<CheckInsCubit>().onChangeSelectedVisitorType(
+                AppUtils.getServiceableType(Strings.keyWorkOrder));
             context.read<CheckInsCubit>().getCheckIns();
-            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.checkInsIndex);
+            context
+                .read<MainDashboardCubit>()
+                .onChangeSelectedIndex(AppConstants.checkInsIndex);
           },
         ),
       ];
@@ -748,7 +784,13 @@ class DashboardScreen extends StatelessWidget {
                     textColor: AppColors.white,
                     image: AppImages.guestCheckIn,
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.guestCheckIn);
+                      Navigator.pushNamed(context, AppRoutes.guestCheckIn).then(
+                        (value) {
+                          if (value == true) {
+                            context.read<DashboardCubit>().refreshData(context);
+                          }
+                        },
+                      );
                     }),
                 const Gap(10),
                 Row(
@@ -764,7 +806,7 @@ class DashboardScreen extends StatelessWidget {
                           Expanded(
                             child: CustomButton(
                                 buttonColor: AppColors.red,
-                                text:  AppUtils.languageTranslate("checkOuts"),
+                                text: AppUtils.languageTranslate("checkOuts"),
                                 height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
@@ -797,8 +839,8 @@ class DashboardScreen extends StatelessWidget {
                 state.checkInsModel?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
-                        child:  EmptyWidget(
-                          text:  AppUtils.languageTranslate('noDataAvailable'),
+                        child: EmptyWidget(
+                          text: AppUtils.languageTranslate('noDataAvailable'),
                         ),
                       )
                     : ListView.separated(
@@ -824,7 +866,9 @@ class DashboardScreen extends StatelessWidget {
                                 : checkIns?.type ?? "",
                             name: checkIns?.name ?? "",
                             profileImageUrl: checkIns?.visitor?.imageUrl ?? "",
-                            type: AppUtils.getServiceableType(checkIns?.serviceableType).label,
+                            type: AppUtils.getServiceableType(
+                                    checkIns?.serviceableType)
+                                .label,
                             createdDate: DateTimeUtil.getFormattedDateTime(
                                 checkIns?.visitor?.createdAt),
                             phone: checkIns?.phone ?? "",
@@ -853,7 +897,7 @@ class DashboardScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                     AppUtils.languageTranslate("eServices"),
+                      AppUtils.languageTranslate("eServices"),
                       style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
@@ -874,7 +918,7 @@ class DashboardScreen extends StatelessWidget {
                           Expanded(
                             child: CustomButton(
                                 buttonColor: AppColors.primary,
-                                text:   AppUtils.languageTranslate("viewAll"),
+                                text: AppUtils.languageTranslate("viewAll"),
                                 height: 42,
                                 borderRadius: 6,
                                 imageHeight: 22,
@@ -893,8 +937,8 @@ class DashboardScreen extends StatelessWidget {
                 state.serviceModel?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
-                        child:  EmptyWidget(
-                          text:  AppUtils.languageTranslate('noDataAvailable'),
+                        child: EmptyWidget(
+                          text: AppUtils.languageTranslate('noDataAvailable'),
                         ),
                       )
                     : ListView.separated(
@@ -917,7 +961,18 @@ class DashboardScreen extends StatelessWidget {
                             name: service?.clientName ?? "",
                             checkInOnPressed: () {
                               Navigator.pushNamed(
-                                  context, AppRoutes.guestCheckIn);
+                                context,
+                                AppRoutes.guestCheckIn,
+                                arguments: {"service": service},
+                              ).then(
+                                (value) {
+                                  if (value == true) {
+                                    context
+                                        .read<DashboardCubit>()
+                                        .refreshData(context);
+                                  }
+                                },
+                              );
                             },
                             serviceableCheckInOnPressed: () {
                               context
@@ -953,8 +1008,8 @@ class DashboardScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Text(
-                       AppUtils.languageTranslate("workOrderRFPs"),
+                    Text(
+                      AppUtils.languageTranslate("workOrderRFPs"),
                       style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
@@ -976,7 +1031,7 @@ class DashboardScreen extends StatelessWidget {
                 state.workOrderModel?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
-                        child:  EmptyWidget(
+                        child: EmptyWidget(
                           text: AppUtils.languageTranslate('noDataAvailable'),
                         ),
                       )
@@ -1005,7 +1060,20 @@ class DashboardScreen extends StatelessWidget {
                                 workOrder?.finishDate),
                             checkInPressed: () {
                               Navigator.pushNamed(
-                                  context, AppRoutes.guestCheckIn);
+                                context,
+                                AppRoutes.guestCheckIn,
+                                arguments: {
+                                  "work_order": workOrder,
+                                },
+                              ).then(
+                                (value) {
+                                  if (value == true) {
+                                    context
+                                        .read<DashboardCubit>()
+                                        .refreshData(context);
+                                  }
+                                },
+                              );
                             },
                             detailsOnPressed: () {
                               context
@@ -1063,8 +1131,7 @@ class DashboardScreen extends StatelessWidget {
       context.read<WorkOrderCubit>().getWorkOrder();
       cubit.onChangeSelectedIndex(AppConstants.workOrderRfpIndex);
     } else if (targetIndex == AppConstants.checkOutsIndex) {
-      context.read<CheckOutCubit>()
-        .onChangeSelectedRange('Last 30 Days');
+      context.read<CheckOutCubit>().onChangeSelectedRange('Last 30 Days');
       context.read<CheckOutCubit>().onChangeDateRange(
           AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
       context.read<CheckOutCubit>().getCheckOuts();

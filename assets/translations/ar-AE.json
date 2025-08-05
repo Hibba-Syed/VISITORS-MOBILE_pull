@@ -283,5 +283,7 @@
     "delete": "حذف",
     "addLogTo": "إضافة سجل إلى",
     "clearPaymentFor": "تسوية الدفع لـ",
-    "detailsIdNumber": "رقم الهوية"
+    "detailsIdNumber": "رقم الهوية",
+    "unitService": "خدمة الوحدة"
+
 }

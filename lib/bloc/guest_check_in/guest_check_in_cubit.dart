@@ -48,6 +48,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
+
   //
   Future<void> getCountries() async {
     emit(state.copyWith(isCountriesLoading: true));
@@ -69,7 +70,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
               country.name?.toLowerCase() == 'united arab emirates')));
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCountries'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCountries'));
     }
   }
 
@@ -85,7 +87,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       emit(state.copyWith(profileRecord: profileResponse.record));
       return true;
     } else {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrong'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('somethingWentWrong'));
       return false;
     }
   }
@@ -105,7 +108,9 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingUnits'));
     }
   }
 
@@ -126,7 +131,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       emit(state.copyWith(numberInfo: response.record));
     } else {
       Fluttertoast.showToast(
-          msg:  AppUtils.languageTranslate('somethingWentWrongWhileFetchingNumberInfo'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingNumberInfo'));
     }
   }
 
@@ -142,7 +148,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     });
     emit(state.copyWith(isDeleteVisitorLoading: false));
     if (response != null && response.status == 'success') {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('visitorDeletedSuccessfully'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('visitorDeletedSuccessfully'));
       if ((phoneNumber?.isNotEmpty ?? false) && (remainingVisitors ?? 0) > 0) {
         // If there are remaining visitors, fetch the number info again
         // to update the UI with the latest visitor count.
@@ -156,7 +163,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       return true;
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongPleaseTryAgainLater'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongPleaseTryAgainLater'));
       return false;
     }
   }
@@ -183,14 +191,15 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       if (response != null && response.status == 'success') {
         emit(state.copyWith(checkInModel: response.record));
         if (context.mounted) {
-          context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
-          context.read<DashboardCubit>().getDashboardCount();
-          Navigator.pop(context);
+          Navigator.pop(context, true);
         }
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('checkInSuccessfully'));
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('checkInSuccessfully'));
         return true;
       } else {
-        Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingIn'));
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileCheckingIn'));
         return false;
       }
     } catch (e) {
