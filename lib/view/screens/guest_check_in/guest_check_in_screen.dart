@@ -273,7 +273,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.darkGrey),
+                        // border: Border.all(color: AppColors.darkGrey),
                       ),
                       child: (_personImage?.path.isNotEmpty ?? false)
                           ? Image.file(

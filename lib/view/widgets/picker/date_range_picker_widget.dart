@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -31,6 +32,7 @@ class _DateRangePickerFieldState extends State<DateRangePickerField> {
       firstDate: widget.firstDate,
       lastDate: widget.lastDate,
       initialDateRange: _selectedRange,
+      keyboardType: (MediaQuery.of(context).size.width<600)?TextInputType.datetime:TextInputType.visiblePassword,
     );
 
     if (picked != null) {
@@ -52,6 +54,7 @@ class _DateRangePickerFieldState extends State<DateRangePickerField> {
       readOnly: true,
       hint: AppUtils.languageTranslate("dateRange"),
       controller: widget.controller,
+      keyboardType: TextInputType.datetime,
       textStyle: TextStyle(
         fontSize: 15,
         color: AppColors.black,

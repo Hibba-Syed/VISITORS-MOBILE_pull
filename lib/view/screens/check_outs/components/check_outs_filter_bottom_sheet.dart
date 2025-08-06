@@ -33,9 +33,9 @@ class _CheckOutsFilterBottomSheetState
   @override
   void initState() {
     super.initState();
-    final selectedDate = DateTime(now.year, now.month - 1, 1);
-    firstDayOfMonth = DateTime(selectedDate.year, selectedDate.month, 1);
-    lastDayOfMonth = DateTime(selectedDate.year, selectedDate.month + 1, 0);
+    // final selectedDate = DateTime(now.year, now.month - 1, 1);
+    // firstDayOfMonth = DateTime(selectedDate.year, selectedDate.month, 1);
+    // lastDayOfMonth = DateTime(selectedDate.year, selectedDate.month  + 1, 0);
     final dateRange = context.read<CheckOutCubit>().state.dateRang;
     if (dateRange != null) {
       _dateRangeController.text = DateTimeUtil.getFormatDateRange(dateRange);
@@ -71,8 +71,8 @@ class _CheckOutsFilterBottomSheetState
                 const Gap(15),
                 DateRangePickerField(
                   controller: _dateRangeController,
-                  firstDate: firstDayOfMonth,
-                  lastDate: lastDayOfMonth,
+                  firstDate: DateTime(2020, 1, 1),
+                  lastDate: DateTime(2030, 12, 31),
                   onDateRangeSelected: (range) {
                     context.read<CheckOutCubit>().onChangeDateRange(range);
                   },
@@ -94,7 +94,9 @@ class _CheckOutsFilterBottomSheetState
                           AppUtils.getDateRangeStringFromLabel(value);
                       _dateRangeController.text =
                           DateTimeUtil.getFormatDateRange(dateRangeString);
-                      context.read<CheckOutCubit>().onChangeDateRange(dateRangeString);
+                      context
+                          .read<CheckOutCubit>()
+                          .onChangeDateRange(dateRangeString);
                     }
                   },
                 ),
@@ -157,4 +159,3 @@ class _CheckOutsFilterBottomSheetState
     );
   }
 }
-

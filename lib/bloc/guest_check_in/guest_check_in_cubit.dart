@@ -25,7 +25,6 @@ import '../../repo/profile/profile_repo_impl.dart';
 import '../../repo/units/units_repo.dart';
 import '../../repo/units/units_repo_impl.dart';
 import '../../utils/preference_utils.dart';
-import '../dashboard/dashboard_cubit.dart';
 
 part 'guest_check_in_state.dart';
 

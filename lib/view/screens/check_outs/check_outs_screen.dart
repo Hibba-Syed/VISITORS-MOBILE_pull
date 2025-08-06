@@ -165,7 +165,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                 FileDownloader.downloadFile(
                     context: context,
                     dateRage:
-                        '${context.read<CheckOutCubit>().state.dateRang}');
+                        '${context.read<CheckOutCubit>().state.dateRang ?? ""}');
               },
               icon: SvgPicture.asset(
                 AppImages.export,
