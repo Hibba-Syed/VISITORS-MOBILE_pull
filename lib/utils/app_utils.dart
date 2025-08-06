@@ -13,7 +13,7 @@ import '../model/service/service_model.dart';
 import '../resource/constants/images.dart';
 import '../resource/constants/strings.dart';
 import '../resource/styles/styles.dart';
-import '../service/scaner/scanner_service.dart';
+import '../service/scanner/scanner_service.dart';
 import '../view/screens/guest_check_in/guest_check_in_screen.dart';
 import '../view/screens/services/detail/access_device_service_details_sceen.dart';
 import '../view/screens/services/detail/delivery_permit_service_details_screen.dart';

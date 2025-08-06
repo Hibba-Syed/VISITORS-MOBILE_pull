@@ -19,7 +19,7 @@ import 'package:visitors/utils/app_utils.dart';
 import '../../../../model/emirates_id_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
-import '../../../../service/scaner/scanner_service.dart';
+import '../../../../service/scanner/scanner_service.dart';
 import '../../../widgets/empty_widget.dart';
 import '../../../widgets/add_log_complete_action_design_widget.dart';
 
@@ -76,7 +76,8 @@ class _AccessDeviceServiceDetailsScreenState
                               Expanded(
                                 child: HeadingWidget(
                                   heading: AppUtils.getRequestName(
-                                      state.serviceDetails?.applicationType ?? "--"),
+                                      state.serviceDetails?.applicationType ??
+                                          "--"),
                                 ),
                               ),
                               StatusWidget(
@@ -89,7 +90,6 @@ class _AccessDeviceServiceDetailsScreenState
                             style: AppTextStyles.style14Black600,
                           ),
                           const Gap(10),
-
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 15, horizontal: 10),
@@ -98,31 +98,36 @@ class _AccessDeviceServiceDetailsScreenState
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
-                              children: state.serviceDetails?.application?.deviceInfo
-                                  ?.map(
-                                    (device) => Column(
-                                  children: [
-                                    TitleValueRowDividerDetailsContainerWidget(
-                                        title: AppUtils.languageTranslate(
-                                            'device'),
-                                        value: device.deviceType ?? "--"),
-                                    TitleValueRowDividerDetailsContainerWidget(
-                                        isLast: true,
-                                        title: AppUtils.languageTranslate(
-                                            'numberOfDevices'),
-                                        value:
-                                        device.deviceCount?.toString() ??
-                                            "--"),
-                                  ],
-                                ),
-                              )
-                                  .toList() ??
+                              children: state
+                                      .serviceDetails?.application?.deviceInfo
+                                      ?.map(
+                                        (device) => Column(
+                                          children: [
+                                            TitleValueRowDividerDetailsContainerWidget(
+                                                title:
+                                                    AppUtils.languageTranslate(
+                                                        'device'),
+                                                value:
+                                                    device.deviceType ?? "--"),
+                                            TitleValueRowDividerDetailsContainerWidget(
+                                                isLast: true,
+                                                title:
+                                                    AppUtils.languageTranslate(
+                                                        'numberOfDevices'),
+                                                value: device.deviceCount
+                                                        ?.toString() ??
+                                                    "--"),
+                                          ],
+                                        ),
+                                      )
+                                      .toList() ??
                                   [],
                             ),
                           ),
                           const Gap(20),
                           HeadingWidget(
-                            heading: AppUtils.languageTranslate('applicantDetails'),
+                            heading:
+                                AppUtils.languageTranslate('applicantDetails'),
                           ),
                           const Gap(10),
                           Container(
@@ -135,36 +140,41 @@ class _AccessDeviceServiceDetailsScreenState
                             child: Column(
                               children: [
                                 TitleValueRowDividerDetailsContainerWidget(
-                                    title:
-                                    AppUtils.languageTranslate('requesterType'),
-                                    value: state.serviceDetails?.clientType ?? "--"),
+                                    title: AppUtils.languageTranslate(
+                                        'requesterType'),
+                                    value: state.serviceDetails?.clientType ??
+                                        "--"),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate('name'),
-                                  value: state.serviceDetails?.clientName ?? "--",
+                                  value:
+                                      state.serviceDetails?.clientName ?? "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate('phone'),
-                                  value: state.serviceDetails?.clientPhone ?? "--",
+                                  value:
+                                      state.serviceDetails?.clientPhone ?? "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate('email'),
-                                  value: state.serviceDetails?.clientEmail ?? "--",
+                                  value:
+                                      state.serviceDetails?.clientEmail ?? "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
-                                    title:
-                                    AppUtils.languageTranslate('passportNumber'),
+                                    title: AppUtils.languageTranslate(
+                                        'passportNumber'),
                                     value: state.serviceDetails?.passportNumber
-                                        ?.toString() ??
+                                            ?.toString() ??
                                         "--"),
                                 TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('passportExpiry'),
+                                  title: AppUtils.languageTranslate(
+                                      'passportExpiry'),
                                   value: DateTimeUtil.getFormattedDate(
                                       state.serviceDetails?.clientIdExpiry),
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate('idNumber'),
                                   value: state.serviceDetails?.clientIdNumber
-                                      ?.toString() ??
+                                          ?.toString() ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
@@ -183,54 +193,59 @@ class _AccessDeviceServiceDetailsScreenState
                             style: AppTextStyles.style20primary600,
                           ),
                           const Gap(10),
-                          state.serviceDetails?.statusHistory?.isNotEmpty ?? true
+                          state.serviceDetails?.statusHistory?.isNotEmpty ??
+                                  true
                               ? Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListView.builder(
-                              padding: EdgeInsets.only(top: 10),
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount:
-                              state.serviceDetails?.statusHistory?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                StatusHistory? statusHistory =
-                                state.serviceDetails?.statusHistory?[index];
-                                bool isLast = (state.serviceDetails
-                                    ?.statusHistory?.length ??
-                                    0) -
-                                    1 ==
-                                    index;
-                                return ActivityLogWidget(
-                                  horizontalPadding: 8,
-                                  isLast: isLast,
-                                  status: (statusHistory?.status != 'Pending')
-                                      ? statusHistory?.status ?? ""
-                                      : "Request Received",
-                                  byValue: (statusHistory?.user?.fullName !=
-                                      null &&
-                                      statusHistory!
-                                          .user!.fullName!.isNotEmpty)
-                                      ? ' ${statusHistory.user?.fullName ?? ""}'
-                                      : " System",
-                                  description: statusHistory?.note
-                                      ?.replaceAll('\n\n', ' ')
-                                      .trim()
-                                      .split('.')
-                                      .first
-                                      .trim(),
-                                  dateTime: DateTimeUtil.getFormattedDateTime(
-                                      statusHistory?.createdAt),
-                                );
-                              },
-                            ),
-                          )
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.only(top: 10),
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: state.serviceDetails
+                                            ?.statusHistory?.length ??
+                                        0,
+                                    itemBuilder: (context, index) {
+                                      StatusHistory? statusHistory = state
+                                          .serviceDetails
+                                          ?.statusHistory?[index];
+                                      bool isLast = (state.serviceDetails
+                                                      ?.statusHistory?.length ??
+                                                  0) -
+                                              1 ==
+                                          index;
+                                      return ActivityLogWidget(
+                                        horizontalPadding: 8,
+                                        isLast: isLast,
+                                        status:
+                                            (statusHistory?.status != 'Pending')
+                                                ? statusHistory?.status ?? ""
+                                                : "Request Received",
+                                        byValue: (statusHistory
+                                                        ?.user?.fullName !=
+                                                    null &&
+                                                statusHistory!
+                                                    .user!.fullName!.isNotEmpty)
+                                            ? ' ${statusHistory.user?.fullName ?? ""}'
+                                            : " System",
+                                        description: statusHistory?.note
+                                            ?.replaceAll('\n\n', ' ')
+                                            .trim()
+                                            .split('.')
+                                            .first
+                                            .trim(),
+                                        dateTime:
+                                            DateTimeUtil.getFormattedDateTime(
+                                                statusHistory?.createdAt),
+                                      );
+                                    },
+                                  ),
+                                )
                               : EmptyWidget(
-                              text:
-                              AppUtils.languageTranslate('noDataAvailable')),
+                                  text: AppUtils.languageTranslate(
+                                      'noDataAvailable')),
                         ],
                       ),
                     ),
@@ -252,14 +267,8 @@ class _AccessDeviceServiceDetailsScreenState
                                 );
                               }),
                         ),
-                        if ((state
-                            .serviceDetails
-                            ?.securityDeposit ==
-                            null)  ||
-                            (state
-                                .serviceDetails
-                                ?.securityDeposit ==
-                                0))...[
+                        if ((state.serviceDetails?.securityDeposit == null) ||
+                            (state.serviceDetails?.securityDeposit == 0)) ...[
                           const Gap(10),
                           Expanded(
                             child: CustomButton(
@@ -271,36 +280,42 @@ class _AccessDeviceServiceDetailsScreenState
                                       context: context,
                                       builder: (context) {
                                         return CustomAlertDialogBox(
-                                          insetPadding: AppUtils.isTablet(context)
-                                              ? EdgeInsets.symmetric(horizontal: 35)
-                                              : EdgeInsets.symmetric(horizontal: 10),
+                                          insetPadding:
+                                              AppUtils.isTablet(context)
+                                                  ? EdgeInsets.symmetric(
+                                                      horizontal: 35)
+                                                  : EdgeInsets.symmetric(
+                                                      horizontal: 10),
                                           title:
-                                          '${AppUtils.languageTranslate('complete')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? "--"}',
+                                              '${AppUtils.languageTranslate('complete')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? "--"}',
                                           disableFirstButtonBorder: true,
                                           firstButtonTextColor: AppColors.white,
                                           firstButtonColor: AppColors.primary,
-                                          firstButtonText: AppUtils.languageTranslate(
-                                              'scanEmiratesId'),
+                                          firstButtonText:
+                                              AppUtils.languageTranslate(
+                                                  'scanEmiratesId'),
                                           secondButtonText:
-                                          AppUtils.languageTranslate('complete'),
+                                              AppUtils.languageTranslate(
+                                                  'complete'),
                                           secondButtonColor: AppColors.green,
                                           onFirstButtonPressed: () async {
                                             EmiratesIdModel? emiratesIdData =
-                                            await ScannerService()
-                                                .scanEmiratesIdAndPerformOcr();
+                                                await ScannerService()
+                                                    .scanEmiratesIdAndPerformOcr();
                                             if (emiratesIdData != null) {
                                               setState(() {
                                                 _nameController.text =
                                                     emiratesIdData.name ?? '';
                                                 _idController.text =
-                                                    emiratesIdData.idNumber ?? '';
+                                                    emiratesIdData.idNumber ??
+                                                        '';
                                               });
                                             }
                                             return false;
                                           },
                                           onSecondButtonPressed: () async {
                                             if (_actionFormKey.currentState
-                                                ?.validate() ??
+                                                    ?.validate() ??
                                                 false) {
                                               final result = await context
                                                   .read<ServiceDetailsCubit>()
@@ -312,14 +327,16 @@ class _AccessDeviceServiceDetailsScreenState
                                                     .serviceDetails
                                                     ?.id,
                                                 data: {
-                                                  'requester_name': _nameController.text,
+                                                  'requester_name':
+                                                      _nameController.text,
                                                   'id_number':
-                                                  '${state.serviceDetails?.id}',
+                                                      '${state.serviceDetails?.id}',
                                                   'note': _noteController.text,
-                                                  'new_card': _newCardController.text,
+                                                  'new_card':
+                                                      _newCardController.text,
                                                   'old_card': '',
                                                   'id':
-                                                  '${state.serviceDetails?.id}'
+                                                      '${state.serviceDetails?.id}'
                                                 },
                                               );
                                               if (result) {
@@ -335,14 +352,15 @@ class _AccessDeviceServiceDetailsScreenState
                                           contentBuilder: (context, setState) {
                                             return Form(
                                               key: _actionFormKey,
-                                              child: AddLogCompleteActionDesignWidget(
+                                              child:
+                                                  AddLogCompleteActionDesignWidget(
                                                 isAccessDevice: true,
                                                 nameController: _nameController,
                                                 idController: _idController,
                                                 noteController: _noteController,
-                                                newCardController: _newCardController,
+                                                newCardController:
+                                                    _newCardController,
                                               ),
-
                                             );
                                           },
                                         );
@@ -358,7 +376,6 @@ class _AccessDeviceServiceDetailsScreenState
             );
           },
         ),
-
       ),
     );
   }

@@ -14,7 +14,7 @@ import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
-import 'package:visitors/service/scaner/scanner_service.dart';
+import 'package:visitors/service/scanner/scanner_service.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
