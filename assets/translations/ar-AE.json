@@ -284,6 +284,6 @@
     "addLogTo": "إضافة سجل إلى",
     "clearPaymentFor": "تسوية الدفع لـ",
     "detailsIdNumber": "رقم الهوية",
-    "unitService": "خدمة الوحدة"
-
+    "unitService": "خدمة الوحدة",
+    "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "المستند الممسوح ضوئيًا غير صالح. يرجى المحاولة مرة أخرى باستخدام مستند صالح."
 }

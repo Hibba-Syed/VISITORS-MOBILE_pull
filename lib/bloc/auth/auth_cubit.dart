@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/auth/login_response_model.dart';
-import '../../repo/auth/atuh_repo_impl.dart';
+import '../../repo/auth/auth_repo_impl.dart';
 import '../../repo/auth/auth_repo.dart';
 import '../../resource/constants/strings.dart';
 import '../../utils/preference_utils.dart';

@@ -6,6 +6,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_document_scanner/google_mlkit_document_scanner.dart';
 import 'package:intl/intl.dart';
 import 'package:mrz_parser/mrz_parser.dart';
+import 'package:visitors/resource/constants/app_colors.dart';
 
 import '../../helper/mrz_helper.dart';
 import '../../model/driving_license_model.dart';
@@ -29,9 +30,7 @@ class ScannerService {
 
       final scannedText = recognizedText?.toLowerCase() ?? '';
       if (!scannedText.toLowerCase().contains('id number')) {
-        Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate(
-                'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'));
+        _showInvalidDocumentToast();
         return null;
       }
       if (recognizedText?.isNotEmpty ?? false) {
@@ -48,6 +47,8 @@ class ScannerService {
         );
         return emiratesIdData;
       }
+    } else {
+      _showInvalidDocumentToast();
     }
     return null;
   }
@@ -60,9 +61,7 @@ class ScannerService {
 
       final scannedText = recognizedText?.toLowerCase() ?? '';
       if (!scannedText.contains('driving')) {
-        Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate(
-                'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'));
+        _showInvalidDocumentToast();
         return null;
       }
 
@@ -72,6 +71,8 @@ class ScannerService {
                 recognizedText!, ocrData.personImage);
         return drivingLicenseData;
       }
+    } else {
+      _showInvalidDocumentToast();
     }
     return null;
   }
@@ -129,17 +130,13 @@ class ScannerService {
         );
         //  print('document type:: ${result.documentType}');
         if (result.documentType.toLowerCase() != 'p') {
-          Fluttertoast.showToast(
-              msg: AppUtils.languageTranslate(
-                  'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'));
+          _showInvalidDocumentToast();
           return null;
         }
         return passportData;
       } else {
         debugPrint('No valid MRZ detected.');
-        Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate(
-                'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'));
+        _showInvalidDocumentToast();
       }
     }
     return null;
@@ -513,5 +510,17 @@ class ScannerService {
       return lines[currentIndex + 1].trim();
     }
     return '';
+  }
+
+  void _showInvalidDocumentToast() {
+    Fluttertoast.showToast(
+      msg: AppUtils.languageTranslate(
+          'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: AppColors.red,
+        textColor: AppColors.white,
+        fontSize: 16.0
+    );
   }
 }
