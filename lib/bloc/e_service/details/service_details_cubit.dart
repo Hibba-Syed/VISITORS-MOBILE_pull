@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:visitors/repo/payment/payment_repo.dart';
+import 'package:visitors/repo/payment/payment_repo_impl.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../../model/service/add_service_log_response_model.dart';
 import '../../../model/service/service_details_model.dart';
@@ -16,6 +18,7 @@ part 'service_details_state.dart';
 class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
   ServiceDetailsCubit() : super(ServiceDetailsState());
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
+  final PaymentRepo _paymentRepo = PaymentRepoImpl();
 
   void clearData() {
     emit(state.copyWith(serviceDetails: ServiceDetailsModel()));
@@ -189,7 +192,7 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
       }
     }
 
-    final response = await _serviceRepo
+    final response = await _paymentRepo
         .clearPayment(
       id: id,
       data: data,

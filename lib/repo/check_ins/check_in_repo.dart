@@ -23,15 +23,10 @@ abstract class CheckInRepo {
   });
   Future<CheckInLogResponseModel?> getCheckInDetailsLogs({required int? id});
 
-  Future<CheckOutAll?> checkOutAll();
 
-  Future<CheckOutVisitorResponseModel?> checkOutVisitors({
-    required int? id,
-    required Map<String, dynamic> data,
-  });
+
   Future<VisitorPhoneInfoResponseModel?> getNumberInfo({required String? phoneNumber});
 
-  Future<DeleteVisitorResponseModel?> deleteVisitor({required int? id});
   Future<GuestCheckInResponseModel?> guestCheckIn(
   {required Map<String, dynamic> data}
       );

@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog2/progress_dialog2.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visitors/utils/app_utils.dart';
-import '../../repo/encrption/encryption_helper.dart';
+import '../../helper/encrption/encryption_helper.dart';
 import '../../resource/constants/api_url.dart';
 import '../../resource/globals.dart';
 import '../../view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';

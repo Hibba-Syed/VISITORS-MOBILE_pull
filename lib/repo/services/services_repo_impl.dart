@@ -10,7 +10,7 @@ import '../../model/service/add_service_log_response_model.dart';
 import '../../model/service/move_out_service_clear_payment_response_model.dart';
 import '../../model/service/visitors_service_complete_response_model.dart';
 import '../../resource/constants/api_url.dart';
-import '../encrption/encryption_helper.dart';
+import '../../helper/encrption/encryption_helper.dart';
 
 class ServiceRepoImpl implements ServiceRepo {
   final BaseApiServices _apiService = NetworkApiServices();
@@ -85,24 +85,6 @@ class ServiceRepoImpl implements ServiceRepo {
       rethrow;
     }
   }
-  @override
-  Future<MoveOutServiceClearPaymentResponseModel?> clearPayment({
-    required int? id,
-    required Map<String, dynamic> data,
-     required List<http.MultipartFile> files,
-  }) async {
-    try {
-      String url = '${ApiUrl.clearPayment}/$id';
-       // print('clearPayment^^ $url');
-      dynamic response = await _apiService.getAuthPostApiMultipartResponse(
-        url,
-        data,
-         files,
-      );
-      return MoveOutServiceClearPaymentResponseModel.fromJson(response);
-    } catch (e) {
-      rethrow;
-    }
-  }
+
 }
 

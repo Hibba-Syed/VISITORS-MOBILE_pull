@@ -8,6 +8,10 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
+import 'package:visitors/repo/check_out/check_out_repo.dart';
+import 'package:visitors/repo/check_out/check_out_repo_impl.dart';
+import 'package:visitors/repo/visitor/visitor_repo.dart';
+import 'package:visitors/repo/visitor/visitor_repo_impl.dart';
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_out/check_out_all_model.dart';
 import '../../model/check_out/check_out_model.dart';
@@ -27,8 +31,10 @@ part 'check_ins_state.dart';
 class CheckInsCubit extends Cubit<CheckInsState> {
   CheckInsCubit() : super(CheckInsState());
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
+  final CheckOutRepo _checkOutRepo = CheckOutRepoImpl();
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
+  final VisitorRepo _visitorRepo = VisitorRepoImpl();
 
   void onChangeSelectedVisitorType(TypeModel? type) {
     emit(state.copyWith(selectedVisitorType: type));
@@ -39,7 +45,6 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   }
 
   void onChangeSelectedUnit(UnitModel? unit) {
-
     emit(state.copyWith(selectedUnit: unit));
     // print('unit::${state.selectedUnit?.toJson()}');
   }
@@ -74,9 +79,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     ));
   }
 
-  Future<void> getCheckIns({ String? keyword}
-
-      ) async {
+  Future<void> getCheckIns({String? keyword}) async {
     emit(state.copyWith(isLoading: true, page: 1));
     CheckInsResponseModel? response = await _checkInRepo
         .getCheckIns(
@@ -152,7 +155,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(isCheckOutAllLoading: true));
 
     CheckOutAll? response =
-        await _checkInRepo.checkOutAll().onError((error, stackTrace) {
+        await _checkOutRepo.checkOutAll().onError((error, stackTrace) {
       emit(state.copyWith(isCheckOutAllLoading: false));
       return null;
     });
@@ -162,10 +165,9 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate('checkOutAllVisitorsSuccessfully'));
       getCheckIns();
-      if(context.mounted){
+      if (context.mounted) {
         context.read<DashboardCubit>().getDashboardCheckIns();
         context.read<DashboardCubit>().getDashboardCount();
-
       }
       return true;
     } else {
@@ -183,7 +185,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   }) async {
     emit(state.copyWith(isCheckOutVisitor: true));
     try {
-      CheckOutVisitorResponseModel? response = await _checkInRepo
+      CheckOutVisitorResponseModel? response = await _visitorRepo
           .checkOutVisitors(data: data, id: id)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCheckOutVisitor: false));

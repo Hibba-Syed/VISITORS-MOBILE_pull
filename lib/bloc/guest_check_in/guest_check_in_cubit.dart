@@ -6,6 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/repo/countries/countries_repo.dart';
 import 'package:visitors/repo/countries/countries_repo_impl.dart';
+import 'package:visitors/repo/visitor/visitor_repo.dart';
+import 'package:visitors/repo/visitor/visitor_repo_impl.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/check_ins/check_in_model.dart';
@@ -35,6 +37,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   final CountriesRepo _countriesRepo = CountriesRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
+  final VisitorRepo _visitorRepo = VisitorRepoImpl();
 
   void onChangeSelectedNationality(Country? country) {
     emit(state.copyWith(selectedNationality: country));
@@ -141,7 +144,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       int? remainingVisitors}) async {
     emit(state.copyWith(isDeleteVisitorLoading: true));
     DeleteVisitorResponseModel? response =
-        await _checkInRepo.deleteVisitor(id: id).onError((error, stackTrace) {
+        await _visitorRepo.deleteVisitor(id: id).onError((error, stackTrace) {
       emit(state.copyWith(isDeleteVisitorLoading: false));
       return null;
     });

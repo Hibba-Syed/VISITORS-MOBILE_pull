@@ -50,33 +50,7 @@ class CheckInRepoImpl implements CheckInRepo {
     }
   }
 
-  @override
-  Future<CheckOutAll?> checkOutAll() async {
-    try {
-      dynamic response = await _apiService
-          .getAuthPutApiResponse(ApiUrl.checkOutAll);
-      return CheckOutAll.fromJson(response);
-    } catch (e) {
-      rethrow;
-    }
-  }
-  @override
-  Future<CheckOutVisitorResponseModel?> checkOutVisitors({
-    required int? id,
-    required Map<String, dynamic> data,
-  }) async {
-    try {
-      String url = '${ApiUrl.checkOutVisitor}/$id';
-      // print('checkOutVisitors$url');
-      dynamic response =
-      await _apiService.getAuthPutApiResponse(url, data: data);
-      // print('checkOutVisitors$response');
-      return CheckOutVisitorResponseModel.fromJson(response);
 
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   @override
   Future<VisitorPhoneInfoResponseModel?> getNumberInfo({required String? phoneNumber}) async {
@@ -89,16 +63,7 @@ class CheckInRepoImpl implements CheckInRepo {
     }
   }
 
-  @override
-  Future<DeleteVisitorResponseModel?> deleteVisitor({required int? id}) async {
-    try {
-      dynamic response = await _apiService
-          .getAuthPutApiResponse('${ApiUrl.deleteVisitor}/$id');
-      return DeleteVisitorResponseModel.fromJson(response);
-    } catch (e) {
-      rethrow;
-    }
-  }
+
 
   @override
   Future<GuestCheckInResponseModel?> guestCheckIn({

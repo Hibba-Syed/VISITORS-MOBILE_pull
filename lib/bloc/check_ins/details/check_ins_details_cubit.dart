@@ -1,8 +1,9 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
+import 'package:visitors/repo/visitor/visitor_repo.dart';
+import 'package:visitors/repo/visitor/visitor_repo_impl.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../model/check_ins/check_in_log_model.dart';
@@ -18,12 +19,14 @@ part 'check_ins_details_state.dart';
 class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
   CheckInsDetailsCubit() : super(CheckInsDetailsState());
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
+  final VisitorRepo _visitorRepo = VisitorRepoImpl();
 
-  Future<CheckInLogResponseModel?> getCheckInDetailsLog({required int? id}) async {
+  Future<CheckInLogResponseModel?> getCheckInDetailsLog(
+      {required int? id}) async {
     emit(state.copyWith(isLoading: true));
     CheckInLogResponseModel? response =
-    await _checkInRepo.getCheckInDetailsLogs(id: id).onError(
-          (error, stackTrace) {
+        await _checkInRepo.getCheckInDetailsLogs(id: id).onError(
+      (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -33,22 +36,24 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
     );
     if (response != null && response.status == 'success') {
       emit(state.copyWith(isLoading: false));
-       emit(state.copyWith(checkInLogs: response.record,isLoading: false));
+      emit(state.copyWith(checkInLogs: response.record, isLoading: false));
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckInLogDetails'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCheckInLogDetails'));
     }
     emit(state.copyWith(isLoading: false));
     return null;
   }
+
   Future<bool> checkOutVisitors(
-      BuildContext context, {
-        required int? id,
-        required Map<String, dynamic> data,
-      }) async {
+    BuildContext context, {
+    required int? id,
+    required Map<String, dynamic> data,
+  }) async {
     emit(state.copyWith(isCheckOutVisitor: true));
     try {
-      CheckOutVisitorResponseModel? response = await _checkInRepo
+      CheckOutVisitorResponseModel? response = await _visitorRepo
           .checkOutVisitors(data: data, id: id)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCheckOutVisitor: false));
@@ -77,7 +82,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         }
         if (context.mounted) {
           Navigator.pop(context);
-           context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
+          context.read<DashboardCubit>().getDashboardCheckIns(limit: 3);
           context.read<CheckInsCubit>().getCheckIns();
 
           Navigator.pop(context);
@@ -90,7 +95,8 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingOutVisitor'));
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileCheckingOutVisitor'));
         return false;
       }
     } catch (e) {
@@ -99,5 +105,4 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
       return false;
     }
   }
-
 }
