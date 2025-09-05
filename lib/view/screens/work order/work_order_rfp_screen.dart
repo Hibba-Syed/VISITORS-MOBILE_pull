@@ -60,141 +60,139 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
         if (didPop) return;
         context.read<MainDashboardCubit>().onBackButtonPressed();
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: BlocBuilder<WorkOrderCubit, WorkOrderState>(
-            builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.horizontalPadding),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: SearchTextField(
-                          controller: _searchController,
-                          onClearPressed: () async {
-                            _searchController.clear();
-                            context
-                                .read<WorkOrderCubit>()
-                                .onChangeSearchKeyWord('');
-                            context.read<WorkOrderCubit>().getWorkOrder();
-                          },
-                          onFieldSubmitted: (value) {
-                            context
-                                .read<WorkOrderCubit>()
-                                .onChangeSearchKeyWord(value);
-                            context.read<WorkOrderCubit>().getWorkOrder();
-                          },
-                          isFilterApplied: (state.selectedVendor != null) ||
-                                  (state.selectedType?.value.isNotEmpty ??
-                                      false)
-                              ? true
-                              : false,
-                          onFilterPressed: () {
-                            _workOrderFilterBottomSheet(context);
-                          }),
-                    ),
-                    const Gap(10),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async {
+      child: Scaffold(
+        body: BlocBuilder<WorkOrderCubit, WorkOrderState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.horizontalPadding),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: SearchTextField(
+                        controller: _searchController,
+                        onClearPressed: () async {
+                          _searchController.clear();
                           context
                               .read<WorkOrderCubit>()
-                              .getWorkOrder(keyword: _searchController.text);
+                              .onChangeSearchKeyWord('');
+                          context.read<WorkOrderCubit>().getWorkOrder();
                         },
-                        child: state.isLoading
-                            ? LoaderWidget()
-                            : state.workOrderModel?.isNotEmpty ?? true
-                                ? ListView.separated(
-                                    controller: _scrollController,
-                                    physics: AlwaysScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemCount:
-                                        state.workOrderModel?.length ?? 0,
-                                    itemBuilder: (context, index) {
-                                      WorkOrderModel? workOrder =
-                                          state.workOrderModel?[index];
-                                      return WorkOrderRFPCardWidget(
-                                        isAwarded: workOrder?.isAwarded,
-                                        status: workOrder?.status ?? "--",
-                                        title: workOrder?.title ?? "--",
-                                        reference: workOrder?.reference ?? "--",
-                                        vendorName:
-                                            workOrder?.newVendor?.companyName ??
-                                                "--",
-                                        createdDate:
-                                            DateTimeUtil.getFormattedDate(
-                                                workOrder?.startDate),
-                                        updatedDate:
-                                            DateTimeUtil.getFormattedDate(
-                                                workOrder?.finishDate),
-                                        isActiveCheckins: (workOrder
-                                                    ?.activeCheckIns
-                                                    ?.isNotEmpty ??
-                                                true)
-                                            ? true
-                                            : false,
-                                        checkInPressed: () {
-                                          Navigator.pushNamed(context,
-                                                  AppRoutes.guestCheckIn)
-                                              .then(
-                                            (value) {
-                                              if (value == true) {
-                                                context
-                                                    .read<WorkOrderCubit>()
-                                                    .getWorkOrder(
-                                                        keyword:
-                                                            _searchController
-                                                                .text);
-                                              }
-                                            },
-                                          );
-                                        },
-                                        detailsOnPressed: () {
-                                          context
-                                              .read<WorkOrderDetailsCubit>()
-                                              .getWorkOrderDetails(
-                                                  workOrderId: workOrder?.id);
-                                          Navigator.pushNamed(context,
-                                              AppRoutes.workOrderJobDetails);
-                                        },
-                                        jobCheckInOnPressed: () {
-                                          context
-                                              .read<CheckInsCubit>()
-                                              .onChangeSelectedVisitorType(
-                                                  AppUtils.getServiceableType(
-                                                      Strings.keyWorkOrder));
-                                          context
-                                              .read<CheckInsCubit>()
-                                              .onChangeSelectedServiceableId(
-                                                  workOrder?.id);
-                                          context
-                                              .read<CheckInsCubit>()
-                                              .getCheckIns();
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.jobCheckIns);
-                                        },
-                                      );
-                                    },
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return const Gap(10);
-                                    },
-                                  )
-                                : EmptyWidget(
-                                    text: AppUtils.languageTranslate(
-                                        'noDataAvailable'),
-                                  ),
-                      ),
+                        onFieldSubmitted: (value) {
+                          context
+                              .read<WorkOrderCubit>()
+                              .onChangeSearchKeyWord(value);
+                          context.read<WorkOrderCubit>().getWorkOrder();
+                        },
+                        isFilterApplied: (state.selectedVendor != null) ||
+                                (state.selectedType?.value.isNotEmpty ??
+                                    false)
+                            ? true
+                            : false,
+                        onFilterPressed: () {
+                          _workOrderFilterBottomSheet(context);
+                        }),
+                  ),
+                  const Gap(10),
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        context
+                            .read<WorkOrderCubit>()
+                            .getWorkOrder(keyword: _searchController.text);
+                      },
+                      child: state.isLoading
+                          ? LoaderWidget()
+                          : state.workOrderModel?.isNotEmpty ?? true
+                              ? ListView.separated(
+                                  controller: _scrollController,
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount:
+                                      state.workOrderModel?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    WorkOrderModel? workOrder =
+                                        state.workOrderModel?[index];
+                                    return WorkOrderRFPCardWidget(
+                                      isAwarded: workOrder?.isAwarded,
+                                      status: workOrder?.status ?? "--",
+                                      title: workOrder?.title ?? "--",
+                                      reference: workOrder?.reference ?? "--",
+                                      vendorName:
+                                          workOrder?.newVendor?.companyName ??
+                                              "--",
+                                      createdDate:
+                                          DateTimeUtil.getFormattedDate(
+                                              workOrder?.startDate),
+                                      updatedDate:
+                                          DateTimeUtil.getFormattedDate(
+                                              workOrder?.finishDate),
+                                      isActiveCheckins: (workOrder
+                                                  ?.activeCheckIns
+                                                  ?.isNotEmpty ??
+                                              true)
+                                          ? true
+                                          : false,
+                                      checkInPressed: () {
+                                        Navigator.pushNamed(context,
+                                                AppRoutes.guestCheckIn)
+                                            .then(
+                                          (value) {
+                                            if (value == true) {
+                                              context
+                                                  .read<WorkOrderCubit>()
+                                                  .getWorkOrder(
+                                                      keyword:
+                                                          _searchController
+                                                              .text);
+                                            }
+                                          },
+                                        );
+                                      },
+                                      detailsOnPressed: () {
+                                        context
+                                            .read<WorkOrderDetailsCubit>()
+                                            .getWorkOrderDetails(
+                                                workOrderId: workOrder?.id);
+                                        Navigator.pushNamed(context,
+                                            AppRoutes.workOrderJobDetails);
+                                      },
+                                      jobCheckInOnPressed: () {
+                                        context
+                                            .read<CheckInsCubit>()
+                                            .onChangeSelectedVisitorType(
+                                                AppUtils.getServiceableType(
+                                                    Strings.keyWorkOrder));
+                                        context
+                                            .read<CheckInsCubit>()
+                                            .onChangeSelectedServiceableId(
+                                                workOrder?.id);
+                                        context
+                                            .read<CheckInsCubit>()
+                                            .getCheckIns();
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.jobCheckIns);
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const Gap(10);
+                                  },
+                                )
+                              : EmptyWidget(
+                                  text: AppUtils.languageTranslate(
+                                      'noDataAvailable'),
+                                ),
                     ),
-                    if (state.loadMore) const LoaderWidget(),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                  if (state.loadMore) const LoaderWidget(),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

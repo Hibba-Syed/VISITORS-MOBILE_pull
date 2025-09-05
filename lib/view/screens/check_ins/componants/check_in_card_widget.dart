@@ -69,17 +69,18 @@ class CheckInCardWidget extends StatelessWidget {
                         text: type,
                       ),
                 Tooltip(
-                  message:
-                      isMobile == true ? AppUtils.languageTranslate("mobile_check_in") : AppUtils.languageTranslate("web_check_in"),
+                  message: isMobile == true
+                      ? AppUtils.languageTranslate("mobile_check_in")
+                      : AppUtils.languageTranslate("web_check_in"),
                   child: Container(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(6),
                           topLeft: Radius.circular(6),
                         ),
-                        color: AppColors.darkGrey),
+                        color: Colors.grey.shade400),
                     child: Icon(
                       isMobile == true
                           ? Icons.phone_iphone
@@ -128,12 +129,26 @@ class CheckInCardWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(name ?? "",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppUtils.isTablet(context)
-                                  ? AppTextStyles.style15Black600
-                                  : AppTextStyles.style14Black600),
+                          Row(
+                            children: [
+                              Icon(
+                                isMobile == true
+                                    ? Icons.phone_iphone
+                                    : Icons.desktop_mac_outlined,
+                                color: AppColors.darkGrey,
+                                size: 16,
+                              ),
+                              Gap(5),
+                              Expanded(
+                                child: Text(name ?? "",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: AppUtils.isTablet(context)
+                                        ? AppTextStyles.style15Black600
+                                        : AppTextStyles.style14Black600),
+                              ),
+                            ],
+                          ),
                           const Gap(6),
                           Row(
                             children: [

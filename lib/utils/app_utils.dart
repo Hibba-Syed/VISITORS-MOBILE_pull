@@ -5,6 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:visitors/view/screens/services/detail/custom_service_details_screen.dart';
+import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import '../bloc/e_service/details/service_details_cubit.dart';
 import '../model/driving_license_model.dart';
 import '../model/emirates_id_model.dart';
@@ -166,7 +168,7 @@ class AppUtils {
         value: Strings.keyVisitorPass),
   ];
 
-  static Widget getRouteName(ServiceModel? service) {
+  static Widget getServiceRouteName(ServiceModel? service) {
     String? type = service?.applicationTitle?.toLowerCase();
 
     switch (type) {
@@ -186,13 +188,21 @@ class AppUtils {
         return WorkPermitServiceDetailsScreen(service: service);
       case "ss":
         return ShortStayServiceDetailsScreen(service: service);
+      case "ccs":
+        return CustomServiceDetailsScreen(service: service);
       default:
-        return const Scaffold(
+        return Scaffold(
+          appBar: AppBarWidget(
+            title: AppUtils.languageTranslate('serviceDetails'),
+            titleColor: AppColors.black,
+            iconColor: AppColors.black,
+          ),
           body: Center(
-              child: Text(
-            "No service details available",
-            style: AppTextStyles.style13DarkGrey600,
-          )),
+            child: Text(
+              AppUtils.languageTranslate("no_service_details_available"),
+              style: AppTextStyles.style13DarkGrey600,
+            ),
+          ),
         );
     }
   }
@@ -240,10 +250,10 @@ class AppUtils {
   static String languageTranslate(String key) {
     return tr(key);
   }
+
   static Future<void> completeServiceAction({
     required BuildContext context,
     required ServiceDetailsState state,
-
   }) async {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController idController = TextEditingController();

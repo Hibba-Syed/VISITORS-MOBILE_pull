@@ -5,6 +5,7 @@ import 'guest_model.dart';
 
 class Application {
   int? id;
+  String? name;
   String? contractorName;
   String? contactPerson;
   String? contractorPhone;
@@ -135,6 +136,7 @@ class Application {
   List<Guest>? guests;
   Application({
     this.id,
+    this.name,
     this.contractorName,
     this.contactPerson,
     this.contractorPhone,
@@ -267,6 +269,7 @@ class Application {
 
   factory Application.fromJson(Map<String, dynamic> json) => Application(
     id: json["id"],
+    name: json["name"],
     contractorName: json["contractor_name"],
     contactPerson: json["contact_person"],
     contractorPhone: json["contractor_phone"],
@@ -398,6 +401,7 @@ class Application {
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "name": name,
     "contractor_name": contractorName,
     "contact_person": contactPerson,
     "contractor_phone": contractorPhone,

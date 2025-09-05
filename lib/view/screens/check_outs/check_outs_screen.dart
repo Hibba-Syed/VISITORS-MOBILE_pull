@@ -59,125 +59,123 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
           if (didPop) return;
           context.read<MainDashboardCubit>().onBackButtonPressed();
         },
-        child: SafeArea(
-          child: Scaffold(
-            body: BlocBuilder<CheckOutCubit, CheckOutState>(
-              builder: (context, state) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppConstants.horizontalPadding),
-                  child: Column(
-                    children: [
-                      const Gap(10),
-                      SearchTextField(
-                        controller: _searchController,
-                        onClearPressed: () async {
-                          _searchController.clear();
-                          context
-                              .read<CheckOutCubit>()
-                              .onChangeSearchKeyWord('');
-                          context.read<CheckOutCubit>().getCheckOuts();
-                        },
-                        onFieldSubmitted: (value) {
-                          context
-                              .read<CheckOutCubit>()
-                              .onChangeSearchKeyWord(value);
-                          context.read<CheckOutCubit>().getCheckOuts();
-                        },
-                        isFilterApplied: (state.selectedUnit != null) ||
-                                (state.selectedType?.value.isNotEmpty ??
-                                    false) ||
-                                (state.selectedVendor != null) ||
-                                (state.dateRang != null) ||
-                                (state.selectedRange != null)
-                            ? true
-                            : false,
-                        onFilterPressed: () {
-                          _checkOutFilterBottomSheet(context);
-                        },
-                      ),
-                      const Gap(10),
-                      Expanded(
-                        child: state.isCheckOutLoading
-                            ? const LoaderWidget()
-                            : state.checkOutVisitors?.isNotEmpty ?? false
-                                ? RefreshIndicator(
-                                    onRefresh: () async {
-                                      await context
-                                          .read<CheckOutCubit>()
-                                          .getCheckOuts(
-                                          keyword: _searchController.text
+        child: Scaffold(
+          body: BlocBuilder<CheckOutCubit, CheckOutState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.horizontalPadding),
+                child: Column(
+                  children: [
+                    const Gap(10),
+                    SearchTextField(
+                      controller: _searchController,
+                      onClearPressed: () async {
+                        _searchController.clear();
+                        context
+                            .read<CheckOutCubit>()
+                            .onChangeSearchKeyWord('');
+                        context.read<CheckOutCubit>().getCheckOuts();
+                      },
+                      onFieldSubmitted: (value) {
+                        context
+                            .read<CheckOutCubit>()
+                            .onChangeSearchKeyWord(value);
+                        context.read<CheckOutCubit>().getCheckOuts();
+                      },
+                      isFilterApplied: (state.selectedUnit != null) ||
+                              (state.selectedType?.value.isNotEmpty ??
+                                  false) ||
+                              (state.selectedVendor != null) ||
+                              (state.dateRang != null) ||
+                              (state.selectedRange != null)
+                          ? true
+                          : false,
+                      onFilterPressed: () {
+                        _checkOutFilterBottomSheet(context);
+                      },
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: state.isCheckOutLoading
+                          ? const LoaderWidget()
+                          : state.checkOutVisitors?.isNotEmpty ?? false
+                              ? RefreshIndicator(
+                                  onRefresh: () async {
+                                    await context
+                                        .read<CheckOutCubit>()
+                                        .getCheckOuts(
+                                        keyword: _searchController.text
+                                    );
+                                  },
+                                  child: ListView.separated(
+                                    controller: _scrollController,
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10),
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount:
+                                        state.checkOutVisitors?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      CheckOutVisitor? checkOutModel =
+                                          state.checkOutVisitors?[index];
+                                      return CheckOutsCardWidget(
+                                        visitorCount:
+                                            checkOutModel?.visitorCount ?? "",
+                                        typeText:
+                                            checkOutModel?.unit?.unitNumber ??
+                                                "",
+                                        name: checkOutModel?.name ?? "--",
+                                        profileImageUrl: checkOutModel
+                                                ?.visitor?.imageUrl ??
+                                            "",
+                                        type: checkOutModel?.type ?? "--",
+                                        checkInDate:
+                                            DateTimeUtil.getFormattedDateTime(
+                                                checkOutModel?.checkinTime
+                                                    .toString()),
+                                        checkOutDate:
+                                            DateTimeUtil.getFormattedDateTime(
+                                                checkOutModel?.checkoutTime
+                                                    .toString()),
+                                        phone: checkOutModel?.phone ?? "--",
                                       );
                                     },
-                                    child: ListView.separated(
-                                      controller: _scrollController,
-                                      physics: AlwaysScrollableScrollPhysics(),
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      itemCount:
-                                          state.checkOutVisitors?.length ?? 0,
-                                      itemBuilder: (context, index) {
-                                        CheckOutVisitor? checkOutModel =
-                                            state.checkOutVisitors?[index];
-                                        return CheckOutsCardWidget(
-                                          visitorCount:
-                                              checkOutModel?.visitorCount ?? "",
-                                          typeText:
-                                              checkOutModel?.unit?.unitNumber ??
-                                                  "",
-                                          name: checkOutModel?.name ?? "--",
-                                          profileImageUrl: checkOutModel
-                                                  ?.visitor?.imageUrl ??
-                                              "",
-                                          type: checkOutModel?.type ?? "--",
-                                          checkInDate:
-                                              DateTimeUtil.getFormattedDateTime(
-                                                  checkOutModel?.checkinTime
-                                                      .toString()),
-                                          checkOutDate:
-                                              DateTimeUtil.getFormattedDateTime(
-                                                  checkOutModel?.checkoutTime
-                                                      .toString()),
-                                          phone: checkOutModel?.phone ?? "--",
-                                        );
-                                      },
-                                      separatorBuilder:
-                                          (BuildContext context, int index) {
-                                        return const Gap(10);
-                                      },
-                                    ),
-                                  )
-                                :  EmptyWidget(
-                                    text: AppUtils.languageTranslate('noDataAvailable'),
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return const Gap(10);
+                                    },
                                   ),
-                      ),
-                      if (state.loadMore) const LoaderWidget(),
-                    ],
-                  ),
-                );
-              },
+                                )
+                              :  EmptyWidget(
+                                  text: AppUtils.languageTranslate('noDataAvailable'),
+                                ),
+                    ),
+                    if (state.loadMore) const LoaderWidget(),
+                  ],
+                ),
+              );
+            },
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: AppColors.primary,
+            onPressed: () {
+              FileDownloader.downloadFile(
+                  context: context,
+                  dateRage:
+                      '${context.read<CheckOutCubit>().state.dateRang ?? ""}');
+            },
+            icon: SvgPicture.asset(
+              AppImages.export,
+              colorFilter:
+                  const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+              height: 13,
+              // fit: BoxFit.scaleDown,
             ),
-            floatingActionButton: FloatingActionButton.extended(
-              backgroundColor: AppColors.primary,
-              onPressed: () {
-                FileDownloader.downloadFile(
-                    context: context,
-                    dateRage:
-                        '${context.read<CheckOutCubit>().state.dateRang ?? ""}');
-              },
-              icon: SvgPicture.asset(
-                AppImages.export,
-                colorFilter:
-                    const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-                height: 13,
-                // fit: BoxFit.scaleDown,
-              ),
-              label: Text(
-                AppUtils.languageTranslate('export'),
-                style: AppTextStyles.style13white500,
-              ),
+            label: Text(
+              AppUtils.languageTranslate('export'),
+              style: AppTextStyles.style13white500,
             ),
           ),
         ));

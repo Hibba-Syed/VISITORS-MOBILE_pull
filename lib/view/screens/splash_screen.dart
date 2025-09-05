@@ -58,56 +58,54 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-              ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
             ),
-            Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(AppUtils.languageTranslate('niceToSeeYou'),
-                            style: AppUtils.isTablet(context)
-                                ? AppTextStyles.style25white600
-                                : AppTextStyles.style20white600),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          AppUtils.languageTranslate('visitorManagementSystem'),
+          ),
+          Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(AppUtils.languageTranslate('niceToSeeYou'),
                           style: AppUtils.isTablet(context)
-                              ? AppTextStyles.style35white600
-                              : AppTextStyles.style24white600,
-                        ),
+                              ? AppTextStyles.style25white600
+                              : AppTextStyles.style20white600),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        AppUtils.languageTranslate('visitorManagementSystem'),
+                        style: AppUtils.isTablet(context)
+                            ? AppTextStyles.style35white600
+                            : AppTextStyles.style24white600,
                       ),
-                      Gap(40),
-                      Image.asset(
-                        AppImages.splash,
-                        width: MediaQuery.of(context).size.height * 0.25,
-                      ),
-                    ],
-                  ),
+                    ),
+                    Gap(40),
+                    Image.asset(
+                      AppImages.splash,
+                      width: MediaQuery.of(context).size.height * 0.25,
+                    ),
+                  ],
                 ),
-                Text(
-                  '© ${DateTime.now().year}${AppUtils.languageTranslate('iSKAANVisitorPortal')}',
-                  style: AppTextStyles.style15white600,
-                ),
-                const Gap(10),
-              ],
-            ),
-          ],
-        ),
+              ),
+              Text(
+                '© ${DateTime.now().year}${AppUtils.languageTranslate('iSKAANVisitorPortal')}',
+                style: AppTextStyles.style15white600,
+              ),
+              const Gap(10),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart' show Gap;
-import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
-import 'package:visitors/resource/constants/app_colors.dart';
-import 'package:visitors/resource/constants/app_constants.dart';
-import 'package:visitors/resource/styles/styles.dart';
-import 'package:visitors/utils/date_time.dart';
-import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
-import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
-import 'package:visitors/view/widgets/button/custom_button.dart';
-import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_details_container.dart';
-import 'package:visitors/view/widgets/heading_widget.dart';
-import 'package:visitors/view/widgets/loader/loader_widget.dart';
-import 'package:visitors/view/widgets/status/status_widget.dart';
-import 'package:visitors/utils/app_utils.dart';
+import 'package:gap/gap.dart';
 
+import '../../../../bloc/e_service/details/service_details_cubit.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
+import '../../../../resource/constants/app_colors.dart';
+import '../../../../resource/constants/app_constants.dart';
+import '../../../../resource/styles/styles.dart';
+import '../../../../utils/app_utils.dart';
+import '../../../../utils/date_time.dart';
+import '../../../widgets/activity log/activity_log_widget.dart';
+import '../../../widgets/app_bar/appbar_widget.dart';
+import '../../../widgets/button/custom_button.dart';
+import '../../../widgets/container_widgets/title_value_column_divider_details_container.dart';
+import '../../../widgets/container_widgets/title_value_row_divider_details_container.dart';
 import '../../../widgets/empty_widget.dart';
+import '../../../widgets/heading_widget.dart';
+import '../../../widgets/loader/loader_widget.dart';
+import '../../../widgets/status/status_widget.dart';
 
-class DeliveryPermitServiceDetailsScreen extends StatefulWidget {
+class CustomServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
-  const DeliveryPermitServiceDetailsScreen({super.key, required this.service});
+  const CustomServiceDetailsScreen({super.key, required this.service});
 
   @override
-  State<DeliveryPermitServiceDetailsScreen> createState() =>
-      _DeliveryPermitServiceDetailsScreenState();
+  State<CustomServiceDetailsScreen> createState() =>
+      _CustomServiceDetailsScreenState();
 }
 
-class _DeliveryPermitServiceDetailsScreenState
-    extends State<DeliveryPermitServiceDetailsScreen> {
-
+class _CustomServiceDetailsScreenState
+    extends State<CustomServiceDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBarWidget(
+      appBar: AppBarWidget(
         title: AppUtils.languageTranslate('serviceDetails'),
         titleColor: AppColors.black,
         iconColor: AppColors.black,
@@ -64,8 +64,9 @@ class _DeliveryPermitServiceDetailsScreenState
                           children: [
                             Expanded(
                               child: HeadingWidget(
-                                heading: AppUtils.getRequestName(
-                                    state.serviceDetails?.applicationType ?? "--"),
+                                heading:
+                                    state.serviceDetails?.application?.name ??
+                                        "--",
                               ),
                             ),
                             StatusWidget(
@@ -87,23 +88,79 @@ class _DeliveryPermitServiceDetailsScreenState
                           ),
                           child: Column(
                             children: [
+                              TitleValueColumnDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate('facility'),
+                                  value: state.serviceDetails?.application
+                                          ?.facility ??
+                                      "--"),
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('requestedDate'),
-                                  value: DateTimeUtil.getFormattedDate(
-                                      state.serviceDetails?.application?.datetime)),
-                              TitleValueRowDividerDetailsContainerWidget(
-                                isLast: true,
-                                title: AppUtils.languageTranslate('deliveryCompany'),
+                                title: AppUtils.languageTranslate(
+                                    'natureOfFunction'),
                                 value: state.serviceDetails?.application
-                                        ?.deliveryCompany ??
+                                        ?.natureOfFunction ??
                                     "--",
                               ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'expectedGuests'),
+                                  value: state.serviceDetails?.application
+                                          ?.expectedGuests
+                                          ?.toString() ??
+                                      '--'),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                  title:
+                                      AppUtils.languageTranslate('bookingDate'),
+                                  value: DateTimeUtil.getFormattedDate(state
+                                      .serviceDetails
+                                      ?.application
+                                      ?.bookingDate)),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate('startTime'),
+                                value: state.serviceDetails?.application
+                                        ?.startTime ??
+                                    "--",
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                  isLast: true,
+                                  title: AppUtils.languageTranslate('endTime'),
+                                  value: state.serviceDetails?.application
+                                          ?.endTime ??
+                                      '--'),
                             ],
                           ),
                         ),
+                        if (state.serviceDetails?.securityDeposit != null) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'security_deposit_details'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'deposit_amount'),
+                                  value: state.serviceDetails?.securityDeposit
+                                          ?.toString() ??
+                                      "--",
+                                  isLast: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                         const Gap(20),
-                         HeadingWidget(
-                          heading: AppUtils.languageTranslate('applicantDetails'),
+                        HeadingWidget(
+                          heading:
+                              AppUtils.languageTranslate('applicantDetails'),
                         ),
                         const Gap(10),
                         Container(
@@ -116,32 +173,38 @@ class _DeliveryPermitServiceDetailsScreenState
                           child: Column(
                             children: [
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title:  AppUtils.languageTranslate('requesterType'),
-                                  value: state.serviceDetails?.clientType ?? "--"),
+                                  title: AppUtils.languageTranslate(
+                                      'requesterType'),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('name'),
                                 value: state.serviceDetails?.clientName ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('phone'),
-                                value: state.serviceDetails?.clientPhone ?? "--",
+                                value:
+                                    state.serviceDetails?.clientPhone ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('email'),
-                                value: state.serviceDetails?.clientEmail ?? "--",
+                                value:
+                                    state.serviceDetails?.clientEmail ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('passportNumber'),
+                                  title: AppUtils.languageTranslate(
+                                      'passportNumber'),
                                   value: state.serviceDetails?.passportNumber
                                           ?.toString() ??
                                       "--"),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title:  AppUtils.languageTranslate('passportExpiry'),
+                                title: AppUtils.languageTranslate(
+                                    'passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.clientIdExpiry),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title: AppUtils.languageTranslate('detailsIdNumber'),
+                                title: AppUtils.languageTranslate('idNumber'),
                                 value: state.serviceDetails?.clientIdNumber
                                         ?.toString() ??
                                     "--",
@@ -156,7 +219,7 @@ class _DeliveryPermitServiceDetailsScreenState
                           ),
                         ),
                         const Gap(20),
-                         Text(
+                        Text(
                           AppUtils.languageTranslate('activityLog'),
                           style: AppTextStyles.style20primary600,
                         ),
@@ -171,12 +234,12 @@ class _DeliveryPermitServiceDetailsScreenState
                                   padding: EdgeInsets.only(top: 10),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount:
-                                      state.serviceDetails?.statusHistory?.length ??
-                                          0,
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
+                                      0,
                                   itemBuilder: (context, index) {
-                                    StatusHistory? statusHistory =
-                                        state.serviceDetails?.statusHistory?[index];
+                                    StatusHistory? statusHistory = state
+                                        .serviceDetails?.statusHistory?[index];
                                     bool isLast = (state.serviceDetails
                                                     ?.statusHistory?.length ??
                                                 0) -
@@ -185,9 +248,10 @@ class _DeliveryPermitServiceDetailsScreenState
                                     return ActivityLogWidget(
                                       horizontalPadding: 8,
                                       isLast: isLast,
-                                      status: (statusHistory?.status != 'Pending')
-                                          ? statusHistory?.status ?? ""
-                                          : "Request Received",
+                                      status:
+                                          (statusHistory?.status != 'Pending')
+                                              ? statusHistory?.status ?? ""
+                                              : "Request Received",
                                       byValue: (statusHistory?.user?.fullName !=
                                                   null &&
                                               statusHistory!
@@ -200,15 +264,16 @@ class _DeliveryPermitServiceDetailsScreenState
                                           .split('.')
                                           .first
                                           .trim(),
-                                      dateTime: DateTimeUtil.getFormattedDateTime(
-                                          statusHistory?.createdAt),
+                                      dateTime:
+                                          DateTimeUtil.getFormattedDateTime(
+                                              statusHistory?.createdAt),
                                     );
                                   },
                                 ),
                               )
                             : EmptyWidget(
-                                text: AppUtils.languageTranslate('noDataAvailable')
-                              ),
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable')),
                       ],
                     ),
                   ),
@@ -216,7 +281,7 @@ class _DeliveryPermitServiceDetailsScreenState
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.horizontalPadding,
-                      vertical: AppConstants.horizontalPadding),
+                      vertical: AppConstants.verticalPadding),
                   child: Row(
                     children: [
                       Expanded(
@@ -230,14 +295,8 @@ class _DeliveryPermitServiceDetailsScreenState
                               );
                             }),
                       ),
-                      if ((state
-                          .serviceDetails
-                          ?.securityDeposit ==
-                          null ) ||
-                          (state
-                              .serviceDetails
-                              ?.securityDeposit ==
-                              0)) ...[
+                      if ((state.serviceDetails?.securityDeposit == null) ||
+                          (state.serviceDetails?.securityDeposit == 0)) ...[
                         const Gap(10),
                         Expanded(
                           child: CustomButton(
@@ -249,7 +308,7 @@ class _DeliveryPermitServiceDetailsScreenState
                                   state: state,
                                 );
                               }),
-                        ),
+                        )
                       ],
                     ],
                   ),

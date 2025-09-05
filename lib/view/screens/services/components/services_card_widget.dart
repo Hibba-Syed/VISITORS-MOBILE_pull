@@ -104,25 +104,25 @@ class ServicesCardWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomButton(
-                          fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+                          fontSize: AppUtils.isTablet(context) ? 15 : 15,
                           buttonColor: AppColors.green,
                           image: AppImages.checkInButton,
                           text: AppUtils.languageTranslate('checkIn'),
                           onPressed: checkInOnPressed),
                     ),
-                    if(isActiveCheckins)...[
+                    if (isActiveCheckins) ...[
                       const Gap(8),
                       Expanded(
                         child: CustomButton(
-                            fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+                            fontSize: AppUtils.isTablet(context) ? 15 : 15,
                             // imageHeight: AppUtils.isTablet(context) ?22 :18,
                             buttonColor: AppColors.cyanBlue,
                             image: AppImages.serviceable,
-                            text: AppUtils.languageTranslate('serviceableCheckIns'),
+                            text: AppUtils.languageTranslate(
+                                'serviceableCheckIns'),
                             onPressed: serviceableCheckInOnPressed),
                       ),
                     ],
-
                   ],
                 )
               ],

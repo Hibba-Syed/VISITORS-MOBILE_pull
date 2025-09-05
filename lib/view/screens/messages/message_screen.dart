@@ -68,126 +68,124 @@ class _MessageScreenState extends State<MessageScreen> {
         if (didPop) return;
         context.read<MainDashboardCubit>().onBackButtonPressed();
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: BlocBuilder<MessageCubit, MessageState>(
-            builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalPadding,
-                ),
-                child: Column(
-                  children: [
-                    if (state.loadMore) const LoaderWidget(),
-                    Expanded(
-                      child: state.isLoading
-                          ? Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical:
-                                      MediaQuery.of(context).size.height / 3),
-                              child: LoaderWidget(),
-                            )
-                          : state.messageModel?.isEmpty ?? true
-                              ? EmptyWidget(
-                                  text: AppUtils.languageTranslate(
-                                      'noDataAvailable'),
-                                )
-                              : ListView.separated(
-                                  reverse: true,
-                                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  controller: _scrollController,
-                                  itemCount: state.messageModel?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    MessageModel? message =
-                                        state.messageModel?[index];
-                                    return Row(
-                                      mainAxisAlignment: message?.by == 'user'
-                                          ? MainAxisAlignment.start
-                                          : MainAxisAlignment.end,
-                                      children: [
-                                        message?.by == 'user'
-                                            ? MessageReceiverCardWidget(
-                                                message: message?.message ?? "",
-                                                date: message?.createdAt
-                                                    .toString(),
-                                                userName:
-                                                    message?.user?.fullName ??
-                                                        "",
-                                                profileImage: message?.user
-                                                        ?.profileImageUrl ??
-                                                    "",
-                                                attachments:
-                                                    message?.attachments,
-                                              )
-                                            : MessageSenderCardWidget(
-                                                message: message?.message ?? "",
-                                                date: message?.createdAt
-                                                    .toString(),
-                                                attachments:
-                                                    message?.attachments,
-                                              ),
-                                      ],
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 5));
-                                  },
-                                ),
-                    ),
-                    _attachmentsList.isNotEmpty
-                        ? Align(
-                            alignment: Alignment.topLeft,
-                            child: _buildAttachmentSection())
-                        : SizedBox.shrink(),
-                    const Gap(10),
-                  ],
-                ),
-              );
-            },
-          ),
-          bottomNavigationBar: ChatBottomRowWidget(
-            messageController: _messageController,
-            onAttach: () async {
-              final result =
-                  await FilePicker.platform.pickFiles(allowMultiple: true);
-              if (result != null && result.files.isNotEmpty) {
-                const maxSizeInBytes = 10 * 1024 * 1024;
-                final validFiles = result.files.where((file) =>
-                    (file.size <= maxSizeInBytes) && file.path != null);
+      child: Scaffold(
+        body: BlocBuilder<MessageCubit, MessageState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalPadding,
+              ),
+              child: Column(
+                children: [
+                  if (state.loadMore) const LoaderWidget(),
+                  Expanded(
+                    child: state.isLoading
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical:
+                                    MediaQuery.of(context).size.height / 3),
+                            child: LoaderWidget(),
+                          )
+                        : state.messageModel?.isEmpty ?? true
+                            ? EmptyWidget(
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable'),
+                              )
+                            : ListView.separated(
+                                reverse: true,
+                                padding: EdgeInsets.only(top: 10, bottom: 10),
+                                physics: AlwaysScrollableScrollPhysics(),
+                                controller: _scrollController,
+                                itemCount: state.messageModel?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  MessageModel? message =
+                                      state.messageModel?[index];
+                                  return Row(
+                                    mainAxisAlignment: message?.by == 'user'
+                                        ? MainAxisAlignment.start
+                                        : MainAxisAlignment.end,
+                                    children: [
+                                      message?.by == 'user'
+                                          ? MessageReceiverCardWidget(
+                                              message: message?.message ?? "",
+                                              date: message?.createdAt
+                                                  .toString(),
+                                              userName:
+                                                  message?.user?.fullName ??
+                                                      "",
+                                              profileImage: message?.user
+                                                      ?.profileImageUrl ??
+                                                  "",
+                                              attachments:
+                                                  message?.attachments,
+                                            )
+                                          : MessageSenderCardWidget(
+                                              message: message?.message ?? "",
+                                              date: message?.createdAt
+                                                  .toString(),
+                                              attachments:
+                                                  message?.attachments,
+                                            ),
+                                    ],
+                                  );
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 5));
+                                },
+                              ),
+                  ),
+                  _attachmentsList.isNotEmpty
+                      ? Align(
+                          alignment: Alignment.topLeft,
+                          child: _buildAttachmentSection())
+                      : SizedBox.shrink(),
+                  const Gap(10),
+                ],
+              ),
+            );
+          },
+        ),
+        bottomNavigationBar: ChatBottomRowWidget(
+          messageController: _messageController,
+          onAttach: () async {
+            final result =
+                await FilePicker.platform.pickFiles(allowMultiple: true);
+            if (result != null && result.files.isNotEmpty) {
+              const maxSizeInBytes = 10 * 1024 * 1024;
+              final validFiles = result.files.where((file) =>
+                  (file.size <= maxSizeInBytes) && file.path != null);
 
-                if (validFiles.length != result.files.length) {
-                  Fluttertoast.showToast(
-                      msg: AppUtils.languageTranslate(
-                          'fileIsTooLargePleaseChooseAFileSmallerThan10MB'));
-                }
-                _attachmentsList
-                    .addAll(validFiles.map((file) => file.path!).toList());
-                setState(() {});
-              }
-            },
-            onSend: () async {
-              if (_messageController.text.isEmpty) {
+              if (validFiles.length != result.files.length) {
                 Fluttertoast.showToast(
-                    msg: AppUtils.languageTranslate('pleaseTypeMessageFirst'));
-                return;
+                    msg: AppUtils.languageTranslate(
+                        'fileIsTooLargePleaseChooseAFileSmallerThan10MB'));
               }
-             bool result = await
-              context.read<MessageCubit>().sendMessage(
-                    context,
-                    data: {'message': _messageController.text},
-                    filesPaths:
-                        _attachmentsList.isNotEmpty ? _attachmentsList : null,
-                  );
-             if (result) {
-                _messageController.clear();
-                _attachmentsList.clear();
-             }
-            },
-          ),
+              _attachmentsList
+                  .addAll(validFiles.map((file) => file.path!).toList());
+              setState(() {});
+            }
+          },
+          onSend: () async {
+            if (_messageController.text.isEmpty) {
+              Fluttertoast.showToast(
+                  msg: AppUtils.languageTranslate('pleaseTypeMessageFirst'));
+              return;
+            }
+           bool result = await
+            context.read<MessageCubit>().sendMessage(
+                  context,
+                  data: {'message': _messageController.text},
+                  filesPaths:
+                      _attachmentsList.isNotEmpty ? _attachmentsList : null,
+                );
+           if (result) {
+              _messageController.clear();
+              _attachmentsList.clear();
+           }
+          },
         ),
       ),
     );

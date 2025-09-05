@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show MultiBlocProvider;
@@ -47,7 +49,15 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
                 color: AppColors.primary,
               ),
             ),
-
+            builder: (context, child) {
+              return SafeArea(
+                left: false,
+                right: false,
+                top: false,
+                bottom: Platform.isAndroid ? true : false,
+                child: child!,
+              );
+            },
             onGenerateRoute: AppPages.generateRouteSettings,
             initialRoute: AppRoutes.splash,
             debugShowCheckedModeBanner: false,

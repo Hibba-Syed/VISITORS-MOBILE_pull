@@ -43,130 +43,128 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBarWidget(
-          title: AppUtils.languageTranslate('visitorPasses'),
-          titleColor: AppColors.black,
-          iconColor: AppColors.black,
-        ),
-        body: BlocBuilder<VisitorPassCubit, VisitorPassState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalPadding),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: SearchTextField(
-                      controller: _searchController,
-                      onClearPressed: () async {
-                        _searchController.clear();
-                        context
-                            .read<VisitorPassCubit>()
-                            .onChangeSearchKeyWord('');
-                        context.read<VisitorPassCubit>().getVisitorPasses();
-                      },
-                      onFieldSubmitted: (value) {
-                        context
-                            .read<VisitorPassCubit>()
-                            .onChangeSearchKeyWord(value);
-                        context.read<VisitorPassCubit>().getVisitorPasses();
-                      },
-                      isFilterApplied:
-                          (state.selectedUnit != null) ? true : false,
-                      onFilterPressed: () {
-                        _visitorPassesFilterBottomSheet(context);
-                      },
-                    ),
+    return Scaffold(
+      appBar: AppBarWidget(
+        title: AppUtils.languageTranslate('visitorPasses'),
+        titleColor: AppColors.black,
+        iconColor: AppColors.black,
+      ),
+      body: BlocBuilder<VisitorPassCubit, VisitorPassState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalPadding),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SearchTextField(
+                    controller: _searchController,
+                    onClearPressed: () async {
+                      _searchController.clear();
+                      context
+                          .read<VisitorPassCubit>()
+                          .onChangeSearchKeyWord('');
+                      context.read<VisitorPassCubit>().getVisitorPasses();
+                    },
+                    onFieldSubmitted: (value) {
+                      context
+                          .read<VisitorPassCubit>()
+                          .onChangeSearchKeyWord(value);
+                      context.read<VisitorPassCubit>().getVisitorPasses();
+                    },
+                    isFilterApplied:
+                        (state.selectedUnit != null) ? true : false,
+                    onFilterPressed: () {
+                      _visitorPassesFilterBottomSheet(context);
+                    },
                   ),
-                  const Gap(10),
-                  Expanded(
-                    child: state.isLoading
-                        ? LoaderWidget()
-                        : state.visitorPasses?.isNotEmpty ?? true
-                            ? RefreshIndicator(
-                                onRefresh: () async {
-                                  context
-                                      .read<VisitorPassCubit>()
-                                      .getVisitorPasses();
+                ),
+                const Gap(10),
+                Expanded(
+                  child: state.isLoading
+                      ? LoaderWidget()
+                      : state.visitorPasses?.isNotEmpty ?? true
+                          ? RefreshIndicator(
+                              onRefresh: () async {
+                                context
+                                    .read<VisitorPassCubit>()
+                                    .getVisitorPasses();
+                              },
+                              child: ListView.separated(
+                                controller: _scrollController,
+                                physics: AlwaysScrollableScrollPhysics(),
+                                padding: const EdgeInsets.only(bottom: 10),
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount: state.visitorPasses?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  VisitorPasses? visitorPass =
+                                      state.visitorPasses?[index];
+                                  return VisitorPassesCardWidget(
+                                    unit: visitorPass
+                                            ?.ownerUnit?.unit?.unitNumber
+                                            ?.toString() ??
+                                        "--",
+                                    name: visitorPass?.visitor ?? "--",
+                                    fromDate:
+                                        '${DateTimeUtil.getFormattedDate(visitorPass?.startDate)} - ${DateTimeUtil.getFormattedDate(visitorPass?.endDate)}',
+                                    phone: visitorPass?.mobile ?? "--",
+                                    email: visitorPass?.email ?? "--",
+                                    profileImageUrl: '',
+                                    reference: visitorPass?.reference ?? "--",
+                                    company:
+                                        visitorPass?.visitorCompany ?? "--",
+                                    isActiveCheckins:
+                                        visitorPass?.activeCheckInsCount == 1
+                                            ? true
+                                            : false,
+                                    checkInOnPressed: () {
+                                      Navigator.pushNamed(
+                                              context, AppRoutes.guestCheckIn)
+                                          .then(
+                                        (value) {
+                                          if (value == true) {
+                                            context
+                                                .read<VisitorPassCubit>()
+                                                .getVisitorPasses();
+                                          }
+                                        },
+                                      );
+                                    },
+                                    visitorPassCheckInOnPressed: () {
+                                      context
+                                          .read<CheckInsCubit>()
+                                          .onChangeSelectedVisitorType(
+                                              AppUtils.getServiceableType(
+                                                  Strings.keyVisitorPass));
+                                      context
+                                          .read<CheckInsCubit>()
+                                          .onChangeSelectedServiceableId(
+                                              visitorPass?.id);
+                                      context
+                                          .read<CheckInsCubit>()
+                                          .getCheckIns();
+                                      Navigator.pushNamed(context,
+                                          AppRoutes.serviceableCheckIns);
+                                    },
+                                  );
                                 },
-                                child: ListView.separated(
-                                  controller: _scrollController,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: state.visitorPasses?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    VisitorPasses? visitorPass =
-                                        state.visitorPasses?[index];
-                                    return VisitorPassesCardWidget(
-                                      unit: visitorPass
-                                              ?.ownerUnit?.unit?.unitNumber
-                                              ?.toString() ??
-                                          "--",
-                                      name: visitorPass?.visitor ?? "--",
-                                      fromDate:
-                                          '${DateTimeUtil.getFormattedDate(visitorPass?.startDate)} - ${DateTimeUtil.getFormattedDate(visitorPass?.endDate)}',
-                                      phone: visitorPass?.mobile ?? "--",
-                                      email: visitorPass?.email ?? "--",
-                                      profileImageUrl: '',
-                                      reference: visitorPass?.reference ?? "--",
-                                      company:
-                                          visitorPass?.visitorCompany ?? "--",
-                                      isActiveCheckins:
-                                          visitorPass?.activeCheckInsCount == 1
-                                              ? true
-                                              : false,
-                                      checkInOnPressed: () {
-                                        Navigator.pushNamed(
-                                                context, AppRoutes.guestCheckIn)
-                                            .then(
-                                          (value) {
-                                            if (value == true) {
-                                              context
-                                                  .read<VisitorPassCubit>()
-                                                  .getVisitorPasses();
-                                            }
-                                          },
-                                        );
-                                      },
-                                      visitorPassCheckInOnPressed: () {
-                                        context
-                                            .read<CheckInsCubit>()
-                                            .onChangeSelectedVisitorType(
-                                                AppUtils.getServiceableType(
-                                                    Strings.keyVisitorPass));
-                                        context
-                                            .read<CheckInsCubit>()
-                                            .onChangeSelectedServiceableId(
-                                                visitorPass?.id);
-                                        context
-                                            .read<CheckInsCubit>()
-                                            .getCheckIns();
-                                        Navigator.pushNamed(context,
-                                            AppRoutes.serviceableCheckIns);
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const Gap(10);
-                                  },
-                                ),
-                              )
-                            : EmptyWidget(
-                                text: AppUtils.languageTranslate(
-                                    'noDataAvailable')),
-                  ),
-                  if (state.loadMore) const LoaderWidget(),
-                ],
-              ),
-            );
-          },
-        ),
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return const Gap(10);
+                                },
+                              ),
+                            )
+                          : EmptyWidget(
+                              text: AppUtils.languageTranslate(
+                                  'noDataAvailable')),
+                ),
+                if (state.loadMore) const LoaderWidget(),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

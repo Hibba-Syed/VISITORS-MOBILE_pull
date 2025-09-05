@@ -288,7 +288,12 @@
     "detailsIdNumber": "ID Number",
     "unitService": "Unit Service",
     "mobile_check_in": "Mobile Check-In",
-    "web_check_in": "Web Check-In"
+    "web_check_in": "Web Check-In",
+    "no_service_details_available": "No service details available",
+    "security_deposit_details": "Security Deposit Details",
+    "deposit_amount": "Deposit Amount"
+
+
 }
 
 

@@ -26,7 +26,7 @@ import '../../../../model/check_ins/check_in_log_model.dart';
 import '../../../../model/check_ins/check_in_model.dart';
 
 class CheckInDetailsScreen extends StatelessWidget {
-   CheckInDetailsScreen({super.key});
+  CheckInDetailsScreen({super.key});
 
   final TextEditingController visitorsNoController = TextEditingController();
 
@@ -34,156 +34,167 @@ class CheckInDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     CheckInModel? checkIns =
         ModalRoute.of(context)?.settings.arguments as CheckInModel?;
-    return SafeArea(
-      child: Scaffold(
-        appBar:  AppBarWidget(
-          title: AppUtils.languageTranslate('checkInDetails'),
-          titleColor: AppColors.black,
-          iconColor: AppColors.black,
-        ),
-        body: BlocBuilder<CheckInsCubit, CheckInsState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalPadding),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap(20),
-                    Align(
-                      alignment: Alignment.center,
-                      child: StackCountContainerWidget(
-                        count: checkIns?.visitorCount ?? "",
-                        imageUrl: checkIns?.visitor?.imageUrl ?? "",
-                        imageBackgroundColor: AppColors.darkGrey.withAlpha(25),
-                      ),
+    return Scaffold(
+      appBar: AppBarWidget(
+        title: AppUtils.languageTranslate('checkInDetails'),
+        titleColor: AppColors.black,
+        iconColor: AppColors.black,
+      ),
+      body: BlocBuilder<CheckInsCubit, CheckInsState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalPadding),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: StackCountContainerWidget(
+                      count: checkIns?.visitorCount ?? "",
+                      imageUrl: checkIns?.visitor?.imageUrl ?? "",
+                      imageBackgroundColor: AppColors.darkGrey.withAlpha(25),
                     ),
-                    const Gap(5),
-                     HeadingWidget(
-                      heading: '${AppUtils.getServiceableType(
-                          checkIns?.serviceableType)
-                          .label} ${AppUtils.languageTranslate('details')}',
+                  ),
+                  const Gap(5),
+                  HeadingWidget(
+                    heading:
+                        '${AppUtils.getServiceableType(checkIns?.serviceableType).label} ${AppUtils.languageTranslate('details')}',
+                  ),
+                  (checkIns?.serviceableType == "job" ||
+                          checkIns?.serviceableType == "application")
+                      ? Text(
+                          checkIns?.purpose ?? "",
+                          style: AppTextStyles.style16Black500,
+                        )
+                      : SizedBox.shrink(),
+                  const Gap(10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    (checkIns?.serviceableType == "job" || checkIns?.serviceableType == "application" ) ?
-                    Text(checkIns?.purpose ?? "",style: AppTextStyles.style16Black500,) : SizedBox.shrink(),
-                    const Gap(10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('name'),
-                            value: checkIns?.name ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('phone'),
-                            value: checkIns?.phone ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('email'),
-                            value: checkIns?.email ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: AppUtils.languageTranslate('unit'),
-                            value: checkIns?.unit?.unitNumber ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('currentVisitorsCount'),
-                            value: checkIns?.visitorCount ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('visitPurpose'),
-                            value: checkIns?.purpose ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('entryCardNumber'),
-                            value: checkIns?.entryCardNumber ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('nationality'),
-                            value: checkIns?.visitor?.nationality ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('checkInTime'),
-                            value: DateTimeUtil.getFormattedDateTime(
-                                checkIns?.checkinTime),
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title:  AppUtils.languageTranslate('checkInGate'),
-                            value: checkIns?.checkinGate ?? "--",
-                          ),
-                          Align(
-                            alignment: context.locale.languageCode == 'en' ?
-                            Alignment.topLeft : Alignment.topRight,
-                            child: ReadMoreWidget(
-                                title:  AppUtils.languageTranslate('description'),
-                                valueText: checkIns?.description ?? "--"),
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('name'),
+                          value: checkIns?.name ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('phone'),
+                          value: checkIns?.phone ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('email'),
+                          value: checkIns?.email ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('unit'),
+                          value: checkIns?.unit?.unitNumber ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate(
+                              'currentVisitorsCount'),
+                          value: checkIns?.visitorCount ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('visitPurpose'),
+                          value: checkIns?.purpose ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title:
+                              AppUtils.languageTranslate('entryCardNumber'),
+                          value: checkIns?.entryCardNumber ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('nationality'),
+                          value: checkIns?.visitor?.nationality ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('checkInTime'),
+                          value: DateTimeUtil.getFormattedDateTime(
+                              checkIns?.checkinTime),
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('checkInGate'),
+                          value: checkIns?.checkinGate ?? "--",
+                        ),
+                        Align(
+                          alignment: context.locale.languageCode == 'en'
+                              ? Alignment.topLeft
+                              : Alignment.topRight,
+                          child: ReadMoreWidget(
+                              title:
+                                  AppUtils.languageTranslate('description'),
+                              valueText: checkIns?.description ?? "--"),
+                        ),
+                      ],
                     ),
-                    const Gap(20),
-                     Text(
-                      AppUtils.languageTranslate('checkInLog'),
-                      style: AppTextStyles.style20primary600,
-                    ),
-                    const Gap(10),
-                    BlocBuilder<CheckInsDetailsCubit, CheckInsDetailsState>(
-                      builder: (context, state) {
-                        if(state.isLoading){
-                          return LoaderWidget();
-                        }
-                        return Container(
-                          padding: EdgeInsets.only(top: 10),
-                          decoration: BoxDecoration(
+                  ),
+                  const Gap(20),
+                  Text(
+                    AppUtils.languageTranslate('checkInLog'),
+                    style: AppTextStyles.style20primary600,
+                  ),
+                  const Gap(10),
+                  BlocBuilder<CheckInsDetailsCubit, CheckInsDetailsState>(
+                    builder: (context, state) {
+                      if (state.isLoading) {
+                        return LoaderWidget();
+                      }
+                      return Container(
+                        padding: EdgeInsets.only(top: 10),
+                        decoration: BoxDecoration(
                             color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: ListView.builder(
-                            //physics: AlwaysScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: state.checkInLogs?.length ?? 0,
-                            itemBuilder: (BuildContext context, int index) {
-                              CheckInLogs? checkInLogRecord = state.checkInLogs?[index];
-                              bool isLast = (state.checkInLogs?.length ?? 0) - 1 == index;
-                              return ActivityLogWidget(
-                                isLast: isLast ?  true : false,
-                                status: checkInLogRecord?.status ?? "--",
-                                byValue: '',
-                                description: checkInLogRecord?.description ?? "--",
-                                dateTime: DateTimeUtil.getFormattedDateTime(checkInLogRecord?.createdAt),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: ListView.builder(
+                          //physics: AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: state.checkInLogs?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) {
+                            CheckInLogs? checkInLogRecord =
+                                state.checkInLogs?[index];
+                            bool isLast =
+                                (state.checkInLogs?.length ?? 0) - 1 == index;
+                            return ActivityLogWidget(
+                              isLast: isLast ? true : false,
+                              status: checkInLogRecord?.status ?? "--",
+                              byValue: '',
+                              description:
+                                  checkInLogRecord?.description ?? "--",
+                              dateTime: DateTimeUtil.getFormattedDateTime(
+                                  checkInLogRecord?.createdAt),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            );
-          },
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.horizontalPadding),
-          child: CustomButton(
-              image: AppImages.logoutCard,
-              buttonColor: AppColors.red,
-              text: AppUtils.languageTranslate('checkout'),
-              onPressed: () {
-                context.read<CheckInsDetailsCubit>().getCheckInDetailsLog(id: checkIns?.id);
-                _showCheckoutDialog(context,checkIns);
-              }),
-        ),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding,
+            vertical: AppConstants.horizontalPadding),
+        child: CustomButton(
+            image: AppImages.logoutCard,
+            buttonColor: AppColors.red,
+            text: AppUtils.languageTranslate('checkout'),
+            onPressed: () {
+              context
+                  .read<CheckInsDetailsCubit>()
+                  .getCheckInDetailsLog(id: checkIns?.id);
+              _showCheckoutDialog(context, checkIns);
+            }),
       ),
     );
   }
@@ -196,11 +207,12 @@ class CheckInDetailsScreen extends StatelessWidget {
         return CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? "--"}',
+          title:
+              '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? "--"}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
-              visitorsCount:  //int.tryParse(checkIns?.visitorCount ?? ''),
-              checkIns?.visitorCount ?? "",
+              visitorsCount: //int.tryParse(checkIns?.visitorCount ?? ''),
+                  checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -212,27 +224,32 @@ class CheckInDetailsScreen extends StatelessWidget {
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
                       secondButtonText: AppUtils.languageTranslate('yes'),
-                      title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
-                      onSecondButtonPressed: ()async{
-                        final result = await context.read<CheckInsDetailsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
+                      title:
+                          AppUtils.languageTranslate('checkOutForAllCheckIns'),
+                      onSecondButtonPressed: () async {
+                        final result = await context
+                            .read<CheckInsDetailsCubit>()
+                            .checkOutVisitors(context, id: checkIns?.id, data: {
                           "checkout_count": visitorsNoController.text.isNotEmpty
                               ? {"checkout_count": visitorsNoController.text}
                               : {}
                         });
                         visitorsNoController.clear();
                         return result;
-
                       },
                     );
                   },
                 );
               },
-              checkOutOnPress: ()async{
-                final enteredCount = int.tryParse(visitorsNoController.text.trim());
-                final availableCount = int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
-                if ( (enteredCount??0) > availableCount) {
+              checkOutOnPress: () async {
+                final enteredCount =
+                    int.tryParse(visitorsNoController.text.trim());
+                final availableCount =
+                    int.tryParse(checkIns?.visitorCount ?? '') ?? 0;
+                if ((enteredCount ?? 0) > availableCount) {
                   Fluttertoast.showToast(
-                      msg: AppUtils.languageTranslate("availableCountIs $availableCount"));
+                      msg: AppUtils.languageTranslate(
+                          "availableCountIs $availableCount"));
                   return;
                 }
                 showDialog(
@@ -240,17 +257,23 @@ class CheckInDetailsScreen extends StatelessWidget {
                   context: context,
                   builder: (context) {
                     return CustomAlertDialogBox(
-                        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+                        insetPadding:
+                            const EdgeInsets.symmetric(horizontal: 20),
                         isFirstButtonDisable: true,
                         secondButtonColor: AppColors.red,
                         secondButtonText: AppUtils.languageTranslate("yes"),
-                        secondButtonTextFontSize: AppUtils.isTablet(context) ? 15 : 13,
-                        title: AppUtils.languageTranslate('checkoutForVisitors'),
-                        onSecondButtonPressed: ()async{
-                          final result = await
-                          context.read<CheckInsDetailsCubit>().checkOutVisitors(context, id: checkIns?.id, data: {
-                            "checkout_count": visitorsNoController.text
-                          });
+                        secondButtonTextFontSize:
+                            AppUtils.isTablet(context) ? 15 : 13,
+                        title:
+                            AppUtils.languageTranslate('checkoutForVisitors'),
+                        onSecondButtonPressed: () async {
+                          final result = await context
+                              .read<CheckInsDetailsCubit>()
+                              .checkOutVisitors(context,
+                                  id: checkIns?.id,
+                                  data: {
+                                "checkout_count": visitorsNoController.text
+                              });
                           visitorsNoController.clear();
                           return result;
                         });
