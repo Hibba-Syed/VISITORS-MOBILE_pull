@@ -1,13 +1,9 @@
-
 import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/check_ins/check_in_log_response_model.dart';
 import '../../model/check_ins/guest_checkin_response_model.dart';
-import '../../model/check_out/check_out_all_model.dart';
-import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
-import '../../model/visitor_info/delete_visitor_response_model.dart';
 import '../../model/visitor_info/visitor_phone_info_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_in_repo.dart';
@@ -36,11 +32,11 @@ class CheckInRepoImpl implements CheckInRepo {
     } catch (e) {
       rethrow;
     }
-
   }
 
   @override
-  Future<CheckInLogResponseModel?> getCheckInDetailsLogs({required int? id}) async {
+  Future<CheckInLogResponseModel?> getCheckInDetailsLogs(
+      {required int? id}) async {
     try {
       String url = '${ApiUrl.checkInLogs}/$id';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
@@ -50,20 +46,17 @@ class CheckInRepoImpl implements CheckInRepo {
     }
   }
 
-
-
   @override
-  Future<VisitorPhoneInfoResponseModel?> getNumberInfo({required String? phoneNumber}) async {
+  Future<VisitorPhoneInfoResponseModel?> getNumberInfo(
+      {required String? phoneNumber}) async {
     try {
       String url = '${ApiUrl.visitorQuickInfo}/$phoneNumber';
-      dynamic response =await _apiService.getAuthGetApiResponse(url);
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
       return VisitorPhoneInfoResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
   }
-
-
 
   @override
   Future<GuestCheckInResponseModel?> guestCheckIn({
@@ -71,9 +64,13 @@ class CheckInRepoImpl implements CheckInRepo {
   }) async {
     try {
       String url = ApiUrl.guestCheckIn;
+      Map<String, dynamic> formData = {
+        ...data,
+        "is_mobile": true,
+      };
       print('guestCheckIn$url');
       dynamic response =
-      await _apiService.getAuthPostApiResponse(url, data);
+          await _apiService.getAuthPostApiResponse(url, formData);
       return GuestCheckInResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

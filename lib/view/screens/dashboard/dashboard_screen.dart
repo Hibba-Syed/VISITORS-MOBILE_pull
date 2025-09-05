@@ -417,6 +417,7 @@ class DashboardScreen extends StatelessWidget {
                                     .label,
                                 createdDate: DateTimeUtil.getFormattedDateTime(
                                     checkIns?.visitor?.createdAt),
+                                isMobile: checkIns?.isMobile,
                                 checkOutOnPressed: () {
                                   context
                                       .read<CheckInsDetailsCubit>()
@@ -870,6 +871,7 @@ class DashboardScreen extends StatelessWidget {
                                 .label,
                             createdDate: DateTimeUtil.getFormattedDateTime(
                                 checkIns?.visitor?.createdAt),
+                            isMobile: checkIns?.isMobile,
                             phone: checkIns?.phone ?? "",
                             checkOutOnPressed: () {
                               context

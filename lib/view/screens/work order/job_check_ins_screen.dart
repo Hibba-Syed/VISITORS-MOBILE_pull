@@ -87,45 +87,46 @@ class JobCheckInsScreen extends StatelessWidget {
                         primary: false,
                         itemCount: state.checkInModel?.length ?? 0,
                         itemBuilder: (context, index) {
-                          CheckInModel? checkInModel =
+                          CheckInModel? checkIn =
                               state.checkInModel?[index];
                           return CheckInCardWidget(
-                            phone: checkInModel?.phone?? "--",
+                            phone: checkIn?.phone?? "--",
                             isServiceable: true,
-                            count: checkInModel?.visitorCount ?? "",
-                            reference: checkInModel?.purpose ?? "--",
-                            typeImage: (checkInModel?.type?.toLowerCase() ==
+                            count: checkIn?.visitorCount ?? "",
+                            reference: checkIn?.purpose ?? "--",
+                            typeImage: (checkIn?.type?.toLowerCase() ==
                                         'community visit' ||
-                                    checkInModel?.type?.toLowerCase() ==
+                                    checkIn?.type?.toLowerCase() ==
                                         'community service')
                                 ? AppImages.community
                                 : "",
-                            typeText: (checkInModel?.type?.toLowerCase() ==
+                            typeText: (checkIn?.type?.toLowerCase() ==
                                         'unit visit' ||
-                                    checkInModel?.type?.toLowerCase() ==
+                                    checkIn?.type?.toLowerCase() ==
                                         'unit service')
-                                ? checkInModel?.unit?.unitNumber
-                                : checkInModel?.type ?? "--",
-                            name: checkInModel?.name ?? "--",
+                                ? checkIn?.unit?.unitNumber
+                                : checkIn?.type ?? "--",
+                            name: checkIn?.name ?? "--",
                             profileImageUrl:
-                                checkInModel?.visitor?.imageUrl ?? "",
+                                checkIn?.visitor?.imageUrl ?? "",
                             type:
-                                AppUtils.getServiceableType(checkInModel?.type)
+                                AppUtils.getServiceableType(checkIn?.type)
                                     .label,
                             createdDate: DateTimeUtil.getFormattedDateTime(
-                                checkInModel?.createdAt.toString()),
-                            purpose: checkInModel?.description ?? "--",
+                                checkIn?.createdAt.toString()),
+                            purpose: checkIn?.description ?? "--",
+                            isMobile: checkIn?.isMobile,
                             checkOutOnPressed: () {
                               context
                                   .read<CheckInsDetailsCubit>()
                                   .getCheckInDetailsLog(
-                                  id: checkInModel?.id);
-                              _showCheckoutDialog(context,checkInModel);
+                                  id: checkIn?.id);
+                              _showCheckoutDialog(context,checkIn);
                             },
                             detailsOnPressed: () {
                               context
                                   .read<CheckInsDetailsCubit>()
-                                  .getCheckInDetailsLog(id: checkInModel?.id);
+                                  .getCheckInDetailsLog(id: checkIn?.id);
                               Navigator.pushNamed(
                                   context, AppRoutes.checkInDetails,
                                   arguments: state.checkInModel?[index]);

@@ -1,5 +1,4 @@
 
-import 'package:http/http.dart' as http;
 import 'package:visitors/model/service/service_details_response_model.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 import 'package:visitors/repo/services/services_repo.dart';
@@ -7,7 +6,6 @@ import 'package:visitors/repo/services/services_repo.dart';
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
 import '../../model/service/add_service_log_response_model.dart';
-import '../../model/service/move_out_service_clear_payment_response_model.dart';
 import '../../model/service/visitors_service_complete_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import '../../helper/encrption/encryption_helper.dart';

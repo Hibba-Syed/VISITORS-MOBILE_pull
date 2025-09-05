@@ -49,7 +49,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
           children: [
             OverlapContainerWidget(
               text: (isAwarded == 1) ? 'Work Order' : 'RFP',
-              image: (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard ,
+              svgImagePath: (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard ,
               backgroundColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
               // imagedColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
               // textColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,

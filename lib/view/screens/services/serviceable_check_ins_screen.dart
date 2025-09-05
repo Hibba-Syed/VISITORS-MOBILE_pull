@@ -122,6 +122,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                             createdDate: DateTimeUtil.getFormattedDateTime(checkIn?.createdAt.toString()),
                             purpose: checkIn?.serviceableType == "visitor_passes" ? checkIn?.purpose :
                             checkIn?.description ?? "--",
+                            isMobile: checkIn?.isMobile,
                             checkOutOnPressed: () {
                               context
                                   .read<CheckInsDetailsCubit>()

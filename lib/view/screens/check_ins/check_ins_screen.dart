@@ -167,46 +167,47 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                   primary: false,
                                   itemCount: state.checkInModel?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    CheckInModel? checkIns =
+                                    CheckInModel? checkIn =
                                         state.checkInModel?[index];
                                     return CheckInCardWidget(
-                                      phone:  checkIns?.phone ?? "--",
-                                      count: checkIns?.visitorCount ?? "--",
-                                      typeImage: (checkIns?.type
+                                      phone:  checkIn?.phone ?? "--",
+                                      count: checkIn?.visitorCount ?? "--",
+                                      typeImage: (checkIn?.type
                                                       ?.toLowerCase() ==
                                                   'community visit' ||
-                                              checkIns?.type?.toLowerCase() ==
+                                              checkIn?.type?.toLowerCase() ==
                                                   'community service')
                                           ? AppImages.community
                                           : "",
-                                      typeText: (checkIns?.type
+                                      typeText: (checkIn?.type
                                                       ?.toLowerCase() ==
                                                   'unit visit' ||
-                                              checkIns?.type?.toLowerCase() ==
+                                              checkIn?.type?.toLowerCase() ==
                                                   'unit service')
-                                          ? checkIns?.unit?.unitNumber
-                                          : checkIns?.type ?? "--",
-                                      name: checkIns?.name ?? "--",
+                                          ? checkIn?.unit?.unitNumber
+                                          : checkIn?.type ?? "--",
+                                      name: checkIn?.name ?? "--",
                                       profileImageUrl:
-                                          checkIns?.visitor?.imageUrl ?? "",
+                                          checkIn?.visitor?.imageUrl ?? "",
                                       type:
                                       AppUtils.getServiceableType(
-                                              checkIns?.serviceableType)
+                                              checkIn?.serviceableType)
                                           .label,
                                       createdDate: DateTimeUtil.getFormattedDateTime(
-                                          checkIns?.visitor?.createdAt),
+                                          checkIn?.visitor?.createdAt),
+                                      isMobile: checkIn?.isMobile,
                                       checkOutOnPressed: () {
                                         context
                                             .read<CheckInsDetailsCubit>()
                                             .getCheckInDetailsLog(
-                                                id: checkIns?.id);
-                                        _showCheckoutDialog(context, checkIns);
+                                                id: checkIn?.id);
+                                        _showCheckoutDialog(context, checkIn);
                                       },
                                       detailsOnPressed: () {
                                         context
                                             .read<CheckInsDetailsCubit>()
                                             .getCheckInDetailsLog(
-                                                id: checkIns?.id);
+                                                id: checkIn?.id);
                                         Navigator.pushNamed(context,
                                             AppRoutes.checkInDetails,
                                             arguments:

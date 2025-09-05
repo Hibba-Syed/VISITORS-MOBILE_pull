@@ -26,7 +26,7 @@ import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../service/connectivity_service.dart';
 import '../../utils/app_utils.dart';
 import '../widgets/custom_switch_widget.dart';
-import 'check_ins/check_in_screen.dart';
+import 'check_ins/check_ins_screen.dart';
 import 'check_outs/check_outs_screen.dart';
 import 'components/drawer_item_model.dart';
 import 'dashboard/dashboard_screen.dart';

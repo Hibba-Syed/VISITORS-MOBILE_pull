@@ -286,7 +286,9 @@
     "addLogTo": "Add Log To",
     "clearPaymentFor": "Clear payment for",
     "detailsIdNumber": "ID Number",
-    "unitService": "Unit Service"
+    "unitService": "Unit Service",
+    "mobile_check_in": "Mobile Check-In",
+    "web_check_in": "Web Check-In"
 }
 
 

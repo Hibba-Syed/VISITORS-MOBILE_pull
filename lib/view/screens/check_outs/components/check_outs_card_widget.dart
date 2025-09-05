@@ -48,7 +48,7 @@ class CheckOutsCardWidget extends StatelessWidget {
             typeText?.isNotEmpty ?? true ?
             OverlapContainerWidget(
               text: typeText,
-              image: typeImage,
+              svgImagePath: typeImage,
               backgroundColor: AppColors.primary,
             ) : SizedBox.shrink(),
             OverlapContainerWidget(

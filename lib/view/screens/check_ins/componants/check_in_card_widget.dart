@@ -24,6 +24,7 @@ class CheckInCardWidget extends StatelessWidget {
   final VoidCallback checkOutOnPressed;
   final VoidCallback? detailsOnPressed;
   final bool isServiceable;
+  final bool? isMobile;
   const CheckInCardWidget({
     super.key,
     this.profileImageUrl,
@@ -39,6 +40,7 @@ class CheckInCardWidget extends StatelessWidget {
     this.detailsOnPressed,
     this.phone,
     this.isServiceable = false,
+    required this.isMobile,
   });
 
   @override
@@ -51,17 +53,43 @@ class CheckInCardWidget extends StatelessWidget {
           children: [
             OverlapContainerWidget(
               text: typeText,
-              image: typeImage,
+              svgImagePath: typeImage,
             ),
-            isServiceable
-                ? OverlapContainerWidget(
-                  backgroundColor: AppColors.yellow,
-                    text: reference,
-                  )
-                : OverlapContainerWidget(
-                   backgroundColor: AppUtils.getCheckOutTypeColor(type),
-                   //typeBackgroundColor,
-                    text: type,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                isServiceable
+                    ? OverlapContainerWidget(
+                        backgroundColor: AppColors.yellow,
+                        text: reference,
+                      )
+                    : OverlapContainerWidget(
+                        backgroundColor: AppUtils.getCheckOutTypeColor(type),
+                        //typeBackgroundColor,
+                        text: type,
+                      ),
+                Tooltip(
+                  message:
+                      isMobile == true ? AppUtils.languageTranslate("mobile_check_in") : AppUtils.languageTranslate("web_check_in"),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(6),
+                          topLeft: Radius.circular(6),
+                        ),
+                        color: AppColors.darkGrey),
+                    child: Icon(
+                      isMobile == true
+                          ? Icons.phone_iphone
+                          : Icons.desktop_mac_outlined,
+                      color: AppColors.lightGrey,
+                      size: 19,
+                    ),
+                  ),
+                )
+              ],
             ),
           ],
         ),
@@ -100,15 +128,12 @@ class CheckInCardWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            name ?? "",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppUtils.isTablet(context) ?
-                            AppTextStyles.style15Black600
-                                :
-                            AppTextStyles.style14Black600
-                          ),
+                          Text(name ?? "",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppUtils.isTablet(context)
+                                  ? AppTextStyles.style15Black600
+                                  : AppTextStyles.style14Black600),
                           const Gap(6),
                           Row(
                             children: [
@@ -133,26 +158,26 @@ class CheckInCardWidget extends StatelessWidget {
                   ],
                 ),
                 const Gap(5),
-                isServiceable ?
-                Row(
-                  children: [
-                     Text(
-                      '${AppUtils.languageTranslate("purpose")}:',
-                      style: AppTextStyles.style14Black600,
-                    ),
-                    Text(
-                      purpose ?? "",
-                      style: AppTextStyles.style13black400,
-                    ),
-                  ],
-                ): SizedBox.shrink(),
+                isServiceable
+                    ? Row(
+                        children: [
+                          Text(
+                            '${AppUtils.languageTranslate("purpose")}:',
+                            style: AppTextStyles.style14Black600,
+                          ),
+                          Text(
+                            purpose ?? "",
+                            style: AppTextStyles.style13black400,
+                          ),
+                        ],
+                      )
+                    : SizedBox.shrink(),
                 const Gap(5),
                 CustomButton(
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
                     text: AppUtils.languageTranslate("checkout"),
-                    onPressed: checkOutOnPressed
-                ),
+                    onPressed: checkOutOnPressed),
               ],
             ),
           ),
