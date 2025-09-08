@@ -7,17 +7,17 @@ import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../utils/app_utils.dart';
 
-class CustomDatePicker extends StatefulWidget {
+class DatePickerWidget extends StatefulWidget {
   final String? label;
   final String? hint;
   final DateTime? initialDate;
   final void Function(DateTime?) onDatePicked;
   final DateTime? firstDate;
   final DateTime? lastDate;
-  const CustomDatePicker({
+  const DatePickerWidget({
     super.key,
     this.label,
-    this.hint = 'Select date',
+    this.hint,
     this.initialDate,
     required this.onDatePicked,
     this.firstDate,
@@ -25,10 +25,10 @@ class CustomDatePicker extends StatefulWidget {
   });
 
   @override
-  State<CustomDatePicker> createState() => _CustomDatePickerState();
+  State<DatePickerWidget> createState() => _DatePickerWidgetState();
 }
 
-class _CustomDatePickerState extends State<CustomDatePicker> {
+class _DatePickerWidgetState extends State<DatePickerWidget> {
   final TextEditingController _dateController = TextEditingController();
 
   @override
@@ -41,7 +41,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   }
 
   @override
-  void didUpdateWidget(covariant CustomDatePicker oldWidget) {
+  void didUpdateWidget(covariant DatePickerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialDate != oldWidget.initialDate &&
         widget.initialDate != null) {
@@ -75,7 +75,9 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               child: TextFieldWidget(
                 readOnly: true,
                 controller: _dateController,
-                hint: widget.hint,
+                hint: (widget.hint?.isNotEmpty ?? false)
+                    ? widget.hint
+                    : AppUtils.languageTranslate('selectDate'),
                 suffix: const Icon(Icons.date_range),
                 onTap: () async {
                   DateTime? date = await showDatePicker(

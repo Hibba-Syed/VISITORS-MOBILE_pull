@@ -19,7 +19,7 @@ import 'package:visitors/view/screens/guest_check_in/components/get_info_card_wi
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
-import 'package:visitors/view/widgets/picker/custom_date_picker.dart';
+import 'package:visitors/view/widgets/picker/date_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -434,7 +434,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                       const Gap(5),
                       if (_selectedDocumentType?.value == 'Emirates ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('issueDate'),
                           hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedEmiratesIdIssueDate,
@@ -443,7 +443,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Photo ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('issueDate'),
                           hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedPhotoIdIssueDate,
@@ -452,7 +452,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Travel Document')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('issueDate'),
                           hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedTravelDocumentIssueDate,
@@ -462,7 +462,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                       const Gap(5),
                       if (_selectedDocumentType?.value == 'Emirates ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
                           hint:
                               AppUtils.languageTranslate('selectExpiryDate'),
@@ -473,7 +473,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Photo ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
                           hint:
                               AppUtils.languageTranslate('selectExpiryDate'),
@@ -484,7 +484,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Travel Document')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
                           hint:
                               AppUtils.languageTranslate('selectExpiryDate'),
@@ -855,7 +855,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                       const Gap(5),
                       if (_selectedDocumentType?.value == 'Emirates ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('issueDate'),
                           hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedEmiratesIdIssueDate,
@@ -864,7 +864,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Photo ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('issueDate'),
                           hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedPhotoIdIssueDate,
@@ -873,7 +873,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Travel Document')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('issueDate'),
                           hint: AppUtils.languageTranslate('selectIssueDate'),
                           initialDate: _selectedTravelDocumentIssueDate,
@@ -883,7 +883,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                       const Gap(5),
                       if (_selectedDocumentType?.value == 'Emirates ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
                           hint:
                               AppUtils.languageTranslate('selectExpiryDate'),
@@ -894,7 +894,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Photo ID')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
                           hint:
                               AppUtils.languageTranslate('selectExpiryDate'),
@@ -905,7 +905,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       if (_selectedDocumentType?.value == 'Travel Document')
-                        CustomDatePicker(
+                        DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
                           hint:
                               AppUtils.languageTranslate('selectExpiryDate'),

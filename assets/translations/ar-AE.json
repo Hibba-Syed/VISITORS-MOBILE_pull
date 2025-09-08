@@ -294,7 +294,9 @@
     "movingCompanyDetails": "تفاصيل شركة النقل",
     "companyName": "اسم الشركة",
     "companyTradeLicense": "رخصة التجارة للشركة",
-    "contactPersonEmiratesId": "هوية الإمارات لشخص الاتصال"
+    "contactPersonEmiratesId": "هوية الإمارات لشخص الاتصال",
+    "selectDate": "اختر التاريخ"
+
 
 
 

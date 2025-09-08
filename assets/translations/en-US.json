@@ -72,7 +72,6 @@
     "type": "Type",
     "vendors": "Vendor",
     "applyFilters" : "Apply Filters",
-    "Date range": "dateDage",
     "eServicesFilter": "E-Services Filter",
     "workOrderRfpFilter": "Work Order / Rfp Filter",
     "serviceAbleCheckIns": "Serviceable Check-Ins",
@@ -295,7 +294,9 @@
     "movingCompanyDetails": "Moving Company Details",
     "companyName": "Company Name",
     "companyTradeLicense": "Company Trade License",
-    "contactPersonEmiratesId": "Contact Person Emirates ID"
+    "contactPersonEmiratesId": "Contact Person Emirates ID",
+    "selectDate": "Select date"
+
 
 
 

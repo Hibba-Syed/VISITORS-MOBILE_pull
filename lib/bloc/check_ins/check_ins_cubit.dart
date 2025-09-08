@@ -49,7 +49,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     // print('unit::${state.selectedUnit?.toJson()}');
   }
 
-  void onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel? vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 

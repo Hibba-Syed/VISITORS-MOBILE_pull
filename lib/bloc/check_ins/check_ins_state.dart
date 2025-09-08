@@ -20,25 +20,29 @@ class CheckInsState {
   final TypeModel? selectedVisitorType;
   final List<CheckOutVisitor>? checkOutVisitors;
 
-  CheckInsState(
-      {this.isLoading = false,
-      this.loadMore = false,
-      this.isUnitLoading = false,
-      this.isVendorLoading = false,
-      this.isCheckOutVisitor = false,
-      this.page = 1,
-      this.checkInModel,
-      this.units,
-      this.vendors,
-      this.selectedUnit,
-      this.selectedVendor,
-      this.isCheckOutAllLoading = false,
-      this.dateRange,
-      this.selectedRange,
-      this.searchKeyword,
-      this.serviceableId,
-      this.checkOutVisitors,
-      this.selectedVisitorType});
+  const CheckInsState({
+    this.isLoading = false,
+    this.loadMore = false,
+    this.isUnitLoading = false,
+    this.isVendorLoading = false,
+    this.isCheckOutVisitor = false,
+    this.page = 1,
+    this.checkInModel,
+    this.units,
+    this.vendors,
+    this.selectedUnit,
+    this.selectedVendor,
+    this.isCheckOutAllLoading = false,
+    this.dateRange,
+    this.selectedRange,
+    this.searchKeyword,
+    this.serviceableId,
+    this.checkOutVisitors,
+    this.selectedVisitorType,
+  });
+
+  static const _sentinel = Object();
+
   CheckInsState copyWith({
     bool? isLoading,
     bool? isUnitLoading,
@@ -50,13 +54,13 @@ class CheckInsState {
     List<CheckInModel>? checkInModel,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    TypeModel? selectedVisitorType,
-    UnitModel? selectedUnit,
-    VendorModel? selectedVendor,
-    DateTimeRange? dateRange,
-    String? selectedRange,
-    String? searchKeyword,
-    int? serviceableId,
+    Object? selectedVisitorType = _sentinel,
+    Object? selectedUnit = _sentinel,
+    Object? selectedVendor = _sentinel,
+    Object? dateRange = _sentinel,
+    Object? selectedRange = _sentinel,
+    Object? searchKeyword = _sentinel,
+    Object? serviceableId = _sentinel,
     List<CheckOutVisitor>? checkOutVisitors,
   }) {
     return CheckInsState(
@@ -69,15 +73,39 @@ class CheckInsState {
       checkInModel: checkInModel ?? this.checkInModel,
       vendors: vendors ?? this.vendors,
       units: units ?? this.units,
-      selectedVisitorType: selectedVisitorType ?? this.selectedVisitorType,
-      selectedUnit: selectedUnit ?? this.selectedUnit,
-      selectedVendor: selectedVendor ?? this.selectedVendor,
-      dateRange: dateRange ?? this.dateRange,
-      selectedRange: selectedRange ?? this.selectedRange,
-      searchKeyword: searchKeyword ?? this.searchKeyword,
-      serviceableId: serviceableId ?? this.serviceableId,
+
+      // 👇 sentinel handling
+      selectedVisitorType: identical(selectedVisitorType, _sentinel)
+          ? this.selectedVisitorType
+          : selectedVisitorType as TypeModel?,
+
+      selectedUnit: identical(selectedUnit, _sentinel)
+          ? this.selectedUnit
+          : selectedUnit as UnitModel?,
+
+      selectedVendor: identical(selectedVendor, _sentinel)
+          ? this.selectedVendor
+          : selectedVendor as VendorModel?,
+
+      dateRange: identical(dateRange, _sentinel)
+          ? this.dateRange
+          : dateRange as DateTimeRange?,
+
+      selectedRange: identical(selectedRange, _sentinel)
+          ? this.selectedRange
+          : selectedRange as String?,
+
+      searchKeyword: identical(searchKeyword, _sentinel)
+          ? this.searchKeyword
+          : searchKeyword as String?,
+
+      serviceableId: identical(serviceableId, _sentinel)
+          ? this.serviceableId
+          : serviceableId as int?,
+
       isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
       checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
     );
   }
 }
+

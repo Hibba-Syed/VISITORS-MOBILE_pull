@@ -13,7 +13,6 @@ import '../../../../model/unit/unit_model.dart';
 import '../../../../model/vendor/vendor_model.dart';
 import '../../../../resource/constants/app_constants.dart';
 import '../../../../utils/app_utils.dart';
-import '../../../../utils/date_time.dart';
 
 class CheckOutsFilterBottomSheet extends StatefulWidget {
   const CheckOutsFilterBottomSheet({super.key});
@@ -25,7 +24,7 @@ class CheckOutsFilterBottomSheet extends StatefulWidget {
 
 class _CheckOutsFilterBottomSheetState
     extends State<CheckOutsFilterBottomSheet> {
-  final TextEditingController _dateRangeController = TextEditingController();
+  DateTimeRange? _selectedDateRange;
   final now = DateTime.now();
   late DateTime firstDayOfMonth;
   late DateTime lastDayOfMonth;
@@ -36,13 +35,9 @@ class _CheckOutsFilterBottomSheetState
     // final selectedDate = DateTime(now.year, now.month - 1, 1);
     // firstDayOfMonth = DateTime(selectedDate.year, selectedDate.month, 1);
     // lastDayOfMonth = DateTime(selectedDate.year, selectedDate.month  + 1, 0);
-    final dateRange = context.read<CheckOutCubit>().state.dateRang;
-    if (dateRange != null) {
-      _dateRangeController.text = DateTimeUtil.getFormatDateRange(dateRange);
-    }
+    _selectedDateRange = context.read<CheckOutCubit>().state.dateRang;
   }
 
-  DateTimeRange? dateRangeString;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,11 +64,11 @@ class _CheckOutsFilterBottomSheetState
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
-                DateRangePickerField(
-                  controller: _dateRangeController,
+                DateRangePickerWidget(
+                  initialDateRange: _selectedDateRange,
                   firstDate: DateTime(2020, 1, 1),
                   lastDate: DateTime(2030, 12, 31),
-                  onDateRangeSelected: (range) {
+                  onDateRangePicked: (range) {
                     context.read<CheckOutCubit>().onChangeDateRange(range);
                   },
                 ),
@@ -87,16 +82,14 @@ class _CheckOutsFilterBottomSheetState
                   items: AppConstants.rangList,
                   onChanged: (value) {
                     if (value == null) {
-                      _dateRangeController.clear();
+                      _selectedDateRange = null;
                       context.read<CheckOutCubit>().onChangeDateRange(null);
                     } else {
-                      dateRangeString =
+                      _selectedDateRange =
                           AppUtils.getDateRangeStringFromLabel(value);
-                      _dateRangeController.text =
-                          DateTimeUtil.getFormatDateRange(dateRangeString);
                       context
                           .read<CheckOutCubit>()
-                          .onChangeDateRange(dateRangeString);
+                          .onChangeDateRange(_selectedDateRange);
                     }
                   },
                 ),

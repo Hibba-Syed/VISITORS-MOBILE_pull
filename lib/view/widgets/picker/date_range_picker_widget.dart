@@ -1,50 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../text field/text_field_widget.dart';
 
-class DateRangePickerField extends StatefulWidget {
-  final DateTime firstDate;
-  final DateTime lastDate;
-  final TextEditingController controller;
-  final Function(DateTimeRange)? onDateRangeSelected;
+class DateRangePickerWidget extends StatefulWidget {
+  final DateTimeRange? initialDateRange;
+  final void Function(DateTimeRange?) onDateRangePicked;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
 
-  const DateRangePickerField({
+  const DateRangePickerWidget({
     super.key,
-    required this.firstDate,
-    required this.lastDate,
-    this.onDateRangeSelected,
-    required this.controller,
+    this.initialDateRange,
+    required this.onDateRangePicked,
+    this.firstDate,
+    this.lastDate,
   });
 
   @override
-  State<DateRangePickerField> createState() => _DateRangePickerFieldState();
+  State<DateRangePickerWidget> createState() => _DateRangePickerWidgetState();
 }
 
-class _DateRangePickerFieldState extends State<DateRangePickerField> {
-  DateTimeRange? _selectedRange;
+class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
+  final TextEditingController _dateRangeController = TextEditingController();
 
-  void _pickDateRange() async {
-    final picked = await showDateRangePicker(
-      context: context,
-      firstDate: widget.firstDate,
-      lastDate: widget.lastDate,
-      initialDateRange: _selectedRange,
-      keyboardType: (MediaQuery.of(context).size.width<600)?TextInputType.datetime:TextInputType.visiblePassword,
-    );
-
-    if (picked != null) {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _selectedRange = picked;
-        widget.controller.text =
-        "${DateFormat('dd MMM yyyy').format(picked.start)} - ${DateFormat('dd MMM yyyy').format(picked.end)}";
+        if (widget.initialDateRange != null) {
+          _dateRangeController.text =
+              '${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.end)}';
+        }
       });
+    });
+  }
 
-      if (widget.onDateRangeSelected != null) {
-        widget.onDateRangeSelected!(picked);
-      }
+  @override
+  void didUpdateWidget(covariant DateRangePickerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDateRange != oldWidget.initialDateRange &&
+        widget.initialDateRange != null) {
+      _dateRangeController.text =
+      '${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.end)}';
+
+    }
+
+    // Clear if the initialDate becomes null (e.g. reset)
+    if (widget.initialDateRange == null && oldWidget.initialDateRange != null) {
+      _dateRangeController.clear();
     }
   }
 
@@ -53,112 +60,58 @@ class _DateRangePickerFieldState extends State<DateRangePickerField> {
     return TextFieldWidget(
       readOnly: true,
       hint: AppUtils.languageTranslate("dateRange"),
-      controller: widget.controller,
+      controller: _dateRangeController,
       keyboardType: TextInputType.datetime,
       textStyle: TextStyle(
         fontSize: 15,
         color: AppColors.black,
         fontWeight: FontWeight.w500,
       ),
-      // hintStyle: const TextStyle(
-      //   fontSize: 14,
-      //   color: Colors.grey,
-      // ),,
-      onTap: _pickDateRange,
-      suffix: Icon(Icons.calendar_month_sharp,size: 20,color: AppColors.darkGrey,),
+      onTap: () async {
+        DateTimeRange? dateRange = await showDateRangePicker(
+          context: context,
+          initialDateRange: widget.initialDateRange,
+          firstDate: widget.firstDate ?? DateTime(DateTime.now().year - 100),
+          lastDate: widget.lastDate ?? DateTime(DateTime.now().year + 100),
+        );
+        widget.onDateRangePicked(dateRange);
+        if (dateRange != null) {
+          setState(() {
+            _dateRangeController.text =
+                '${DateFormat('dd-MM-yyyy').format(dateRange.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange.end)}';
+          });
+        }
+      },
+      suffix: Container(
+        width: 70,
+        padding: const EdgeInsets.only(right: 15),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (_dateRangeController.text.isNotEmpty)
+              InkWell(
+                onTap: () {
+                  widget.onDateRangePicked(null);
+                  setState(() {
+                    _dateRangeController.clear();
+                  });
+                },
+                child: Icon(
+                  Icons.clear,
+                  color: AppColors.darkGrey,
+                  size: 17,
+                ),
+              ),
+            Gap(16),
+            Icon(
+              Icons.calendar_month_sharp,
+              size: 20,
+              color: AppColors.darkGrey,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-
-
-// class CustomDateRangePickerWidget extends StatefulWidget {
-//   final String? hintText;
-//   final DateTimeRange? selectedDateRange;
-//   final DateTime? firstDate;
-//   final DateTime? lastDate;
-//   final Function(DateTimeRange? value)? onChangeDateRange;
-//   const CustomDateRangePickerWidget(
-//       {super.key,
-//       this.hintText,
-//       this.selectedDateRange,
-//       this.onChangeDateRange,
-//       this.firstDate,
-//       this.lastDate});
-//
-//   @override
-//   State<CustomDateRangePickerWidget> createState() =>
-//       _CustomDateRangePickerWidgetState();
-// }
-//
-// class _CustomDateRangePickerWidgetState
-//     extends State<CustomDateRangePickerWidget> {
-//   DateTimeRange? _selectedDateRange;
-//   @override
-//   void initState() {
-//     setState(() {
-//       _selectedDateRange = widget.selectedDateRange;
-//     });
-//     super.initState();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-//       onTap: () async {
-//         await showDateRangePicker(
-//                 barrierColor: AppColors.primary,
-//                 context: context,
-//                 currentDate: DateTime.now(),
-//                 initialDateRange: widget.selectedDateRange,
-//                 firstDate: widget.firstDate ??
-//                     DateTime(DateTime.now().year - 100, 01, 01),
-//                 lastDate: widget.lastDate ??
-//                     DateTime((DateTime.now().year + 100), 01, 01))
-//             .then((value) {
-//           if (value == null) return;
-//           setState(() {
-//             _selectedDateRange = value;
-//           });
-//           widget.onChangeDateRange?.call(_selectedDateRange);
-//         });
-//       },
-//       child: Container(
-//         height: 50,
-//         padding: const EdgeInsets.symmetric(horizontal: 10),
-//         width: double.maxFinite,
-//         alignment: Alignment.centerLeft,
-//         decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(7),
-//             border: Border.all(
-//               color: AppColors.outLineGray,
-//             )),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Text(
-//               textAlign: TextAlign.left,
-//             _selectedDateRange != null  ? DateTimeUtil.getFormatDateRange(_selectedDateRange) : widget.hintText?.toString() ?? "Select",
-//               // _selectedDateRange?.toString() ??
-//               //     widget.hintText?.toString() ??
-//               //     "Select",
-//               style: const TextStyle(color: AppColors.darkGrey, fontSize: 13),
-//             ),
-//             SvgPicture.asset(
-//               AppImages.date,
-//               height: 22,
-//               width: 22,
-//               fit: BoxFit.fill,
-//               colorFilter: const ColorFilter.mode(
-//                 AppColors.darkGrey,
-//                 BlendMode.srcIn,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
