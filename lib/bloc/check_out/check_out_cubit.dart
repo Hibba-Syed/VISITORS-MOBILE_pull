@@ -25,10 +25,6 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
   final  UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-
-  // onChangeRange(String? range) {
-  //   emit(state.copyWith(selectedRang: range));
-  // }
   void onChangeSelectedRange(String? rangeLabel) {
     emit(state.copyWith(selectedRange: rangeLabel));
   }
@@ -40,10 +36,10 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   void onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
   }
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
-  void onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel? vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 

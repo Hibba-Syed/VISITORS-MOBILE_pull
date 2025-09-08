@@ -72,7 +72,7 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   compareFn: (p0, p1) => p0 == p1,
                   items: AppConstants.rangList,
                   onChanged: (value) {
-                    context.read<CheckInsCubit>().onChangeRange(value);
+                    context.read<CheckInsCubit>().onChangeSelectedRange(value);
                     if (value == null) {
                       context.read<CheckInsCubit>().onChangeDateRange(null);
                     } else {

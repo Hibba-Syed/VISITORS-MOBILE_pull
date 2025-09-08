@@ -7,11 +7,12 @@ class WorkOrderState {
   final String? searchKeyword;
   final int? isAwarded;
   final bool isVendorLoading;
-  List<WorkOrderModel>? workOrderModel;
-  List<VendorModel>? vendors;
+  final List<WorkOrderModel>? workOrderModel;
+  final List<VendorModel>? vendors;
   final VendorModel? selectedVendor;
   final TypeModel? selectedType;
-  WorkOrderState({
+
+  const WorkOrderState({
     this.isLoading = false,
     this.loadMore = false,
     this.workOrderModel,
@@ -23,28 +24,38 @@ class WorkOrderState {
     this.page = 1,
     this.selectedType,
   });
+
+  static const _sentinel = Object();
+
   WorkOrderState copyWith({
     int? page,
     bool? isLoading,
     bool? loadMore,
-    String? searchKeyword,
+    Object? searchKeyword = _sentinel,
     int? isAwarded,
     bool? isVendorLoading,
     List<WorkOrderModel>? workOrderModel,
     List<VendorModel>? vendors,
-    VendorModel? selectedVendor,
-    final TypeModel? selectedType,
+    Object? selectedVendor = _sentinel,
+    Object? selectedType = _sentinel,
   }) {
     return WorkOrderState(
-        page: page ?? this.page,
-        isLoading: isLoading ?? this.isLoading,
-        loadMore: loadMore ?? this.loadMore,
-        searchKeyword: searchKeyword ?? this.searchKeyword,
-        workOrderModel: workOrderModel ?? this.workOrderModel,
-        isAwarded: isAwarded ?? this.isAwarded,
-        isVendorLoading: isVendorLoading ?? this.isVendorLoading,
-        vendors: vendors ?? this.vendors,
-        selectedVendor: selectedVendor ?? this.selectedVendor,
-        selectedType: selectedType ?? this.selectedType);
+      page: page ?? this.page,
+      isLoading: isLoading ?? this.isLoading,
+      loadMore: loadMore ?? this.loadMore,
+      searchKeyword: identical(searchKeyword, _sentinel)
+          ? this.searchKeyword
+          : searchKeyword as String?,
+      workOrderModel: workOrderModel ?? this.workOrderModel,
+      isAwarded: isAwarded ?? this.isAwarded,
+      isVendorLoading: isVendorLoading ?? this.isVendorLoading,
+      vendors: vendors ?? this.vendors,
+      selectedVendor: identical(selectedVendor, _sentinel)
+          ? this.selectedVendor
+          : selectedVendor as VendorModel?,
+      selectedType: identical(selectedType, _sentinel)
+          ? this.selectedType
+          : selectedType as TypeModel?,
+    );
   }
 }

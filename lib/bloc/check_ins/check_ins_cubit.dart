@@ -57,7 +57,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(dateRange: dateRange));
   }
 
-  void onChangeRange(String? range) {
+  void onChangeSelectedRange(String? range) {
     emit(state.copyWith(selectedRange: range));
   }
 

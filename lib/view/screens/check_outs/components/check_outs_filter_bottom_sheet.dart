@@ -24,18 +24,9 @@ class CheckOutsFilterBottomSheet extends StatefulWidget {
 
 class _CheckOutsFilterBottomSheetState
     extends State<CheckOutsFilterBottomSheet> {
-  DateTimeRange? _selectedDateRange;
-  final now = DateTime.now();
-  late DateTime firstDayOfMonth;
-  late DateTime lastDayOfMonth;
-
   @override
   void initState() {
     super.initState();
-    // final selectedDate = DateTime(now.year, now.month - 1, 1);
-    // firstDayOfMonth = DateTime(selectedDate.year, selectedDate.month, 1);
-    // lastDayOfMonth = DateTime(selectedDate.year, selectedDate.month  + 1, 0);
-    _selectedDateRange = context.read<CheckOutCubit>().state.dateRang;
   }
 
   @override
@@ -57,15 +48,15 @@ class _CheckOutsFilterBottomSheetState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap(10),
-                const Align(
+                Align(
                   alignment: Alignment.center,
                   child: HeadingWidget(
-                      heading: 'Check-In Filter',
+                      heading: AppUtils.languageTranslate('checkOutFilter'),
                       style: AppTextStyles.style16black600),
                 ),
                 const Gap(15),
                 DateRangePickerWidget(
-                  initialDateRange: _selectedDateRange,
+                  initialDateRange: state.dateRang,
                   firstDate: DateTime(2020, 1, 1),
                   lastDate: DateTime(2030, 12, 31),
                   onDateRangePicked: (range) {
@@ -74,28 +65,28 @@ class _CheckOutsFilterBottomSheetState
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<String>(
-                  hint: "Range",
+                  hint: AppUtils.languageTranslate('range'),
                   fillColor: AppColors.white,
                   selectedItem: state.selectedRange,
                   itemAsString: (range) => range,
                   compareFn: (p0, p1) => p0 == p1,
                   items: AppConstants.rangList,
                   onChanged: (value) {
+                    context.read<CheckOutCubit>().onChangeSelectedRange(value);
                     if (value == null) {
-                      _selectedDateRange = null;
                       context.read<CheckOutCubit>().onChangeDateRange(null);
                     } else {
-                      _selectedDateRange =
+                      final dateRange =
                           AppUtils.getDateRangeStringFromLabel(value);
                       context
                           .read<CheckOutCubit>()
-                          .onChangeDateRange(_selectedDateRange);
+                          .onChangeDateRange(dateRange);
                     }
                   },
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<TypeModel>(
-                    hint: "Type",
+                    hint: AppUtils.languageTranslate('type'),
                     fillColor: AppColors.white,
                     selectedItem: state.selectedType,
                     itemAsString: (type) => type.label,
@@ -106,7 +97,7 @@ class _CheckOutsFilterBottomSheetState
                     }),
                 const Gap(10),
                 SingleSelectedDropdownWidget<UnitModel>(
-                    hint: "Unit",
+                    hint: AppUtils.languageTranslate('unit'),
                     fillColor: AppColors.white,
                     selectedItem: state.selectedUnit,
                     itemAsString: (unit) => unit.unitNumber ?? "",
@@ -114,13 +105,11 @@ class _CheckOutsFilterBottomSheetState
                     items: state.units ?? [],
                     enabled: state.selectedVendor == null,
                     onChanged: (value) {
-                      context
-                          .read<CheckOutCubit>()
-                          .onChangeSelectedUnit(value!);
+                      context.read<CheckOutCubit>().onChangeSelectedUnit(value);
                     }),
                 const Gap(10),
                 SingleSelectedDropdownWidget<VendorModel>(
-                    hint: "Vendors",
+                    hint: AppUtils.languageTranslate('vendors'),
                     fillColor: AppColors.white,
                     selectedItem: state.selectedVendor,
                     itemAsString: (vendor) => vendor.companyName ?? "",
@@ -130,7 +119,7 @@ class _CheckOutsFilterBottomSheetState
                     onChanged: (value) {
                       context
                           .read<CheckOutCubit>()
-                          .onChangeSelectedVendors(value!);
+                          .onChangeSelectedVendors(value);
                     }),
                 const Gap(30),
                 FilterButtonWidget(

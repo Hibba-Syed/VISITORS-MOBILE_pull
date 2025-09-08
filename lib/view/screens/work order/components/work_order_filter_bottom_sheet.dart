@@ -21,6 +21,8 @@ class WorkOrderFilterBottomSheet extends StatefulWidget {
 
 class _WorkOrderFilterBottomSheetState
     extends State<WorkOrderFilterBottomSheet> {
+  VendorModel? _selectedVendor;
+  TypeModel? _selectedType;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,7 +43,7 @@ class _WorkOrderFilterBottomSheetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(10),
-               Align(
+              Align(
                 alignment: Alignment.center,
                 child: HeadingWidget(
                     heading: AppUtils.languageTranslate('workOrderRfpFilter'),
@@ -49,39 +51,56 @@ class _WorkOrderFilterBottomSheetState
               ),
               const Gap(15),
               SingleSelectedDropdownWidget<TypeModel>(
-                  hint:  AppUtils.languageTranslate('type'),
+                  hint: AppUtils.languageTranslate('type'),
                   fillColor: AppColors.white,
-                  selectedItem:  state.selectedType,
+                  selectedItem: state.selectedType,
                   itemAsString: (type) => type.label,
                   compareFn: (p0, p1) => p0.value == p1.value,
                   items: AppUtils.workOrderType,
                   onChanged: (value) {
-                    context.read<WorkOrderCubit>().onChangeSelectedType(value);
+                    _selectedType = value;
+
+                    if (value?.value != '1') {
+                      context
+                          .read<WorkOrderCubit>()
+                          .onChangeSelectedVendors(null);
+                    }
                   }),
               const Gap(10),
               SingleSelectedDropdownWidget<VendorModel>(
-                  hint:  AppUtils.languageTranslate('vendors'),
+                  hint: AppUtils.languageTranslate('vendors'),
                   outLineColor: AppColors.outLineGray,
                   fillColor: AppColors.white,
-                  selectedItem:state.selectedVendor,
+                  selectedItem: state.selectedVendor,
                   itemAsString: (vendor) => vendor.companyName ?? "",
                   compareFn: (vendor, item) => vendor.id == item.id,
                   items: state.vendors ?? [],
                   onChanged: (value) {
-                    context
-                        .read<WorkOrderCubit>()
-                        .onChangeSelectedVendors(value);
-                    // print('vendor:::${value?.companyName}${value?.id}');
+                    _selectedVendor = value;
                   },
-              enabled: context.watch<WorkOrderCubit>().state.selectedType?.value == '1' ? true : false
-                  ),
+                  enabled: context
+                              .watch<WorkOrderCubit>()
+                              .state
+                              .selectedType
+                              ?.value ==
+                          '1'
+                      ? true
+                      : false),
               const Gap(30),
               FilterButtonWidget(
                 applyOnPressed: () {
+                  context
+                      .read<WorkOrderCubit>()
+                      .onChangeSelectedType(_selectedType);
+                  context
+                      .read<WorkOrderCubit>()
+                      .onChangeSelectedVendors(_selectedVendor);
                   context.read<WorkOrderCubit>().getWorkOrder();
                   Navigator.pop(context);
                 },
                 clearOnPressed: () {
+                  _selectedType = null;
+                  _selectedVendor = null;
                   context.read<WorkOrderCubit>().resetFilterData();
                   Navigator.pop(context);
                   context.read<WorkOrderCubit>().getWorkOrder();
