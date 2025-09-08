@@ -78,6 +78,7 @@ class AddLogCompleteActionDesignWidget extends StatelessWidget {
         TextFieldWidget(
           controller: noteController,
           label: isAccessDevice ? AppUtils.languageTranslate('servicesNote') : AppUtils.languageTranslate('note'),
+          maxLength: 1000,
           validator: (value) {
             if (isAccessDevice) return null;
             if (value?.trim().isEmpty ?? true) {

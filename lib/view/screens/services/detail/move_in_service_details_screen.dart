@@ -406,6 +406,7 @@ class _MoveInServiceDetailsScreenState
                                                 child: TextFieldWidget(
                                                   controller: _noteController,
                                                   label:  AppUtils.languageTranslate('note'),
+                                                  maxLength: 1000,
                                                   validator: (value) {
                                                     if (value?.trim().isEmpty ?? true) {
                                                       return AppUtils.languageTranslate('fieldIsMandatory');

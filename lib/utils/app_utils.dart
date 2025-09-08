@@ -468,6 +468,7 @@ class AppUtils {
                   TextFieldWidget(
                     controller: noteController,
                     label: AppUtils.languageTranslate('note'),
+                    maxLength: 1000,
                     validator: (value) {
                       if (value?.trim().isEmpty ?? true) {
                         return AppUtils.languageTranslate('fieldIsMandatory');
