@@ -1,4 +1,3 @@
-
 import 'package:visitors/model/service/service_details_response_model.dart';
 import 'package:visitors/model/service/service_response_model.dart';
 import 'package:visitors/repo/services/services_repo.dart';
@@ -24,8 +23,7 @@ class ServiceRepoImpl implements ServiceRepo {
   }) async {
     try {
       String url =
-          '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ??
-          10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
+          '${ApiUrl.service}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&serviceable_type=${serviceType ?? ''}&unit_id=${unitId ?? ''}&type=${type ?? ''}';
       // print('services^^ $url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return ServiceResponseModel.fromJson(response);
@@ -33,24 +31,55 @@ class ServiceRepoImpl implements ServiceRepo {
       rethrow;
     }
   }
+
   @override
-  Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId}) async {
+  Future<ServiceDetailsResponseModel?> getServiceDetails(
+      {int? serviceId}) async {
     try {
-     // final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
-      final filter = {"filter":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}]}};
-      String url = '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
+      // final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
+      final filter = {
+        "filter": {
+          "where": {
+            "and": [
+              {"field": "id", "value": serviceId}
+            ]
+          },
+          "include": [
+            {"relation": "application"},
+            {
+              "relation": "status_history",
+              "include": [
+                {
+                  "relation": "user",
+                  "select": ["id", "first_name", "last_name"]
+                }
+              ]
+            },
+            {
+              "relation": "unit",
+              "select": ["id"]
+            },
+            {"relation": "evidence"},
+            {"relation": "documents"},
+          ]
+        }
+      };
+      String url =
+          '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
       dynamic response = await _apiService.getAuthGetApiResponse((url));
       return ServiceDetailsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
   }
+
   @override
-  Future<AddServiceLogResponseModel?> addServiceLog({required Map<String, dynamic> data}) async {
+  Future<AddServiceLogResponseModel?> addServiceLog(
+      {required Map<String, dynamic> data}) async {
     try {
       // print('add log: ${ApiUrl.addServiceLog}');
       dynamic response =
-      await _apiService.getPostApiResponse(ApiUrl.addServiceLog, data);
+          await _apiService.getPostApiResponse(ApiUrl.addServiceLog, data);
       return AddServiceLogResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -58,31 +87,33 @@ class ServiceRepoImpl implements ServiceRepo {
   }
 
   @override
-  Future<VisitorsServiceCompleteResponseModel?> completeService({required Map<String, dynamic> data,}) async {
+  Future<VisitorsServiceCompleteResponseModel?> completeService({
+    required Map<String, dynamic> data,
+  }) async {
     try {
-     // print('service complete: ${ApiUrl.serviceComplete}'
-          //'/$serviceId'
-          // );
+      // print('service complete: ${ApiUrl.serviceComplete}'
+      //'/$serviceId'
+      // );
       dynamic response =
-      await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
-       // print('Raw API Response: $response');
+          await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
+      // print('Raw API Response: $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
   }
+
   @override
-  Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService({required Map<String, dynamic> data,required int? serviceId}) async {
+  Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService(
+      {required Map<String, dynamic> data, required int? serviceId}) async {
     try {
       // print('completeAccessDeviceService ${ApiUrl.serviceAccessDeviceComplete}/$serviceId');
       dynamic response =
-      await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
-       // print('completeAccessDeviceService $response');
+          await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
+      // print('completeAccessDeviceService $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
   }
-
 }
-

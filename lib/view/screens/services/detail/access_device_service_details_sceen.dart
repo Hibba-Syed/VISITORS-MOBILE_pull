@@ -17,11 +17,13 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../../model/emirates_id_model.dart';
+import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../../service/scanner/scanner_service.dart';
 import '../../../widgets/empty_widget.dart';
 import '../../../widgets/add_log_complete_action_design_widget.dart';
+import '../components/services_documents_card_widget.dart';
 
 class AccessDeviceServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
@@ -123,6 +125,47 @@ class _AccessDeviceServiceDetailsScreenState
                                 [],
                           ),
                         ),
+                        if (state.serviceDetails?.documents?.isNotEmpty ??
+                            true) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate('documents'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding:
+                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: state.serviceDetails?.documents?.isNotEmpty ??
+                                true
+                                ? ListView.separated(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount:
+                              state.serviceDetails?.documents?.length ??
+                                  0,
+                              itemBuilder: (context, index) {
+                                Document? document =
+                                state.serviceDetails?.documents?[index];
+                                return ServicesDocumentsCardWidget(
+                                  name: document?.name,
+                                  url: document?.pathUrl ?? "",
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return Divider(
+                                  color: AppColors.gray,
+                                );
+                              },
+                            )
+                                : EmptyWidget(
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable')),
+                          ),
+                        ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
                           const Gap(20),
                           HeadingWidget(
