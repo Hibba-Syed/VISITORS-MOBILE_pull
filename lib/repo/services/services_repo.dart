@@ -10,7 +10,6 @@ abstract class ServiceRepo {
     int? limit,
     String? keyword,
     int? unitId,
-    String? serviceType,
     String? type,
   });
   Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId});

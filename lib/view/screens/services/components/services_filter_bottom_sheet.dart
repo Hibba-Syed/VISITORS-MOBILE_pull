@@ -62,19 +62,20 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                             .onChangeSelectedType(value);
                       }),
                   const Gap(10),
-                  state.isUnitLoading ? LoaderWidget() :
-                  SingleSelectedDropdownWidget<UnitModel>(
-                      hint: AppUtils.languageTranslate('unit'),
-                      fillColor: AppColors.white,
-                      selectedItem:state.selectedUnit,
-                      itemAsString: (unit) => unit.unitNumber ?? "",
-                      compareFn: (unit, item) => unit.id == item.id,
-                      items: state.units ?? [],
-                      onChanged: (value) {
-                        context
-                            .read<ServiceCubit>()
-                            .onChangeSelectedUnit(value!);
-                      }),
+                  state.isUnitLoading
+                      ? LoaderWidget()
+                      : SingleSelectedDropdownWidget<UnitModel>(
+                          hint: AppUtils.languageTranslate('unit'),
+                          fillColor: AppColors.white,
+                          selectedItem: state.selectedUnit,
+                          itemAsString: (unit) => unit.unitNumber ?? "",
+                          compareFn: (unit, item) => unit.id == item.id,
+                          items: state.units ?? [],
+                          onChanged: (value) {
+                            context
+                                .read<ServiceCubit>()
+                                .onChangeSelectedUnit(value);
+                          }),
                   const Gap(30),
                   FilterButtonWidget(
                     applyOnPressed: () {

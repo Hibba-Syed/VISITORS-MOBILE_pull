@@ -9,9 +9,8 @@ class ServiceState {
   List<ServiceModel>? serviceModel;
   final String? searchKeyword;
   final TypeModel? selectedType;
-  final TypeModel? selectCheckInTypeList;
   final UnitModel? selectedUnit;
-  final  List<UnitModel>? units;
+  final List<UnitModel>? units;
 
   ServiceState({
     this.isLoading = false,
@@ -23,7 +22,6 @@ class ServiceState {
     this.loadMore = false,
     this.selectedUnit,
     this.selectedType,
-    this.selectCheckInTypeList,
     this.units,
   });
   ServiceState copyWith({
@@ -34,10 +32,10 @@ class ServiceState {
     List<ServiceModel>? serviceModel,
     String? searchKeyword,
     bool? loadMore,
-    TypeModel? selectedType,
-    UnitModel? selectedUnit,
+    Object? selectedType = _sentinel,
+    Object? selectedUnit = _sentinel,
+    Object? selectCheckInTypeList = _sentinel,
     List<UnitModel>? units,
-    TypeModel? selectCheckInTypeList,
   }) {
     return ServiceState(
       isLoading: isLoading ?? this.isLoading,
@@ -47,12 +45,17 @@ class ServiceState {
       serviceModel: serviceModel ?? this.serviceModel,
       searchKeyword: searchKeyword ?? this.searchKeyword,
       loadMore: loadMore ?? this.loadMore,
-      selectedUnit: selectedUnit ?? this.selectedUnit,
-      selectedType: selectedType ?? this.selectedType,
+      selectedType: identical(selectedType, _sentinel)
+          ? this.selectedType
+          : selectedType as TypeModel?,
+      selectedUnit: identical(selectedUnit, _sentinel)
+          ? this.selectedUnit
+          : selectedUnit as UnitModel?,
       isUnitLoading: isUnitLoading ?? this.isUnitLoading,
       units: units ?? this.units,
-        selectCheckInTypeList: selectCheckInTypeList ?? this.selectCheckInTypeList
-
     );
   }
+
+// private sentinel to detect “not passed”
+  static const _sentinel = Object();
 }

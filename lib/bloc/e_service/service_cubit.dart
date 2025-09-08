@@ -24,7 +24,7 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(state.copyWith(selectedType: type));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
@@ -49,7 +49,6 @@ class ServiceCubit extends Cubit<ServiceState> {
           page: state.page,
           keyword: state.searchKeyword,
           unitId: state.selectedUnit?.id,
-          serviceType: state.selectCheckInTypeList?.value,
           type: state.selectedType?.value,
         ).onError(
       (error, stackTrace) {
@@ -77,7 +76,6 @@ class ServiceCubit extends Cubit<ServiceState> {
           page: page,
           keyword: state.searchKeyword,
           unitId: state.selectedUnit?.id,
-          serviceType: state.selectedType?.value,
           type: state.selectedType?.value,
     )
         .onError(
