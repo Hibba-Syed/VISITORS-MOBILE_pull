@@ -32,7 +32,6 @@ class WorkPermitServiceDetailsScreen extends StatefulWidget {
 
 class _WorkPermitServiceDetailsScreenState
     extends State<WorkPermitServiceDetailsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,9 +105,8 @@ class _WorkPermitServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                   title:
                                       AppUtils.languageTranslate('startDate'),
-                                  value: DateTimeUtil.getFormattedDateTime(
-                                      state.serviceDetails?.application
-                                          ?.startDate)),
+                                  value: DateTimeUtil.getFormattedDateTime(state
+                                      .serviceDetails?.application?.startDate)),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate(
                                     'contractorContactPerson'),
@@ -126,14 +124,15 @@ class _WorkPermitServiceDetailsScreenState
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('endDate'),
-                                value: DateTimeUtil.getFormattedDateTime(state
-                                    .serviceDetails?.application?.endDate),
+                                value: DateTimeUtil.getFormattedDateTime(
+                                    state.serviceDetails?.application?.endDate),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 isLast: true,
                                 title:
                                     AppUtils.languageTranslate('description'),
-                                value: "--",
+                                value:
+                                    state.serviceDetails?.description ?? "--",
                               ),
                             ],
                           ),
@@ -146,37 +145,39 @@ class _WorkPermitServiceDetailsScreenState
                           ),
                           const Gap(10),
                           Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 10),
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.serviceDetails?.documents?.isNotEmpty ??
-                                true
-                                ? ListView.separated(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount:
-                              state.serviceDetails?.documents?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                Document? document =
-                                state.serviceDetails?.documents?[index];
-                                return ServicesDocumentsCardWidget(
-                                  name: document?.name,
-                                  url: document?.pathUrl ?? "",
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  color: AppColors.gray,
-                                );
-                              },
-                            )
-                                : EmptyWidget(
-                                text: AppUtils.languageTranslate(
-                                    'noDataAvailable')),
+                            child:
+                                state.serviceDetails?.documents?.isNotEmpty ??
+                                        true
+                                    ? ListView.separated(
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount: state.serviceDetails
+                                                ?.documents?.length ??
+                                            0,
+                                        itemBuilder: (context, index) {
+                                          Document? document = state
+                                              .serviceDetails
+                                              ?.documents?[index];
+                                          return ServicesDocumentsCardWidget(
+                                            name: document?.name,
+                                            url: document?.pathUrl ?? "",
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(
+                                            color: AppColors.gray,
+                                          );
+                                        },
+                                      )
+                                    : EmptyWidget(
+                                        text: AppUtils.languageTranslate(
+                                            'noDataAvailable')),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
@@ -199,7 +200,7 @@ class _WorkPermitServiceDetailsScreenState
                                   title: AppUtils.languageTranslate(
                                       'deposit_amount'),
                                   value: state.serviceDetails?.securityDeposit
-                                      ?.toString() ??
+                                          ?.toString() ??
                                       "--",
                                   isLast: true,
                                 ),
@@ -225,12 +226,11 @@ class _WorkPermitServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'requesterType'),
-                                  value: state.serviceDetails?.clientType ??
-                                      "--"),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('name'),
-                                value:
-                                    state.serviceDetails?.clientName ?? "--",
+                                value: state.serviceDetails?.clientName ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('phone'),
@@ -275,8 +275,7 @@ class _WorkPermitServiceDetailsScreenState
                           style: AppTextStyles.style20primary600,
                         ),
                         const Gap(10),
-                        state.serviceDetails?.statusHistory?.isNotEmpty ??
-                                true
+                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true
                             ? Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.white,
@@ -286,13 +285,12 @@ class _WorkPermitServiceDetailsScreenState
                                   padding: EdgeInsets.only(top: 10),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount: state.serviceDetails
-                                          ?.statusHistory?.length ??
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
                                       0,
                                   itemBuilder: (context, index) {
                                     StatusHistory? statusHistory = state
-                                        .serviceDetails
-                                        ?.statusHistory?[index];
+                                        .serviceDetails?.statusHistory?[index];
                                     bool isLast = (state.serviceDetails
                                                     ?.statusHistory?.length ??
                                                 0) -
@@ -305,8 +303,7 @@ class _WorkPermitServiceDetailsScreenState
                                           (statusHistory?.status != 'Pending')
                                               ? statusHistory?.status ?? ""
                                               : "Request Received",
-                                      byValue: (statusHistory
-                                                      ?.user?.fullName !=
+                                      byValue: (statusHistory?.user?.fullName !=
                                                   null &&
                                               statusHistory!
                                                   .user!.fullName!.isNotEmpty)

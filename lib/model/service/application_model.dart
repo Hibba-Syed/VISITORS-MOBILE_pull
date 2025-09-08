@@ -81,9 +81,9 @@ class Application {
   dynamic serviceChargeStatus;
   dynamic residentRequestId;
   dynamic mcEmiratesId;
-  dynamic mcContactPerson;
+  String? mcContactPerson;
   dynamic mcTradeLicense;
-  dynamic mcCompanyName;
+  String? mcCompanyName;
   String? mcEmiratesPathUrl;
   String? mcTradeLicensePathUrl;
   // type delivery permit
