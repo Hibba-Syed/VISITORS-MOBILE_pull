@@ -155,6 +155,7 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
           ),
           onChanged: onChanged,
           validator: validator,
+          autoValidateMode: AutovalidateMode.onUserInteraction,
         ),
       ],
     );

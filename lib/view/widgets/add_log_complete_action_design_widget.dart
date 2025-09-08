@@ -51,7 +51,7 @@ class AddLogCompleteActionDesignWidget extends StatelessWidget {
         ),
         const Gap(5),
         TextFieldWidget(
-          label: AppUtils.languageTranslate('idNumber'),
+          label: '${AppUtils.languageTranslate('idNumber')} *',
           controller: idController,
           validator: (value) {
             if (value?.trim().isEmpty ?? true) {

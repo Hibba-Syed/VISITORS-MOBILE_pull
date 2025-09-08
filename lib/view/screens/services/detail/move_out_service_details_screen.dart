@@ -117,6 +117,82 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                             ],
                           ),
                         ),
+                        if (state.serviceDetails?.securityDeposit != null) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'security_deposit_details'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'deposit_amount'),
+                                  value: state.serviceDetails?.securityDeposit
+                                      ?.toString() ??
+                                      "--",
+                                  isLast: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        if (state.serviceDetails?.securityDeposit != null) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'movingCompanyDetails'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'companyName'),
+                                  value: state.serviceDetails?.application?.mcCompanyName
+                                      ?.toString() ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'contactPerson'),
+                                  value: state.serviceDetails?.application?.mcContactPerson
+                                      ?.toString() ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'companyTradeLicense'),
+                                  url: state.serviceDetails?.application?.mcTradeLicensePathUrl
+                                      ?.toString() ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'contactPersonEmiratesId'),
+                                  url: state.serviceDetails?.application?.mcEmiratesPathUrl
+                                      ?.toString() ??
+                                      "--",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                         const Gap(20),
                          HeadingWidget(
                           heading: AppUtils.languageTranslate('applicantDetails'),

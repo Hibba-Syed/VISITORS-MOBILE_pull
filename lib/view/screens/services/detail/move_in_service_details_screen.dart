@@ -121,6 +121,34 @@ class _MoveInServiceDetailsScreenState
                             ],
                           ),
                         ),
+                        if (state.serviceDetails?.securityDeposit != null) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'security_deposit_details'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'deposit_amount'),
+                                  value: state.serviceDetails?.securityDeposit
+                                      ?.toString() ??
+                                      "--",
+                                  isLast: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                         const Gap(20),
                          HeadingWidget(
                           heading: AppUtils.languageTranslate('applicantDetails'),

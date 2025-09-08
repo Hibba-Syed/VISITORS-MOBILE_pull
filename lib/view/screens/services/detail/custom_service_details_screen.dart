@@ -201,7 +201,7 @@ class _CustomServiceDetailsScreenState
                                 title: AppUtils.languageTranslate(
                                     'passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
-                                    state.serviceDetails?.clientIdExpiry),
+                                    state.serviceDetails?.passportExpiry),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('idNumber'),

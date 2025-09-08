@@ -86,7 +86,8 @@ class TextFieldWidget extends StatelessWidget {
         TextFormField(
           initialValue: initialValue,
           controller: controller,
-          autovalidateMode: autovalidateMode,
+          autovalidateMode:
+              autovalidateMode ?? AutovalidateMode.onUserInteraction,
           onChanged: onChanged,
           onFieldSubmitted: onFieldSubmitted,
           onEditingComplete: onEditingComplete,

@@ -107,7 +107,7 @@
     "passportNumberHint": "رقم جواز السفر",
     "passportExpiry": "تاريخ انتهاء جواز السفر",
     "passportExpiryHint": "تاريخ انتهاء جواز السفر",
-    "idNumber": "رقم الهوية *",
+    "idNumber": "رقم الهوية",
     "idExpiry": "تاريخ انتهاء الهوية",
     "activityLog": "سجل النشاط",
     "complete": "إكمال",
@@ -290,7 +290,12 @@
     "web_check_in": "تسجيل الوصول عبر الويب",
     "no_service_details_available": "لا توجد تفاصيل خدمة متاحة",
     "security_deposit_details": "تفاصيل مبلغ التأمين",
-    "deposit_amount": "مبلغ التأمين"
+    "deposit_amount": "مبلغ التأمين",
+    "movingCompanyDetails": "تفاصيل شركة النقل",
+    "companyName": "اسم الشركة",
+    "companyTradeLicense": "رخصة التجارة للشركة",
+    "contactPersonEmiratesId": "هوية الإمارات لشخص الاتصال"
+
 
 
 }

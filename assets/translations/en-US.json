@@ -107,7 +107,7 @@
     "passportNumberHint": "Passport number",
     "passportExpiry": "Passport Expiry",
     "passportExpiryHint": "Passport expiry",
-    "idNumber": "ID Number *",
+    "idNumber": "ID Number",
     "idExpiry": "ID Expiry",
     "activityLog": "Activity Log",
     "complete": "Complete",
@@ -291,7 +291,12 @@
     "web_check_in": "Web Check-In",
     "no_service_details_available": "No service details available",
     "security_deposit_details": "Security Deposit Details",
-    "deposit_amount": "Deposit Amount"
+    "deposit_amount": "Deposit Amount",
+    "movingCompanyDetails": "Moving Company Details",
+    "companyName": "Company Name",
+    "companyTradeLicense": "Company Trade License",
+    "contactPersonEmiratesId": "Contact Person Emirates ID"
+
 
 
 }

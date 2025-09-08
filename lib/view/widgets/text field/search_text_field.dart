@@ -51,6 +51,7 @@ class SearchTextField extends StatelessWidget {
               onFieldSubmitted: onFieldSubmitted,
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.text,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),

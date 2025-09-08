@@ -79,6 +79,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           onTap: widget.onTap,
           maxLength: widget.maxLength,
           expands: widget.expands,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             isDense: true,
             contentPadding:
