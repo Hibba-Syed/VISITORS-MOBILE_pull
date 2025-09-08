@@ -23,25 +23,28 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 70,
-              width: 70,
-              child: LoaderWidget(),
-            ),
-            Gap(60),
-            Text(
-              AppUtils.languageTranslate('WaitWhileSettingUpTheDashboard'),
-              style: TextStyle(
-                fontSize: 15,
-                color: AppColors.darkGrey,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: LoaderWidget(),
               ),
-            )
-          ],
+              Gap(60),
+              Text(
+                AppUtils.languageTranslate('WaitWhileSettingUpTheDashboard'),
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppColors.darkGrey,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

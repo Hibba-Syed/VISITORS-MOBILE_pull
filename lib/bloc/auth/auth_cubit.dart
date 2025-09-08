@@ -49,14 +49,16 @@ class AuthCubit extends Cubit<AuthState> {
       spUtil.password = password;
       spUtil.loginId = loginId;
       if (context.mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.loading, (route) => false);
-     }
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(AppRoutes.loading, (route) => false);
+      }
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongPleaseTryAgainLater'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongPleaseTryAgainLater'));
     }
   }
+
   Future<void> logout(BuildContext context) async {
     _authRepo.logout();
     spUtil.remove(Strings.keyToken);
