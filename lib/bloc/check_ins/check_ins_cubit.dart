@@ -54,7 +54,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
   }
 
   void onChangeDateRange(DateTimeRange? dateRange) {
-    emit(state.copyWith(dateRange: dateRange));
+    emit(state.copyWith(selectedDateRange: dateRange));
   }
 
   void onChangeSelectedRange(String? range) {
@@ -85,7 +85,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         .getCheckIns(
             keyword: state.searchKeyword,
             unitId: state.selectedUnit?.id,
-            dateRange: DateTimeUtil.getFormatDateRange(state.dateRange),
+            dateRange: DateTimeUtil.getFormatDateRange(state.selectedDateRange),
             serviceableType: state.selectedVisitorType?.value,
             vendorId: state.selectedVendor?.id,
             serviceableId: state.serviceableId)
@@ -121,7 +121,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
       serviceableType: state.selectedVisitorType?.value,
       vendorId: state.selectedVendor?.id,
       serviceableId: state.serviceableId,
-      dateRange: DateTimeUtil.getFormatDateRange(state.dateRange),
+      dateRange: DateTimeUtil.getFormatDateRange(state.selectedDateRange),
     )
         .onError(
       (error, stackTrace) {

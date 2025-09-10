@@ -14,7 +14,7 @@ class CheckInsState {
   final List<VendorModel>? vendors;
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
-  final DateTimeRange? dateRange;
+  final DateTimeRange? selectedDateRange;
   final String? selectedRange;
   final String? searchKeyword;
   final TypeModel? selectedVisitorType;
@@ -33,7 +33,7 @@ class CheckInsState {
     this.selectedUnit,
     this.selectedVendor,
     this.isCheckOutAllLoading = false,
-    this.dateRange,
+    this.selectedDateRange,
     this.selectedRange,
     this.searchKeyword,
     this.serviceableId,
@@ -57,7 +57,7 @@ class CheckInsState {
     Object? selectedVisitorType = _sentinel,
     Object? selectedUnit = _sentinel,
     Object? selectedVendor = _sentinel,
-    Object? dateRange = _sentinel,
+    Object? selectedDateRange = _sentinel,
     Object? selectedRange = _sentinel,
     Object? searchKeyword = _sentinel,
     Object? serviceableId = _sentinel,
@@ -87,9 +87,9 @@ class CheckInsState {
           ? this.selectedVendor
           : selectedVendor as VendorModel?,
 
-      dateRange: identical(dateRange, _sentinel)
-          ? this.dateRange
-          : dateRange as DateTimeRange?,
+      selectedDateRange: identical(selectedDateRange, _sentinel)
+          ? this.selectedDateRange
+          : selectedDateRange as DateTimeRange?,
 
       selectedRange: identical(selectedRange, _sentinel)
           ? this.selectedRange

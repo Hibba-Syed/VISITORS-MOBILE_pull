@@ -96,7 +96,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                             (state.selectedVisitorType?.value.isNotEmpty ??
                                 false) ||
                             (state.selectedVendor != null) ||
-                            (state.dateRange != null)
+                            (state.selectedDateRange != null)
                         ? true
                         : false,
                     onFilterPressed: () {
