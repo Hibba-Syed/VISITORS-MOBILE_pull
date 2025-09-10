@@ -35,6 +35,15 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final checkInsState = context.read<CheckInsCubit>().state;
+      _selectedDateRange = checkInsState.selectedDateRange;
+      _selectedRange = checkInsState.selectedRange;
+      _selectedType = checkInsState.selectedVisitorType;
+      _selectedUnit = checkInsState.selectedUnit;
+      _selectedVendor = checkInsState.selectedVendor;
+      setState(() {});
+    });
   }
 
   @override

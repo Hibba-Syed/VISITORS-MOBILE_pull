@@ -21,6 +21,21 @@ class ServicesFilterBottomSheet extends StatefulWidget {
 }
 
 class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
+  TypeModel? _selectedType;
+  UnitModel? _selectedUnit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final serviceState = context.read<ServiceCubit>().state;
+      _selectedType = serviceState.selectedType;
+      _selectedUnit = serviceState.selectedUnit;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,14 +67,12 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                   SingleSelectedDropdownWidget<TypeModel>(
                       hint: AppUtils.languageTranslate('type'),
                       fillColor: AppColors.white,
-                      selectedItem: state.selectedType,
+                      selectedItem: _selectedType,
                       itemAsString: (type) => type.label,
                       compareFn: (type, item) => type.value == item.value,
                       items: AppUtils.serviceTypeList,
                       onChanged: (value) {
-                        context
-                            .read<ServiceCubit>()
-                            .onChangeSelectedType(value);
+                        _selectedType = value;
                       }),
                   const Gap(10),
                   state.isUnitLoading
@@ -67,22 +80,26 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                       : SingleSelectedDropdownWidget<UnitModel>(
                           hint: AppUtils.languageTranslate('unit'),
                           fillColor: AppColors.white,
-                          selectedItem: state.selectedUnit,
+                          selectedItem: _selectedUnit,
                           itemAsString: (unit) => unit.unitNumber ?? "",
                           compareFn: (unit, item) => unit.id == item.id,
                           items: state.units ?? [],
                           onChanged: (value) {
-                            context
-                                .read<ServiceCubit>()
-                                .onChangeSelectedUnit(value);
+                            _selectedUnit = value;
                           }),
                   const Gap(30),
                   FilterButtonWidget(
                     applyOnPressed: () {
+                      final cubit = context.read<ServiceCubit>();
+
+                      cubit.onChangeSelectedType(_selectedType);
+                      cubit.onChangeSelectedUnit(_selectedUnit);
                       context.read<ServiceCubit>().getServices();
                       Navigator.pop(context);
                     },
                     clearOnPressed: () {
+                      _selectedType = null;
+                      _selectedUnit = null;
                       context.read<ServiceCubit>().resetFilterData();
                       Navigator.pop(context);
                       context.read<ServiceCubit>().getServices();
