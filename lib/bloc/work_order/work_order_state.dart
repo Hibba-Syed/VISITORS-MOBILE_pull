@@ -7,7 +7,7 @@ class WorkOrderState {
   final String? searchKeyword;
   final int? isAwarded;
   final bool isVendorLoading;
-  final List<WorkOrderModel>? workOrderModel;
+  final List<WorkOrderModel>? workOrders;
   final List<VendorModel>? vendors;
   final VendorModel? selectedVendor;
   final TypeModel? selectedType;
@@ -15,7 +15,7 @@ class WorkOrderState {
   const WorkOrderState({
     this.isLoading = false,
     this.loadMore = false,
-    this.workOrderModel,
+    this.workOrders,
     this.searchKeyword,
     this.isAwarded,
     this.isVendorLoading = false,
@@ -34,7 +34,7 @@ class WorkOrderState {
     Object? searchKeyword = _sentinel,
     int? isAwarded,
     bool? isVendorLoading,
-    List<WorkOrderModel>? workOrderModel,
+    List<WorkOrderModel>? workOrders,
     List<VendorModel>? vendors,
     Object? selectedVendor = _sentinel,
     Object? selectedType = _sentinel,
@@ -46,7 +46,7 @@ class WorkOrderState {
       searchKeyword: identical(searchKeyword, _sentinel)
           ? this.searchKeyword
           : searchKeyword as String?,
-      workOrderModel: workOrderModel ?? this.workOrderModel,
+      workOrders: workOrders ?? this.workOrders,
       isAwarded: isAwarded ?? this.isAwarded,
       isVendorLoading: isVendorLoading ?? this.isVendorLoading,
       vendors: vendors ?? this.vendors,

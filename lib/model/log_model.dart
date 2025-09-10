@@ -1,4 +1,4 @@
-class CheckInLogs {
+class LogModel {
   int? id;
   int? visitorCheckinId;
   String? status;
@@ -6,7 +6,7 @@ class CheckInLogs {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  CheckInLogs({
+  LogModel({
     this.id,
     this.visitorCheckinId,
     this.status,
@@ -15,7 +15,7 @@ class CheckInLogs {
     this.updatedAt,
   });
 
-  factory CheckInLogs.fromJson(Map<String, dynamic> json) => CheckInLogs(
+  factory LogModel.fromJson(Map<String, dynamic> json) => LogModel(
     id: json["id"],
     visitorCheckinId: json["visitor_checkin_id"],
     status: json["status"],

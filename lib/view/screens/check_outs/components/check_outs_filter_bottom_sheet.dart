@@ -35,7 +35,7 @@ class _CheckOutsFilterBottomSheetState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final checkoutCubit = context.read<CheckOutCubit>().state;
-      _selectedDateRange = checkoutCubit.selectedDateRang;
+      _selectedDateRange = checkoutCubit.selectedDateRange;
       _selectedRange = checkoutCubit.selectedRange;
       _selectedType = checkoutCubit.selectedType;
       _selectedUnit = checkoutCubit.selectedUnit;

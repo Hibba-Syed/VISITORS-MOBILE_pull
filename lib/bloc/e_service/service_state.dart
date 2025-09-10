@@ -6,7 +6,7 @@ class ServiceState {
   final bool loadMore;
   final bool? isServicesDetailsLoading;
   final int page;
-  List<ServiceModel>? serviceModel;
+  List<ServiceModel>? services;
   final String? searchKeyword;
   final TypeModel? selectedType;
   final UnitModel? selectedUnit;
@@ -17,7 +17,7 @@ class ServiceState {
     this.isUnitLoading = false,
     this.isServicesDetailsLoading = false,
     this.page = 1,
-    this.serviceModel,
+    this.services,
     this.searchKeyword,
     this.loadMore = false,
     this.selectedUnit,
@@ -29,7 +29,7 @@ class ServiceState {
     bool? isUnitLoading,
     bool? isServicesDetailsLoading,
     int? page,
-    List<ServiceModel>? serviceModel,
+    List<ServiceModel>? services,
     String? searchKeyword,
     bool? loadMore,
     Object? selectedType = _sentinel,
@@ -42,7 +42,7 @@ class ServiceState {
       isServicesDetailsLoading:
           isServicesDetailsLoading ?? this.isServicesDetailsLoading,
       page: page ?? this.page,
-      serviceModel: serviceModel ?? this.serviceModel,
+      services: services ?? this.services,
       searchKeyword: searchKeyword ?? this.searchKeyword,
       loadMore: loadMore ?? this.loadMore,
       selectedType: identical(selectedType, _sentinel)

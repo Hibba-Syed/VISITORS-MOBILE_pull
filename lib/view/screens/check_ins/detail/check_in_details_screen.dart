@@ -17,12 +17,13 @@ import 'package:visitors/view/widgets/container_widgets/title_value_row_divider_
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/heading_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
+import 'package:visitors/view/widgets/mobile_web_icon_widget.dart';
 import 'package:visitors/view/widgets/read_more_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../../bloc/check_ins/details/check_ins_details_cubit.dart';
-import '../../../../model/check_ins/check_in_log_model.dart';
+import '../../../../model/log_model.dart';
 import '../../../../model/check_ins/check_in_model.dart';
 
 class CheckInDetailsScreen extends StatelessWidget {
@@ -32,7 +33,7 @@ class CheckInDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CheckInModel? checkIns =
+    CheckInModel? checkIn =
         ModalRoute.of(context)?.settings.arguments as CheckInModel?;
     return Scaffold(
       appBar: AppBarWidget(
@@ -53,20 +54,20 @@ class CheckInDetailsScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: StackCountContainerWidget(
-                      count: checkIns?.visitorCount ?? "",
-                      imageUrl: checkIns?.visitor?.imageUrl ?? "",
+                      count: checkIn?.visitorCount ?? "",
+                      imageUrl: checkIn?.visitor?.imageUrl ?? "",
                       imageBackgroundColor: AppColors.darkGrey.withAlpha(25),
                     ),
                   ),
                   const Gap(5),
                   HeadingWidget(
                     heading:
-                        '${AppUtils.getServiceableType(checkIns?.serviceableType).label} ${AppUtils.languageTranslate('details')}',
+                        '${AppUtils.getServiceableType(checkIn?.serviceableType).label} ${AppUtils.languageTranslate('details')}',
                   ),
-                  (checkIns?.serviceableType == "job" ||
-                          checkIns?.serviceableType == "application")
+                  (checkIn?.serviceableType == "job" ||
+                          checkIn?.serviceableType == "application")
                       ? Text(
-                          checkIns?.purpose ?? "",
+                          checkIn?.purpose ?? "",
                           style: AppTextStyles.style16Black500,
                         )
                       : SizedBox.shrink(),
@@ -82,55 +83,61 @@ class CheckInDetailsScreen extends StatelessWidget {
                       children: [
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('name'),
-                          value: checkIns?.name ?? "--",
+                          value: checkIn?.name ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('phone'),
-                          value: checkIns?.phone ?? "--",
+                          value: checkIn?.phone ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('email'),
-                          value: checkIns?.email ?? "--",
+                          value: checkIn?.email ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('unit'),
-                          value: checkIns?.unit?.unitNumber ?? "--",
+                          value: checkIn?.unit?.unitNumber ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate(
                               'currentVisitorsCount'),
-                          value: checkIns?.visitorCount ?? "--",
+                          value: checkIn?.visitorCount ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('visitPurpose'),
-                          value: checkIns?.purpose ?? "--",
+                          value: checkIn?.purpose ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
-                          title:
-                              AppUtils.languageTranslate('entryCardNumber'),
-                          value: checkIns?.entryCardNumber ?? "--",
+                          title: AppUtils.languageTranslate('entryCardNumber'),
+                          value: checkIn?.entryCardNumber ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('nationality'),
-                          value: checkIns?.visitor?.nationality ?? "--",
+                          value: checkIn?.visitor?.nationality ?? "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('checkInTime'),
                           value: DateTimeUtil.getFormattedDateTime(
-                              checkIns?.checkinTime),
+                              checkIn?.checkinTime),
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('checkInGate'),
-                          value: checkIns?.checkinGate ?? "--",
+                          value: checkIn?.checkinGate ?? "--",
+                        ),
+                        TitleValueRowDividerDetailsContainerWidget(
+                          title: AppUtils.languageTranslate('medium'),
+                          valueWidget: MobileWebIconWidget(
+                            isMobile: checkIn?.isMobile ?? false,
+                            isDecorationEnabled: false,
+                            iconColor: AppColors.darkGrey,
+                          ),
                         ),
                         Align(
                           alignment: context.locale.languageCode == 'en'
                               ? Alignment.topLeft
                               : Alignment.topRight,
                           child: ReadMoreWidget(
-                              title:
-                                  AppUtils.languageTranslate('description'),
-                              valueText: checkIns?.description ?? "--"),
+                              title: AppUtils.languageTranslate('description'),
+                              valueText: checkIn?.description ?? "--"),
                         ),
                       ],
                     ),
@@ -157,7 +164,7 @@ class CheckInDetailsScreen extends StatelessWidget {
                           primary: false,
                           itemCount: state.checkInLogs?.length ?? 0,
                           itemBuilder: (BuildContext context, int index) {
-                            CheckInLogs? checkInLogRecord =
+                            LogModel? checkInLogRecord =
                                 state.checkInLogs?[index];
                             bool isLast =
                                 (state.checkInLogs?.length ?? 0) - 1 == index;
@@ -192,8 +199,8 @@ class CheckInDetailsScreen extends StatelessWidget {
             onPressed: () {
               context
                   .read<CheckInsDetailsCubit>()
-                  .getCheckInDetailsLog(id: checkIns?.id);
-              _showCheckoutDialog(context, checkIns);
+                  .getCheckInDetailsLog(id: checkIn?.id);
+              _showCheckoutDialog(context, checkIn);
             }),
       ),
     );

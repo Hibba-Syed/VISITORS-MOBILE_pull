@@ -29,7 +29,7 @@ class MessageCubit extends Cubit<MessageState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(messageModel: response.record));
+      emit(state.copyWith(messages: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate(
@@ -58,9 +58,9 @@ class MessageCubit extends Cubit<MessageState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<MessageModel> checkIns = state.messageModel ?? [];
+        List<MessageModel> checkIns = state.messages ?? [];
         checkIns.addAll(response.record as Iterable<MessageModel>);
-        emit(state.copyWith(messageModel: checkIns));
+        emit(state.copyWith(messages: checkIns));
       } else {
         Fluttertoast.showToast(
             msg: AppUtils.languageTranslate('noMoreMessage'));

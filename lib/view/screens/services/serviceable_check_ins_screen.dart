@@ -81,7 +81,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                 ),
                 const Gap(15),
                 Expanded(
-                  child:  state.isLoading ? LoaderWidget() : state.checkInModel?.isNotEmpty ?? false ?
+                  child:  state.isLoading ? LoaderWidget() : state.checkIns?.isNotEmpty ?? false ?
                   RefreshIndicator(
                     onRefresh: ()async{
                    context.read<CheckInsCubit>().getCheckIns();
@@ -91,9 +91,9 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10),
                       shrinkWrap: true,
                       primary: false,
-                      itemCount: state.checkInModel?.length ?? 0,
+                      itemCount: state.checkIns?.length ?? 0,
                       itemBuilder: (context, index) {
-                        CheckInModel? checkIn = state.checkInModel?[index];
+                        CheckInModel? checkIn = state.checkIns?[index];
                         return CheckInCardWidget(
                           isServiceable: true,
                           phone: checkIn?.phone ?? '',
@@ -134,7 +134,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                                 .getCheckInDetailsLog(id: checkIn?.id);
                             Navigator.pushNamed(
                                 context, AppRoutes.checkInDetails,
-                                arguments: state.checkInModel?[index]);
+                                arguments: state.checkIns?[index]);
                           },
                         );
                       },

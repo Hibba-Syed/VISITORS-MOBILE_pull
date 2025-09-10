@@ -4,6 +4,7 @@ class AppRoutes {
   static const String workOrderJobDetails = '/work_order_job_details';
   static const String servicesDetails = '/services_details';
   static const String checkInDetails = '/check_in_details';
+  static const String checkOutDetails = '/check_out_details';
   static const String visitorPasses = '/visitor_passes';
   static const String serviceableCheckIns = '/serviceable_checkIns';
   static const String guestCheckIn = '/guest_checkIn';

@@ -5,27 +5,26 @@ class MessageState {
   final bool isSendMessageLoading;
   final bool loadMore;
   final int page;
-  List<MessageModel>? messageModel;
+  List<MessageModel>? messages;
   MessageState({
     this.isLoading = false,
-    this.messageModel,
+    this.messages,
     this.isSendMessageLoading = false,
     this.loadMore = false,
     this.page = 1,
   });
   MessageState copyWith({
     bool? isLoading,
-    List<MessageModel>? messageModel,
+    List<MessageModel>? messages,
     bool? isSendMessageLoading,
     bool? loadMore,
     int? page,
   }) {
     return MessageState(
         isLoading: isLoading ?? this.isLoading,
-        messageModel: messageModel ?? this.messageModel,
+        messages: messages ?? this.messages,
         isSendMessageLoading: isSendMessageLoading ?? this.isSendMessageLoading,
         page: page ?? this.page,
-      loadMore: loadMore ?? this.loadMore
-    );
+        loadMore: loadMore ?? this.loadMore);
   }
 }

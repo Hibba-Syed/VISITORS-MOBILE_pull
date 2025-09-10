@@ -30,7 +30,7 @@ class ServiceCubit extends Cubit<ServiceState> {
 
   void resetFilterData() {
     emit(ServiceState(
-      serviceModel: state.serviceModel,
+      services: state.services,
       isServicesDetailsLoading: state.isServicesDetailsLoading,
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,
@@ -61,7 +61,7 @@ class ServiceCubit extends Cubit<ServiceState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(serviceModel: response.record));
+      emit(state.copyWith(services: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
@@ -90,9 +90,9 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<ServiceModel> services = state.serviceModel ?? [];
+        List<ServiceModel> services = state.services ?? [];
         services.addAll(response.record as Iterable<ServiceModel>);
-        emit(state.copyWith(serviceModel: services,page: page));
+        emit(state.copyWith(services: services,page: page));
       } else {
         Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreService'));
         page = state.page - 1;

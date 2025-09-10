@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'check_in_log_model.dart';
+import '../log_model.dart';
 
 CheckInLogResponseModel checkInLogModelFromJson(String str) => CheckInLogResponseModel.fromJson(json.decode(str));
 
@@ -12,7 +12,7 @@ String checkInLogModelToJson(CheckInLogResponseModel data) => json.encode(data.t
 
 class CheckInLogResponseModel {
   String? status;
-  List<CheckInLogs>? record;
+  List<LogModel>? record;
   int? code;
   dynamic meta;
   bool? requestStatus;
@@ -29,7 +29,7 @@ class CheckInLogResponseModel {
 
   factory CheckInLogResponseModel.fromJson(Map<String, dynamic> json) => CheckInLogResponseModel(
     status: json["status"],
-    record: json["record"] == null ? [] : List<CheckInLogs>.from(json["record"]!.map((x) => CheckInLogs.fromJson(x))),
+    record: json["record"] == null ? [] : List<LogModel>.from(json["record"]!.map((x) => LogModel.fromJson(x))),
     code: json["code"],
     meta: json["meta"],
     requestStatus: json["request_status"],

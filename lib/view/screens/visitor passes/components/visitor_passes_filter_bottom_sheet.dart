@@ -20,7 +20,19 @@ class VisitorPassesFilterBottomSheet extends StatefulWidget {
       _VisitorPassesFilterBottomSheetState();
 }
 
-class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBottomSheet> {
+class _VisitorPassesFilterBottomSheetState
+    extends State<VisitorPassesFilterBottomSheet> {
+  UnitModel? _selectedUnit;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final visitorPassState = context.read<VisitorPassCubit>().state;
+      _selectedUnit = visitorPassState.selectedUnit;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,56 +42,59 @@ class _VisitorPassesFilterBottomSheetState extends State<VisitorPassesFilterBott
         decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
-            border: Border.all(color: AppColors.gray)
-        ),
+            border: Border.all(color: AppColors.gray)),
         child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(10),
-                 Align(
-                  alignment: Alignment.center,
-                  child: HeadingWidget(
-                      heading: AppUtils.languageTranslate('visitorPassesFilter'),
-                      style: AppTextStyles.style16black600),
-                ),
-                const Gap(15),
-                BlocBuilder<VisitorPassCubit, VisitorPassState>(
-                  builder: (context, state) {
-                    if (state.isUnitLoading) {
-                      return LoaderWidget();
-                    }
-                    return SingleSelectedDropdownWidget<UnitModel>(
-                        hint: AppUtils.languageTranslate('unit'),
-                        fillColor: AppColors.white,
-                        selectedItem:
-                        context.watch<VisitorPassCubit>().state.selectedUnit,
-                        itemAsString: (unit) => unit.unitNumber ?? "",
-                        compareFn: (unit, item) => unit.id == item.id,
-                        items: state.units ?? [],
-                        onChanged: (value) {
-                          context
-                              .read<VisitorPassCubit>()
-                              .onChangeSelectedUnit(value!);
-                        });
-
-                  },
-                ),
-                const Gap(30),
-                FilterButtonWidget(
-                  applyOnPressed: () {
-                    context.read<VisitorPassCubit>().getVisitorPasses();
-                    Navigator.pop(context);
-                  },
-                  clearOnPressed: () {
-                    context.read<VisitorPassCubit>().resetFilterData();
-                    Navigator.pop(context);
-                    context.read<VisitorPassCubit>().getVisitorPasses();
-                  },),
-              ],
-            )),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(10),
+              Align(
+                alignment: Alignment.center,
+                child: HeadingWidget(
+                    heading: AppUtils.languageTranslate('visitorPassesFilter'),
+                    style: AppTextStyles.style16black600),
+              ),
+              const Gap(15),
+              BlocBuilder<VisitorPassCubit, VisitorPassState>(
+                builder: (context, state) {
+                  if (state.isUnitLoading) {
+                    return LoaderWidget();
+                  }
+                  return SingleSelectedDropdownWidget<UnitModel>(
+                    hint: AppUtils.languageTranslate('unit'),
+                    fillColor: AppColors.white,
+                    selectedItem: _selectedUnit,
+                    itemAsString: (unit) => unit.unitNumber ?? "",
+                    compareFn: (unit, item) => unit.id == item.id,
+                    items: state.units ?? [],
+                    onChanged: (value) {
+                      _selectedUnit = value;
+                    },
+                  );
+                },
+              ),
+              const Gap(30),
+              FilterButtonWidget(
+                applyOnPressed: () {
+                  context
+                      .read<VisitorPassCubit>()
+                      .onChangeSelectedUnit(_selectedUnit);
+                  context.read<VisitorPassCubit>().getVisitorPasses();
+                  Navigator.pop(context);
+                },
+                clearOnPressed: () {
+                  _selectedUnit = null;
+                  context.read<VisitorPassCubit>().resetFilterData();
+                  Navigator.pop(context);
+                  context.read<VisitorPassCubit>().getVisitorPasses();
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

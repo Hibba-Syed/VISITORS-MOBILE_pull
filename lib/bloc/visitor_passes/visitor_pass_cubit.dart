@@ -23,7 +23,7 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 

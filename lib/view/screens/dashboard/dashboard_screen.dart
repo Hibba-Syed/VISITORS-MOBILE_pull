@@ -377,7 +377,7 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
-                  state.checkInsModel?.isEmpty ?? true
+                  state.checkIns?.isEmpty ?? true
                       ? SizedBox(
                           height: 100,
                           child: EmptyWidget(
@@ -389,10 +389,10 @@ class DashboardScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 10),
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: state.checkInsModel?.length ?? 0,
+                          itemCount: state.checkIns?.length ?? 0,
                           itemBuilder: (context, index) {
                             CheckInModel? checkIns =
-                                state.checkInsModel?[index];
+                                state.checkIns?[index];
                             return CheckInCardWidget(
                               phone: checkIns?.phone ?? "--",
                               count: checkIns?.visitorCount ?? "",
@@ -429,7 +429,7 @@ class DashboardScreen extends StatelessWidget {
                                     .getCheckInDetailsLog(id: checkIns?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.checkInDetails,
-                                    arguments: state.checkInsModel?[index]);
+                                    arguments: state.checkIns?[index]);
                               },
                             );
                           },
@@ -482,7 +482,7 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                   const Gap(15),
-                  state.serviceModel?.isEmpty ?? true
+                  state.services?.isEmpty ?? true
                       ? SizedBox(
                           height: 100,
                           child: EmptyWidget(
@@ -494,10 +494,10 @@ class DashboardScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 10),
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: state.serviceModel?.length ?? 0,
+                          itemCount: state.services?.length ?? 0,
                           itemBuilder: (context, index) {
                             ServiceModel? service =
-                                state.serviceModel?[index];
+                                state.services?[index];
                             return ServicesCardWidget(
                               isActiveCheckins:
                                   (service?.activeCheckIns?.isNotEmpty ??
@@ -581,7 +581,7 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                   const Gap(15),
-                  state.workOrderModel?.isEmpty ?? true
+                  state.workOrders?.isEmpty ?? true
                       ? SizedBox(
                           height: 100,
                           child: EmptyWidget(
@@ -592,10 +592,10 @@ class DashboardScreen extends StatelessWidget {
                       : ListView.separated(
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: state.workOrderModel?.length ?? 0,
+                          itemCount: state.workOrders?.length ?? 0,
                           itemBuilder: (context, index) {
                             WorkOrderModel? workOrder =
-                                state.workOrderModel?[index];
+                                state.workOrders?[index];
                             return WorkOrderRFPCardWidget(
                               isAwarded: workOrder?.isAwarded,
                               isActiveCheckins:
@@ -834,7 +834,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
-                state.checkInsModel?.isEmpty ?? true
+                state.checkIns?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
                         child: EmptyWidget(
@@ -845,9 +845,9 @@ class DashboardScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 10),
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: state.checkInsModel?.length ?? 0,
+                        itemCount: state.checkIns?.length ?? 0,
                         itemBuilder: (context, index) {
-                          CheckInModel? checkIns = state.checkInsModel?[index];
+                          CheckInModel? checkIns = state.checkIns?[index];
                           return CheckInCardWidget(
                             count: checkIns?.visitorCount ?? "",
                             typeImage: (checkIns?.type?.toLowerCase() ==
@@ -883,7 +883,7 @@ class DashboardScreen extends StatelessWidget {
                                   .getCheckInDetailsLog(id: checkIns?.id);
                               Navigator.pushNamed(
                                   context, AppRoutes.checkInDetails,
-                                  arguments: state.checkInsModel?[index]);
+                                  arguments: state.checkIns?[index]);
                             },
                           );
                         },
@@ -933,7 +933,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
-                state.serviceModel?.isEmpty ?? true
+                state.services?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
                         child: EmptyWidget(
@@ -944,9 +944,9 @@ class DashboardScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 10),
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: state.serviceModel?.length ?? 0,
+                        itemCount: state.services?.length ?? 0,
                         itemBuilder: (context, index) {
-                          ServiceModel? service = state.serviceModel?[index];
+                          ServiceModel? service = state.services?[index];
                           return ServicesCardWidget(
                             isActiveCheckins:
                                 (service?.activeCheckIns?.isNotEmpty ?? true)
@@ -1027,7 +1027,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
-                state.workOrderModel?.isEmpty ?? true
+                state.workOrders?.isEmpty ?? true
                     ? SizedBox(
                         height: 100,
                         child: EmptyWidget(
@@ -1037,10 +1037,10 @@ class DashboardScreen extends StatelessWidget {
                     : ListView.separated(
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: state.workOrderModel?.length ?? 0,
+                        itemCount: state.workOrders?.length ?? 0,
                         itemBuilder: (context, index) {
                           WorkOrderModel? workOrder =
-                              state.workOrderModel?[index];
+                              state.workOrders?[index];
                           return WorkOrderRFPCardWidget(
                             isAwarded: workOrder?.isAwarded,
                             isActiveCheckins:

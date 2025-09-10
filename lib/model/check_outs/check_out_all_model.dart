@@ -23,7 +23,7 @@ class CheckOutAll {
   String? email;
   dynamic description;
   UnitModel? unit;
-  Visitor? visitor;
+  VisitorModel? visitor;
   dynamic vendor;
 
   CheckOutAll({
@@ -74,7 +74,7 @@ class CheckOutAll {
     email: json["email"],
     description: json["description"],
     unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
-    visitor: json["visitor"] == null ? null : Visitor.fromJson(json["visitor"]),
+    visitor: json["visitor"] == null ? null : VisitorModel.fromJson(json["visitor"]),
     vendor: json["vendor"],
   );
 

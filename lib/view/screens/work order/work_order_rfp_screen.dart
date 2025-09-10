@@ -104,17 +104,17 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                       },
                       child: state.isLoading
                           ? LoaderWidget()
-                          : state.workOrderModel?.isNotEmpty ?? true
+                          : state.workOrders?.isNotEmpty ?? true
                               ? ListView.separated(
                                   controller: _scrollController,
                                   physics: AlwaysScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   primary: false,
                                   itemCount:
-                                      state.workOrderModel?.length ?? 0,
+                                      state.workOrders?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     WorkOrderModel? workOrder =
-                                        state.workOrderModel?[index];
+                                        state.workOrders?[index];
                                     return WorkOrderRFPCardWidget(
                                       isAwarded: workOrder?.isAwarded,
                                       status: workOrder?.status ?? "--",

@@ -6,7 +6,7 @@ import 'package:visitors/repo/visitor/visitor_repo.dart';
 import 'package:visitors/repo/visitor/visitor_repo_impl.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-import '../../../model/check_ins/check_in_log_model.dart';
+import '../../../model/log_model.dart';
 import '../../../model/check_ins/check_in_log_response_model.dart';
 import '../../../model/check_out/check_out_model.dart';
 import '../../../model/check_outs/check_out_visitor_response_model.dart';

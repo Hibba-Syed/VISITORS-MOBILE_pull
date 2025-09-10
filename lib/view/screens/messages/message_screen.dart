@@ -86,7 +86,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                     MediaQuery.of(context).size.height / 3),
                             child: LoaderWidget(),
                           )
-                        : state.messageModel?.isEmpty ?? true
+                        : state.messages?.isEmpty ?? true
                             ? EmptyWidget(
                                 text: AppUtils.languageTranslate(
                                     'noDataAvailable'),
@@ -96,10 +96,10 @@ class _MessageScreenState extends State<MessageScreen> {
                                 padding: EdgeInsets.only(top: 10, bottom: 10),
                                 physics: AlwaysScrollableScrollPhysics(),
                                 controller: _scrollController,
-                                itemCount: state.messageModel?.length ?? 0,
+                                itemCount: state.messages?.length ?? 0,
                                 itemBuilder: (context, index) {
                                   MessageModel? message =
-                                      state.messageModel?[index];
+                                      state.messages?[index];
                                   return Row(
                                     mainAxisAlignment: message?.by == 'user'
                                         ? MainAxisAlignment.start

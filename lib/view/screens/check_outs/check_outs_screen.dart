@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart' show Gap;
+import 'package:visitors/bloc/check_out/details/check_out_details_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
@@ -15,6 +16,7 @@ import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../model/check_out/check_out_model.dart';
 import '../../../resource/constants/images.dart';
 import '../../../service/download_file/pdf_downloader.dart';
+import '../../../utils/routes/app_routes.dart';
 import '../../widgets/empty_widget.dart';
 import 'components/check_outs_card_widget.dart';
 import 'components/check_outs_filter_bottom_sheet.dart';
@@ -37,9 +39,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        context.read<CheckOutCubit>().getMoreCheckOut(
-          keyword: _searchController.text
-        );
+        context
+            .read<CheckOutCubit>()
+            .getMoreCheckOut(keyword: _searchController.text);
       }
     });
   }
@@ -47,10 +49,13 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
   @override
   void didChangeDependencies() {
     final locale = Localizations.localeOf(context);
-    if (locale != _currentLocale) {    _currentLocale = locale;
-    setState(() {});  }
+    if (locale != _currentLocale) {
+      _currentLocale = locale;
+      setState(() {});
+    }
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -72,9 +77,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                       controller: _searchController,
                       onClearPressed: () async {
                         _searchController.clear();
-                        context
-                            .read<CheckOutCubit>()
-                            .onChangeSearchKeyWord('');
+                        context.read<CheckOutCubit>().onChangeSearchKeyWord('');
                         context.read<CheckOutCubit>().getCheckOuts();
                       },
                       onFieldSubmitted: (value) {
@@ -84,10 +87,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                         context.read<CheckOutCubit>().getCheckOuts();
                       },
                       isFilterApplied: (state.selectedUnit != null) ||
-                              (state.selectedType?.value.isNotEmpty ??
-                                  false) ||
+                              (state.selectedType?.value.isNotEmpty ?? false) ||
                               (state.selectedVendor != null) ||
-                              (state.selectedDateRang != null) ||
+                              (state.selectedDateRange != null) ||
                               (state.selectedRange != null)
                           ? true
                           : false,
@@ -99,47 +101,48 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                     Expanded(
                       child: state.isCheckOutLoading
                           ? const LoaderWidget()
-                          : state.checkOutVisitors?.isNotEmpty ?? false
+                          : state.checkOuts?.isNotEmpty ?? false
                               ? RefreshIndicator(
                                   onRefresh: () async {
                                     await context
                                         .read<CheckOutCubit>()
                                         .getCheckOuts(
-                                        keyword: _searchController.text
-                                    );
+                                            keyword: _searchController.text);
                                   },
                                   child: ListView.separated(
                                     controller: _scrollController,
                                     physics: AlwaysScrollableScrollPhysics(),
-                                    padding:
-                                        const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.only(bottom: 10),
                                     shrinkWrap: true,
                                     primary: false,
-                                    itemCount:
-                                        state.checkOutVisitors?.length ?? 0,
+                                    itemCount: state.checkOuts?.length ?? 0,
                                     itemBuilder: (context, index) {
-                                      CheckOutVisitor? checkOutModel =
-                                          state.checkOutVisitors?[index];
-                                      return CheckOutsCardWidget(
-                                        visitorCount:
-                                            checkOutModel?.visitorCount ?? "",
-                                        typeText:
-                                            checkOutModel?.unit?.unitNumber ??
-                                                "",
-                                        name: checkOutModel?.name ?? "--",
-                                        profileImageUrl: checkOutModel
-                                                ?.visitor?.imageUrl ??
-                                            "",
-                                        type: checkOutModel?.type ?? "--",
+                                      CheckOutModel? item =
+                                          state.checkOuts?[index];
+                                      return CheckOutCardWidget(
+                                        visitorCount: item?.visitorCount ?? "",
+                                        typeText: item?.unit?.unitNumber ?? "",
+                                        name: item?.name ?? "--",
+                                        profileImageUrl:
+                                            item?.visitor?.imageUrl ?? "",
+                                        type: item?.type ?? "--",
                                         checkInDate:
                                             DateTimeUtil.getFormattedDateTime(
-                                                checkOutModel?.checkinTime
-                                                    .toString()),
+                                                item?.checkinTime.toString()),
                                         checkOutDate:
                                             DateTimeUtil.getFormattedDateTime(
-                                                checkOutModel?.checkoutTime
-                                                    .toString()),
-                                        phone: checkOutModel?.phone ?? "--",
+                                                item?.checkoutTime.toString()),
+                                        phone: item?.phone ?? "--",
+                                        isMobile: item?.isMobile,
+                                        onTap: () {
+                                          context
+                                              .read<CheckoutDetailsCubit>()
+                                              .getCheckOutDetailsLog(
+                                                  id: item?.id);
+                                          Navigator.pushNamed(context,
+                                              AppRoutes.checkOutDetails,
+                                              arguments: item);
+                                        },
                                       );
                                     },
                                     separatorBuilder:
@@ -148,8 +151,9 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                     },
                                   ),
                                 )
-                              :  EmptyWidget(
-                                  text: AppUtils.languageTranslate('noDataAvailable'),
+                              : EmptyWidget(
+                                  text: AppUtils.languageTranslate(
+                                      'noDataAvailable'),
                                 ),
                     ),
                     if (state.loadMore) const LoaderWidget(),
@@ -164,7 +168,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
               FileDownloader.downloadFile(
                   context: context,
                   dateRage:
-                      '${context.read<CheckOutCubit>().state.selectedDateRang ?? ""}');
+                      '${context.read<CheckOutCubit>().state.selectedDateRange ?? ""}');
             },
             icon: SvgPicture.asset(
               AppImages.export,

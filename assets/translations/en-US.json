@@ -65,6 +65,8 @@
     "nationality": "Nationality",
     "checkInTime": "Check In Time",
     "checkInGate": "Check In Gate",
+    "checkOutTime": "Check Out Time",
+    "checkOutGate": "Check Out Gate",
     "description": "Description",
     "export": "Export",
     "checkInFilter": "Check In Filter",
@@ -184,6 +186,7 @@
     "somethingWentWrongWhileFetchingUnits": "Something went wrong while fetching units",
     "somethingWentWrongWhileFetchingVendors": "Something went wrong while fetching vendors",
     "somethingWentWrongWhileFetchingCheckInLogDetails": "Something went wrong while fetching check in log details",
+    "somethingWentWrongWhileFetchingCheckOutLogDetails": "Something went wrong while fetching check out log details",
     "somethingWentWrongWhileFetchingCheckOut": "Something went wrong while fetching check out",
     "noMoreCheckouts": "No more check-outs",
     "somethingWentWrongWhileFetchingCheckouts": "Something went wrong while fetching check-outs",
@@ -296,7 +299,9 @@
     "companyTradeLicense": "Company Trade License",
     "contactPersonEmiratesId": "Contact Person Emirates ID",
     "selectDate": "Select date",
-    "checkOutFilter": "Check-Out Filter"
+    "checkOutFilter": "Check-Out Filter",
+    "checkoutDetails": "Check-Out Details",
+    "medium": "متوسط"
 
 
 

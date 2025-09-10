@@ -8,10 +8,10 @@ class CheckOutState {
   final bool loadMore;
   final bool isCheckOutLoading;
   final int page;
-  final List<CheckOutVisitor>? checkOutVisitors;
+  final List<CheckOutModel>? checkOuts;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  final DateTimeRange? selectedDateRang;
+  final DateTimeRange? selectedDateRange;
   final String? selectedRange;
   final TypeModel? selectedType;
   final UnitModel? selectedUnit;
@@ -24,11 +24,11 @@ class CheckOutState {
     this.isUnitLoading = false,
     this.isVendorLoading = false,
     this.page = 1,
-    this.checkOutVisitors,
+    this.checkOuts,
     this.units,
     this.vendors,
     this.isCheckOutAllLoading = false,
-    this.selectedDateRang,
+    this.selectedDateRange,
     this.selectedRange,
     this.isCheckOutLoading = false,
     this.selectedType,
@@ -47,10 +47,10 @@ class CheckOutState {
     bool? isCheckOutLoading,
     bool? loadMore,
     int? page,
-    List<CheckOutVisitor>? checkOutVisitors,
+    List<CheckOutModel>? checkOuts,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    Object? selectedDateRang = _sentinel,
+    Object? selectedDateRange = _sentinel,
     Object? selectedRange = _sentinel,
     Object? selectedType = _sentinel,
     Object? selectedUnit = _sentinel,
@@ -65,14 +65,14 @@ class CheckOutState {
       isCheckOutLoading: isCheckOutLoading ?? this.isCheckOutLoading,
       loadMore: loadMore ?? this.loadMore,
       page: page ?? this.page,
-      checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
+      checkOuts: checkOuts ?? this.checkOuts,
       vendors: vendors ?? this.vendors,
       units: units ?? this.units,
 
       // 👇 sentinel handling
-      selectedDateRang: identical(selectedDateRang, _sentinel)
-          ? this.selectedDateRang
-          : selectedDateRang as DateTimeRange?,
+      selectedDateRange: identical(selectedDateRange, _sentinel)
+          ? this.selectedDateRange
+          : selectedDateRange as DateTimeRange?,
       selectedRange: identical(selectedRange, _sentinel)
           ? this.selectedRange
           : selectedRange as String?,

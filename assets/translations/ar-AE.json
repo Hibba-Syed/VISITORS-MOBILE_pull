@@ -65,6 +65,8 @@
     "nationality": "الجنسية",
     "checkInTime": "وقت تسجيل الوصول",
     "checkInGate": "بوابة تسجيل الوصول",
+    "checkOutTime": "وقت تسجيل الخروج",
+    "checkOutGate": "بوابة تسجيل الخروج",
     "description": "الوصف",
     "export": "تصدير",
     "checkInFilter": "فلتر تسجيل الوصول",
@@ -187,6 +189,7 @@
     "somethingWentWrongWhileFetchingUnits": "حدث خطأ أثناء جلب الوحدات",
     "somethingWentWrongWhileFetchingVendors": "حدث خطأ أثناء جلب الموردين",
     "somethingWentWrongWhileFetchingCheckInLogDetails": "حدث خطأ أثناء جلب تفاصيل سجل تسجيل الوصول",
+    "somethingWentWrongWhileFetchingCheckOutLogDetails": "حدث خطأ أثناء جلب تفاصيل سجل تسجيل الخروج",
     "somethingWentWrongWhileFetchingCheckOut": "حدث خطأ أثناء جلب تسجيلات الخروج",
     "noMoreCheckouts": "لا توجد تسجيلات خروج إضافية",
     "somethingWentWrongWhileFetchingCheckouts": "حدث خطأ أثناء جلب تسجيلات الخروج",
@@ -296,7 +299,10 @@
     "companyTradeLicense": "رخصة التجارة للشركة",
     "contactPersonEmiratesId": "هوية الإمارات لشخص الاتصال",
     "selectDate": "اختر التاريخ",
-    "checkOutFilter": "فلتر تسجيل الخروج"
+    "checkOutFilter": "فلتر تسجيل الخروج",
+    "checkoutDetails": "تفاصيل تسجيل الخروج",
+    "medium": "Medium"
+
 
 
 

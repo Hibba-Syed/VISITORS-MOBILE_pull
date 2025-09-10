@@ -13,6 +13,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
   final IconData? valueIcon;
   final bool isLast;
   final String? url;
+  final Widget? valueWidget;
 
   const TitleValueRowDividerDetailsContainerWidget({
     super.key,
@@ -23,15 +24,17 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
     this.isLast = false,
     this.valueIcon,
     this.url,
+    this.valueWidget,
   });
 
   Future<void> _launchUrl(String url) async {
     final uri = Uri.tryParse(url);
     if (uri != null && await canLaunchUrl(uri)) {
-      await launchUrl(uri,);
+      await launchUrl(
+        uri,
+      );
     } else {
       Fluttertoast.showToast(msg: 'Could not launch URL');
-
     }
   }
 
@@ -49,8 +52,7 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
           children: [
             Expanded(
               flex: 4,
-              child:
-              Text(
+              child: Text(
                 title,
                 style: AppUtils.isTablet(context)
                     ? AppTextStyles.style15Black600
@@ -61,35 +63,38 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
               flex: 5,
               child: valueIcon != null
                   ? Icon(
-                valueIcon,
-                color: valueColor ?? AppColors.red,
-                size: AppUtils.isTablet(context) ? 20 : 16,
-              )
+                      valueIcon,
+                      color: valueColor ?? AppColors.red,
+                      size: AppUtils.isTablet(context) ? 20 : 16,
+                    )
                   : url != null
-                  ? InkWell(
-                onTap: () => _launchUrl(url!),
-                child: Text( title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: textColor ?? AppColors.primary,
-                    fontWeight:  FontWeight.w500,
-                    fontSize: AppUtils.isTablet(context)  ? 15 :  13,
-                    //AppTextStyles.style10Black400
-                  ),
-                ),
-              )
-                  : Text(
-                value ?? "",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: textColor ?? AppColors.darkGrey,
-                  fontWeight:  FontWeight.w500,
-                  fontSize: AppUtils.isTablet(context)  ? 15 :  13,
-                  //AppTextStyles.style10Black400
-                ),
-              ),
+                      ? InkWell(
+                          onTap: () => _launchUrl(url!),
+                          child: Text(
+                            title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: textColor ?? AppColors.primary,
+                              fontWeight: FontWeight.w500,
+                              fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                              //AppTextStyles.style10Black400
+                            ),
+                          ),
+                        )
+                      : valueWidget != null
+                          ? valueWidget!
+                          : Text(
+                              value ?? "",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: textColor ?? AppColors.darkGrey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                                //AppTextStyles.style10Black400
+                              ),
+                            ),
             ),
           ],
         ),
@@ -101,4 +106,3 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
     );
   }
 }
-

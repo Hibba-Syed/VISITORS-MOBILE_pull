@@ -32,7 +32,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   }
   void resetFilterData() {
     emit(WorkOrderState(
-      workOrderModel: state.workOrderModel,
+      workOrders: state.workOrders,
       isLoading: state.isLoading,
       loadMore: state.loadMore,
       isVendorLoading: state.isVendorLoading,
@@ -62,7 +62,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(workOrderModel: response.record));
+      emit(state.copyWith(workOrders: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderRfp'));
@@ -110,9 +110,9 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<WorkOrderModel> workOrders = state.workOrderModel ?? [];
+        List<WorkOrderModel> workOrders = state.workOrders ?? [];
         workOrders.addAll(response.record as Iterable<WorkOrderModel>);
-        emit(state.copyWith(workOrderModel: workOrders));
+        emit(state.copyWith(workOrders: workOrders));
       } else {
         Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreWorkOrder'));
         page = state.page - 1;

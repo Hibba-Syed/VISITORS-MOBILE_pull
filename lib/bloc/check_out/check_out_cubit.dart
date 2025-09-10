@@ -23,22 +23,24 @@ class CheckOutCubit extends Cubit<CheckOutState> {
 
   final CheckOutRepo _checkOutRepo = CheckOutRepoImpl();
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
-  final  UnitsRepo _unitsRepo = UnitsRepoImpl();
+  final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
   void onChangeSelectedRange(String? rangeLabel) {
     emit(state.copyWith(selectedRange: rangeLabel));
   }
 
   void onChangeDateRange(DateTimeRange? dateRange) {
-    emit(state.copyWith(selectedDateRang: dateRange));
+    emit(state.copyWith(selectedDateRange: dateRange));
   }
 
   void onChangeSelectedType(TypeModel? type) {
     emit(state.copyWith(selectedType: type));
   }
+
   void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
+
   void onChangeSelectedVendors(VendorModel? vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
@@ -49,7 +51,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
 
   void resetFilterData() {
     emit(CheckOutState(
-      checkOutVisitors: state.checkOutVisitors,
+      checkOuts: state.checkOuts,
       isCheckOutAllLoading: state.isCheckOutAllLoading,
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,
@@ -59,24 +61,24 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       units: state.units,
       vendors: state.vendors,
       isCheckOutLoading: state.isCheckOutLoading,
-
-    )
-    );
+    ));
   }
 
-  Future<void> getCheckOuts({ String? keyword}
-      ) async {
-    emit(state.copyWith(isCheckOutLoading: true,page: 1));
-    CheckOutResponseModel? response =
-    await _checkOutRepo.getCheckOuts(
-       page: state.page,
-        keyword: state.searchKeyword,
-        unitId: state.selectedUnit?.id,
-        dateRange: state.selectedDateRang == null ? null : DateTimeUtil.getFormatDateRange(state.selectedDateRang),
-        serviceableType: state.selectedType?.value,
-        vendorId: state.selectedVendor?.id,
-    ).onError(
-          (error, stackTrace) {
+  Future<void> getCheckOuts({String? keyword}) async {
+    emit(state.copyWith(isCheckOutLoading: true, page: 1));
+    CheckOutResponseModel? response = await _checkOutRepo
+        .getCheckOuts(
+      page: state.page,
+      keyword: state.searchKeyword,
+      unitId: state.selectedUnit?.id,
+      dateRange: state.selectedDateRange == null
+          ? null
+          : DateTimeUtil.getFormatDateRange(state.selectedDateRange),
+      serviceableType: state.selectedType?.value,
+      vendorId: state.selectedVendor?.id,
+    )
+        .onError(
+      (error, stackTrace) {
         emit(state.copyWith(isCheckOutLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -86,11 +88,14 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     );
     emit(state.copyWith(isCheckOutLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(checkOutVisitors: response.record));
+      emit(state.copyWith(checkOuts: response.record));
     } else {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckOut'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCheckOut'));
     }
   }
+
   Future<void> getMoreCheckOut({
     String? keyword,
   }) async {
@@ -101,13 +106,14 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       page: state.page,
       keyword: state.searchKeyword,
       unitId: state.selectedUnit?.id,
-      dateRange:state.selectedDateRang == null ? null : DateTimeUtil.getFormatDateRange(state.selectedDateRang),
+      dateRange: state.selectedDateRange == null
+          ? null
+          : DateTimeUtil.getFormatDateRange(state.selectedDateRange),
       serviceableType: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
-
     )
         .onError(
-          (error, stackTrace) {
+      (error, stackTrace) {
         emit(state.copyWith(loadMore: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -118,9 +124,9 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<CheckOutVisitor> checkIns = state.checkOutVisitors ?? [];
-        checkIns.addAll(response.record as Iterable<CheckOutVisitor>);
-        emit(state.copyWith(checkOutVisitors: checkIns));
+        List<CheckOutModel> checkouts = state.checkOuts ?? [];
+        checkouts.addAll(response.record as Iterable<CheckOutModel>);
+        emit(state.copyWith(checkOuts: checkouts));
       } else {
         Fluttertoast.showToast(msg: 'No more check-outs');
         page = state.page - 1;
@@ -128,14 +134,15 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       }
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingCheckouts'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCheckouts'));
     }
   }
 
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
     UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
-          (error, stackTrace) {
+      (error, stackTrace) {
         emit(state.copyWith(isUnitLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -147,15 +154,17 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingUnits'));
     }
   }
 
   Future<void> getVendors() async {
     emit(state.copyWith(isVendorLoading: true));
     VendorsResponseModel? response =
-    await _generalFilterRepo.getVendors().onError(
-          (error, stackTrace) {
+        await _generalFilterRepo.getVendors().onError(
+      (error, stackTrace) {
         emit(state.copyWith(isVendorLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -168,7 +177,8 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       emit(state.copyWith(vendors: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVendors'));
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingVendors'));
     }
   }
 }

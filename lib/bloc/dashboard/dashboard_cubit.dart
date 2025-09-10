@@ -78,7 +78,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isCheckInLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(checkInsModel: response.record));
+      emit(state.copyWith(checkIns: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate(
@@ -122,7 +122,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isServicesLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(serviceModel: response.record));
+      emit(state.copyWith(services: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate(
@@ -144,7 +144,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isWorkOrderLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(workOrderModel: response.record));
+      emit(state.copyWith(workOrders: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate(

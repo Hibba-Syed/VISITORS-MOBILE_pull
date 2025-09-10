@@ -5,6 +5,7 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
+import 'package:visitors/view/widgets/mobile_web_icon_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
@@ -68,28 +69,9 @@ class CheckInCardWidget extends StatelessWidget {
                         //typeBackgroundColor,
                         text: type,
                       ),
-                Tooltip(
-                  message: isMobile == true
-                      ? AppUtils.languageTranslate("mobile_check_in")
-                      : AppUtils.languageTranslate("web_check_in"),
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(6),
-                          topLeft: Radius.circular(6),
-                        ),
-                        color: Colors.grey.shade400),
-                    child: Icon(
-                      isMobile == true
-                          ? Icons.phone_iphone
-                          : Icons.desktop_mac_outlined,
-                      color: AppColors.lightGrey,
-                      size: 19,
-                    ),
-                  ),
-                )
+                MobileWebIconWidget(
+                  isMobile: isMobile ?? false,
+                ),
               ],
             ),
           ],

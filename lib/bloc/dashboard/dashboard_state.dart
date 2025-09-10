@@ -11,12 +11,12 @@ class DashboardState {
   final bool? isVisitorPassesCountLoading;
   final ProfileRecord? profileRecord;
   final int page;
-  final List<CheckInModel>? checkInsModel;
-  final List<ServiceModel>? serviceModel;
-  final List<WorkOrderModel>? workOrderModel;
-  final List<CheckOutVisitor>? checkOutModel;
+  final List<CheckInModel>? checkIns;
+  final List<ServiceModel>? services;
+  final List<WorkOrderModel>? workOrders;
+  final List<CheckOutModel>? checkOuts;
   final List<VisitorPasses>? visitorPasses;
-  final List<CheckOutVisitor>? checkOutVisitors;
+  final List<CheckOutModel>? checkOutVisitors;
   final VisitorPassesCount? visitorPassesCount;
   final CountModel? countModel;
 
@@ -29,12 +29,12 @@ class DashboardState {
     this.isVisitorPassesCountLoading = false,
     this.profileRecord,
     this.page = 1,
-    this.checkInsModel,
+    this.checkIns,
     this.countModel,
-    this.serviceModel,
+    this.services,
     this.isWorkOrderLoading,
-    this.workOrderModel,
-    this.checkOutModel,
+    this.workOrders,
+    this.checkOuts,
     this.visitorPasses,
     this.isCheckOutVisitor,
     this.checkOutVisitors,
@@ -51,34 +51,35 @@ class DashboardState {
     bool? isVisitorPassesCountLoading,
     ProfileRecord? profileRecord,
     int? page,
-    List<CheckInModel>? checkInsModel,
-    List<ServiceModel>? serviceModel,
-    List<WorkOrderModel>? workOrderModel,
-    List<CheckOutVisitor>? checkOutModel,
+    List<CheckInModel>? checkIns,
+    List<ServiceModel>? services,
+    List<WorkOrderModel>? workOrders,
+    List<CheckOutModel>? checkOuts,
     List<VisitorPasses>? visitorPasses,
     VisitorPassesCount? visitorPassesCount,
-    List<CheckOutVisitor>? checkOutVisitors,
+    List<CheckOutModel>? checkOutVisitors,
     CountModel? countModel,
   }) {
     return DashboardState(
-        isLoading: isLoading ?? this.isLoading,
-        isCheckInLoading: isCheckInLoading ?? this.isCheckInLoading,
-        isCountLoading: isCountLoading ?? this.isCountLoading,
-        isServicesLoading: isServicesLoading ?? this.isServicesLoading,
-        isWorkOrderLoading: isWorkOrderLoading ?? this.isWorkOrderLoading,
-        profileRecord: profileRecord ?? this.profileRecord,
-        page: page ?? this.page,
-        checkInsModel: checkInsModel ?? this.checkInsModel,
-        countModel: countModel ?? this.countModel,
-        serviceModel: serviceModel ?? this.serviceModel,
-        workOrderModel: workOrderModel ?? this.workOrderModel,
-        checkOutModel: checkOutModel ?? this.checkOutModel,
-        visitorPasses: visitorPasses ?? this.visitorPasses,
-        isVisitorPassLoading: isVisitorPassLoading ?? this.isVisitorPassLoading,
-        isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
-        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
-        isVisitorPassesCountLoading: isVisitorPassesCountLoading ?? this.isVisitorPassesCountLoading,
-        visitorPassesCount: visitorPassesCount ?? this.visitorPassesCount,
+      isLoading: isLoading ?? this.isLoading,
+      isCheckInLoading: isCheckInLoading ?? this.isCheckInLoading,
+      isCountLoading: isCountLoading ?? this.isCountLoading,
+      isServicesLoading: isServicesLoading ?? this.isServicesLoading,
+      isWorkOrderLoading: isWorkOrderLoading ?? this.isWorkOrderLoading,
+      profileRecord: profileRecord ?? this.profileRecord,
+      page: page ?? this.page,
+      checkIns: checkIns ?? this.checkIns,
+      countModel: countModel ?? this.countModel,
+      services: services ?? this.services,
+      workOrders: workOrders ?? this.workOrders,
+      checkOuts: checkOuts ?? this.checkOuts,
+      visitorPasses: visitorPasses ?? this.visitorPasses,
+      isVisitorPassLoading: isVisitorPassLoading ?? this.isVisitorPassLoading,
+      isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
+      checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
+      isVisitorPassesCountLoading:
+          isVisitorPassesCountLoading ?? this.isVisitorPassesCountLoading,
+      visitorPassesCount: visitorPassesCount ?? this.visitorPassesCount,
     );
   }
 }

@@ -27,7 +27,7 @@ class CheckInModel {
   DateTime? createdAt;
   DateTime? updatedAt;
   UnitModel? unit;
-  Visitor? visitor;
+  VisitorModel? visitor;
   Serviceable? serviceable;
   Vendor? vendor;
   bool? isMobile;
@@ -93,7 +93,7 @@ class CheckInModel {
             : DateTime.parse(json["updated_at"]),
         unit: json["unit"] == null ? null : UnitModel.fromJson(json["unit"]),
         visitor:
-            json["visitor"] == null ? null : Visitor.fromJson(json["visitor"]),
+            json["visitor"] == null ? null : VisitorModel.fromJson(json["visitor"]),
         serviceable: json["serviceable"] == null
             ? null
             : Serviceable.fromJson(json["serviceable"]),

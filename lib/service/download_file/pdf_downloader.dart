@@ -38,7 +38,6 @@ class FileDownloader {
     final downloadUrl = _getDownloadUrl(
         dateRange: dateRage
     );
-    print('Download URL: $downloadUrl');
 
     final token = _getAuthToken(context);
     final progressDialog = _createProgressDialog(context);
@@ -49,8 +48,6 @@ class FileDownloader {
       if (response.statusCode == 200 && context.mounted) {
         await _handleFileDownload(
             context, progressDialog, response);
-        print('Response status: ${response.statusCode}');
-        print('Response body: ${response.body}');
       } else if(response.statusCode== 404){
         progressDialog.hide();
         if(context.mounted){

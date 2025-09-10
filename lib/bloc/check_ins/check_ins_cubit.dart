@@ -67,7 +67,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
 
   void resetFilterData() {
     emit(CheckInsState(
-      checkInModel: state.checkInModel,
+      checkIns: state.checkIns,
       isCheckOutAllLoading: state.isCheckOutAllLoading,
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,
@@ -100,7 +100,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(checkInModel: response.record));
+      emit(state.copyWith(checkIns: response.record));
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate(
@@ -135,9 +135,9 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<CheckInModel> checkIns = state.checkInModel ?? [];
+        List<CheckInModel> checkIns = state.checkIns ?? [];
         checkIns.addAll(response.record as Iterable<CheckInModel>);
-        emit(state.copyWith(checkInModel: checkIns));
+        emit(state.copyWith(checkIns: checkIns));
       } else {
         Fluttertoast.showToast(
             msg: AppUtils.languageTranslate('noMoreCheckins'));

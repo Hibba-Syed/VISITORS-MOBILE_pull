@@ -100,7 +100,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                   Expanded(
                     child: state.isLoading
                         ? LoaderWidget()
-                        : state.serviceModel?.isNotEmpty ?? true
+                        : state.services?.isNotEmpty ?? true
                             ? RefreshIndicator(
                                 onRefresh: () async {
                                   context.read<ServiceCubit>().getServices(
@@ -113,10 +113,10 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                   physics: AlwaysScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount: state.serviceModel?.length ?? 0,
+                                  itemCount: state.services?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     ServiceModel? service =
-                                        state.serviceModel?[index];
+                                        state.services?[index];
                                     return ServicesCardWidget(
                                       isActiveCheckins: (service
                                                   ?.activeCheckIns

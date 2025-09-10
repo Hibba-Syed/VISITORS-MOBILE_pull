@@ -84,10 +84,10 @@ class JobCheckInsScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10),
                       shrinkWrap: true,
                       primary: false,
-                      itemCount: state.checkInModel?.length ?? 0,
+                      itemCount: state.checkIns?.length ?? 0,
                       itemBuilder: (context, index) {
                         CheckInModel? checkIn =
-                            state.checkInModel?[index];
+                            state.checkIns?[index];
                         return CheckInCardWidget(
                           phone: checkIn?.phone?? "--",
                           isServiceable: true,
@@ -128,7 +128,7 @@ class JobCheckInsScreen extends StatelessWidget {
                                 .getCheckInDetailsLog(id: checkIn?.id);
                             Navigator.pushNamed(
                                 context, AppRoutes.checkInDetails,
-                                arguments: state.checkInModel?[index]);
+                                arguments: state.checkIns?[index]);
                           },
                         );
                       },

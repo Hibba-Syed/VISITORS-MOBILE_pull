@@ -16,10 +16,12 @@ class VisitorRepoImpl implements VisitorRepo {
   }) async {
     try {
       String url = '${ApiUrl.checkOutVisitor}/$id';
-      // print('checkOutVisitors$url');
+      Map<String, dynamic> formData = {
+        ...data,
+        "is_mobile": true,
+      };
       dynamic response =
-          await _apiService.getAuthPutApiResponse(url, data: data);
-      // print('checkOutVisitors$response');
+          await _apiService.getAuthPutApiResponse(url, data: formData);
       return CheckOutVisitorResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

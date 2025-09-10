@@ -101,8 +101,6 @@ class NetworkApiServices implements BaseApiServices {
       debugPrint(
           'status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
-       print('response::: ${response.body}');
-       print('response::: ${response.statusCode}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     }
@@ -237,8 +235,6 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
-       print('response::: ${response.body}');
-       print('response::: ${response.statusCode}');
       responseJson = returnResponse(response);
 
       return responseJson;

@@ -68,7 +68,6 @@ class CheckInRepoImpl implements CheckInRepo {
         ...data,
         "is_mobile": true,
       };
-      print('guestCheckIn$url');
       dynamic response =
           await _apiService.getAuthPostApiResponse(url, formData);
       return GuestCheckInResponseModel.fromJson(response);

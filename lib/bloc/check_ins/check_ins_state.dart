@@ -9,7 +9,7 @@ class CheckInsState {
   final bool loadMore;
   final int page;
   final int? serviceableId;
-  final List<CheckInModel>? checkInModel;
+  final List<CheckInModel>? checkIns;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final UnitModel? selectedUnit;
@@ -18,7 +18,7 @@ class CheckInsState {
   final String? selectedRange;
   final String? searchKeyword;
   final TypeModel? selectedVisitorType;
-  final List<CheckOutVisitor>? checkOutVisitors;
+  final List<CheckOutModel>? checkOutVisitors;
 
   const CheckInsState({
     this.isLoading = false,
@@ -27,7 +27,7 @@ class CheckInsState {
     this.isVendorLoading = false,
     this.isCheckOutVisitor = false,
     this.page = 1,
-    this.checkInModel,
+    this.checkIns,
     this.units,
     this.vendors,
     this.selectedUnit,
@@ -51,7 +51,7 @@ class CheckInsState {
     bool? loadMore,
     bool? isCheckOutVisitor,
     int? page,
-    List<CheckInModel>? checkInModel,
+    List<CheckInModel>? checkIns,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
     Object? selectedVisitorType = _sentinel,
@@ -61,7 +61,7 @@ class CheckInsState {
     Object? selectedRange = _sentinel,
     Object? searchKeyword = _sentinel,
     Object? serviceableId = _sentinel,
-    List<CheckOutVisitor>? checkOutVisitors,
+    List<CheckOutModel>? checkOutVisitors,
   }) {
     return CheckInsState(
       isLoading: isLoading ?? this.isLoading,
@@ -70,7 +70,7 @@ class CheckInsState {
       isCheckOutAllLoading: isCheckOutAllLoading ?? this.isCheckOutAllLoading,
       loadMore: loadMore ?? this.loadMore,
       page: page ?? this.page,
-      checkInModel: checkInModel ?? this.checkInModel,
+      checkIns: checkIns ?? this.checkIns,
       vendors: vendors ?? this.vendors,
       units: units ?? this.units,
 
@@ -108,4 +108,3 @@ class CheckInsState {
     );
   }
 }
-
