@@ -30,7 +30,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   }
 
   void onChangeDateRange(DateTimeRange? dateRange) {
-    emit(state.copyWith(dateRang: dateRange));
+    emit(state.copyWith(selectedDateRang: dateRange));
   }
 
   void onChangeSelectedType(TypeModel? type) {
@@ -72,7 +72,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
        page: state.page,
         keyword: state.searchKeyword,
         unitId: state.selectedUnit?.id,
-        dateRange: state.dateRang == null ? null : DateTimeUtil.getFormatDateRange(state.dateRang),
+        dateRange: state.selectedDateRang == null ? null : DateTimeUtil.getFormatDateRange(state.selectedDateRang),
         serviceableType: state.selectedType?.value,
         vendorId: state.selectedVendor?.id,
     ).onError(
@@ -101,7 +101,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       page: state.page,
       keyword: state.searchKeyword,
       unitId: state.selectedUnit?.id,
-      dateRange:state.dateRang == null ? null : DateTimeUtil.getFormatDateRange(state.dateRang),
+      dateRange:state.selectedDateRang == null ? null : DateTimeUtil.getFormatDateRange(state.selectedDateRang),
       serviceableType: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
 

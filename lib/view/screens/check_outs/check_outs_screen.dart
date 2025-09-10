@@ -87,7 +87,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                               (state.selectedType?.value.isNotEmpty ??
                                   false) ||
                               (state.selectedVendor != null) ||
-                              (state.dateRang != null) ||
+                              (state.selectedDateRang != null) ||
                               (state.selectedRange != null)
                           ? true
                           : false,
@@ -164,7 +164,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
               FileDownloader.downloadFile(
                   context: context,
                   dateRage:
-                      '${context.read<CheckOutCubit>().state.dateRang ?? ""}');
+                      '${context.read<CheckOutCubit>().state.selectedDateRang ?? ""}');
             },
             icon: SvgPicture.asset(
               AppImages.export,

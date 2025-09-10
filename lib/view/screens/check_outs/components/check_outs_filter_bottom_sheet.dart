@@ -24,9 +24,24 @@ class CheckOutsFilterBottomSheet extends StatefulWidget {
 
 class _CheckOutsFilterBottomSheetState
     extends State<CheckOutsFilterBottomSheet> {
+  DateTimeRange? _selectedDateRange;
+  String? _selectedRange;
+  TypeModel? _selectedType;
+  UnitModel? _selectedUnit;
+  VendorModel? _selectedVendor;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final checkInsState = context.read<CheckOutCubit>().state;
+      _selectedDateRange = checkInsState.selectedDateRang;
+      _selectedRange = checkInsState.selectedRange;
+      _selectedType = checkInsState.selectedType;
+      _selectedUnit = checkInsState.selectedUnit;
+      _selectedVendor = checkInsState.selectedVendor;
+      setState(() {});
+    });
   }
 
   @override
@@ -56,78 +71,94 @@ class _CheckOutsFilterBottomSheetState
                 ),
                 const Gap(15),
                 DateRangePickerWidget(
-                  initialDateRange: state.dateRang,
+                  initialDateRange: _selectedDateRange,
                   firstDate: DateTime(2020, 1, 1),
                   lastDate: DateTime(2030, 12, 31),
-                  onDateRangePicked: (range) {
-                    context.read<CheckOutCubit>().onChangeDateRange(range);
+                  onDateRangePicked: (value) {
+                    _selectedDateRange = value;
                   },
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<String>(
                   hint: AppUtils.languageTranslate('range'),
                   fillColor: AppColors.white,
-                  selectedItem: state.selectedRange,
+                  selectedItem: _selectedRange,
                   itemAsString: (range) => range,
                   compareFn: (p0, p1) => p0 == p1,
                   items: AppConstants.rangList,
                   onChanged: (value) {
-                    context.read<CheckOutCubit>().onChangeSelectedRange(value);
+                    _selectedRange = value;
+
                     if (value == null) {
-                      context.read<CheckOutCubit>().onChangeDateRange(null);
+                      _selectedDateRange = null;
                     } else {
-                      final dateRange =
+                      _selectedDateRange =
                           AppUtils.getDateRangeStringFromLabel(value);
-                      context
-                          .read<CheckOutCubit>()
-                          .onChangeDateRange(dateRange);
                     }
+                    setState(() {});
                   },
                 ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<TypeModel>(
-                    hint: AppUtils.languageTranslate('type'),
-                    fillColor: AppColors.white,
-                    selectedItem: state.selectedType,
-                    itemAsString: (type) => type.label,
-                    compareFn: (p0, p1) => p0.value == p1.value,
-                    items: AppUtils.checkInTypeList,
-                    onChanged: (value) {
-                      context.read<CheckOutCubit>().onChangeSelectedType(value);
-                    }),
+                  hint: AppUtils.languageTranslate('type'),
+                  fillColor: AppColors.white,
+                  selectedItem: _selectedType,
+                  itemAsString: (type) => type.label,
+                  compareFn: (p0, p1) => p0.value == p1.value,
+                  items: AppUtils.checkInTypeList,
+                  onChanged: (value) {
+                    _selectedType = value;
+                  },
+                ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<UnitModel>(
-                    hint: AppUtils.languageTranslate('unit'),
-                    fillColor: AppColors.white,
-                    selectedItem: state.selectedUnit,
-                    itemAsString: (unit) => unit.unitNumber ?? "",
-                    compareFn: (unit, item) => unit.id == item.id,
-                    items: state.units ?? [],
-                    enabled: state.selectedVendor == null,
-                    onChanged: (value) {
-                      context.read<CheckOutCubit>().onChangeSelectedUnit(value);
-                    }),
+                  hint: AppUtils.languageTranslate('unit'),
+                  fillColor: AppColors.white,
+                  selectedItem: state.selectedUnit,
+                  itemAsString: (unit) => unit.unitNumber ?? "",
+                  compareFn: (unit, item) => unit.id == item.id,
+                  items: state.units ?? [],
+                  enabled: _selectedVendor == null,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedUnit = value;
+                    });
+                  },
+                ),
                 const Gap(10),
                 SingleSelectedDropdownWidget<VendorModel>(
-                    hint: AppUtils.languageTranslate('vendors'),
-                    fillColor: AppColors.white,
-                    selectedItem: state.selectedVendor,
-                    itemAsString: (vendor) => vendor.companyName ?? "",
-                    compareFn: (vendor, item) => vendor.id == item.id,
-                    items: state.vendors ?? [],
-                    enabled: state.selectedUnit == null,
-                    onChanged: (value) {
-                      context
-                          .read<CheckOutCubit>()
-                          .onChangeSelectedVendors(value);
-                    }),
+                  hint: AppUtils.languageTranslate('vendors'),
+                  fillColor: AppColors.white,
+                  selectedItem: state.selectedVendor,
+                  itemAsString: (vendor) => vendor.companyName ?? "",
+                  compareFn: (vendor, item) => vendor.id == item.id,
+                  items: state.vendors ?? [],
+                  enabled: _selectedUnit == null,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedVendor = value;
+                    });
+                  },
+                ),
                 const Gap(30),
                 FilterButtonWidget(
                   applyOnPressed: () {
+                    final cubit = context.read<CheckOutCubit>();
+
+                    cubit.onChangeDateRange(_selectedDateRange);
+                    cubit.onChangeSelectedRange(_selectedRange);
+                    cubit.onChangeSelectedType(_selectedType);
+                    cubit.onChangeSelectedUnit(_selectedUnit);
+                    cubit.onChangeSelectedVendors(_selectedVendor);
                     context.read<CheckOutCubit>().getCheckOuts();
                     Navigator.pop(context);
                   },
                   clearOnPressed: () {
+                    _selectedDateRange = null;
+                    _selectedRange = null;
+                    _selectedType = null;
+                    _selectedUnit = null;
+                    _selectedVendor = null;
                     context.read<CheckOutCubit>().resetFilterData();
                     Navigator.pop(context);
                     context.read<CheckOutCubit>().getCheckOuts();

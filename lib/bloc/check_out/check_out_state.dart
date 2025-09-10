@@ -11,7 +11,7 @@ class CheckOutState {
   final List<CheckOutVisitor>? checkOutVisitors;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  final DateTimeRange? dateRang;
+  final DateTimeRange? selectedDateRang;
   final String? selectedRange;
   final TypeModel? selectedType;
   final UnitModel? selectedUnit;
@@ -28,7 +28,7 @@ class CheckOutState {
     this.units,
     this.vendors,
     this.isCheckOutAllLoading = false,
-    this.dateRang,
+    this.selectedDateRang,
     this.selectedRange,
     this.isCheckOutLoading = false,
     this.selectedType,
@@ -50,7 +50,7 @@ class CheckOutState {
     List<CheckOutVisitor>? checkOutVisitors,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    Object? dateRang = _sentinel,
+    Object? selectedDateRang = _sentinel,
     Object? selectedRange = _sentinel,
     Object? selectedType = _sentinel,
     Object? selectedUnit = _sentinel,
@@ -70,9 +70,9 @@ class CheckOutState {
       units: units ?? this.units,
 
       // 👇 sentinel handling
-      dateRang: identical(dateRang, _sentinel)
-          ? this.dateRang
-          : dateRang as DateTimeRange?,
+      selectedDateRang: identical(selectedDateRang, _sentinel)
+          ? this.selectedDateRang
+          : selectedDateRang as DateTimeRange?,
       selectedRange: identical(selectedRange, _sentinel)
           ? this.selectedRange
           : selectedRange as String?,

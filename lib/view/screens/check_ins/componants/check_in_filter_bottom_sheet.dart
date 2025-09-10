@@ -35,16 +35,6 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final checkInsState = context.read<CheckInsCubit>().state;
-      _selectedDateRange = checkInsState.selectedDateRange;
-      _selectedRange = checkInsState.selectedRange;
-      _selectedType = checkInsState.selectedVisitorType;
-      _selectedUnit = checkInsState.selectedUnit;
-      _selectedVendor = checkInsState.selectedVendor;
-      setState(() {});
-    });
   }
 
   @override
@@ -155,21 +145,13 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                 const Gap(30),
                 FilterButtonWidget(
                   applyOnPressed: () {
-                    context
-                        .read<CheckInsCubit>()
-                        .onChangeDateRange(_selectedDateRange);
-                    context
-                        .read<CheckInsCubit>()
-                        .onChangeSelectedRange(_selectedRange);
-                    context
-                        .read<CheckInsCubit>()
-                        .onChangeSelectedVisitorType(_selectedType);
-                    context
-                        .read<CheckInsCubit>()
-                        .onChangeSelectedUnit(_selectedUnit);
-                    context
-                        .read<CheckInsCubit>()
-                        .onChangeSelectedVendors(_selectedVendor);
+                    final cubit = context.read<CheckInsCubit>();
+
+                    cubit.onChangeDateRange(_selectedDateRange);
+                    cubit.onChangeSelectedRange(_selectedRange);
+                    cubit.onChangeSelectedVisitorType(_selectedType);
+                    cubit.onChangeSelectedUnit(_selectedUnit);
+                    cubit.onChangeSelectedVendors(_selectedVendor);
                     context.read<CheckInsCubit>().getCheckIns();
                     Navigator.pop(context);
                   },
