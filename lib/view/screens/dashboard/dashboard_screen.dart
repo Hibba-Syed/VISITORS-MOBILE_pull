@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/model/check_ins/check_in_model.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -322,6 +323,7 @@ class DashboardScreen extends StatelessWidget {
                       textColor: AppColors.white,
                       image: AppImages.guestCheckIn,
                       onPressed: () {
+                        context.read<GuestCheckInCubit>().clearData();
                         Navigator.pushNamed(context, AppRoutes.guestCheckIn)
                             .then(
                           (value) {
@@ -511,6 +513,7 @@ class DashboardScreen extends StatelessWidget {
                               serviceType: service?.applicationType ?? "--",
                               name: service?.clientName ?? "--",
                               checkInOnPressed: () {
+                                context.read<GuestCheckInCubit>().clearData();
                                 Navigator.pushNamed(
                                   context,
                                   AppRoutes.guestCheckIn,
@@ -614,6 +617,7 @@ class DashboardScreen extends StatelessWidget {
                               updatedDate: DateTimeUtil.getFormattedDate(
                                   workOrder?.finishDate),
                               checkInPressed: () {
+                                context.read<GuestCheckInCubit>().clearData();
                                 Navigator.pushNamed(
                                   context,
                                   AppRoutes.guestCheckIn,
@@ -782,6 +786,7 @@ class DashboardScreen extends StatelessWidget {
                     textColor: AppColors.white,
                     image: AppImages.guestCheckIn,
                     onPressed: () {
+                      context.read<GuestCheckInCubit>().clearData();
                       Navigator.pushNamed(context, AppRoutes.guestCheckIn).then(
                         (value) {
                           if (value == true) {
@@ -959,6 +964,7 @@ class DashboardScreen extends StatelessWidget {
                             serviceType: service?.applicationType ?? "",
                             name: service?.clientName ?? "",
                             checkInOnPressed: () {
+                              context.read<GuestCheckInCubit>().clearData();
                               Navigator.pushNamed(
                                 context,
                                 AppRoutes.guestCheckIn,
@@ -1058,6 +1064,7 @@ class DashboardScreen extends StatelessWidget {
                             updatedDate: DateTimeUtil.getFormattedDate(
                                 workOrder?.finishDate),
                             checkInPressed: () {
+                              context.read<GuestCheckInCubit>().clearData();
                               Navigator.pushNamed(
                                 context,
                                 AppRoutes.guestCheckIn,

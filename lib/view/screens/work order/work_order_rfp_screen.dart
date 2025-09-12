@@ -86,8 +86,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                           context.read<WorkOrderCubit>().getWorkOrder();
                         },
                         isFilterApplied: (state.selectedVendor != null) ||
-                                (state.selectedType?.value.isNotEmpty ??
-                                    false)
+                                (state.selectedType?.value.isNotEmpty ?? false)
                             ? true
                             : false,
                         onFilterPressed: () {
@@ -110,8 +109,7 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                   physics: AlwaysScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount:
-                                      state.workOrders?.length ?? 0,
+                                  itemCount: state.workOrders?.length ?? 0,
                                   itemBuilder: (context, index) {
                                     WorkOrderModel? workOrder =
                                         state.workOrders?[index];
@@ -136,17 +134,18 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                           ? true
                                           : false,
                                       checkInPressed: () {
-                                        Navigator.pushNamed(context,
-                                                AppRoutes.guestCheckIn)
-                                            .then(
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.guestCheckIn,
+                                            arguments: {
+                                              "work_order": workOrder
+                                            }).then(
                                           (value) {
                                             if (value == true) {
                                               context
                                                   .read<WorkOrderCubit>()
                                                   .getWorkOrder(
-                                                      keyword:
-                                                          _searchController
-                                                              .text);
+                                                      keyword: _searchController
+                                                          .text);
                                             }
                                           },
                                         );

@@ -27,6 +27,7 @@ import '../../repo/profile/profile_repo_impl.dart';
 import '../../repo/units/units_repo.dart';
 import '../../repo/units/units_repo_impl.dart';
 import '../../utils/preference_utils.dart';
+import '../../view/screens/guest_check_in/guest_check_in_screen.dart';
 
 part 'guest_check_in_state.dart';
 
@@ -49,6 +50,19 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
 
   void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
+  }
+
+  void onChangeSelectedVisitType(TypeItemModel? value) {
+    emit(state.copyWith(selectedVisitType: value));
+  }
+
+  void clearData() {
+    emit(state.copyWith(
+      selectedNationality: null,
+      selectedPurpose: null,
+      selectedUnit: null,
+      selectedVisitType: null,
+    ));
   }
 
   //

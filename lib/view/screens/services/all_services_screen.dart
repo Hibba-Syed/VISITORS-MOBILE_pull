@@ -8,6 +8,7 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
 import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../bloc/e_service/service_cubit.dart';
+import '../../../bloc/guest_check_in/guest_check_in_cubit.dart';
 import '../../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../../model/service/service_model.dart';
 import '../../../resource/constants/app_constants.dart';
@@ -132,8 +133,9 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                           service?.applicationTitle ?? "--",
                                       name: service?.clientName ?? "--",
                                       checkInOnPressed: () {
+                                        context.read<GuestCheckInCubit>().clearData();
                                         Navigator.pushNamed(context,
-                                                AppRoutes.guestCheckIn)
+                                                AppRoutes.guestCheckIn,arguments: {"service":service})
                                             .then(
                                           (value) {
                                             if (value == true) {

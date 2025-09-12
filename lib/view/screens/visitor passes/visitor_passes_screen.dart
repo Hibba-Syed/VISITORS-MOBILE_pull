@@ -8,6 +8,7 @@ import 'package:visitors/view/widgets/empty_widget.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 
 import '../../../bloc/check_ins/check_ins_cubit.dart';
+import '../../../bloc/guest_check_in/guest_check_in_cubit.dart';
 import '../../../bloc/visitor_passes/visitor_pass_cubit.dart';
 import '../../../model/visitor_passes/visitor_pass_model.dart';
 import '../../../resource/constants/app_colors.dart';
@@ -120,6 +121,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                                             ? true
                                             : false,
                                     checkInOnPressed: () {
+                                      context.read<GuestCheckInCubit>().clearData();
                                       Navigator.pushNamed(
                                               context, AppRoutes.guestCheckIn)
                                           .then(

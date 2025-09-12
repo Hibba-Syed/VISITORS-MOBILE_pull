@@ -171,22 +171,22 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     BuildContext context, {
     required int? id,
     required Map<String, dynamic> data,
-    required List<String>? file,
+    required String? filePath,
   }) async {
     emit(state.copyWith(isClearPaymentLoading: true));
 
-    if (file?.isEmpty ?? true) {
+    if (filePath?.isEmpty ?? true) {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate('pleaseSelectAFile'));
       emit(state.copyWith(isClearPaymentLoading: false));
       return false;
     }
     List<http.MultipartFile> multipartFiles = [];
-    if (file?.isNotEmpty ?? false) {
-      for (int i = 0; i < (file?.length ?? 0); i++) {
-        if (file?[i].isNotEmpty ?? false) {
+    if (filePath?.isNotEmpty ?? false) {
+      for (int i = 0; i < (filePath?.length ?? 0); i++) {
+        if (filePath?[i].isNotEmpty ?? false) {
           multipartFiles.add(
-            await http.MultipartFile.fromPath('file', file?[i] ?? ""),
+            await http.MultipartFile.fromPath('file', filePath?[i] ?? ""),
           );
         }
       }

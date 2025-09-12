@@ -30,32 +30,35 @@ import '../components/services_documents_card_widget.dart';
 
 class MoveOutServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
-  const  MoveOutServiceDetailsScreen({super.key,required this.service});
+  const MoveOutServiceDetailsScreen({super.key, required this.service});
 
   @override
-  State<MoveOutServiceDetailsScreen> createState() => _MoveOutServiceDetailsScreenState();
+  State<MoveOutServiceDetailsScreen> createState() =>
+      _MoveOutServiceDetailsScreenState();
 }
 
-class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScreen> {
- final TextEditingController _noteController = TextEditingController();
- final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
+class _MoveOutServiceDetailsScreenState
+    extends State<MoveOutServiceDetailsScreen> {
+  final TextEditingController _noteController = TextEditingController();
+  final GlobalKey<FormState> _noteFormKey = GlobalKey<FormState>();
 
- List<XFile>? selectedImages = [];
+  XFile? selectedImage;
   String? filePath;
   bool? isPaymentReceived;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBarWidget(
+      appBar: AppBarWidget(
         title: AppUtils.languageTranslate('serviceDetails'),
         titleColor: AppColors.black,
         iconColor: AppColors.black,
       ),
       body: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
         builder: (context, state) {
-          if(state.isLoading){
+          if (state.isLoading) {
             return Padding(
-              padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height / 3),
               child: LoaderWidget(),
             );
           }
@@ -76,7 +79,8 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                             Expanded(
                               child: HeadingWidget(
                                 heading: AppUtils.getRequestName(
-                                    state.serviceDetails?.applicationType ?? "--"),
+                                    state.serviceDetails?.applicationType ??
+                                        "--"),
                               ),
                             ),
                             StatusWidget(
@@ -89,7 +93,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                           style: AppTextStyles.style14Black600,
                         ),
                         const Gap(10),
-
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 10),
@@ -100,22 +103,24 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                           child: Column(
                             children: [
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('requestedDate'),
-                                  value:
-                              DateTimeUtil.getFormattedDateTime(
-                                  state.serviceDetails?.application?.moveDate),
+                                title:
+                                    AppUtils.languageTranslate('requestedDate'),
+                                value: DateTimeUtil.getFormattedDateTime(state
+                                    .serviceDetails?.application?.moveDate),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title:  AppUtils.languageTranslate('requestedTime'),
-                                value: '${state.serviceDetails?.application?.moveTimeFrom ?? "--"} - ${state.serviceDetails?.application?.moveTimeTo ?? "--"}'
-                                    ,
+                                title:
+                                    AppUtils.languageTranslate('requestedTime'),
+                                value:
+                                    '${state.serviceDetails?.application?.moveTimeFrom ?? "--"} - ${state.serviceDetails?.application?.moveTimeTo ?? "--"}',
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                isLast: true,
-                                  title: AppUtils.languageTranslate('emergencyNumber'),
-                                  value: state.serviceDetails?.application?.emergencyNumber ?? '--'
-                              ),
-
+                                  isLast: true,
+                                  title: AppUtils.languageTranslate(
+                                      'emergencyNumber'),
+                                  value: state.serviceDetails?.application
+                                          ?.emergencyNumber ??
+                                      '--'),
                             ],
                           ),
                         ),
@@ -127,37 +132,39 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                           ),
                           const Gap(10),
                           Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 10),
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.serviceDetails?.documents?.isNotEmpty ??
-                                true
-                                ? ListView.separated(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount:
-                              state.serviceDetails?.documents?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                Document? document =
-                                state.serviceDetails?.documents?[index];
-                                return ServicesDocumentsCardWidget(
-                                  name: document?.name,
-                                  url: document?.pathUrl ?? "",
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  color: AppColors.gray,
-                                );
-                              },
-                            )
-                                : EmptyWidget(
-                                text: AppUtils.languageTranslate(
-                                    'noDataAvailable')),
+                            child:
+                                state.serviceDetails?.documents?.isNotEmpty ??
+                                        true
+                                    ? ListView.separated(
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount: state.serviceDetails
+                                                ?.documents?.length ??
+                                            0,
+                                        itemBuilder: (context, index) {
+                                          Document? document = state
+                                              .serviceDetails
+                                              ?.documents?[index];
+                                          return ServicesDocumentsCardWidget(
+                                            name: document?.name,
+                                            url: document?.pathUrl ?? "",
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(
+                                            color: AppColors.gray,
+                                          );
+                                        },
+                                      )
+                                    : EmptyWidget(
+                                        text: AppUtils.languageTranslate(
+                                            'noDataAvailable')),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
@@ -180,7 +187,7 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                   title: AppUtils.languageTranslate(
                                       'deposit_amount'),
                                   value: state.serviceDetails?.securityDeposit
-                                      ?.toString() ??
+                                          ?.toString() ??
                                       "--",
                                   isLast: true,
                                 ),
@@ -205,31 +212,35 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                             child: Column(
                               children: [
                                 TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'companyName'),
-                                  value: state.serviceDetails?.application?.mcCompanyName
-                                      ?.toString() ??
+                                  title:
+                                      AppUtils.languageTranslate('companyName'),
+                                  value: state.serviceDetails?.application
+                                          ?.mcCompanyName
+                                          ?.toString() ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'contactPerson'),
-                                  value: state.serviceDetails?.application?.mcContactPerson
-                                      ?.toString() ??
+                                  value: state.serviceDetails?.application
+                                          ?.mcContactPerson
+                                          ?.toString() ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'companyTradeLicense'),
-                                  url: state.serviceDetails?.application?.mcTradeLicensePathUrl
-                                      ?.toString() ??
+                                  url: state.serviceDetails?.application
+                                          ?.mcTradeLicensePathUrl
+                                          ?.toString() ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'contactPersonEmiratesId'),
-                                  url: state.serviceDetails?.application?.mcEmiratesPathUrl
-                                      ?.toString() ??
+                                  url: state.serviceDetails?.application
+                                          ?.mcEmiratesPathUrl
+                                          ?.toString() ??
                                       "--",
                                 ),
                               ],
@@ -237,8 +248,9 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                           ),
                         ],
                         const Gap(20),
-                         HeadingWidget(
-                          heading: AppUtils.languageTranslate('applicantDetails'),
+                        HeadingWidget(
+                          heading:
+                              AppUtils.languageTranslate('applicantDetails'),
                         ),
                         const Gap(10),
                         Container(
@@ -251,65 +263,84 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                           child: Column(
                             children: [
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('requesterType'),
-                                  value: state.serviceDetails?.clientType ?? "--"),
+                                  title: AppUtils.languageTranslate(
+                                      'requesterType'),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title:AppUtils.languageTranslate('name'),
+                                title: AppUtils.languageTranslate('name'),
                                 value: state.serviceDetails?.clientName ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('phone'),
-                                value: state.serviceDetails?.clientPhone ?? "--",
+                                value:
+                                    state.serviceDetails?.clientPhone ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 isLast: true,
-                                title:AppUtils.languageTranslate('email'),
-                                value: state.serviceDetails?.clientEmail ?? "--",
+                                title: AppUtils.languageTranslate('email'),
+                                value:
+                                    state.serviceDetails?.clientEmail ?? "--",
                               ),
                             ],
                           ),
                         ),
                         const Gap(20),
-                         Text(
+                        Text(
                           AppUtils.languageTranslate('activityLog'),
                           style: AppTextStyles.style20primary600,
                         ),
                         const Gap(10),
-                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
-                        Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListView.builder(
-                            padding: EdgeInsets.only(top: 10),
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount:
-                            state.serviceDetails?.statusHistory?.length ?? 0,
-                            itemBuilder: (context, index) {
-                              StatusHistory? statusHistory = state.serviceDetails?.statusHistory?[index];
-                              bool isLast = (state.serviceDetails?.statusHistory?.length ?? 0) - 1 == index;
-                              return ActivityLogWidget(
-                                horizontalPadding: 8,
-                                isLast: isLast,
-                                status: (statusHistory?.status != 'Pending') ? statusHistory?.status ?? "" : "Request Received",
-                                byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
-                                    ? ' ${statusHistory.user?.fullName ?? ""}'
-                                    : " System",
-                                description: statusHistory?.note
-                                    ?.replaceAll('\n\n', ' ')
-                                    .trim()
-                                    .split('.')
-                                    .first
-                                    .trim(),
-
-                                dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
-                              );
-                            },
-
-                          ),
-                        ) : EmptyWidget(text: AppUtils.languageTranslate('noDataAvailable')),
+                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListView.builder(
+                                  padding: EdgeInsets.only(top: 10),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
+                                      0,
+                                  itemBuilder: (context, index) {
+                                    StatusHistory? statusHistory = state
+                                        .serviceDetails?.statusHistory?[index];
+                                    bool isLast = (state.serviceDetails
+                                                    ?.statusHistory?.length ??
+                                                0) -
+                                            1 ==
+                                        index;
+                                    return ActivityLogWidget(
+                                      horizontalPadding: 8,
+                                      isLast: isLast,
+                                      status:
+                                          (statusHistory?.status != 'Pending')
+                                              ? statusHistory?.status ?? ""
+                                              : "Request Received",
+                                      byValue: (statusHistory?.user?.fullName !=
+                                                  null &&
+                                              statusHistory!
+                                                  .user!.fullName!.isNotEmpty)
+                                          ? ' ${statusHistory.user?.fullName ?? ""}'
+                                          : " System",
+                                      description: statusHistory?.note
+                                          ?.replaceAll('\n\n', ' ')
+                                          .trim()
+                                          .split('.')
+                                          .first
+                                          .trim(),
+                                      dateTime:
+                                          DateTimeUtil.getFormattedDateTime(
+                                              statusHistory?.createdAt),
+                                    );
+                                  },
+                                ),
+                              )
+                            : EmptyWidget(
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable')),
                       ],
                     ),
                   ),
@@ -331,86 +362,93 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                               );
                             }),
                       ),
-                      if(((state
-                          .serviceDetails?.securityDeposit ==
-                          null)|| (state.serviceDetails?.securityDeposit ==0)) &&
-                        state
-                              .serviceDetails
-                              ?.status?.toLowerCase() ==
-                              'approved')...[
+                      if (((state.serviceDetails?.securityDeposit == null) ||
+                              (state.serviceDetails?.securityDeposit == 0)) &&
+                          state.serviceDetails?.status?.toLowerCase() ==
+                              'approved') ...[
                         const Gap(10),
                         Expanded(
                             child: CustomButton(
                                 buttonColor: AppColors.green,
-                                text:  AppUtils.languageTranslate('complete'),
+                                text: AppUtils.languageTranslate('complete'),
                                 onPressed: () {
                                   AppUtils.completeServiceAction(
                                     context: context,
                                     state: state,
                                   );
-                                })
-                        ), ],
-
-                      if(state.serviceDetails?.status?.toLowerCase() != 'approved')...[
+                                })),
+                      ],
+                      if (state.serviceDetails?.status?.toLowerCase() !=
+                          'approved') ...[
                         const Gap(10),
                         Expanded(
                           child: CustomButton(
                               buttonColor: AppColors.yellow,
-                              text:  AppUtils.languageTranslate('clearPayment'),
+                              text: AppUtils.languageTranslate('clearPayment'),
                               onPressed: () {
+                                _noteController.clear();
+                                selectedImage = null;
+                                isPaymentReceived = false;
                                 showDialog(
                                     barrierDismissible: false,
                                     context: context,
                                     builder: (context) {
                                       return CustomAlertDialogBox(
                                         insetPadding: AppUtils.isTablet(context)
-                                            ? EdgeInsets.symmetric(horizontal: 35)
-                                            : EdgeInsets.symmetric(horizontal: 10),
+                                            ? EdgeInsets.symmetric(
+                                                horizontal: 35)
+                                            : EdgeInsets.symmetric(
+                                                horizontal: 10),
                                         isFirstButtonDisable: true,
-                                        title: '${AppUtils.languageTranslate('clearPaymentFor')} ${state.serviceDetails?.reference}',
+                                        title:
+                                            '${AppUtils.languageTranslate('clearPaymentFor')} ${state.serviceDetails?.reference}',
                                         disableFirstButtonBorder: true,
-                                        secondButtonText:  AppUtils.languageTranslate('clearPayment'),
+                                        secondButtonText:
+                                            AppUtils.languageTranslate(
+                                                'clearPayment'),
                                         secondButtonColor: AppColors.yellow,
                                         onSecondButtonPressed: () async {
-                                          if (selectedImages?.isEmpty ?? false) {
-                                            Fluttertoast.showToast(
-                                                msg: AppUtils.languageTranslate('pleaseChooseImageFileFirst'));
-                                            return false;
-                                          }
-                                          if (isPaymentReceived == null) {
-                                            Fluttertoast.showToast(
-                                                msg:  AppUtils.languageTranslate('pleaseSelectCheckboxFirst'));
-                                            return false;
-                                          }
-                                          if(_actionFormKey.currentState?.validate() ?? false){
-                                            final filePaths = selectedImages
-                                                ?.where((file) => file.path.isNotEmpty)
-                                                .map((file) => file.path)
-                                                .toList();
+                                          if (_noteFormKey.currentState
+                                                  ?.validate() ??
+                                              false) {
+                                            if (selectedImage?.path.isEmpty ??
+                                                true) {
+                                              Fluttertoast.showToast(
+                                                  msg: AppUtils.languageTranslate(
+                                                      'pleaseChooseImageFileFirst'));
+                                              return false;
+                                            }
+                                            if (isPaymentReceived == null) {
+                                              Fluttertoast.showToast(
+                                                  msg: AppUtils.languageTranslate(
+                                                      'pleaseSelectCheckboxFirst'));
+                                              return false;
+                                            }
                                             final result = await context
                                                 .read<ServiceDetailsCubit>()
                                                 .clearPayment(
                                               context,
                                               id: state.serviceDetails?.id,
-                                              file: filePaths,
+                                              filePath: selectedImage?.path,
                                               data: {
-                                                'payment_received': isPaymentReceived,
+                                                'payment_received':
+                                                    isPaymentReceived,
                                                 'note': _noteController.text,
                                               },
                                             );
-                                            if(result){
+                                            if (result) {
                                               _noteController.clear();
-                                              selectedImages?.clear();
+                                              selectedImage = null;
                                               isPaymentReceived = null;
                                             }
                                             return result;
-
-                                          } return false;
-
+                                          }
+                                          return false;
                                         },
                                         contentBuilder: (context, setState) {
                                           return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               const Gap(5),
                                               Align(
@@ -419,7 +457,8 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                                   AppImages.question,
                                                   height: 35,
                                                   width: 35,
-                                                  colorFilter: const ColorFilter.mode(
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
                                                     AppColors.yellow,
                                                     BlendMode.srcIn,
                                                   ),
@@ -427,61 +466,72 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                               ),
                                               const Gap(5),
                                               Form(
-                                                key: _actionFormKey,
+                                                key: _noteFormKey,
                                                 child: TextFieldWidget(
                                                   controller: _noteController,
-                                                  label: AppUtils.languageTranslate('note'),
+                                                  label: AppUtils
+                                                      .languageTranslate(
+                                                          'note'),
                                                   maxLength: 1000,
                                                   validator: (value) {
-                                                    if (value?.trim().isEmpty ?? true) {
-                                                      return AppUtils.languageTranslate('fieldIsMandatory');
+                                                    if (value?.trim().isEmpty ??
+                                                        true) {
+                                                      return AppUtils
+                                                          .languageTranslate(
+                                                              'fieldIsMandatory');
                                                     }
                                                     return null;
                                                   },
                                                 ),
                                               ),
                                               const Gap(5),
-                                              Text(AppUtils.languageTranslate('chequeFile'),style: AppTextStyles.style14DarkGrey600),
-                                              const Gap(10),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Expanded(
                                                     child: Text(
-                                                      (filePath?.isNotEmpty ?? true)
-                                                          ? selectedImages?.firstOrNull?.name??""
-                                                          : AppUtils.languageTranslate('chooseFile'),
-                                                      style: AppTextStyles.style14darkGrey400,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                    ),
+                                                        AppUtils
+                                                            .languageTranslate(
+                                                                'chequeFile'),
+                                                        style: AppTextStyles
+                                                            .style14DarkGrey600),
                                                   ),
                                                   InkWell(
                                                     overlayColor:
-                                                    const WidgetStatePropertyAll(Colors.transparent),
+                                                        const WidgetStatePropertyAll(
+                                                            Colors.transparent),
                                                     onTap: () async {
-                                                      if ((selectedImages?.length ?? 0) >= 1) {
-                                                        Fluttertoast.showToast(
-                                                            msg:  AppUtils.languageTranslate('cannotSelectMultipleFiles'));
-                                                        return;
-                                                      }
                                                       await FilePicker.platform
-                                                          .pickFiles(allowMultiple: false)
-                                                          .then((FilePickerResult? result) {
-                                                        if (result != null && result.files.isNotEmpty) {
-                                                          selectedImages
-                                                              ?.addAll(result.files.map((e) => e.xFile));
+                                                          .pickFiles(
+                                                              allowMultiple:
+                                                                  false)
+                                                          .then(
+                                                              (FilePickerResult?
+                                                                  result) {
+                                                        if (result != null &&
+                                                            result.files
+                                                                .isNotEmpty) {
+                                                          selectedImage = result
+                                                              .files
+                                                              .first
+                                                              .xFile;
                                                           setState(() {});
                                                         }
                                                         return null;
                                                       });
                                                     },
                                                     child: Container(
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                       decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(7),
-                                                        color: AppColors.cyanBlue,
-                                                        border: Border.all(color: AppColors.outLineGray, width: 0.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7),
+                                                        color:
+                                                            AppColors.cyanBlue,
+                                                        border: Border.all(
+                                                            color: AppColors
+                                                                .outLineGray,
+                                                            width: 0.5),
                                                       ),
                                                       child: const Icon(
                                                         Icons.add,
@@ -493,6 +543,41 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                                 ],
                                               ),
                                               const Gap(10),
+                                              if (selectedImage
+                                                      ?.name.isNotEmpty ??
+                                                  false)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        selectedImage?.name ??
+                                                            "",
+                                                        style: AppTextStyles
+                                                            .style14darkGrey400,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          selectedImage = null;
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.close,
+                                                        size: 18,
+                                                        color:
+                                                            AppColors.darkGrey,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              const Gap(10),
                                               Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -501,21 +586,32 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                                                       height: 20,
                                                       width: 20,
                                                       child: Checkbox(
-                                                          fillColor: WidgetStateProperty.all(AppColors.cyanBlue),
-                                                          side: BorderSide(color: Colors.transparent, width: 1),
-                                                          value: isPaymentReceived??false,
+                                                          fillColor:
+                                                              WidgetStateProperty.all(
+                                                                  AppColors
+                                                                      .cyanBlue),
+                                                          side: BorderSide(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              width: 1),
+                                                          value:
+                                                              isPaymentReceived ??
+                                                                  false,
                                                           onChanged: (value) {
                                                             setState(() {
-                                                              isPaymentReceived = value;
+                                                              isPaymentReceived =
+                                                                  value;
                                                             });
                                                           })),
                                                   Gap(6),
-                                                  Text( AppUtils.languageTranslate('paymentReceived'),style: AppTextStyles.style14DarkGrey600,
+                                                  Text(
+                                                    AppUtils.languageTranslate(
+                                                        'paymentReceived'),
+                                                    style: AppTextStyles
+                                                        .style14DarkGrey600,
                                                   ),
                                                 ],
                                               ),
-
-
                                             ],
                                           );
                                         },
@@ -524,7 +620,6 @@ class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScree
                               }),
                         )
                       ]
-
                     ],
                   ),
                 ),

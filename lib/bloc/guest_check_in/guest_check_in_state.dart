@@ -14,10 +14,11 @@ class GuestCheckInState {
   final ProfileRecord? profileRecord;
   final List<UnitModel>? units;
   final List<NumberInfo>? numberInfo;
-   final UnitModel? selectedUnit;
+  final UnitModel? selectedUnit;
   final CheckInModel? checkInModel;
+  final TypeItemModel? selectedVisitType;
 
-  GuestCheckInState({
+  const GuestCheckInState({
     this.isLoading = false,
     this.isCountriesLoading = false,
     this.isUnitLoading = false,
@@ -33,7 +34,11 @@ class GuestCheckInState {
     this.selectedUnit,
     this.numberInfo,
     this.checkInModel,
+    this.selectedVisitType,
   });
+
+  static const _sentinel = Object();
+
   GuestCheckInState copyWith({
     bool? isLoading,
     bool? isCountriesLoading,
@@ -43,32 +48,47 @@ class GuestCheckInState {
     bool? isDeleteVisitorLoading,
     bool? isGuestCheckInLoading,
     List<Country>? countries,
-    Country? selectedNationality,
-    VisitorsPurpose? selectedPurpose,
+    Object? selectedNationality = _sentinel,
+    Object? selectedPurpose = _sentinel,
     ProfileRecord? profileRecord,
     List<UnitModel>? units,
-    UnitModel? selectedUnit,
+    Object? selectedUnit = _sentinel,
     List<NumberInfo>? numberInfo,
     CheckInModel? checkInModel,
+    Object? selectedVisitType = _sentinel,
   }) {
     return GuestCheckInState(
       isLoading: isLoading ?? this.isLoading,
-      countries: countries ?? this.countries,
-      selectedNationality: selectedNationality ?? this.selectedNationality,
-      selectedPurpose: selectedPurpose ?? this.selectedPurpose,
-      profileRecord: profileRecord ?? this.profileRecord,
       isCountriesLoading: isCountriesLoading ?? this.isCountriesLoading,
       isUnitLoading: isUnitLoading ?? this.isUnitLoading,
-      units: units ?? this.units,
-      selectedUnit: selectedUnit ?? this.selectedUnit,
       isProfileLoading: isProfileLoading ?? this.isProfileLoading,
       isNumberInfoLoading: isNumberInfoLoading ?? this.isNumberInfoLoading,
-      numberInfo: numberInfo ?? this.numberInfo,
       isDeleteVisitorLoading:
-          isDeleteVisitorLoading ?? this.isDeleteVisitorLoading,
+      isDeleteVisitorLoading ?? this.isDeleteVisitorLoading,
       isGuestCheckInLoading:
-          isGuestCheckInLoading ?? this.isGuestCheckInLoading,
+      isGuestCheckInLoading ?? this.isGuestCheckInLoading,
+      countries: countries ?? this.countries,
+      profileRecord: profileRecord ?? this.profileRecord,
+      units: units ?? this.units,
+      numberInfo: numberInfo ?? this.numberInfo,
       checkInModel: checkInModel ?? this.checkInModel,
+
+      // 👇 sentinel handling
+      selectedNationality: identical(selectedNationality, _sentinel)
+          ? this.selectedNationality
+          : selectedNationality as Country?,
+
+      selectedPurpose: identical(selectedPurpose, _sentinel)
+          ? this.selectedPurpose
+          : selectedPurpose as VisitorsPurpose?,
+
+      selectedUnit: identical(selectedUnit, _sentinel)
+          ? this.selectedUnit
+          : selectedUnit as UnitModel?,
+
+      selectedVisitType: identical(selectedVisitType, _sentinel)
+          ? this.selectedVisitType
+          : selectedVisitType as TypeItemModel?,
     );
   }
 }

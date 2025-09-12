@@ -58,7 +58,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       TextEditingController();
   final TextEditingController _travelDocumentNumberController =
       TextEditingController();
-  TypeItemModel? _selectedVisitType;
   DateTime? _selectedEmiratesIdIssueDate;
   DateTime? _selectedEmiratesIdExpiryDate;
   DateTime? _selectedPhotoIdIssueDate;
@@ -83,6 +82,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   @override
   void initState() {
     super.initState();
+    GuestCheckInCubit guestCheckInCubit = context.read<GuestCheckInCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final routeArgs = ModalRoute.of(context)?.settings.arguments;
       if (routeArgs != null) {
@@ -94,20 +94,18 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         }
       }
       if (_service?.id != null) {
-        _selectedVisitType = TypeItemModel(
+        guestCheckInCubit.onChangeSelectedVisitType(TypeItemModel(
           value: 'Unit Service',
           label: AppUtils.languageTranslate('unitService'),
-        );
+        ));
       } else if (_workOrder?.id != null) {
-        _selectedVisitType = TypeItemModel(
+        guestCheckInCubit.onChangeSelectedVisitType(TypeItemModel(
           value: 'Community Service',
           label: AppUtils.languageTranslate('communityService'),
-        );
+        ));
       } else {
-        _selectedVisitType = _visitTypes.first;
+        guestCheckInCubit.onChangeSelectedVisitType(_visitTypes.first);
       }
-
-      setState(() {});
     });
 
     _selectedDocumentType = AppConstants.documentTypes.first;
@@ -124,11 +122,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     _selectedPhotoIdExpiryDate = null;
     _selectedTravelDocumentIssueDate = null;
     _selectedTravelDocumentExpiryDate = null;
-    context.read<GuestCheckInCubit>().onChangeSelectedNationality(Country());
+    context.read<GuestCheckInCubit>().onChangeSelectedNationality(null);
     context
         .read<GuestCheckInCubit>()
-        .onChangeSelectedPurpose(VisitorsPurpose());
-    context.read<GuestCheckInCubit>().onChangeSelectedUnit(UnitModel());
+        .onChangeSelectedPurpose(null);
+    context.read<GuestCheckInCubit>().onChangeSelectedUnit(null);
   }
 
   @override
@@ -160,8 +158,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                   : () async {
                       // print(' state${state.selectedUnit?.id}');
                       if ((_formKey.currentState?.validate() ?? false) &&
-                          (_phoneNumberKey.currentState?.validate() ??
-                              false)) {
+                          (_phoneNumberKey.currentState?.validate() ?? false)) {
                         String? base64Image;
                         if (_personImage != null &&
                             _personImage!.path.isNotEmpty) {
@@ -194,9 +191,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
 
                           ///
-                          'type': _selectedVisitType?.value,
+                          'type': state.selectedVisitType?.value,
                           'name': _nameController.text,
-                          if (_selectedVisitType?.value == 'Unit Visit' &&
+                          if (state.selectedVisitType?.value == 'Unit Visit' &&
                               _service?.id == null &&
                               _workOrder?.id == null) ...{
                             'purpose': state.selectedPurpose?.purpose,
@@ -217,8 +214,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                           'phone': _phoneNumberController.text,
                           'email': _emailController.text,
-                          'entry_card_number':
-                              _entryCardNumberController.text,
+                          'entry_card_number': _entryCardNumberController.text,
                           'nationality': state.selectedNationality?.name,
                           'description': _descriptionController.text,
                           'serviceable_id': _service?.id ?? _workOrder?.id,
@@ -232,8 +228,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           'visitor_count': _visitorCountController.text,
                           'visitor_id': null,
                           if (_personImage?.path.isNotEmpty ?? false)
-                            if (base64Image != null)
-                              'user_photo': base64Image,
+                            if (base64Image != null) 'user_photo': base64Image,
                         };
                         if (context.mounted) {
                           context
@@ -464,8 +459,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Emirates ID')
                         DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
-                          hint:
-                              AppUtils.languageTranslate('selectExpiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedEmiratesIdExpiryDate,
                           onDatePicked: (value) {
                             _selectedEmiratesIdExpiryDate = value;
@@ -475,8 +469,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Photo ID')
                         DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
-                          hint:
-                              AppUtils.languageTranslate('selectExpiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedPhotoIdExpiryDate,
                           onDatePicked: (value) {
                             _selectedPhotoIdExpiryDate = value;
@@ -486,8 +479,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Travel Document')
                         DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
-                          hint:
-                              AppUtils.languageTranslate('selectExpiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedTravelDocumentExpiryDate,
                           onDatePicked: (value) {
                             _selectedTravelDocumentExpiryDate = value;
@@ -501,24 +493,19 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             Expanded(
                               child:
                                   SingleSelectedDropdownWidget<TypeItemModel>(
-                                label:
-                                    "${AppUtils.languageTranslate('type')}*",
+                                label: "${AppUtils.languageTranslate('type')}*",
                                 isClearButtonVisible: false,
                                 outLineColor: AppColors.outLineGray,
-                                hint:
-                                    AppUtils.languageTranslate('selectType'),
+                                hint: AppUtils.languageTranslate('selectType'),
                                 fillColor: AppColors.white,
-                                selectedItem: _selectedVisitType,
+                                selectedItem: state.selectedVisitType,
                                 compareFn: (p0, p1) => p0.value == p1.value,
                                 items: _visitTypes,
                                 itemAsString: (item) => item.label,
                                 onChanged: (value) {
-                                  Future.delayed(Duration(milliseconds: 500),
-                                      () {
-                                    setState(() {
-                                      _selectedVisitType = value;
-                                    });
-                                  });
+                                  context
+                                      .read<GuestCheckInCubit>()
+                                      .onChangeSelectedVisitType(value);
                                 },
                                 validator: (value) {
                                   if (value == null) {
@@ -540,8 +527,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppUtils.languageTranslate(
-                                      'required');
+                                  return AppUtils.languageTranslate('required');
                                 }
                                 return null;
                               },
@@ -549,21 +535,18 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         ],
                       ),
-                      if (_selectedVisitType?.value ==
-                              AppUtils.languageTranslate('unitVisit') ||
-                          (_service?.id == null &&
-                              _workOrder?.id == null)) ...[
+                      if (state.selectedVisitType?.value == "Unit Visit") ...[
                         Gap(5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: SingleSelectedDropdownWidget<
-                                  VisitorsPurpose>(
+                              child:
+                                  SingleSelectedDropdownWidget<VisitorsPurpose>(
                                 label:
                                     "${AppUtils.languageTranslate('purpose')}*",
-                                hint: AppUtils.languageTranslate(
-                                    'selectPurpose'),
+                                hint:
+                                    AppUtils.languageTranslate('selectPurpose'),
                                 fillColor: AppColors.white,
                                 selectedItem: state.selectedPurpose,
                                 itemAsString: (purpose) =>
@@ -634,8 +617,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         child: TextFieldWidget(
                           label:
                               "${AppUtils.languageTranslate('phoneNumber')}*",
-                          hint:
-                              AppUtils.languageTranslate('enterPhoneNumber'),
+                          hint: AppUtils.languageTranslate('enterPhoneNumber'),
                           controller: _phoneNumberController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -694,8 +676,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           const Gap(8),
                           Expanded(
                             child: SingleSelectedDropdownWidget<Country>(
-                              label:
-                                  AppUtils.languageTranslate('nationality'),
+                              label: AppUtils.languageTranslate('nationality'),
                               outLineColor: AppColors.outLineGray,
                               hint: AppUtils.languageTranslate(
                                   'selectNationality'),
@@ -773,10 +754,6 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               BlendMode.srcIn,
                             ),
                           ),
-                    // Icon(
-                    //         Icons.person_outline_rounded,
-                    //         size: MediaQuery.of(context).size.width / 4,
-                    //       ),
                   ),
                 ),
                 const Gap(20),
@@ -886,8 +863,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Emirates ID')
                         DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
-                          hint:
-                              AppUtils.languageTranslate('selectExpiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedEmiratesIdExpiryDate,
                           onDatePicked: (value) {
                             _selectedEmiratesIdExpiryDate = value;
@@ -897,8 +873,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Photo ID')
                         DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
-                          hint:
-                              AppUtils.languageTranslate('selectExpiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedPhotoIdExpiryDate,
                           onDatePicked: (value) {
                             _selectedPhotoIdExpiryDate = value;
@@ -908,8 +883,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Travel Document')
                         DatePickerWidget(
                           label: AppUtils.languageTranslate('expiryDate'),
-                          hint:
-                              AppUtils.languageTranslate('selectExpiryDate'),
+                          hint: AppUtils.languageTranslate('selectExpiryDate'),
                           initialDate: _selectedTravelDocumentExpiryDate,
                           onDatePicked: (value) {
                             _selectedTravelDocumentExpiryDate = value;
@@ -924,16 +898,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           outLineColor: AppColors.outLineGray,
                           hint: AppUtils.languageTranslate('selectType'),
                           fillColor: AppColors.white,
-                          selectedItem: _selectedVisitType,
+                          selectedItem: state.selectedVisitType,
                           compareFn: (p0, p1) => p0.value == p1.value,
                           items: _visitTypes,
                           itemAsString: (item) => item.label,
                           onChanged: (value) {
-                            Future.delayed(Duration(milliseconds: 500), () {
-                              setState(() {
-                                _selectedVisitType = value;
-                              });
-                            });
+                            context
+                                .read<GuestCheckInCubit>()
+                                .onChangeSelectedVisitType(value);
                           },
                           validator: (value) {
                             if (value == null) {
@@ -947,8 +919,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       TextFieldWidget(
                         outLineColor: AppColors.outLineGray,
                         controller: _visitorCountController,
-                        label:
-                            '${AppUtils.languageTranslate('visitorCount')}*',
+                        label: '${AppUtils.languageTranslate('visitorCount')}*',
                         hint: AppUtils.languageTranslate('enterCount'),
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -959,10 +930,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         },
                       ),
                       const Gap(5),
-                      if (_selectedVisitType?.value ==
-                              AppUtils.languageTranslate('unitVisit') ||
-                          (_service?.id == null &&
-                              _workOrder?.id == null)) ...[
+                      if (state.selectedVisitType?.value == "Unit Visit") ...[
                         SingleSelectedDropdownWidget<VisitorsPurpose>(
                           label: "${AppUtils.languageTranslate('purpose')}*",
                           hint: AppUtils.languageTranslate('selectPurpose'),
@@ -988,8 +956,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                         const Gap(5),
                         SingleSelectedDropdownWidget<UnitModel>(
-                          label:
-                              "${AppUtils.languageTranslate('unitNumber')}*",
+                          label: "${AppUtils.languageTranslate('unitNumber')}*",
                           outLineColor: AppColors.outLineGray,
                           hint: AppUtils.languageTranslate('unit'),
                           fillColor: AppColors.white,
@@ -1089,8 +1056,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       SingleSelectedDropdownWidget<Country>(
                         label: AppUtils.languageTranslate('nationality'),
                         outLineColor: AppColors.outLineGray,
-                        hint:
-                            AppUtils.languageTranslate('unitedArabEmirates'),
+                        hint: AppUtils.languageTranslate('unitedArabEmirates'),
                         fillColor: AppColors.white,
                         selectedItem: context
                             .watch<GuestCheckInCubit>()
@@ -1413,5 +1379,8 @@ class TypeItemModel {
   final String value;
   final String label;
 
-  TypeItemModel({required this.value, required this.label});
+  TypeItemModel({
+    required this.value,
+    required this.label,
+  });
 }
