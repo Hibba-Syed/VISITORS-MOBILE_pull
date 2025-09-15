@@ -170,6 +170,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                             serviceDetailsCubit = context
                                                 .read<ServiceDetailsCubit>();
                                         serviceDetailsCubit.clearData();
+                                        serviceDetailsCubit.onChangeApplicationType(service?.applicationTitle);
                                         serviceDetailsCubit.getServiceDetails(
                                             serviceId: service?.id);
                                         Navigator.push(

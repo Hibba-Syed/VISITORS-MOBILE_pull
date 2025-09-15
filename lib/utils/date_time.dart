@@ -38,13 +38,53 @@ class DateTimeUtil {
     return formattedDateString;
   }
 
-  static String getFormattedDate(DateTime? inputDateTime) {
-    if (inputDateTime != null) {
-      String formattedDateString =
-          DateFormat("MMMM dd, yyyy").format(inputDateTime);
-      return formattedDateString;
+  static String getFormattedTime(dynamic inputDateTime) {
+    DateTime? dateTime;
+
+    if (inputDateTime == null) {
+      return '--';
     }
-    return '--';
+
+    if (inputDateTime is DateTime) {
+      dateTime = inputDateTime;
+    } else if (inputDateTime is String) {
+      try {
+        dateTime = DateTime.parse(inputDateTime);
+      } catch (e) {
+        return '--';
+      }
+    } else {
+      return '--';
+    }
+
+    final localDateTime = dateTime.toLocal();
+    String formattedDateString = DateFormat("hh:mm a").format(localDateTime);
+    return formattedDateString;
+  }
+
+  static String getFormattedDate(dynamic inputDateTime) {
+    DateTime? dateTime;
+
+    if (inputDateTime == null) {
+      return '--';
+    }
+
+    if (inputDateTime is DateTime) {
+      dateTime = inputDateTime;
+    } else if (inputDateTime is String) {
+      try {
+        dateTime = DateTime.parse(inputDateTime);
+      } catch (e) {
+        return '--';
+      }
+    } else {
+      return '--';
+    }
+
+    final localDateTime = dateTime.toLocal();
+    String formattedDateString =
+        DateFormat("MMMM dd, yyyy").format(localDateTime);
+    return formattedDateString;
   }
 
   static String getFormatDateRange(DateTimeRange? range) {

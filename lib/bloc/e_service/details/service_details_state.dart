@@ -6,12 +6,14 @@ class ServiceDetailsState {
   final bool isCompleteServiceLoading;
   final bool isClearPaymentLoading;
   ServiceDetailsModel? serviceDetails;
+  final String? applicationType;
   ServiceDetailsState({
     this.isLoading = false,
     this.serviceDetails,
     this.isAddLogLoading = false,
     this.isCompleteServiceLoading = false,
     this.isClearPaymentLoading = false,
+    this.applicationType,
   });
   ServiceDetailsState copyWith({
     bool? isLoading,
@@ -19,6 +21,7 @@ class ServiceDetailsState {
     bool? isCompleteServiceLoading,
     bool? isClearPaymentLoading,
     ServiceDetailsModel? serviceDetails,
+    String? applicationType,
   }) {
     return ServiceDetailsState(
         isLoading: isLoading ?? this.isLoading,
@@ -26,7 +29,8 @@ class ServiceDetailsState {
         isAddLogLoading: isAddLogLoading ?? this.isAddLogLoading,
         isCompleteServiceLoading:
             isCompleteServiceLoading ?? this.isCompleteServiceLoading,
-        isClearPaymentLoading: isClearPaymentLoading ?? this.isClearPaymentLoading
-    );
+        isClearPaymentLoading:
+            isClearPaymentLoading ?? this.isClearPaymentLoading,
+        applicationType: applicationType ?? this.applicationType);
   }
 }

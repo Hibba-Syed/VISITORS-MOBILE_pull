@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gap/gap.dart';
+import 'package:readmore/readmore.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -65,19 +67,29 @@ class TitleValueColumnDividerDetailsContainerWidget extends StatelessWidget {
                 : url != null
                     ? InkWell(
                         onTap: () => _launchUrl(url!),
-                        child: Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: textColor ?? AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.isTablet(context) ? 15 : 13,
-                            //AppTextStyles.style10Black400
-                          ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.save_alt,
+                              color: Colors.blue,
+                              size: 16,
+                            ),
+                            Gap(5),
+                            Text(
+                              AppUtils.languageTranslate('file'),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: textColor ?? AppColors.primary,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                                //AppTextStyles.style10Black400
+                              ),
+                            ),
+                          ],
                         ),
                       )
-                    : Text(
+                    : ReadMoreText(
                         value ?? "",
                         style: TextStyle(
                           color: textColor ?? AppColors.darkGrey,
@@ -85,12 +97,21 @@ class TitleValueColumnDividerDetailsContainerWidget extends StatelessWidget {
                           fontSize: AppUtils.isTablet(context) ? 15 : 13,
                           //AppTextStyles.style10Black400
                         ),
-                      ),
+                        trimMode: TrimMode.Line,
+                        trimLines: 3,
+                        colorClickableText: Colors.pink,
+                        trimCollapsedText: AppUtils.languageTranslate('showMore'),
+                        trimExpandedText: AppUtils.languageTranslate('showLess'),
+                        moreStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue),
+                      )
           ],
         ),
         if (!isLast)
           const Divider(
-            color: AppColors.gray,
+            color: AppColors.lightGrey,
           ),
       ],
     );

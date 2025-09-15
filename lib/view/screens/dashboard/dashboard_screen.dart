@@ -220,8 +220,7 @@ class DashboardScreen extends StatelessWidget {
               backgroundColor: AppColors.white,
               forGroundColor: AppColors.green,
               onTap: () {
-                onViewAllDashboardPressed(
-                    context, AppConstants.checkInsIndex);
+                onViewAllDashboardPressed(context, AppConstants.checkInsIndex);
               },
             ),
             ActionsItemModel(
@@ -232,9 +231,7 @@ class DashboardScreen extends StatelessWidget {
               forGroundColor: AppColors.yellow,
               onTap: () {
                 final type = AppUtils.getServiceableType(Strings.keyGuest);
-                context
-                    .read<CheckInsCubit>()
-                    .onChangeSelectedVisitorType(type);
+                context.read<CheckInsCubit>().onChangeSelectedVisitorType(type);
                 context.read<CheckInsCubit>().getCheckIns();
                 context
                     .read<MainDashboardCubit>()
@@ -383,8 +380,7 @@ class DashboardScreen extends StatelessWidget {
                       ? SizedBox(
                           height: 100,
                           child: EmptyWidget(
-                            text:
-                                AppUtils.languageTranslate('noDataAvailable'),
+                            text: AppUtils.languageTranslate('noDataAvailable'),
                           ),
                         )
                       : ListView.separated(
@@ -393,8 +389,7 @@ class DashboardScreen extends StatelessWidget {
                           primary: false,
                           itemCount: state.checkIns?.length ?? 0,
                           itemBuilder: (context, index) {
-                            CheckInModel? checkIns =
-                                state.checkIns?[index];
+                            CheckInModel? checkIns = state.checkIns?[index];
                             return CheckInCardWidget(
                               phone: checkIns?.phone ?? "--",
                               count: checkIns?.visitorCount ?? "",
@@ -435,8 +430,7 @@ class DashboardScreen extends StatelessWidget {
                               },
                             );
                           },
-                          separatorBuilder:
-                              (BuildContext context, int index) {
+                          separatorBuilder: (BuildContext context, int index) {
                             return const Gap(10);
                           },
                         ),
@@ -488,8 +482,7 @@ class DashboardScreen extends StatelessWidget {
                       ? SizedBox(
                           height: 100,
                           child: EmptyWidget(
-                            text:
-                                AppUtils.languageTranslate('noDataAvailable'),
+                            text: AppUtils.languageTranslate('noDataAvailable'),
                           ),
                         )
                       : ListView.separated(
@@ -498,12 +491,10 @@ class DashboardScreen extends StatelessWidget {
                           primary: false,
                           itemCount: state.services?.length ?? 0,
                           itemBuilder: (context, index) {
-                            ServiceModel? service =
-                                state.services?[index];
+                            ServiceModel? service = state.services?[index];
                             return ServicesCardWidget(
                               isActiveCheckins:
-                                  (service?.activeCheckIns?.isNotEmpty ??
-                                          true)
+                                  (service?.activeCheckIns?.isNotEmpty ?? true)
                                       ? true
                                       : false,
                               unit: service?.unit?.unitNumber ?? "--",
@@ -536,17 +527,19 @@ class DashboardScreen extends StatelessWidget {
                                             Strings.keyServices));
                                 context
                                     .read<CheckInsCubit>()
-                                    .onChangeSelectedServiceableId(
-                                        service?.id);
+                                    .onChangeSelectedServiceableId(service?.id);
                                 context.read<CheckInsCubit>().getCheckIns();
                                 Navigator.pushNamed(
                                     context, AppRoutes.serviceableCheckIns);
                               },
                               detailsOnPressed: () {
-                                context
-                                    .read<ServiceDetailsCubit>()
-                                    .getServiceDetails(
-                                        serviceId: service?.id);
+                                ServiceDetailsCubit serviceDetailsCubit =
+                                    context.read<ServiceDetailsCubit>();
+                                serviceDetailsCubit.onChangeApplicationType(
+                                    service?.applicationTitle);
+
+                                serviceDetailsCubit.getServiceDetails(
+                                    serviceId: service?.id);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -556,8 +549,7 @@ class DashboardScreen extends StatelessWidget {
                               },
                             );
                           },
-                          separatorBuilder:
-                              (BuildContext context, int index) {
+                          separatorBuilder: (BuildContext context, int index) {
                             return const Gap(10);
                           },
                         ),
@@ -588,8 +580,7 @@ class DashboardScreen extends StatelessWidget {
                       ? SizedBox(
                           height: 100,
                           child: EmptyWidget(
-                            text:
-                                AppUtils.languageTranslate('noDataAvailable'),
+                            text: AppUtils.languageTranslate('noDataAvailable'),
                           ),
                         )
                       : ListView.separated(
@@ -658,8 +649,7 @@ class DashboardScreen extends StatelessWidget {
                               },
                             );
                           },
-                          separatorBuilder:
-                              (BuildContext context, int index) {
+                          separatorBuilder: (BuildContext context, int index) {
                             return const Gap(10);
                           },
                         ),
@@ -993,9 +983,12 @@ class DashboardScreen extends StatelessWidget {
                                   context, AppRoutes.serviceableCheckIns);
                             },
                             detailsOnPressed: () {
-                              context
-                                  .read<ServiceDetailsCubit>()
-                                  .getServiceDetails(serviceId: service?.id);
+                              ServiceDetailsCubit serviceDetailsCubit =
+                                  context.read<ServiceDetailsCubit>();
+                              serviceDetailsCubit.onChangeApplicationType(
+                                  service?.applicationTitle);
+                              serviceDetailsCubit.getServiceDetails(
+                                  serviceId: service?.id);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -1045,8 +1038,7 @@ class DashboardScreen extends StatelessWidget {
                         primary: false,
                         itemCount: state.workOrders?.length ?? 0,
                         itemBuilder: (context, index) {
-                          WorkOrderModel? workOrder =
-                              state.workOrders?[index];
+                          WorkOrderModel? workOrder = state.workOrders?[index];
                           return WorkOrderRFPCardWidget(
                             isAwarded: workOrder?.isAwarded,
                             isActiveCheckins:

@@ -305,7 +305,8 @@
     "selectUnitNumber": "Select unit number",
     "residentName": "Resident Name",
     "residentNumber": "Resident Number",
-    "validVisitorCountRequired": "Valid Visitor Count is required"
+    "validVisitorCountRequired": "Valid Visitor Count is required",
+    "file": "File"
 
 
 

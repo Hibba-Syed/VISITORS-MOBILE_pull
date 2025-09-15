@@ -33,9 +33,10 @@ class ServiceRepoImpl implements ServiceRepo {
 
   @override
   Future<ServiceDetailsResponseModel?> getServiceDetails(
-      {int? serviceId}) async {
+      {required int? serviceId, required String? applicationType}) async {
     try {
       // final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
+      print('type::::$applicationType');
       final filter = {
         "filter": {
           "where": {
@@ -44,7 +45,18 @@ class ServiceRepoImpl implements ServiceRepo {
             ]
           },
           "include": [
-            {"relation": "application"},
+            {
+              "relation": "application",
+              if (applicationType == 'CCS')
+                "include": [
+                  {
+                    "relation": "fields",
+                    "include": [
+                      {"relation": "values"}
+                    ]
+                  }
+                ]
+            },
             {
               "relation": "status_history",
               "include": [
@@ -59,7 +71,7 @@ class ServiceRepoImpl implements ServiceRepo {
               "select": ["id"]
             },
             {"relation": "evidence"},
-            {"relation": "documents"},
+            {"relation": "documents"}
           ]
         }
       };

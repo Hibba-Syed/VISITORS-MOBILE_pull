@@ -305,7 +305,9 @@
     "selectUnitNumber": "اختر رقم الوحدة",
     "residentName": "اسم المقيم",
     "residentNumber": "رقم المقيم",
-    "validVisitorCountRequired": "عدد الزوار الصحيح مطلوب"
+    "validVisitorCountRequired": "عدد الزوار الصحيح مطلوب",
+    "file": "ملف"
+
 
 
 

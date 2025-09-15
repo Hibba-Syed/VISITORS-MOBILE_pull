@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../bloc/e_service/details/service_details_cubit.dart';
+import '../../../../model/service/application_model.dart';
 import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
@@ -81,56 +82,87 @@ class _CustomServiceDetailsScreenState
                           style: AppTextStyles.style14Black600,
                         ),
                         const Gap(10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10),
+                        if (state.serviceDetails?.application?.fields
+                                ?.isNotEmpty ??
+                            false)
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state
+                                .serviceDetails!.application!.fields!.length,
+                            itemBuilder: (context, index) {
+                              bool isLast = index ==
+                                  (state.serviceDetails!.application!.fields!
+                                          .length -
+                                      1);
+                              final field = state
+                                  .serviceDetails!.application!.fields![index];
+
+                              String displayValue = '--';
+
+                              switch (field.type) {
+                                case "text":
+                                case "number":
+                                case "textarea":
+                                case "dropdown":
+                                case "radio":
+                                case "rating":
+                                  displayValue =
+                                      field.value?.toString() ?? '--';
+                                  break;
+
+                                case "boolean":
+                                  displayValue =
+                                      (field.value == true) ? "Yes" : "No";
+                                  break;
+
+                                case "date":
+                                  displayValue = DateTimeUtil.getFormattedDate(
+                                      field.value);
+                                  break;
+
+                                case "datetime":
+                                  displayValue =
+                                      DateTimeUtil.getFormattedDateTime(
+                                          field.value);
+                                  break;
+
+                                case "time":
+                                  displayValue = DateTimeUtil.getFormattedTime(
+                                      field.value);
+                                  break;
+
+                                case "file":
+                                  displayValue =
+                                      field.value?.toString() ?? '--';
+                                  // You could render a clickable link/button here if needed
+                                  break;
+
+                                case "multiselect":
+                                case "checkbox":
+                                  if (field.values != null &&
+                                      field.values!.isNotEmpty) {
+                                    displayValue = field.values!
+                                        .map((v) => v.value?.toString() ?? '')
+                                        .where((v) => v.isNotEmpty)
+                                        .join(', ');
+                                  }
+                                  break;
+
+                                default:
+                                  displayValue =
+                                      field.value?.toString() ?? '--';
+                              }
+
+                              return TitleValueColumnDividerDetailsContainerWidget(
+                                title: field.label ?? '--',
+                                url: field.type == 'file' ? displayValue : null,
+                                value:
+                                    field.type != 'file' ? displayValue : null,
+                                isLast: isLast,
+                              );
+                            },
                           ),
-                          child: Column(
-                            children: [
-                              TitleValueColumnDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('facility'),
-                                  value: state.serviceDetails?.application
-                                          ?.facility ??
-                                      "--"),
-                              TitleValueRowDividerDetailsContainerWidget(
-                                title: AppUtils.languageTranslate(
-                                    'natureOfFunction'),
-                                value: state.serviceDetails?.application
-                                        ?.natureOfFunction ??
-                                    "--",
-                              ),
-                              TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'expectedGuests'),
-                                  value: state.serviceDetails?.application
-                                          ?.expectedGuests
-                                          ?.toString() ??
-                                      '--'),
-                              TitleValueRowDividerDetailsContainerWidget(
-                                  title:
-                                      AppUtils.languageTranslate('bookingDate'),
-                                  value: DateTimeUtil.getFormattedDate(state
-                                      .serviceDetails
-                                      ?.application
-                                      ?.bookingDate)),
-                              TitleValueRowDividerDetailsContainerWidget(
-                                title: AppUtils.languageTranslate('startTime'),
-                                value: state.serviceDetails?.application
-                                        ?.startTime ??
-                                    "--",
-                              ),
-                              TitleValueRowDividerDetailsContainerWidget(
-                                  isLast: true,
-                                  title: AppUtils.languageTranslate('endTime'),
-                                  value: state.serviceDetails?.application
-                                          ?.endTime ??
-                                      '--'),
-                            ],
-                          ),
-                        ),
                         if (state.serviceDetails?.documents?.isNotEmpty ??
                             true) ...[
                           const Gap(20),
@@ -139,37 +171,39 @@ class _CustomServiceDetailsScreenState
                           ),
                           const Gap(10),
                           Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 10),
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.serviceDetails?.documents?.isNotEmpty ??
-                                true
-                                ? ListView.separated(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount:
-                              state.serviceDetails?.documents?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                Document? document =
-                                state.serviceDetails?.documents?[index];
-                                return ServicesDocumentsCardWidget(
-                                  name: document?.name,
-                                  url: document?.pathUrl ?? "",
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  color: AppColors.gray,
-                                );
-                              },
-                            )
-                                : EmptyWidget(
-                                text: AppUtils.languageTranslate(
-                                    'noDataAvailable')),
+                            child:
+                                state.serviceDetails?.documents?.isNotEmpty ??
+                                        true
+                                    ? ListView.separated(
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount: state.serviceDetails
+                                                ?.documents?.length ??
+                                            0,
+                                        itemBuilder: (context, index) {
+                                          Document? document = state
+                                              .serviceDetails
+                                              ?.documents?[index];
+                                          return ServicesDocumentsCardWidget(
+                                            name: document?.name,
+                                            url: document?.pathUrl ?? "",
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(
+                                            color: AppColors.gray,
+                                          );
+                                        },
+                                      )
+                                    : EmptyWidget(
+                                        text: AppUtils.languageTranslate(
+                                            'noDataAvailable')),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[

@@ -1,4 +1,3 @@
-
 import '../../model/service/add_service_log_response_model.dart';
 import '../../model/service/service_details_response_model.dart';
 import '../../model/service/service_response_model.dart';
@@ -12,7 +11,8 @@ abstract class ServiceRepo {
     int? unitId,
     String? type,
   });
-  Future<ServiceDetailsResponseModel?> getServiceDetails({int? serviceId});
+  Future<ServiceDetailsResponseModel?> getServiceDetails(
+      {required int? serviceId, required String? applicationType});
   Future<AddServiceLogResponseModel?> addServiceLog({
     required Map<String, dynamic> data,
   });
@@ -21,5 +21,4 @@ abstract class ServiceRepo {
   });
   Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService(
       {required Map<String, dynamic> data, required int? serviceId});
-
 }

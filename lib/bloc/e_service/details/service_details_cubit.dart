@@ -20,15 +20,22 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final PaymentRepo _paymentRepo = PaymentRepoImpl();
 
+  void onChangeApplicationType(String? type) {
+    emit(state.copyWith(applicationType: type));
+  }
+
   void clearData() {
     emit(state.copyWith(serviceDetails: ServiceDetailsModel()));
   }
 
-  Future<ServiceDetailsResponseModel?> getServiceDetails(
-      {required int? serviceId, String? type}) async {
+  Future<ServiceDetailsResponseModel?> getServiceDetails({
+    required int? serviceId,
+  }) async {
     emit(state.copyWith(isLoading: true));
-    ServiceDetailsResponseModel? response =
-        await _serviceRepo.getServiceDetails(serviceId: serviceId).onError(
+    ServiceDetailsResponseModel? response = await _serviceRepo
+        .getServiceDetails(
+            serviceId: serviceId, applicationType: state.applicationType)
+        .onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
