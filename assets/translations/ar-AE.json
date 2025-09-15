@@ -301,7 +301,13 @@
     "selectDate": "اختر التاريخ",
     "checkOutFilter": "فلتر تسجيل الخروج",
     "checkoutDetails": "تفاصيل تسجيل الخروج",
-    "medium": "Medium"
+    "medium": "Medium",
+    "selectUnitNumber": "اختر رقم الوحدة",
+    "residentName": "اسم المقيم",
+    "residentNumber": "رقم المقيم",
+    "validVisitorCountRequired": "عدد الزوار الصحيح مطلوب"
+
+
 
 
 

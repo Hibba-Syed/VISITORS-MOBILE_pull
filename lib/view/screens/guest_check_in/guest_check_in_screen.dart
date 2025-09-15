@@ -18,6 +18,7 @@ import 'package:visitors/service/scanner/scanner_service.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
+import 'package:visitors/view/widgets/container_widgets/title_value_column_divider_details_container.dart';
 import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/picker/date_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
@@ -30,6 +31,7 @@ import '../../../model/visitor_info/number_info_model.dart';
 import '../../../model/visitor_info/visitors_purpose_model.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../widgets/button/custom_button.dart';
+import '../../widgets/container_widgets/title_value_row_divider_details_container.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
   const GuestCheckInScreen({
@@ -123,9 +125,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     _selectedTravelDocumentIssueDate = null;
     _selectedTravelDocumentExpiryDate = null;
     context.read<GuestCheckInCubit>().onChangeSelectedNationality(null);
-    context
-        .read<GuestCheckInCubit>()
-        .onChangeSelectedPurpose(null);
+    context.read<GuestCheckInCubit>().onChangeSelectedPurpose(null);
     context.read<GuestCheckInCubit>().onChangeSelectedUnit(null);
   }
 
@@ -225,7 +225,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   : null,
 
                           'sms': false,
-                          'visitor_count': _visitorCountController.text,
+                          'visitor_count':
+                              int.tryParse(_visitorCountController.text),
                           'visitor_id': null,
                           if (_personImage?.path.isNotEmpty ?? false)
                             if (base64Image != null) 'user_photo': base64Image,
@@ -487,6 +488,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         ),
                       const Gap(5),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (_service?.id == null &&
                               _workOrder?.id == null) ...[
@@ -506,6 +508,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                   context
                                       .read<GuestCheckInCubit>()
                                       .onChangeSelectedVisitType(value);
+                                  context
+                                      .read<GuestCheckInCubit>()
+                                      .onChangeSelectedUnit(null);
                                 },
                                 validator: (value) {
                                   if (value == null) {
@@ -529,6 +534,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                                 if (value == null || value.isEmpty) {
                                   return AppUtils.languageTranslate('required');
                                 }
+                                if (value.length > 8) {
+                                  return AppUtils.languageTranslate(
+                                      'validVisitorCountRequired');
+                                }
                                 return null;
                               },
                             ),
@@ -539,6 +548,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         Gap(5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child:
@@ -573,7 +583,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                               child: SingleSelectedDropdownWidget<UnitModel>(
                                 label:
                                     "${AppUtils.languageTranslate('unitNumber')}*",
-                                hint: AppUtils.languageTranslate('unit'),
+                                hint: AppUtils.languageTranslate(
+                                    'selectUnitNumber'),
                                 fillColor: AppColors.white,
                                 selectedItem: state.selectedUnit,
                                 itemAsString: (unit) => unit.unitNumber ?? "",
@@ -597,6 +608,32 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ],
                         ),
                       ],
+                      if (state.selectedUnit?.id != null)
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: AppColors.primary.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title:
+                                    AppUtils.languageTranslate('residentName'),
+                                value: state.selectedUnit?.resident?.fullName ??
+                                    '--',
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate(
+                                    'residentNumber'),
+                                value: state
+                                        .selectedUnit?.resident?.primaryPhone ??
+                                    '--',
+                                isLast: true,
+                              ),
+                            ],
+                          ),
+                        ),
                       const Gap(5),
                       TextFieldWidget(
                         enabledBorder: InputBorder.none,
@@ -665,6 +702,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       ),
                       const Gap(5),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: TextFieldWidget(
@@ -906,6 +944,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             context
                                 .read<GuestCheckInCubit>()
                                 .onChangeSelectedVisitType(value);
+                            context
+                                .read<GuestCheckInCubit>()
+                                .onChangeSelectedUnit(null);
                           },
                           validator: (value) {
                             if (value == null) {
@@ -925,6 +966,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return AppUtils.languageTranslate('required');
+                          }
+                          if (value.length > 8) {
+                            return AppUtils.languageTranslate(
+                                'validVisitorCountRequired');
                           }
                           return null;
                         },
@@ -958,18 +1003,16 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         SingleSelectedDropdownWidget<UnitModel>(
                           label: "${AppUtils.languageTranslate('unitNumber')}*",
                           outLineColor: AppColors.outLineGray,
-                          hint: AppUtils.languageTranslate('unit'),
+                          hint: AppUtils.languageTranslate('selectUnitNumber'),
                           fillColor: AppColors.white,
                           selectedItem: state.selectedUnit,
                           itemAsString: (unit) => unit.unitNumber ?? "",
                           compareFn: (unit, item) => unit.id == item.id,
                           items: state.units ?? [],
                           onChanged: (value) {
-                            // print('value::: ${value?.toJson()}');
                             context
                                 .read<GuestCheckInCubit>()
                                 .onChangeSelectedUnit(value);
-                            // print('state value:: ${state.selectedUnit?.id}');
                           },
                           validator: (value) {
                             if (value?.unitNumber?.isEmpty ?? true) {
@@ -979,6 +1022,33 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           },
                         ),
                       ],
+                      if (state.selectedUnit?.id != null)
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: AppColors.primary.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleValueColumnDividerDetailsContainerWidget(
+                                title:
+                                    AppUtils.languageTranslate('residentName'),
+                                value: state.selectedUnit?.resident?.fullName ??
+                                    '--',
+                              ),
+                              TitleValueColumnDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate(
+                                    'residentNumber'),
+                                value: state
+                                        .selectedUnit?.resident?.primaryPhone ??
+                                    '--',
+                                isLast: true,
+                              ),
+                            ],
+                          ),
+                        ),
                       const Gap(5),
                       TextFieldWidget(
                         outLineColor: AppColors.outLineGray,

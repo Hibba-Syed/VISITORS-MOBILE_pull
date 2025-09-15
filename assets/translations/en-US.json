@@ -301,7 +301,14 @@
     "selectDate": "Select date",
     "checkOutFilter": "Check-Out Filter",
     "checkoutDetails": "Check-Out Details",
-    "medium": "متوسط"
+    "medium": "متوسط",
+    "selectUnitNumber": "Select unit number",
+    "residentName": "Resident Name",
+    "residentNumber": "Resident Number",
+    "validVisitorCountRequired": "Valid Visitor Count is required"
+
+
+
 
 
 
