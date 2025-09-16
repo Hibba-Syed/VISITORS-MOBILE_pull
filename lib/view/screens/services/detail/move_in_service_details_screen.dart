@@ -364,7 +364,7 @@ class _MoveInServiceDetailsScreenState
                                                 true) {
                                               Fluttertoast.showToast(
                                                   msg: AppUtils.languageTranslate(
-                                                      'pleaseChooseImageFileFirst'));
+                                                      'pleaseUploadTheChequeFile'));
                                               return false;
                                             }
                                             if (isPaymentReceived == null) {

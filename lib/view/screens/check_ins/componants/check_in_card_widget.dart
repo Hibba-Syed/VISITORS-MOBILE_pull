@@ -98,7 +98,7 @@ class CheckInCardWidget extends StatelessWidget {
                         StackCountContainerWidget(
                           imageHeight: 55,
                           imageWidth: 55,
-                          count: count ?? "",
+                          count: count,
                           countTopPositioned: -5,
                           countRightPositioned: -6,
                           backgroundColor: AppColors.primary,
@@ -162,9 +162,13 @@ class CheckInCardWidget extends StatelessWidget {
                             '${AppUtils.languageTranslate("purpose")}:',
                             style: AppTextStyles.style14Black600,
                           ),
-                          Text(
-                            purpose ?? "",
-                            style: AppTextStyles.style13black400,
+                          Gap(3),
+                          Expanded(
+                            child: Text(
+                              purpose ?? "",
+                              style: AppTextStyles.style13black400,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       )

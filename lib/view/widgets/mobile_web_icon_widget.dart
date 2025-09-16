@@ -21,7 +21,9 @@ class MobileWebIconWidget extends StatelessWidget {
           ? AppUtils.languageTranslate("mobile_check_in")
           : AppUtils.languageTranslate("web_check_in"),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        padding: isDecorationEnabled
+            ? const EdgeInsets.symmetric(vertical: 6, horizontal: 10)
+            : null,
         decoration: isDecorationEnabled
             ? BoxDecoration(
                 borderRadius: const BorderRadius.only(

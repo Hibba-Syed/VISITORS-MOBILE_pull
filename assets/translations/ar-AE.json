@@ -135,7 +135,7 @@
     "chooseFile": "اختر ملفًا",
     "chequeFile": "ملف الشيك *",
     "pleaseSelectCheckboxFirst": "يجب استلام الدفعة يرجى تحديد خانة الاختيار أولاً",
-    "pleaseChooseImageFileFirst": "يرجى اختيار ملف صورة أولاً",
+    "pleaseUploadTheChequeFile": "يرجى رفع ملف الشيك",
     "clearPayment": "إلغاء الدفع",
     "requestedTime": "الوقت المطلوب",
     "emergencyNumber": "رقم الطوارئ",
@@ -301,12 +301,13 @@
     "selectDate": "اختر التاريخ",
     "checkOutFilter": "فلتر تسجيل الخروج",
     "checkoutDetails": "تفاصيل تسجيل الخروج",
-    "medium": "Medium",
+    "medium": "متوسط",
     "selectUnitNumber": "اختر رقم الوحدة",
     "residentName": "اسم المقيم",
     "residentNumber": "رقم المقيم",
     "validVisitorCountRequired": "عدد الزوار الصحيح مطلوب",
-    "file": "ملف"
+    "file": "ملف",
+    "pleaseEnterValidEmail": "يرجى إدخال بريد إلكتروني صالح"
 
 
 

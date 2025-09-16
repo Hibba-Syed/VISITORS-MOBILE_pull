@@ -124,10 +124,13 @@ class CheckOutDetailsScreen extends StatelessWidget {
                     ),
                     TitleValueRowDividerDetailsContainerWidget(
                       title: AppUtils.languageTranslate('medium'),
-                      valueWidget: MobileWebIconWidget(
-                        isMobile: checkout?.isMobile ?? false,
-                        isDecorationEnabled: false,
-                        iconColor: AppColors.darkGrey,
+                      valueWidget: Align(
+                        alignment: Alignment.centerLeft,
+                        child: MobileWebIconWidget(
+                          isMobile: checkout?.isMobile ?? false,
+                          isDecorationEnabled: false,
+                          iconColor: AppColors.darkGrey,
+                        ),
                       ),
                     ),
                     Align(

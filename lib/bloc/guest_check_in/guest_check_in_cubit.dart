@@ -185,42 +185,38 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     }
   }
 
-  Future<bool> guestCheckIn(
+  Future<bool?> guestCheckIn(
     BuildContext context, {
     required Map<String, dynamic> data,
   }) async {
     emit(state.copyWith(isGuestCheckInLoading: true));
-    try {
-      GuestCheckInResponseModel? response = await _checkInRepo
-          .guestCheckIn(
-        data: data,
-      )
-          .onError((error, stackTrace) {
-        emit(state.copyWith(isGuestCheckInLoading: false));
-        log(error.toString());
-        Fluttertoast.showToast(
-          msg: error.toString(),
-        );
-        return null;
-      });
+    GuestCheckInResponseModel? response = await _checkInRepo
+        .guestCheckIn(
+      data: data,
+    )
+        .onError((error, stackTrace) {
       emit(state.copyWith(isGuestCheckInLoading: false));
-      if (response != null && response.status == 'success') {
-        emit(state.copyWith(checkInModel: response.record));
-        if (context.mounted) {
-          Navigator.pop(context, true);
-        }
-        Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate('checkInSuccessfully'));
-        return true;
-      } else {
-        Fluttertoast.showToast(
-            msg: AppUtils.languageTranslate(
-                'somethingWentWrongWhileCheckingIn'));
-        return false;
+      log(error.toString());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+      );
+      if (error != null) {
+        throw error;
       }
-    } catch (e) {
-      emit(state.copyWith(isGuestCheckInLoading: false));
-      Fluttertoast.showToast(msg: e.toString());
+      return null;
+    });
+    emit(state.copyWith(isGuestCheckInLoading: false));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(checkInModel: response.record));
+      if (context.mounted) {
+        Navigator.pop(context, true);
+      }
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('checkInSuccessfully'));
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingIn'));
       return false;
     }
   }

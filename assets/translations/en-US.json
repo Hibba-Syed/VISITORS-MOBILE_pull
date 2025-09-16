@@ -133,7 +133,8 @@
     "cannotSelectMultipleFiles": "Cannot select multiple files",
     "chooseFile": "Choose File",
     "chequeFile": "Cheque File *",
-    "pleaseChooseImageFileFirst": "Please choose image file firstً",
+    "pleaseUploadTheChequeFile": "Please upload the cheque file",
+
     "clearPayment": "Clear Payment",
     "requestedTime": "Requested Time",
     "emergencyNumber": "Emergency Number",
@@ -301,12 +302,13 @@
     "selectDate": "Select date",
     "checkOutFilter": "Check-Out Filter",
     "checkoutDetails": "Check-Out Details",
-    "medium": "متوسط",
+    "medium": "Medium",
     "selectUnitNumber": "Select unit number",
     "residentName": "Resident Name",
     "residentNumber": "Resident Number",
     "validVisitorCountRequired": "Valid Visitor Count is required",
-    "file": "File"
+    "file": "File",
+    "pleaseEnterValidEmail": "Please enter valid email"
 
 
 

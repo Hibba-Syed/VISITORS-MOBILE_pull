@@ -6,15 +6,16 @@ import 'package:visitors/utils/app_utils.dart';
 
 class StackCountContainerWidget extends StatelessWidget {
   final String? imageUrl;
-  final double?  imageHeight;
-  final double?  imageWidth;
-  final double?  countTopPositioned;
-  final double?  countRightPositioned;
-  final double?  countPadding;
-  final Color?   backgroundColor;
-  final Color?   imageBackgroundColor;
+  final double? imageHeight;
+  final double? imageWidth;
+  final double? countTopPositioned;
+  final double? countRightPositioned;
+  final double? countPadding;
+  final Color? backgroundColor;
+  final Color? imageBackgroundColor;
   final String? count;
-  const StackCountContainerWidget({super.key,
+  const StackCountContainerWidget({
+    super.key,
     this.imageHeight,
     this.imageUrl,
     this.imageWidth,
@@ -29,38 +30,39 @@ class StackCountContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final int? parsedCount = int.tryParse(count ?? "");
-  //  final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 3 : 5;
+    //  final double countPadding = (parsedCount != null && parsedCount % 2 == 0) ? 3 : 5;
     return Stack(
       clipBehavior: Clip.none,
       children: [
-         NetworkImageWidget(
-            height: imageHeight ?? 80,
-            width: imageWidth ?? 80,
-            url: imageUrl ?? "",
-         ),
-        Positioned(
-          top: countTopPositioned ?? -1,
-          right: countRightPositioned ?? -1,
-          child: Container(
-            alignment: Alignment.center,
-            height: AppUtils.isMobile(context) ? 20 : 22,
-            width: AppUtils.isMobile(context) ? 20 : 22,
-            padding: EdgeInsets.all(1),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: backgroundColor ?? AppColors.primary,
-                border: Border.all(
-                    color: AppColors.white, width: 2
-                )),
-            child:  Text(
-              textAlign: TextAlign.center,
-              count?.toString() ?? "",
-              style:  AppUtils.isMobile(context) ?
-              AppTextStyles.style11white400 :
-              AppTextStyles.style12white400,
+        NetworkImageWidget(
+          height: imageHeight ?? 80,
+          width: imageWidth ?? 80,
+          url: imageUrl ?? "",
+        ),
+        if (count?.isNotEmpty ?? false)
+          Positioned(
+            top: countTopPositioned ?? -1,
+            right: countRightPositioned ?? -1,
+            child: Container(
+              alignment: Alignment.center,
+              height: AppUtils.isMobile(context) ? 20 : 22,
+              width: AppUtils.isMobile(context) ? 20 : 22,
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: backgroundColor ?? AppColors.primary,
+                  border: Border.all(color: AppColors.white, width: 2)),
+              child: FittedBox(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  count ?? "",
+                  style: AppUtils.isMobile(context)
+                      ? AppTextStyles.style11white400
+                      : AppTextStyles.style12white400,
+                ),
+              ),
             ),
           ),
-        ),
       ],
     );
   }
