@@ -118,9 +118,8 @@ class ServiceRepoImpl implements ServiceRepo {
   Future<VisitorsServiceCompleteResponseModel?> completeAccessDeviceService(
       {required Map<String, dynamic> data, required int? serviceId}) async {
     try {
-      // print('completeAccessDeviceService ${ApiUrl.serviceAccessDeviceComplete}/$serviceId');
-      dynamic response =
-          await _apiService.getPostApiResponse(ApiUrl.serviceComplete, data);
+      String url = '${ApiUrl.serviceAccessDeviceComplete}/$serviceId';
+      dynamic response = await _apiService.getPostApiResponse(url, data);
       // print('completeAccessDeviceService $response');
       return VisitorsServiceCompleteResponseModel.fromJson(response);
     } catch (e) {

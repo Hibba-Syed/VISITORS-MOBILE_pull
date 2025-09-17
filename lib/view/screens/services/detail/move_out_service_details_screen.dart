@@ -105,7 +105,7 @@ class _MoveOutServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                 title:
                                     AppUtils.languageTranslate('requestedDate'),
-                                value: DateTimeUtil.getFormattedDateTime(state
+                                value: DateTimeUtil.getFormattedDate(state
                                     .serviceDetails?.application?.moveDate),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
@@ -181,21 +181,28 @@ class _MoveOutServiceDetailsScreenState
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              children: [
-                                TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'deposit_amount'),
-                                  value: state.serviceDetails?.securityDeposit
-                                          ?.toString() ??
-                                      "--",
-                                  isLast: true,
-                                ),
-                              ],
+                            child: TitleValueRowDividerDetailsContainerWidget(
+                              title: AppUtils.languageTranslate(
+                                  'deposit_amount'),
+                              value: state.serviceDetails?.securityDeposit
+                                      ?.toString() ??
+                                  "--",
+                              isLast: true,
                             ),
                           ),
                         ],
-                        if (state.serviceDetails?.securityDeposit != null) ...[
+                        if ((state.serviceDetails?.application?.mcCompanyName
+                                    ?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails
+                                    ?.application?.mcContactPerson?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails?.application
+                                    ?.mcTradeLicensePathUrl?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails?.application
+                                    ?.mcEmiratesPathUrl?.isNotEmpty ??
+                                false)) ...[
                           const Gap(20),
                           HeadingWidget(
                             heading: AppUtils.languageTranslate(
@@ -215,32 +222,28 @@ class _MoveOutServiceDetailsScreenState
                                   title:
                                       AppUtils.languageTranslate('companyName'),
                                   value: state.serviceDetails?.application
-                                          ?.mcCompanyName
-                                          ?.toString() ??
+                                          ?.mcCompanyName ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'contactPerson'),
                                   value: state.serviceDetails?.application
-                                          ?.mcContactPerson
-                                          ?.toString() ??
+                                          ?.mcContactPerson ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'companyTradeLicense'),
                                   url: state.serviceDetails?.application
-                                          ?.mcTradeLicensePathUrl
-                                          ?.toString() ??
+                                          ?.mcTradeLicensePathUrl ??
                                       "--",
                                 ),
                                 TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'contactPersonEmiratesId'),
                                   url: state.serviceDetails?.application
-                                          ?.mcEmiratesPathUrl
-                                          ?.toString() ??
+                                          ?.mcEmiratesPathUrl ??
                                       "--",
                                 ),
                               ],

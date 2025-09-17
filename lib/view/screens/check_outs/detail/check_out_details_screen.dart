@@ -17,6 +17,7 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/read_more_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../../../model/log_model.dart';
+import '../../../../utils/validation_util.dart';
 import '../../../widgets/mobile_web_icon_widget.dart';
 
 class CheckOutDetailsScreen extends StatelessWidget {
@@ -94,7 +95,7 @@ class CheckOutDetailsScreen extends StatelessWidget {
                     ),
                     TitleValueRowDividerDetailsContainerWidget(
                       title: AppUtils.languageTranslate('visitPurpose'),
-                      value: checkout?.purpose ?? "--",
+                      value: ValidationUtil.isValid(checkout?.purpose)?checkout?.purpose:  "--",
                     ),
                     TitleValueRowDividerDetailsContainerWidget(
                       title: AppUtils.languageTranslate('entryCardNumber'),

@@ -158,17 +158,13 @@ class _DeliveryPermitServiceDetailsScreenState
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              children: [
-                                TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'deposit_amount'),
-                                  value: state.serviceDetails?.securityDeposit
-                                      ?.toString() ??
-                                      "--",
-                                  isLast: true,
-                                ),
-                              ],
+                            child: TitleValueRowDividerDetailsContainerWidget(
+                              title: AppUtils.languageTranslate(
+                                  'deposit_amount'),
+                              value: state.serviceDetails?.securityDeposit
+                                  ?.toString() ??
+                                  "--",
+                              isLast: true,
                             ),
                           ),
                         ],
@@ -210,6 +206,8 @@ class _DeliveryPermitServiceDetailsScreenState
                                 title:  AppUtils.languageTranslate('passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.passportExpiry),
+                                textColor: ((state.serviceDetails?.passportExpiry!=null) &&(state.serviceDetails!.passportExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
+
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('detailsIdNumber'),
@@ -222,6 +220,8 @@ class _DeliveryPermitServiceDetailsScreenState
                                 title: AppUtils.languageTranslate('idExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.clientIdExpiry),
+                                textColor: ((state.serviceDetails?.clientIdExpiry!=null) &&(state.serviceDetails!.clientIdExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
+
                               ),
                             ],
                           ),

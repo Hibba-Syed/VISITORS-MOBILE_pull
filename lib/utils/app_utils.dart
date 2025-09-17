@@ -44,6 +44,9 @@ class AppUtils {
     if (status?.toLowerCase() == "waiting for payment") {
       return Colors.grey;
     }
+    if (status?.toLowerCase() == "payment clear") {
+      return Colors.green;
+    }
 
     return AppColors.red;
   }

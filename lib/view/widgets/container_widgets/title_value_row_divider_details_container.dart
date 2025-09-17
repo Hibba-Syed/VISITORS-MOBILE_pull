@@ -62,11 +62,14 @@ class TitleValueRowDividerDetailsContainerWidget extends StatelessWidget {
             Expanded(
               flex: 5,
               child: valueIcon != null
-                  ? Icon(
-                      valueIcon,
-                      color: valueColor ?? AppColors.red,
-                      size: AppUtils.isTablet(context) ? 20 : 16,
-                    )
+                  ? Align(
+                alignment: Alignment.centerLeft,
+                    child: Icon(
+                        valueIcon,
+                        color: valueColor ?? AppColors.red,
+                        size: AppUtils.isTablet(context) ? 20 : 16,
+                      ),
+                  )
                   : url != null
                       ? InkWell(
                           onTap: () => _launchUrl(url!),

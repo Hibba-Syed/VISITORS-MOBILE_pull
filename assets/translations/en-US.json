@@ -272,6 +272,7 @@
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "File is too large. Please choose a file smaller than 10 MB",
     "visitorsMobile": "Visitors Mobile",
     "newCardNumber": "New Card Number *",
+    "oldCardNumber": "Old Card Number",
     "servicesNote": "Note",
     "pleaseTypeNewCardNumberFirst": "Please type new card number first",
     "scannedDocumentNotValidPleaseTryAgainUsingAValidDocument": "The scanned document is not valid. Please try again using a valid document.",

@@ -157,7 +157,10 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
         Fluttertoast.showToast(
             msg: AppUtils.languageTranslate('serviceCompletedSuccessfully'));
         if (context.mounted) {
-          Navigator.pop(context);
+          if (context.mounted) {
+            context.read<ServiceCubit>().getServices();
+            Navigator.pop(context);
+          }
         }
         return true;
       } else {

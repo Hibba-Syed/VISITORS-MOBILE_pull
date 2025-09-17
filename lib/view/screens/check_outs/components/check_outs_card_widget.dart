@@ -11,7 +11,6 @@ import 'package:visitors/utils/app_utils.dart';
 
 import '../../../widgets/mobile_web_icon_widget.dart';
 
-
 class CheckOutCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
@@ -26,22 +25,22 @@ class CheckOutCardWidget extends StatelessWidget {
   final VoidCallback? checkOutOnPressed;
   final VoidCallback onTap;
   final bool? isMobile;
-  const CheckOutCardWidget(
-      {super.key,
-        this.profileImageUrl,
-        this.visitorCount,
-        this.name,
-        this.type,
-        this.phone,
-        this.typeText,
-        this.checkInDate,
-        this.checkOutDate,
-        this.typeImage,
-        this.typeBackgroundColor,
-        this.checkOutOnPressed,
-        required this.onTap,
-        required this.isMobile,
-      });
+  const CheckOutCardWidget({
+    super.key,
+    this.profileImageUrl,
+    this.visitorCount,
+    this.name,
+    this.type,
+    this.phone,
+    this.typeText,
+    this.checkInDate,
+    this.checkOutDate,
+    this.typeImage,
+    this.typeBackgroundColor,
+    this.checkOutOnPressed,
+    required this.onTap,
+    required this.isMobile,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +52,13 @@ class CheckOutCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-               if(typeText?.isNotEmpty ?? true)
-              OverlapContainerWidget(
-                text: typeText,
-                svgImagePath: typeImage,
-                backgroundColor: AppColors.primary,
-              ),
+              if (typeText?.isNotEmpty ?? true)
+                OverlapContainerWidget(
+                  text: typeText,
+                  svgImagePath: typeImage,
+                  backgroundColor: AppColors.primary,
+                ),
+              Spacer(),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -107,7 +107,9 @@ class CheckOutCardWidget extends StatelessWidget {
                         children: [
                           Text(
                             name ?? "",
-                            style: AppUtils.isTablet(context) ?  AppTextStyles.style16black600 : AppTextStyles.style15Black600,
+                            style: AppUtils.isTablet(context)
+                                ? AppTextStyles.style16black600
+                                : AppTextStyles.style15Black600,
                           ),
                           const Gap(5),
                           Row(
@@ -117,7 +119,10 @@ class CheckOutCardWidget extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(AppUtils.languageTranslate('checkIn'),style: AppUtils.isTablet(context) ? AppTextStyles.style14Black600 : AppTextStyles.style13Black600 ),
+                                    Text(AppUtils.languageTranslate('checkIn'),
+                                        style: AppUtils.isTablet(context)
+                                            ? AppTextStyles.style14Black600
+                                            : AppTextStyles.style13Black600),
                                     const Gap(5),
                                     IconTextContainerWidget(
                                       image: AppImages.date,
@@ -131,7 +136,12 @@ class CheckOutCardWidget extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     Text(AppUtils.languageTranslate('checkOut'),style: AppUtils.isTablet(context) ?AppTextStyles.style14Black600 :  AppTextStyles.style13Black600,),
+                                    Text(
+                                      AppUtils.languageTranslate('checkOut'),
+                                      style: AppUtils.isTablet(context)
+                                          ? AppTextStyles.style14Black600
+                                          : AppTextStyles.style13Black600,
+                                    ),
                                     IconTextContainerWidget(
                                       image: AppImages.date,
                                       text: checkOutDate ?? "",
@@ -139,7 +149,6 @@ class CheckOutCardWidget extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ],
@@ -150,7 +159,6 @@ class CheckOutCardWidget extends StatelessWidget {
               ],
             ),
           ),
-
         ],
       ),
     );

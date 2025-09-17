@@ -56,23 +56,27 @@ class CheckInCardWidget extends StatelessWidget {
               text: typeText,
               svgImagePath: typeImage,
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                isServiceable
-                    ? OverlapContainerWidget(
-                        backgroundColor: AppColors.yellow,
-                        text: reference,
-                      )
-                    : OverlapContainerWidget(
-                        backgroundColor: AppUtils.getCheckOutTypeColor(type),
-                        //typeBackgroundColor,
-                        text: type,
-                      ),
-                MobileWebIconWidget(
-                  isMobile: isMobile ?? false,
-                ),
-              ],
+            Spacer(),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  isServiceable
+                      ? OverlapContainerWidget(
+                          backgroundColor: AppColors.yellow,
+                          text: reference,
+                        )
+                      : OverlapContainerWidget(
+                          backgroundColor: AppUtils.getCheckOutTypeColor(type),
+                          //typeBackgroundColor,
+                          text: type,
+                        ),
+                  MobileWebIconWidget(
+                    isMobile: isMobile ?? false,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

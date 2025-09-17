@@ -273,6 +273,7 @@
     "fileIsTooLargePleaseChooseAFileSmallerThan10MB": "الملف كبير جدًا. يرجى اختيار ملف أصغر من 10 ميغابايت",
     "visitorsMobile": "جوال الزائرين",
     "newCardNumber": "رقم البطاقة الجديد * ",
+    "oldCardNumber": "رقم البطاقة القديمة",
     "pleaseTypeNewCardNumberFirst": "يرجى إدخال رقم البطاقة الجديد أولاً",
     "or": "أو",
     "biometricLogin": "تسجيل الدخول البيومتري",

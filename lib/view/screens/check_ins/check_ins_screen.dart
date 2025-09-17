@@ -190,7 +190,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                                         .label,
                                     createdDate:
                                         DateTimeUtil.getFormattedDateTime(
-                                            checkIn?.visitor?.createdAt),
+                                            checkIn?.createdAt),
                                     isMobile: checkIn?.isMobile,
                                     checkOutOnPressed: () {
                                       context

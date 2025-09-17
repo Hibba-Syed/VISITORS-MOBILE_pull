@@ -8,6 +8,7 @@ import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/date_time.dart';
+import 'package:visitors/utils/validation_util.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
@@ -104,7 +105,9 @@ class CheckInDetailsScreen extends StatelessWidget {
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('visitPurpose'),
-                          value: checkIn?.purpose ?? "--",
+                          value: ValidationUtil.isValid(checkIn?.purpose)
+                              ? checkIn?.purpose
+                              : "--",
                         ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('entryCardNumber'),
@@ -139,8 +142,9 @@ class CheckInDetailsScreen extends StatelessWidget {
                               ? Alignment.topLeft
                               : Alignment.topRight,
                           child: ReadMoreWidget(
-                              title: AppUtils.languageTranslate('description'),
-                              valueText: checkIn?.description ?? "--"),
+                            title: AppUtils.languageTranslate('description'),
+                            valueText: checkIn?.description ?? "--",
+                          ),
                         ),
                       ],
                     ),

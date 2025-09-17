@@ -180,17 +180,13 @@ class _MoveInServiceDetailsScreenState
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              children: [
-                                TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'deposit_amount'),
-                                  value: state.serviceDetails?.securityDeposit
-                                          ?.toString() ??
-                                      "--",
-                                  isLast: true,
-                                ),
-                              ],
+                            child: TitleValueRowDividerDetailsContainerWidget(
+                              title: AppUtils.languageTranslate(
+                                  'deposit_amount'),
+                              value: state.serviceDetails?.securityDeposit
+                                      ?.toString() ??
+                                  "--",
+                              isLast: true,
                             ),
                           ),
                         ],
@@ -356,7 +352,6 @@ class _MoveInServiceDetailsScreenState
                                                 'clearPayment'),
                                         secondButtonColor: AppColors.yellow,
                                         onSecondButtonPressed: () async {
-
                                           if (_noteFormKey.currentState
                                                   ?.validate() ??
                                               false) {

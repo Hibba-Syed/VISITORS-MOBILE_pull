@@ -40,6 +40,7 @@ class _AccessDeviceServiceDetailsScreenState
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _newCardController = TextEditingController();
+  final TextEditingController _oldCardController = TextEditingController();
   final GlobalKey<FormState> _actionFormKey = GlobalKey<FormState>();
   // final TextEditingController _oldCardController = TextEditingController();
 
@@ -98,32 +99,48 @@ class _AccessDeviceServiceDetailsScreenState
                             color: AppColors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Column(
-                            children: state
-                                    .serviceDetails?.application?.deviceInfo
-                                    ?.map(
-                                      (device) => Column(
-                                        children: [
-                                          TitleValueRowDividerDetailsContainerWidget(
-                                              title:
-                                                  AppUtils.languageTranslate(
-                                                      'device'),
-                                              value:
-                                                  device.deviceType ?? "--"),
-                                          TitleValueRowDividerDetailsContainerWidget(
-                                              isLast: true,
-                                              title:
-                                                  AppUtils.languageTranslate(
-                                                      'numberOfDevices'),
-                                              value: device.deviceCount
-                                                      ?.toString() ??
-                                                  "--"),
-                                        ],
-                                      ),
-                                    )
-                                    .toList() ??
-                                [],
-                          ),
+                          child: (state.serviceDetails?.application?.deviceInfo
+                                      ?.isNotEmpty ??
+                                  false)
+                              ? Column(
+                                  children: state.serviceDetails?.application
+                                          ?.deviceInfo
+                                          ?.map(
+                                            (device) => Column(
+                                              children: [
+                                                TitleValueRowDividerDetailsContainerWidget(
+                                                    title: AppUtils
+                                                        .languageTranslate(
+                                                            'device'),
+                                                    value: device.deviceType ??
+                                                        "--"),
+                                                TitleValueRowDividerDetailsContainerWidget(
+                                                    isLast: true,
+                                                    title: AppUtils
+                                                        .languageTranslate(
+                                                            'numberOfDevices'),
+                                                    value: device.deviceCount
+                                                            ?.toString() ??
+                                                        "--"),
+                                              ],
+                                            ),
+                                          )
+                                          .toList() ??
+                                      [],
+                                )
+                              : Column(
+                                  children: [
+                                    TitleValueRowDividerDetailsContainerWidget(
+                                        title: AppUtils.languageTranslate(
+                                            'device'),
+                                        value: "--"),
+                                    TitleValueRowDividerDetailsContainerWidget(
+                                        isLast: true,
+                                        title: AppUtils.languageTranslate(
+                                            'numberOfDevices'),
+                                        value: "--"),
+                                  ],
+                                ),
                         ),
                         if (state.serviceDetails?.documents?.isNotEmpty ??
                             true) ...[
@@ -133,37 +150,39 @@ class _AccessDeviceServiceDetailsScreenState
                           ),
                           const Gap(10),
                           Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 10),
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.serviceDetails?.documents?.isNotEmpty ??
-                                true
-                                ? ListView.separated(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount:
-                              state.serviceDetails?.documents?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                Document? document =
-                                state.serviceDetails?.documents?[index];
-                                return ServicesDocumentsCardWidget(
-                                  name: document?.name,
-                                  url: document?.pathUrl ?? "",
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  color: AppColors.gray,
-                                );
-                              },
-                            )
-                                : EmptyWidget(
-                                text: AppUtils.languageTranslate(
-                                    'noDataAvailable')),
+                            child:
+                                state.serviceDetails?.documents?.isNotEmpty ??
+                                        true
+                                    ? ListView.separated(
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount: state.serviceDetails
+                                                ?.documents?.length ??
+                                            0,
+                                        itemBuilder: (context, index) {
+                                          Document? document = state
+                                              .serviceDetails
+                                              ?.documents?[index];
+                                          return ServicesDocumentsCardWidget(
+                                            name: document?.name,
+                                            url: document?.pathUrl ?? "",
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(
+                                            color: AppColors.gray,
+                                          );
+                                        },
+                                      )
+                                    : EmptyWidget(
+                                        text: AppUtils.languageTranslate(
+                                            'noDataAvailable')),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
@@ -180,17 +199,13 @@ class _AccessDeviceServiceDetailsScreenState
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              children: [
-                                TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'deposit_amount'),
-                                  value: state.serviceDetails?.securityDeposit
+                            child: TitleValueRowDividerDetailsContainerWidget(
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
+                              value: state.serviceDetails?.securityDeposit
                                       ?.toString() ??
-                                      "--",
-                                  isLast: true,
-                                ),
-                              ],
+                                  "--",
+                              isLast: true,
                             ),
                           ),
                         ],
@@ -212,12 +227,11 @@ class _AccessDeviceServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'requesterType'),
-                                  value: state.serviceDetails?.clientType ??
-                                      "--"),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('name'),
-                                value:
-                                    state.serviceDetails?.clientName ?? "--",
+                                value: state.serviceDetails?.clientName ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('phone'),
@@ -240,6 +254,13 @@ class _AccessDeviceServiceDetailsScreenState
                                     'passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.passportExpiry),
+                                textColor: ((state.serviceDetails
+                                                ?.passportExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.passportExpiry!
+                                            .isAfter(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('idNumber'),
@@ -253,6 +274,13 @@ class _AccessDeviceServiceDetailsScreenState
                                 valueColor: AppColors.red,
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.clientIdExpiry),
+                                textColor: ((state.serviceDetails
+                                                ?.clientIdExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.clientIdExpiry!
+                                            .isAfter(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                             ],
                           ),
@@ -263,8 +291,7 @@ class _AccessDeviceServiceDetailsScreenState
                           style: AppTextStyles.style20primary600,
                         ),
                         const Gap(10),
-                        state.serviceDetails?.statusHistory?.isNotEmpty ??
-                                true
+                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true
                             ? Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.white,
@@ -274,13 +301,12 @@ class _AccessDeviceServiceDetailsScreenState
                                   padding: EdgeInsets.only(top: 10),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount: state.serviceDetails
-                                          ?.statusHistory?.length ??
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
                                       0,
                                   itemBuilder: (context, index) {
                                     StatusHistory? statusHistory = state
-                                        .serviceDetails
-                                        ?.statusHistory?[index];
+                                        .serviceDetails?.statusHistory?[index];
                                     bool isLast = (state.serviceDetails
                                                     ?.statusHistory?.length ??
                                                 0) -
@@ -293,8 +319,7 @@ class _AccessDeviceServiceDetailsScreenState
                                           (statusHistory?.status != 'Pending')
                                               ? statusHistory?.status ?? ""
                                               : "Request Received",
-                                      byValue: (statusHistory
-                                                      ?.user?.fullName !=
+                                      byValue: (statusHistory?.user?.fullName !=
                                                   null &&
                                               statusHistory!
                                                   .user!.fullName!.isNotEmpty)
@@ -350,12 +375,11 @@ class _AccessDeviceServiceDetailsScreenState
                                     context: context,
                                     builder: (context) {
                                       return CustomAlertDialogBox(
-                                        insetPadding:
-                                            AppUtils.isTablet(context)
-                                                ? EdgeInsets.symmetric(
-                                                    horizontal: 35)
-                                                : EdgeInsets.symmetric(
-                                                    horizontal: 10),
+                                        insetPadding: AppUtils.isTablet(context)
+                                            ? EdgeInsets.symmetric(
+                                                horizontal: 35)
+                                            : EdgeInsets.symmetric(
+                                                horizontal: 10),
                                         title:
                                             '${AppUtils.languageTranslate('complete')} ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? "--"}',
                                         disableFirstButtonBorder: true,
@@ -377,8 +401,7 @@ class _AccessDeviceServiceDetailsScreenState
                                               _nameController.text =
                                                   emiratesIdData.name ?? '';
                                               _idController.text =
-                                                  emiratesIdData.idNumber ??
-                                                      '';
+                                                  emiratesIdData.idNumber ?? '';
                                             });
                                           }
                                           return false;
@@ -400,11 +423,12 @@ class _AccessDeviceServiceDetailsScreenState
                                                 'requester_name':
                                                     _nameController.text,
                                                 'id_number':
-                                                    '${state.serviceDetails?.id}',
+                                                    _idController,
                                                 'note': _noteController.text,
                                                 'new_card':
                                                     _newCardController.text,
-                                                'old_card': '',
+                                                'old_card':
+                                                    _oldCardController.text,
                                                 'id':
                                                     '${state.serviceDetails?.id}'
                                               },
@@ -414,6 +438,7 @@ class _AccessDeviceServiceDetailsScreenState
                                               _idController.clear();
                                               _nameController.clear();
                                               _newCardController.clear();
+                                              _oldCardController.clear();
                                             }
                                             return result;
                                           }
@@ -430,6 +455,14 @@ class _AccessDeviceServiceDetailsScreenState
                                               noteController: _noteController,
                                               newCardController:
                                                   _newCardController,
+                                              oldCardController:
+                                                  _oldCardController,
+                                              requesterType: context
+                                                  .read<ServiceDetailsCubit>()
+                                                  .state
+                                                  .serviceDetails
+                                                  ?.application
+                                                  ?.requesterType,
                                             ),
                                           );
                                         },
