@@ -26,10 +26,7 @@ class MobileWebIconWidget extends StatelessWidget {
             : null,
         decoration: isDecorationEnabled
             ? BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(6),
-                  topLeft: Radius.circular(6),
-                ),
+                borderRadius: BorderRadius.circular(6),
                 color: Colors.grey.shade400)
             : null,
         child: Icon(

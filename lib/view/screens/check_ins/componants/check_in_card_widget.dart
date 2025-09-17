@@ -46,52 +46,53 @@ class CheckInCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OverlapContainerWidget(
-              text: typeText,
-              svgImagePath: typeImage,
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OverlapContainerWidget(
+                  text: typeText,
+                  svgImagePath: typeImage,
+                ),
+                Gap(10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    isServiceable
+                        ? OverlapContainerWidget(
+                            backgroundColor: AppColors.yellow,
+                            text: reference,
+                          )
+                        : OverlapContainerWidget(
+                            backgroundColor:
+                                AppUtils.getCheckOutTypeColor(type),
+                            //typeBackgroundColor,
+                            text: type,
+                          ),
+                    Gap(6),
+                    MobileWebIconWidget(
+                      isMobile: isMobile ?? false,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            Spacer(),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  isServiceable
-                      ? OverlapContainerWidget(
-                          backgroundColor: AppColors.yellow,
-                          text: reference,
-                        )
-                      : OverlapContainerWidget(
-                          backgroundColor: AppUtils.getCheckOutTypeColor(type),
-                          //typeBackgroundColor,
-                          text: type,
-                        ),
-                  MobileWebIconWidget(
-                    isMobile: isMobile ?? false,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        InkWell(
-          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-          onTap: detailsOnPressed,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
-            ),
+          ),
+          Gap(10),
+          InkWell(
+            overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+            onTap: detailsOnPressed,
             child: Column(
               children: [
                 Row(
@@ -186,8 +187,8 @@ class CheckInCardWidget extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
