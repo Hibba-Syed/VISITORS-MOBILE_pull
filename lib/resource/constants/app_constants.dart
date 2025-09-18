@@ -17,7 +17,7 @@ class AppConstants {
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
 
-  static final List<String> rangList = [
+  static final List<String> rangeList = [
     AppUtils.languageTranslate('last30Days'),
     AppUtils.languageTranslate('last60Days'),
     AppUtils.languageTranslate('last90Days'),
@@ -68,7 +68,7 @@ class AppConstants {
     "USA": "United States",
     "YEM": "Yemen",
   };
-  static List<TypeItemModel> documentTypes = [
+  List<TypeItemModel> documentTypes = [
     TypeItemModel(
       value: 'Emirates ID',
       label: AppUtils.languageTranslate('emiratesId'),

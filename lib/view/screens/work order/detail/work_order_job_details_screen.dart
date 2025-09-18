@@ -87,7 +87,7 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                                 title:  AppUtils.languageTranslate('category'),
                                 value:
                                     state.workOrderDetailsModel?.category?.name ??
-                                        "",
+                                        "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title:  AppUtils.languageTranslate('assets'),
@@ -117,26 +117,26 @@ class _WorkOrderJobDetailsScreenState extends State<WorkOrderJobDetailsScreen> {
                         PhoneEmailInformationCardWidget(
                           name:
                               state.workOrderDetailsModel?.newVendor?.companyName ??
-                                  "",
+                                  "--",
                           phone: state.workOrderDetailsModel?.newVendor
                                   ?.contactNumber ??
-                              "",
+                              "--",
                           email: state
                                   .workOrderDetailsModel?.newVendor?.contactEmail ??
-                              "",
+                              "--",
                         ),
                         const Gap(20),
                          HeadingWidget(heading: AppUtils.languageTranslate('contactPerson')),
                         const Gap(10),
                         PhoneEmailInformationCardWidget(
                           name: state.workOrderDetailsModel?.primaryContact?.name ??
-                              "",
+                              "--",
                           phone: state.workOrderDetailsModel?.primaryContact
                                   ?.contactNumber ??
-                              "",
+                              "--",
                           email:
                               state.workOrderDetailsModel?.primaryContact?.email ??
-                                  "",
+                                  "--",
                         ),
                       ],
                     ),

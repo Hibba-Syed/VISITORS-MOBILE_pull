@@ -46,47 +46,49 @@ class CheckOutCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (typeText?.isNotEmpty ?? true)
-                OverlapContainerWidget(
-                  text: typeText,
-                  svgImagePath: typeImage,
-                  backgroundColor: AppColors.primary,
-                ),
-              Spacer(),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  OverlapContainerWidget(
-                    text: type,
-                    backgroundColor: AppUtils.getCheckOutTypeColor(type),
-                  ),
-                  MobileWebIconWidget(
-                    isMobile: isMobile ?? false,
-                  ),
-                ],
-              ),
-            ],
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (typeText?.isNotEmpty ?? true)
+                  OverlapContainerWidget(
+                    text: typeText,
+                    svgImagePath: typeImage,
+                    backgroundColor: AppColors.primary,
+                  ),
+                Gap(10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    OverlapContainerWidget(
+                      text: type,
+                      backgroundColor: AppUtils.getCheckOutTypeColor(type),
+                    ),
+                    Gap(6),
+                    MobileWebIconWidget(
+                      isMobile: isMobile ?? false,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            child: Column(
+            Gap(10),
+            Column(
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       children: [
@@ -158,8 +160,8 @@ class CheckOutCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

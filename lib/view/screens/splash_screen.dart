@@ -99,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               Text(
-                '© ${DateTime.now().year}${AppUtils.languageTranslate('iSKAANVisitorPortal')}',
+                '© ${DateTime.now().year} ${AppUtils.languageTranslate('iSKAANVisitorPortal')}',
                 style: AppTextStyles.style15white600,
               ),
               const Gap(10),

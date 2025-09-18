@@ -308,7 +308,9 @@
     "residentNumber": "رقم المقيم",
     "validVisitorCountRequired": "عدد الزوار الصحيح مطلوب",
     "file": "ملف",
-    "pleaseEnterValidEmail": "يرجى إدخال بريد إلكتروني صالح"
+    "pleaseEnterValidEmail": "يرجى إدخال بريد إلكتروني صالح",
+    "customService": "خدمة مخصصة"
+
 
 
 

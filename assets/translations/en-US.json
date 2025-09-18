@@ -309,7 +309,9 @@
     "residentNumber": "Resident Number",
     "validVisitorCountRequired": "Valid Visitor Count is required",
     "file": "File",
-    "pleaseEnterValidEmail": "Please enter valid email"
+    "pleaseEnterValidEmail": "Please enter valid email",
+    "customService": "Custom Service"
+
 
 
 

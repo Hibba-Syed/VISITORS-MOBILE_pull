@@ -27,7 +27,7 @@ class MobileWebIconWidget extends StatelessWidget {
         decoration: isDecorationEnabled
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-                color: Colors.grey.shade400)
+                color: AppColors.primary)
             : null,
         child: Icon(
           isMobile == true ? Icons.phone_iphone : Icons.desktop_mac_outlined,

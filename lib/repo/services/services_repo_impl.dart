@@ -36,7 +36,6 @@ class ServiceRepoImpl implements ServiceRepo {
       {required int? serviceId, required String? applicationType}) async {
     try {
       // final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
-      print('type::::$applicationType');
       final filter = {
         "filter": {
           "where": {

@@ -110,7 +110,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       }
     });
 
-    _selectedDocumentType = AppConstants.documentTypes.first;
+    _selectedDocumentType = AppConstants().documentTypes.first;
   }
 
   void clearData() {
@@ -771,7 +771,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       fillColor: AppColors.white,
       selectedItem: _selectedDocumentType,
       compareFn: (p0, p1) => p0.value == p1.value,
-      items: AppConstants.documentTypes,
+      items: AppConstants().documentTypes,
       itemAsString: (item) => item.label,
       onChanged: (value) {
         _selectedDocumentType = value;
@@ -1075,9 +1075,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       controller: _emailController,
       label: AppUtils.languageTranslate('email'),
       hint: AppUtils.languageTranslate('enterEmail'),
-      validator: (value){
-        if(value?.isNotEmpty??false){
-          if(!(ValidationUtil.isEmailValid(value))){
+      validator: (value) {
+        if (value?.isNotEmpty ?? false) {
+          if (!(ValidationUtil.isEmailValid(value))) {
             return AppUtils.languageTranslate('pleaseEnterValidEmail');
           }
         }

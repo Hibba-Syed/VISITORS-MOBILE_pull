@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../bloc/e_service/details/service_details_cubit.dart';
-import '../../../../model/service/application_model.dart';
 import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';

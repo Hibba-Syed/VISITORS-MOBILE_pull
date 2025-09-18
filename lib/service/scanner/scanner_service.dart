@@ -389,8 +389,8 @@ class ScannerService {
               dateOfBirth = normalized;
             } else if (issueDate == null) {
               issueDate = normalized;
-            } else if (expiryDate == null) {
-              expiryDate = normalized;
+            } else {
+              expiryDate ??= normalized;
             }
           }
         }
@@ -514,13 +514,12 @@ class ScannerService {
 
   void _showInvalidDocumentToast() {
     Fluttertoast.showToast(
-      msg: AppUtils.languageTranslate(
-          'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'),
+        msg: AppUtils.languageTranslate(
+            'scannedDocumentNotValidPleaseTryAgainUsingAValidDocument'),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         backgroundColor: AppColors.red,
         textColor: AppColors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 }

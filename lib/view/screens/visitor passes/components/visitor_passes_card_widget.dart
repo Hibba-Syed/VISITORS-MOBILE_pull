@@ -42,28 +42,26 @@ class VisitorPassesCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OverlapContainerWidget(text: unit),
-            OverlapContainerWidget(
-                text: reference, backgroundColor: AppColors.yellow),
-          ],
-        ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
-            ),
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              OverlapContainerWidget(text: unit),
+              Gap(6),
+              OverlapContainerWidget(
+                  text: reference, backgroundColor: AppColors.yellow),
+            ],
           ),
-          child: Column(
+          Gap(10),
+          Column(
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +107,8 @@ class VisitorPassesCardWidget extends StatelessWidget {
               const Gap(5),
               Row(
                 children: [
-                   Text('${AppUtils.languageTranslate('company')}:',
+                  Text(
+                    '${AppUtils.languageTranslate('company')}:',
                     style: AppTextStyles.style14Black600,
                   ),
                   Text(
@@ -136,7 +135,8 @@ class VisitorPassesCardWidget extends StatelessWidget {
                           imageHeight: AppUtils.isTablet(context) ? 22 : 18,
                           buttonColor: AppColors.cyanBlue,
                           image: AppImages.serviceable,
-                          text: AppUtils.languageTranslate('visitorPassCheckIns'),
+                          text:
+                              AppUtils.languageTranslate('visitorPassCheckIns'),
                           onPressed: visitorPassCheckInOnPressed),
                     ),
                   ],
@@ -144,8 +144,8 @@ class VisitorPassesCardWidget extends StatelessWidget {
               )
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

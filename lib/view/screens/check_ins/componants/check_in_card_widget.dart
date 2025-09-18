@@ -46,18 +46,19 @@ class CheckInCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Row(
+    return InkWell(
+      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+      onTap: detailsOnPressed,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OverlapContainerWidget(
@@ -88,12 +89,8 @@ class CheckInCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-          Gap(10),
-          InkWell(
-            overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-            onTap: detailsOnPressed,
-            child: Column(
+            Gap(10),
+            Column(
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,26 +113,12 @@ class CheckInCardWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                isMobile == true
-                                    ? Icons.phone_iphone
-                                    : Icons.desktop_mac_outlined,
-                                color: AppColors.darkGrey,
-                                size: 16,
-                              ),
-                              Gap(5),
-                              Expanded(
-                                child: Text(name ?? "",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppUtils.isTablet(context)
-                                        ? AppTextStyles.style15Black600
-                                        : AppTextStyles.style14Black600),
-                              ),
-                            ],
-                          ),
+                          Text(name ?? "",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppUtils.isTablet(context)
+                                  ? AppTextStyles.style15Black600
+                                  : AppTextStyles.style14Black600),
                           const Gap(6),
                           Row(
                             children: [
@@ -186,8 +169,8 @@ class CheckInCardWidget extends StatelessWidget {
                     onPressed: checkOutOnPressed),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

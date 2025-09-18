@@ -85,7 +85,7 @@ class _CheckOutsFilterBottomSheetState
                   selectedItem: _selectedRange,
                   itemAsString: (range) => range,
                   compareFn: (p0, p1) => p0 == p1,
-                  items: AppConstants.rangList,
+                  items: AppConstants.rangeList,
                   onChanged: (value) {
                     _selectedRange = value;
 

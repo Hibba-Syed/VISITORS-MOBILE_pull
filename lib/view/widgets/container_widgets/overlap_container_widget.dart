@@ -25,8 +25,11 @@ class OverlapContainerWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: backgroundColor ?? AppColors.primary),
+          borderRadius: BorderRadius.circular(6),
+          color: backgroundColor != null
+              ? backgroundColor!.withValues(alpha: 0.1)
+              : AppColors.primary.withValues(alpha: 0.1),
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -36,7 +39,7 @@ class OverlapContainerWidget extends StatelessWidget {
                 height: 13,
                 width: 13,
                 colorFilter: ColorFilter.mode(
-                  imagedColor ?? AppColors.white,
+                  backgroundColor ?? AppColors.primary,
                   BlendMode.srcIn,
                 ),
               ),
@@ -47,11 +50,10 @@ class OverlapContainerWidget extends StatelessWidget {
                 child: Text(
                   text ?? "",
                   style: TextStyle(
-                    fontSize: AppUtils.isTablet(context) ? 15 : 13,
-                    fontWeight: FontWeight.w500,
-                    color: textColor ?? AppColors.white,
-                    overflow: TextOverflow.ellipsis
-                  ),
+                      fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                      fontWeight: FontWeight.w500,
+                      color: backgroundColor ?? AppColors.primary,
+                      overflow: TextOverflow.ellipsis),
                 ),
               ),
           ],

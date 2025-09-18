@@ -150,6 +150,7 @@ class AppUtils {
     TypeModel(label: AppUtils.languageTranslate('moveOut'), value: 'MO'),
     TypeModel(label: AppUtils.languageTranslate('workPermit'), value: 'WP'),
     TypeModel(label: AppUtils.languageTranslate('shortStay'), value: 'SS'),
+    TypeModel(label: AppUtils.languageTranslate('customService'), value: 'CCS'),
   ];
 
   static List<TypeModel> workOrderType = [
@@ -262,7 +263,7 @@ class AppUtils {
     final TextEditingController idController = TextEditingController();
     final TextEditingController noteController = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    TypeItemModel? selectedDocumentType = AppConstants.documentTypes.first;
+    TypeItemModel? selectedDocumentType = AppConstants().documentTypes.first;
     await showDialog(
       context: context,
       builder: (context) {
@@ -388,7 +389,7 @@ class AppUtils {
                         fillColor: AppColors.white,
                         selectedItem: selectedDocumentType,
                         compareFn: (p0, p1) => p0.value == p1.value,
-                        items: AppConstants.documentTypes,
+                        items: AppConstants().documentTypes,
                         itemAsString: (item) => item.label,
                         onChanged: (value) {
                           changeState(() {
