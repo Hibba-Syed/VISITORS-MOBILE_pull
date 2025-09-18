@@ -66,7 +66,7 @@ class CheckOutCardWidget extends StatelessWidget {
                   OverlapContainerWidget(
                     text: typeText,
                     svgImagePath: typeImage,
-                    backgroundColor: AppColors.primary,
+                    color: AppColors.primary,
                   ),
                 Gap(10),
                 Row(
@@ -74,7 +74,7 @@ class CheckOutCardWidget extends StatelessWidget {
                   children: [
                     OverlapContainerWidget(
                       text: type,
-                      backgroundColor: AppUtils.getCheckOutTypeColor(type),
+                      color: AppUtils.getCheckOutTypeColor(type),
                     ),
                     Gap(6),
                     MobileWebIconWidget(

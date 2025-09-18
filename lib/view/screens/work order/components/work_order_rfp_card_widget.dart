@@ -58,7 +58,7 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   text: (isAwarded == 1) ? 'Work Order' : 'RFP',
                   svgImagePath:
                       (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard,
-                  backgroundColor:
+                  color:
                       (isAwarded == 1) ? AppColors.cyanBlue : AppColors.brown,
                   // imagedColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
                   // textColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,

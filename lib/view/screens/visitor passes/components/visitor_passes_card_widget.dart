@@ -57,7 +57,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
               OverlapContainerWidget(text: unit),
               Gap(6),
               OverlapContainerWidget(
-                  text: reference, backgroundColor: AppColors.yellow),
+                  text: reference, color: AppColors.yellow),
             ],
           ),
           Gap(10),

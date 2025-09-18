@@ -72,11 +72,11 @@ class CheckInCardWidget extends StatelessWidget {
                   children: [
                     isServiceable
                         ? OverlapContainerWidget(
-                            backgroundColor: AppColors.yellow,
+                            color: AppColors.yellow,
                             text: reference,
                           )
                         : OverlapContainerWidget(
-                            backgroundColor:
+                            color:
                                 AppUtils.getCheckOutTypeColor(type),
                             //typeBackgroundColor,
                             text: type,

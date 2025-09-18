@@ -22,7 +22,7 @@ class MobileWebIconWidget extends StatelessWidget {
           : AppUtils.languageTranslate("web_check_in"),
       child: Container(
         padding: isDecorationEnabled
-            ? const EdgeInsets.symmetric(vertical: 6, horizontal: 10)
+            ?  EdgeInsets.symmetric(vertical: AppUtils.isTablet(context)?7:6, horizontal: 10)
             : null,
         decoration: isDecorationEnabled
             ? BoxDecoration(

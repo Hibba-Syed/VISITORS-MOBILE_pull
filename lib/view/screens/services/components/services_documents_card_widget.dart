@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visitors/resource/styles/styles.dart';
 
