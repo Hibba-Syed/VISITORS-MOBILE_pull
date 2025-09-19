@@ -140,12 +140,17 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           index: AppConstants.checkOutsIndex,
           title: AppUtils.languageTranslate('checkOuts'),
           iconPath: AppImages.menuCheckout),
-      if (context.read<DashboardCubit>().state.profileRecord?.association?.isVisitorDirHidden == 0)
-      DrawerItemModel(
-          index: AppConstants.directoryIndex,
-          title: AppUtils.languageTranslate('directory'),
-          iconPath: AppImages.directory)
-
+      if (context
+              .read<DashboardCubit>()
+              .state
+              .profileRecord
+              ?.association
+              ?.isVisitorDirHidden ==
+          0)
+        DrawerItemModel(
+            index: AppConstants.directoryIndex,
+            title: AppUtils.languageTranslate('directory'),
+            iconPath: AppImages.directory)
     ];
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
@@ -183,12 +188,12 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 isSelected: item.index == selectedIndex,
                 onTap: () {
                   Navigator.of(context).pop();
-                    context
-                        .read<MainDashboardCubit>()
-                        .onChangeSelectedIndex(item.index);
-                    // Optionally trigger specific cubits
-                    gettingApiCall(context, item.index);
-                  },
+                  context
+                      .read<MainDashboardCubit>()
+                      .onChangeSelectedIndex(item.index);
+                  // Optionally trigger specific cubits
+                  gettingApiCall(context, item.index);
+                },
               )),
           ListTile(
             dense: true,
@@ -209,26 +214,26 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
             trailing: CustomSwitch(
               value: context.locale.languageCode == "en",
               onChanged: (value) {
-                final languageChange =
-                    value ? const Locale("en", "US") : const Locale("ar", "AE");
+                final changedLocale = value
+                    ? AppConstants.englishLocale
+                    : AppConstants.arabicLocale;
                 context.deleteSaveLocale();
-                context.setLocale(languageChange);
+                context.setLocale(changedLocale);
                 Navigator.pop(context);
               },
             ),
           ),
           ListTile(
-            onTap: (){
-
+            onTap: () {
               _showLogoutDialog(context);
             },
             dense: true,
             leading: SvgPicture.asset(
               AppImages.logout,
-              width: AppUtils.isTablet(context)  ? 30 : 22,
-              height: AppUtils.isTablet(context)  ? 30 : 22,
+              width: AppUtils.isTablet(context) ? 30 : 22,
+              height: AppUtils.isTablet(context) ? 30 : 22,
               colorFilter: ColorFilter.mode(
-                AppColors.red ,
+                AppColors.red,
                 BlendMode.srcIn,
               ),
             ),
@@ -265,10 +270,12 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         context.read<MessageCubit>().getMessages();
         break;
       case AppConstants.checkOutsIndex:
-        context.read<CheckOutCubit>()
-            .onChangeSelectedRange('Last 30 Days');
+        context
+            .read<CheckOutCubit>()
+            .onChangeSelectedRange(AppConstants().rangeList.first);
         context.read<CheckOutCubit>().onChangeDateRange(
-            AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
+            AppUtils.getDateRangeStringFromLabel(
+                AppConstants().rangeList.first));
         context.read<CheckOutCubit>().getCheckOuts();
         break;
       case AppConstants.directoryIndex:

@@ -45,8 +45,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
     if (widget.initialDateRange != oldWidget.initialDateRange &&
         widget.initialDateRange != null) {
       _dateRangeController.text =
-      '${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.end)}';
-
+          '${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(widget.initialDateRange!.end)}';
     }
 
     // Clear if the initialDate becomes null (e.g. reset)
@@ -83,8 +82,8 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
         }
       },
       suffix: Container(
-        width: 70,
-        padding: const EdgeInsets.only(right: 15),
+        // width: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,

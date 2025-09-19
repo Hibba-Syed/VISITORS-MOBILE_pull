@@ -32,7 +32,6 @@ class FitOutServiceDetailsScreen extends StatefulWidget {
 
 class _FitOutServiceDetailsScreenState
     extends State<FitOutServiceDetailsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +66,8 @@ class _FitOutServiceDetailsScreenState
                             Expanded(
                               child: HeadingWidget(
                                 heading: AppUtils.getRequestName(
-                                    state.serviceDetails?.applicationType ?? "--"),
+                                    state.serviceDetails?.applicationType ??
+                                        "--"),
                               ),
                             ),
                             StatusWidget(
@@ -90,20 +90,21 @@ class _FitOutServiceDetailsScreenState
                           child: Column(
                             children: [
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title:
-                                      AppUtils.languageTranslate('contractorName'),
+                                  title: AppUtils.languageTranslate(
+                                      'contractorName'),
                                   value: state.serviceDetails?.application
                                           ?.contractorName ??
                                       "--"),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title:
-                                    AppUtils.languageTranslate('contractorPhone'),
+                                title: AppUtils.languageTranslate(
+                                    'contractorPhone'),
                                 value: state.serviceDetails?.application
                                         ?.contractorPhone ??
                                     "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate('startDate'),
+                                  title:
+                                      AppUtils.languageTranslate('startDate'),
                                   value: DateTimeUtil.getFormattedDateTime(state
                                       .serviceDetails?.application?.startDate)),
                               TitleValueRowDividerDetailsContainerWidget(
@@ -127,8 +128,8 @@ class _FitOutServiceDetailsScreenState
                                     state.serviceDetails?.application?.endDate),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title:
-                                    AppUtils.languageTranslate('securityDeposit'),
+                                title: AppUtils.languageTranslate(
+                                    'securityDeposit'),
                                 value: state.serviceDetails?.securityDeposit
                                         ?.toString() ??
                                     "--",
@@ -141,9 +142,9 @@ class _FitOutServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                 isLast: true,
                                 title:
-                                AppUtils.languageTranslate('description'),
+                                    AppUtils.languageTranslate('description'),
                                 value:
-                                state.serviceDetails?.description ?? "--",
+                                    state.serviceDetails?.description ?? "--",
                               ),
                             ],
                           ),
@@ -156,23 +157,29 @@ class _FitOutServiceDetailsScreenState
                           ),
                           const Gap(10),
                           Container(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 10),
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.serviceDetails?.documents?.isNotEmpty ??
+                            child: state.serviceDetails?.documents
+                                        ?.isNotEmpty ??
                                     true
                                 ? ListView.separated(
                                     shrinkWrap: true,
                                     primary: false,
-                                    itemCount:
-                                        state.serviceDetails?.documents?.length ??
-                                            0,
+                                    itemCount: state.serviceDetails?.documents
+                                            ?.length ??
+                                        0,
                                     itemBuilder: (context, index) {
-                                      Document? document =
-                                          state.serviceDetails?.documents?[index];
+                                      Document? document = state
+                                          .serviceDetails?.documents?[index];
+                                      if (document?.label ==
+                                              "Sent For Approval File" ||
+                                          document?.label == "Approve File") {
+                                        return SizedBox.shrink();
+                                      }
                                       return ServicesDocumentsCardWidget(
                                         name: document?.name,
                                         url: document?.pathUrl ?? "",
@@ -204,10 +211,10 @@ class _FitOutServiceDetailsScreenState
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate(
-                                  'deposit_amount'),
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
                               value: state.serviceDetails?.securityDeposit
-                                  ?.toString() ??
+                                      ?.toString() ??
                                   "--",
                               isLast: true,
                             ),
@@ -215,7 +222,8 @@ class _FitOutServiceDetailsScreenState
                         ],
                         const Gap(20),
                         HeadingWidget(
-                          heading: AppUtils.languageTranslate('applicantDetails'),
+                          heading:
+                              AppUtils.languageTranslate('applicantDetails'),
                         ),
                         const Gap(10),
                         Container(
@@ -228,36 +236,46 @@ class _FitOutServiceDetailsScreenState
                           child: Column(
                             children: [
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title:
-                                      AppUtils.languageTranslate('requesterType'),
-                                  value: state.serviceDetails?.clientType ?? "--"),
+                                  title: AppUtils.languageTranslate(
+                                      'requesterType'),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('name'),
                                 value: state.serviceDetails?.clientName ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('phone'),
-                                value: state.serviceDetails?.clientPhone ?? "--",
+                                value:
+                                    state.serviceDetails?.clientPhone ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('email'),
-                                value: state.serviceDetails?.clientEmail ?? "--",
+                                value:
+                                    state.serviceDetails?.clientEmail ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title:
-                                      AppUtils.languageTranslate('passportNumber'),
+                                  title: AppUtils.languageTranslate(
+                                      'passportNumber'),
                                   value: state.serviceDetails?.passportNumber
                                           ?.toString() ??
                                       "--"),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title: AppUtils.languageTranslate('passportExpiry'),
+                                title: AppUtils.languageTranslate(
+                                    'passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.passportExpiry),
-                                textColor: ((state.serviceDetails?.passportExpiry!=null) &&(state.serviceDetails!.passportExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
-
+                                textColor: ((state.serviceDetails
+                                                ?.passportExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.passportExpiry!
+                                            .isAfter(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title: AppUtils.languageTranslate('detailsIdNumber'),
+                                title: AppUtils.languageTranslate(
+                                    'detailsIdNumber'),
                                 value: state.serviceDetails?.clientIdNumber
                                         ?.toString() ??
                                     "--",
@@ -267,8 +285,13 @@ class _FitOutServiceDetailsScreenState
                                 title: AppUtils.languageTranslate('idExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.clientIdExpiry),
-                                textColor: ((state.serviceDetails?.clientIdExpiry!=null) &&(state.serviceDetails!.clientIdExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
-
+                                textColor: ((state.serviceDetails
+                                                ?.clientIdExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.clientIdExpiry!
+                                            .isAfter(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                             ],
                           ),
@@ -289,12 +312,12 @@ class _FitOutServiceDetailsScreenState
                                   padding: EdgeInsets.only(top: 10),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount:
-                                      state.serviceDetails?.statusHistory?.length ??
-                                          0,
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
+                                      0,
                                   itemBuilder: (context, index) {
-                                    StatusHistory? statusHistory =
-                                        state.serviceDetails?.statusHistory?[index];
+                                    StatusHistory? statusHistory = state
+                                        .serviceDetails?.statusHistory?[index];
                                     bool isLast = (state.serviceDetails
                                                     ?.statusHistory?.length ??
                                                 0) -
@@ -303,9 +326,10 @@ class _FitOutServiceDetailsScreenState
                                     return ActivityLogWidget(
                                       horizontalPadding: 8,
                                       isLast: isLast,
-                                      status: (statusHistory?.status != 'Pending')
-                                          ? statusHistory?.status ?? ""
-                                          : "Request Received",
+                                      status:
+                                          (statusHistory?.status != 'Pending')
+                                              ? statusHistory?.status ?? ""
+                                              : "Request Received",
                                       byValue: (statusHistory?.user?.fullName !=
                                                   null &&
                                               statusHistory!
@@ -318,15 +342,16 @@ class _FitOutServiceDetailsScreenState
                                           .split('.')
                                           .first
                                           .trim(),
-                                      dateTime: DateTimeUtil.getFormattedDateTime(
-                                          statusHistory?.createdAt),
+                                      dateTime:
+                                          DateTimeUtil.getFormattedDateTime(
+                                              statusHistory?.createdAt),
                                     );
                                   },
                                 ),
                               )
                             : EmptyWidget(
-                                text:
-                                    AppUtils.languageTranslate('noDataAvailable')),
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable')),
                       ],
                     ),
                   ),
@@ -348,13 +373,8 @@ class _FitOutServiceDetailsScreenState
                               );
                             }),
                       ),
-                      if ((state
-                          .serviceDetails
-                          ?.securityDeposit ==
-                          null) ||(state
-                          .serviceDetails
-                          ?.securityDeposit ==
-                          0))...[
+                      if ((state.serviceDetails?.securityDeposit == null) ||
+                          (state.serviceDetails?.securityDeposit == 0)) ...[
                         const Gap(10),
                         Expanded(
                           child: CustomButton(
@@ -363,7 +383,7 @@ class _FitOutServiceDetailsScreenState
                               onPressed: () {
                                 AppUtils.completeServiceAction(
                                   context: context,
-                                  state:state,
+                                  state: state,
                                 );
                               }),
                         )

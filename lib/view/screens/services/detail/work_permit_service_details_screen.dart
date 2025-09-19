@@ -151,33 +151,37 @@ class _WorkPermitServiceDetailsScreenState
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child:
-                                state.serviceDetails?.documents?.isNotEmpty ??
-                                        true
-                                    ? ListView.separated(
-                                        shrinkWrap: true,
-                                        primary: false,
-                                        itemCount: state.serviceDetails
-                                                ?.documents?.length ??
-                                            0,
-                                        itemBuilder: (context, index) {
-                                          Document? document = state
-                                              .serviceDetails
-                                              ?.documents?[index];
-                                          return ServicesDocumentsCardWidget(
-                                            name: document?.name,
-                                            url: document?.pathUrl ?? "",
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return Divider(
-                                            color: AppColors.gray,
-                                          );
-                                        },
-                                      )
-                                    : EmptyWidget(
-                                        text: AppUtils.languageTranslate(
-                                            'noDataAvailable')),
+                            child: state.serviceDetails?.documents
+                                        ?.isNotEmpty ??
+                                    true
+                                ? ListView.separated(
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: state.serviceDetails?.documents
+                                            ?.length ??
+                                        0,
+                                    itemBuilder: (context, index) {
+                                      Document? document = state
+                                          .serviceDetails?.documents?[index];
+                                      if (document?.label ==
+                                              "Sent For Approval File" ||
+                                          document?.label == "Approve File") {
+                                        return SizedBox.shrink();
+                                      }
+                                      return ServicesDocumentsCardWidget(
+                                        name: document?.name,
+                                        url: document?.pathUrl ?? "",
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return Divider(
+                                        color: AppColors.gray,
+                                      );
+                                    },
+                                  )
+                                : EmptyWidget(
+                                    text: AppUtils.languageTranslate(
+                                        'noDataAvailable')),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
@@ -195,8 +199,8 @@ class _WorkPermitServiceDetailsScreenState
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate(
-                                  'deposit_amount'),
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
                               value: state.serviceDetails?.securityDeposit
                                       ?.toString() ??
                                   "--",
@@ -249,8 +253,13 @@ class _WorkPermitServiceDetailsScreenState
                                     'passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.passportExpiry),
-                                textColor: ((state.serviceDetails?.passportExpiry!=null) &&(state.serviceDetails!.passportExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
-
+                                textColor: ((state.serviceDetails
+                                                ?.passportExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.passportExpiry!
+                                            .isAfter(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('idNumber'),
@@ -263,8 +272,13 @@ class _WorkPermitServiceDetailsScreenState
                                 title: AppUtils.languageTranslate('idExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.clientIdExpiry),
-                                textColor: ((state.serviceDetails?.clientIdExpiry!=null) &&(state.serviceDetails!.clientIdExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
-
+                                textColor: ((state.serviceDetails
+                                                ?.clientIdExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.clientIdExpiry!
+                                            .isAfter(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                             ],
                           ),

@@ -12,7 +12,7 @@ class CheckOutState {
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
   final DateTimeRange? selectedDateRange;
-  final String? selectedRange;
+  final RangeModel? selectedRange;
   final TypeModel? selectedType;
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
@@ -75,7 +75,7 @@ class CheckOutState {
           : selectedDateRange as DateTimeRange?,
       selectedRange: identical(selectedRange, _sentinel)
           ? this.selectedRange
-          : selectedRange as String?,
+          : selectedRange as RangeModel?,
       selectedType: identical(selectedType, _sentinel)
           ? this.selectedType
           : selectedType as TypeModel?,

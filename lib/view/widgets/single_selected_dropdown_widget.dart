@@ -126,33 +126,40 @@ class SingleSelectedDropdownWidget<T> extends StatelessWidget {
           itemAsString: itemAsString,
           compareFn: compareFn,
           popupProps: PopupProps.menu(
-            showSearchBox: true,
-            fit: FlexFit.loose,
-            searchFieldProps: TextFieldProps(
-                decoration: InputDecoration(
-              hintText: AppUtils.languageTranslate('search'),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 0.0),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
+              showSearchBox: true,
+              fit: FlexFit.loose,
+              searchFieldProps: TextFieldProps(
+                  decoration: InputDecoration(
+                hintText: AppUtils.languageTranslate('search'),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 0.0),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(7),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                  ),
                 ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: AppColors.gray,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(7),
+                  borderSide: const BorderSide(
+                    color: AppColors.gray,
+                  ),
                 ),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: AppColors.gray,
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(7),
+                  borderSide: const BorderSide(
+                    color: AppColors.gray,
+                  ),
                 ),
-              ),
-            )),
-          ),
+              )),
+              emptyBuilder: (context, text) {
+                return Center(
+                  child: Text(
+                    AppUtils.languageTranslate('noDataAvailable'),
+                    style: AppTextStyles.style14DarkGrey600,
+                  ),
+                );
+              }),
           onChanged: onChanged,
           validator: validator,
           autoValidateMode: AutovalidateMode.onUserInteraction,

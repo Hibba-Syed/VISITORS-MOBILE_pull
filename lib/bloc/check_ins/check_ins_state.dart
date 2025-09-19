@@ -15,7 +15,7 @@ class CheckInsState {
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
   final DateTimeRange? selectedDateRange;
-  final String? selectedRange;
+  final RangeModel? selectedRange;
   final String? searchKeyword;
   final TypeModel? selectedVisitorType;
   final List<CheckOutModel>? checkOutVisitors;
@@ -93,7 +93,7 @@ class CheckInsState {
 
       selectedRange: identical(selectedRange, _sentinel)
           ? this.selectedRange
-          : selectedRange as String?,
+          : selectedRange as RangeModel?,
 
       searchKeyword: identical(searchKeyword, _sentinel)
           ? this.searchKeyword

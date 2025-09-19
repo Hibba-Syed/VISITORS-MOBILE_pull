@@ -1129,9 +1129,11 @@ class DashboardScreen extends StatelessWidget {
       context.read<WorkOrderCubit>().getWorkOrder();
       cubit.onChangeSelectedIndex(AppConstants.workOrderRfpIndex);
     } else if (targetIndex == AppConstants.checkOutsIndex) {
-      context.read<CheckOutCubit>().onChangeSelectedRange('Last 30 Days');
+      context
+          .read<CheckOutCubit>()
+          .onChangeSelectedRange(AppConstants().rangeList.first);
       context.read<CheckOutCubit>().onChangeDateRange(
-          AppUtils.getDateRangeStringFromLabel('Last 30 Days'));
+          AppUtils.getDateRangeStringFromLabel(AppConstants().rangeList.first));
       context.read<CheckOutCubit>().getCheckOuts();
       cubit.onChangeSelectedIndex(AppConstants.checkOutsIndex);
     } else {}

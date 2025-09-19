@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/model/range_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -109,17 +110,17 @@ class AppUtils {
   //   return '${format(fromDate)} - ${format(now)}';
   // }
   //
-  static DateTimeRange getDateRangeStringFromLabel(String? label) {
+  static DateTimeRange? getDateRangeStringFromLabel(RangeModel? range) {
     final now = DateTime.now();
-    DateTime fromDate;
-    if (label == 'Last 30 Days') {
+    DateTime? fromDate;
+    if (range?.value == 'Last 30 Days') {
       fromDate = now.subtract(const Duration(days: 30));
-    } else if (label == 'Last 60 Days') {
+    } else if (range?.value == 'Last 60 Days') {
       fromDate = now.subtract(const Duration(days: 60));
-    } else if (label == 'Last 90 Days') {
+    } else if (range?.value == 'Last 90 Days') {
       fromDate = now.subtract(const Duration(days: 90));
     } else {
-      fromDate = now;
+      return null;
     }
     return DateTimeRange(start: fromDate, end: now);
   }
@@ -140,7 +141,7 @@ class AppUtils {
     }
   }
 
-  static List<TypeModel> serviceTypeList = [
+  List<TypeModel> serviceTypeList = [
     TypeModel(label: AppUtils.languageTranslate('accessDevice'), value: 'AD'),
     TypeModel(label: AppUtils.languageTranslate('deliveryPermit'), value: 'DP'),
     TypeModel(

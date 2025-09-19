@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart' show Fluttertoast;
 import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/model/check_ins/check_ins_response_model.dart';
+import 'package:visitors/model/range_model.dart';
 import 'package:visitors/repo/check_ins/check_in_repo.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
@@ -57,7 +58,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
     emit(state.copyWith(selectedDateRange: dateRange));
   }
 
-  void onChangeSelectedRange(String? range) {
+  void onChangeSelectedRange(RangeModel? range) {
     emit(state.copyWith(selectedRange: range));
   }
 

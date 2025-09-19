@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/model/range_model.dart';
 import '../../model/check_out/check_out_model.dart';
 import '../../model/check_out/check_out_response_model.dart';
 import '../../model/unit/unit_model.dart';
@@ -25,8 +26,8 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   final VendorsRepo _generalFilterRepo = VendorsRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
 
-  void onChangeSelectedRange(String? rangeLabel) {
-    emit(state.copyWith(selectedRange: rangeLabel));
+  void onChangeSelectedRange(RangeModel? range) {
+    emit(state.copyWith(selectedRange: range));
   }
 
   void onChangeDateRange(DateTimeRange? dateRange) {

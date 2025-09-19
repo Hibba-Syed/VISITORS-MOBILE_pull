@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:visitors/model/range_model.dart';
+
 import '../../utils/app_utils.dart';
 import '../../view/screens/guest_check_in/guest_check_in_screen.dart';
 
@@ -17,10 +21,13 @@ class AppConstants {
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
 
-  static final List<String> rangeList = [
-    AppUtils.languageTranslate('last30Days'),
-    AppUtils.languageTranslate('last60Days'),
-    AppUtils.languageTranslate('last90Days'),
+  final List<RangeModel> rangeList = [
+    RangeModel(
+        label: AppUtils.languageTranslate('last30Days'), value: "Last 30 Days"),
+    RangeModel(
+        label: AppUtils.languageTranslate('last60Days'), value: "Last 60 Days"),
+    RangeModel(
+        label: AppUtils.languageTranslate('last90Days'), value: "Last 90 Days"),
   ];
 
   static const Map<String, String> nationalityMap = {
@@ -81,5 +88,15 @@ class AppConstants {
       value: 'Travel Document',
       label: AppUtils.languageTranslate('travelDocument'),
     ),
+  ];
+
+  static Locale arabicLocale = const Locale('ar', 'AE');
+  static Locale englishLocale = const Locale('en', 'US');
+  static Locale nepaliLocale = const Locale('ne', 'NP');
+
+  static final List<Locale> supportedLocales = [
+    englishLocale,
+    arabicLocale,
+    nepaliLocale
   ];
 }

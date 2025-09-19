@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/model/range_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/styles/styles.dart';
@@ -27,7 +28,7 @@ class CheckInFilterBottomSheet extends StatefulWidget {
 
 class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
   DateTimeRange? _selectedDateRange;
-  String? _selectedRange;
+  RangeModel? _selectedRange;
   TypeModel? _selectedType;
   UnitModel? _selectedUnit;
   VendorModel? _selectedVendor;
@@ -79,13 +80,13 @@ class _CheckInFilterBottomSheetState extends State<CheckInFilterBottomSheet> {
                   },
                 ),
                 const Gap(10),
-                SingleSelectedDropdownWidget<String>(
+                SingleSelectedDropdownWidget<RangeModel>(
                   hint: AppUtils.languageTranslate('range'),
                   fillColor: AppColors.white,
                   selectedItem: _selectedRange,
-                  itemAsString: (range) => range,
+                  itemAsString: (range) => range.label,
                   compareFn: (p0, p1) => p0 == p1,
-                  items: AppConstants.rangeList,
+                  items: AppConstants().rangeList,
                   onChanged: (value) {
                     _selectedRange = value;
 

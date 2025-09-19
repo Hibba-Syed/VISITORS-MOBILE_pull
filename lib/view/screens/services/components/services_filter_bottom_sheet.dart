@@ -70,7 +70,7 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
                       selectedItem: _selectedType,
                       itemAsString: (type) => type.label,
                       compareFn: (type, item) => type.value == item.value,
-                      items: AppUtils.serviceTypeList,
+                      items: AppUtils().serviceTypeList,
                       onChanged: (value) {
                         _selectedType = value;
                       }),
