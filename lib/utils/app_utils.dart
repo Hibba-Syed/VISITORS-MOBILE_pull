@@ -73,7 +73,7 @@ class AppUtils {
       return AppColors.cyanBlue;
     }
     if (type?.toLowerCase() == "guest") {
-      return AppColors.green;
+      return AppColors.yellow;
     }
     if (type?.toLowerCase() == "visitor_passes") {
       return AppColors.yellow;
@@ -82,7 +82,7 @@ class AppUtils {
       return AppColors.cyanBlue;
     }
     if (type?.toLowerCase() == "work order / rfp") {
-      return AppColors.cyanBlue;
+      return AppColors.primary;
     }
     if (type?.toLowerCase() == "visitor pass") {
       return AppColors.yellow;

@@ -15,7 +15,7 @@ class CheckOutAll {
   DateTime? checkoutTime;
   String? type;
   String? purpose;
-  String? visitorCount;
+  dynamic visitorCount;
   dynamic idExpiry;
   String? entryCardNumber;
   String? name;

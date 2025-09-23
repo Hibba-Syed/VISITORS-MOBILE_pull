@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/check_ins/details/check_ins_details_cubit.dart';
@@ -38,7 +39,8 @@ class CheckOutContainerWidget extends StatefulWidget {
   });
 
   @override
-  State<CheckOutContainerWidget> createState() => _CheckOutContainerWidgetState();
+  State<CheckOutContainerWidget> createState() =>
+      _CheckOutContainerWidgetState();
 }
 
 class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
@@ -66,63 +68,62 @@ class _CheckOutContainerWidgetState extends State<CheckOutContainerWidget> {
             text: AppUtils.languageTranslate('checkout'),
             onPressed: widget.checkOutAllOnPress,
           ),
-        ] else
-          ...[
-            Form(
-              key: _formKey,
-              child: TextFieldWidget(
-                controller: widget.controller,
-                keyboardType: TextInputType.number,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                hint: AppUtils.languageTranslate('noOfVisitorsCheckingOut'),
-                validator: (value) {
-                  if ((enteredCount ?? 0) > availableCount) {
-                    return AppUtils.languageTranslate('enterValidCount');
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {});
-                },
-              ),
+        ] else ...[
+          Form(
+            key: _formKey,
+            child: TextFieldWidget(
+              controller: widget.controller,
+              keyboardType: TextInputType.number,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              hint: AppUtils.languageTranslate('noOfVisitorsCheckingOut'),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              validator: (value) {
+                if ((enteredCount ?? 0) > availableCount) {
+                  return AppUtils.languageTranslate('enterValidCount');
+                }
+                return null;
+              },
+              onChanged: (value) {
+                setState(() {});
+              },
             ),
-            const Gap(20),
-            if (widget.controller.text.isNotEmpty) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      borderRadius: 6,
-                      invert: true,
-                      buttonColor: AppColors.red,
-                      textColor: AppColors.red,
-                      text: AppUtils.languageTranslate('checkout'),
-                      onPressed: () {
-                        widget.checkOutOnPress?.call();
-                      },
-                    ),
+          ),
+          const Gap(20),
+          if (widget.controller.text.isNotEmpty) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    borderRadius: 6,
+                    invert: true,
+                    buttonColor: AppColors.red,
+                    textColor: AppColors.red,
+                    text: AppUtils.languageTranslate('checkout'),
+                    onPressed: () {
+                      widget.checkOutOnPress?.call();
+                    },
                   ),
-                  const Gap(8),
-                  Expanded(
-                    child: CustomButton(
-                      borderRadius: 6,
-                      buttonColor: AppColors.red,
-                      text: AppUtils.languageTranslate('checkoutAll'),
-                      onPressed: widget.checkOutAllOnPress,
-                    ),
-                  ),
-                ],
-              ),
-            ] else
-              ...[
-                CustomButton(
-                  borderRadius: 6,
-                  buttonColor: AppColors.red,
-                  text: AppUtils.languageTranslate('checkoutAll'),
-                  onPressed: widget.checkOutAllOnPress,
                 ),
-              ]
-          ],
+                const Gap(8),
+                Expanded(
+                  child: CustomButton(
+                    borderRadius: 6,
+                    buttonColor: AppColors.red,
+                    text: AppUtils.languageTranslate('checkoutAll'),
+                    onPressed: widget.checkOutAllOnPress,
+                  ),
+                ),
+              ],
+            ),
+          ] else ...[
+            CustomButton(
+              borderRadius: 6,
+              buttonColor: AppColors.red,
+              text: AppUtils.languageTranslate('checkoutAll'),
+              onPressed: widget.checkOutAllOnPress,
+            ),
+          ]
+        ],
         const Gap(10),
         Align(
           alignment: Alignment.topLeft,

@@ -13,7 +13,7 @@ class ActiveCheckIn {
   dynamic checkoutTime;
   String? type;
   String? purpose;
-  String? visitorCount;
+  dynamic visitorCount;
   dynamic idExpiry;
   dynamic entryCardNumber;
   String? name;

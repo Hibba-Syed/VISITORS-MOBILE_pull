@@ -14,7 +14,7 @@ import '../../../widgets/mobile_web_icon_widget.dart';
 class CheckOutCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final String? visitorCount;
+  final dynamic visitorCount;
   final Color? typeBackgroundColor;
   final String? type;
   final String? phone;

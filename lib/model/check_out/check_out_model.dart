@@ -73,7 +73,7 @@ class CheckOutModel {
   String? checkoutTime;
   String? type;
   String? purpose;
-  String? visitorCount;
+  dynamic visitorCount;
   dynamic visitorCountTotal;
   String? idExpiry;
   String? entryCardNumber;
