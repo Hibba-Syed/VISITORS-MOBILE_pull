@@ -64,8 +64,6 @@ PODS:
     - Flutter
     - google_mlkit_commons
     - GoogleMLKit/DigitalInkRecognition (~> 7.0.0)
-  - google_mlkit_document_scanner (0.4.0):
-    - Flutter
   - google_mlkit_entity_extraction (0.15.1):
     - Flutter
     - google_mlkit_commons
@@ -323,7 +321,6 @@ DEPENDENCIES:
   - google_mlkit_barcode_scanning (from `.symlinks/plugins/google_mlkit_barcode_scanning/ios`)
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
   - google_mlkit_digital_ink_recognition (from `.symlinks/plugins/google_mlkit_digital_ink_recognition/ios`)
-  - google_mlkit_document_scanner (from `.symlinks/plugins/google_mlkit_document_scanner/ios`)
   - google_mlkit_entity_extraction (from `.symlinks/plugins/google_mlkit_entity_extraction/ios`)
   - google_mlkit_face_detection (from `.symlinks/plugins/google_mlkit_face_detection/ios`)
   - google_mlkit_face_mesh_detection (from `.symlinks/plugins/google_mlkit_face_mesh_detection/ios`)
@@ -410,8 +407,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_mlkit_commons/ios"
   google_mlkit_digital_ink_recognition:
     :path: ".symlinks/plugins/google_mlkit_digital_ink_recognition/ios"
-  google_mlkit_document_scanner:
-    :path: ".symlinks/plugins/google_mlkit_document_scanner/ios"
   google_mlkit_entity_extraction:
     :path: ".symlinks/plugins/google_mlkit_entity_extraction/ios"
   google_mlkit_face_detection:
@@ -467,7 +462,6 @@ SPEC CHECKSUMS:
   google_mlkit_barcode_scanning: e6c5e596d4dd5342e51516dcf99becb9154bae2d
   google_mlkit_commons: 2544377e5503bf78ee7412ccfce0394c2dcb8a6b
   google_mlkit_digital_ink_recognition: f0d5f5085f5af385f9e89a7634cad1ac21d5cea3
-  google_mlkit_document_scanner: b972a0a9a4b2e4474e750b17e4d62594b369081b
   google_mlkit_entity_extraction: ae00e2eb6fc3a5ee236ef4a103d9152a5a3502c7
   google_mlkit_face_detection: 111b3ac2f2df6ad5f464bafed9ba380ac8366d37
   google_mlkit_face_mesh_detection: 0bf0802f4d6e26942b6992d578fc86a72f20e21b
