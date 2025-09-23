@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:google_mlkit_document_scanner/google_mlkit_document_scanner.dart';
 import 'package:intl/intl.dart';
 import 'package:mrz_parser/mrz_parser.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -79,16 +79,12 @@ class ScannerService {
 
   Future<PassportModel?> scanMrzForPassportAndParse(
       BuildContext context) async {
-    final DocumentScannerOptions documentOptions = DocumentScannerOptions(
-      documentFormat: DocumentFormat.jpeg,
-      mode: ScannerMode.full,
-      pageLimit: 1,
-      isGalleryImport: false,
+    final imagesPaths = await CunningDocumentScanner.getPictures(
+      noOfPages: 1,
     );
-    final documentScanner = DocumentScanner(options: documentOptions);
-    DocumentScanningResult result = await documentScanner.scanDocument();
+
     File? scannedImageFile;
-    final List<String> images = result.images;
+    final List<String> images = imagesPaths ?? [];
     if (images.isNotEmpty && images.first.isNotEmpty) {
       scannedImageFile = File(images.first);
       final path = images.first;
@@ -159,16 +155,12 @@ class ScannerService {
 
   Future<OcrModel?> _scanDocumentAndPerformOCR() async {
     try {
-      DocumentScannerOptions documentOptions = DocumentScannerOptions(
-        documentFormat: DocumentFormat.jpeg, // set output document format
-        mode: ScannerMode.base, // to control what features are enabled
-        pageLimit: 1, // setting a limit to the number of pages scanned
-        isGalleryImport: false, // importing from the photo gallery
+      final imagesPaths = await CunningDocumentScanner.getPictures(
+        noOfPages: 1,
       );
-      final documentScanner = DocumentScanner(options: documentOptions);
-      DocumentScanningResult result = await documentScanner.scanDocument();
+
       File? scannedImageFile;
-      final List<String> images = result.images;
+      final List<String> images = imagesPaths ?? [];
       if (images.isNotEmpty && images.first.isNotEmpty) {
         scannedImageFile = File(images.first);
 
