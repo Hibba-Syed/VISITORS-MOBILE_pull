@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/repo/units/units_repo.dart';
 import 'package:visitors/repo/units/units_repo_impl.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 
 import '../../model/unit/unit_model.dart';
@@ -22,7 +23,7 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     emit(state.copyWith(searchKeyword: keyword));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
@@ -86,13 +87,13 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
         checkIns.addAll(response.record as Iterable<VisitorPasses>);
         emit(state.copyWith(visitorPasses: checkIns));
       } else {
-        Fluttertoast.showToast(msg: 'No more visitor pass ');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreVisitorPass'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitor pass ');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVisitorPass'));
     }
   }
 
@@ -111,7 +112,7 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
 }

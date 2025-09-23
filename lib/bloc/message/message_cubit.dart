@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:visitors/model/message/message_model.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/message/message_response_model.dart';
 import '../../model/message/send_response_messages_model.dart';
@@ -29,12 +29,14 @@ class MessageCubit extends Cubit<MessageState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(messageModel: response.record));
+      emit(state.copyWith(messages: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching message');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingMessage'));
     }
   }
+
   Future<void> getMoreMessage({
     String? keyword,
   }) async {
@@ -45,7 +47,7 @@ class MessageCubit extends Cubit<MessageState> {
       page: state.page,
     )
         .onError(
-          (error, stackTrace) {
+      (error, stackTrace) {
         emit(state.copyWith(loadMore: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -56,24 +58,27 @@ class MessageCubit extends Cubit<MessageState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<MessageModel> checkIns = state.messageModel ?? [];
+        List<MessageModel> checkIns = state.messages ?? [];
         checkIns.addAll(response.record as Iterable<MessageModel>);
-        emit(state.copyWith(messageModel: checkIns));
+        emit(state.copyWith(messages: checkIns));
       } else {
-        Fluttertoast.showToast(msg: 'No more message');
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('noMoreMessage'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching message');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingMessage'));
     }
   }
+
   Future<bool> sendMessage(
-      BuildContext context, {
-        required Map<String, dynamic> data,
-        List<String>? filesPaths,
-      }) async {
+    BuildContext context, {
+    required Map<String, dynamic> data,
+    List<String>? filesPaths,
+  }) async {
     emit(state.copyWith(
       isSendMessageLoading: true,
     ));
@@ -84,7 +89,8 @@ class MessageCubit extends Cubit<MessageState> {
         for (int i = 0; i < (filesPaths?.length ?? 0); i++) {
           if (filesPaths?[i].isNotEmpty ?? false) {
             multipartFiles.add(
-              await http.MultipartFile.fromPath('attachments[]', filesPaths?[i] ?? ""),
+              await http.MultipartFile.fromPath(
+                  'attachments[]', filesPaths?[i] ?? ""),
             );
           }
         }
@@ -104,12 +110,14 @@ class MessageCubit extends Cubit<MessageState> {
       emit(state.copyWith(isSendMessageLoading: false));
 
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: 'Message sent successfully');
+        Fluttertoast.showToast(
+            msg: AppUtils.languageTranslate('messageSentSuccessfully'));
         getMessages();
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while sending message');
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileSendingMessage'));
         return false;
       }
     } catch (e) {
@@ -118,5 +126,4 @@ class MessageCubit extends Cubit<MessageState> {
       return false;
     }
   }
-
 }

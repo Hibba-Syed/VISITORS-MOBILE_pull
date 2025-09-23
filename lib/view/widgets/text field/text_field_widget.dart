@@ -74,19 +74,20 @@ class TextFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label?.isNotEmpty ?? false)
+        if (label?.isNotEmpty ?? false) ...[
           Text(
             label!,
             style: AppUtils.isTablet(context)
-                ? //const TextStyle(fontSize: 15, color: AppColors.DarkGrey,fontWeight: FontWeight.w500)
-            AppTextStyles.style15DarkGrey600
+                ? AppTextStyles.style15DarkGrey600
                 : AppTextStyles.style13DarkGrey600,
           ),
-        if (label?.isNotEmpty ?? false) const Gap(8.0),
+          const Gap(8),
+        ],
         TextFormField(
           initialValue: initialValue,
           controller: controller,
-          autovalidateMode: autovalidateMode,
+          autovalidateMode:
+              autovalidateMode ?? AutovalidateMode.onUserInteraction,
           onChanged: onChanged,
           onFieldSubmitted: onFieldSubmitted,
           onEditingComplete: onEditingComplete,

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/screens/messages/components/send_chat_button_contrainer_widget.dart';
 
 import '../../../../bloc/message/message_cubit.dart';
@@ -56,9 +58,9 @@ class _ChatBottomRowWidgetState extends State<ChatBottomRowWidget> {
                         child: TextFormField(
                           controller: widget.messageController,
                           inputFormatters: [RemoveEmojiInputFormatter()],
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Type a message",
+                            hintText: AppUtils.languageTranslate('typeAMessage'),
                           ),
                         ),
                       ),
@@ -70,7 +72,7 @@ class _ChatBottomRowWidgetState extends State<ChatBottomRowWidget> {
                           highlightColor: Colors.transparent,
                           onPressed: widget.onAttach,
                           icon: Transform.rotate(
-                            angle: 70,
+                            angle: context.locale.languageCode == 'en' ? 70 : 15,
                             child: const Icon(
                               Icons.attach_file,
                               color: AppColors.primary,

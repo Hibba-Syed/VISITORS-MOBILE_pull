@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/utils/app_utils.dart';
 import '../resource/constants/app_colors.dart';
 import '../resource/styles/styles.dart';
 import '../view/widgets/button/custom_button.dart';
@@ -84,13 +85,13 @@ class ConnectivityService {
                     size: 50,
                   ),
                   Gap(16.0),
-                  const Text(
-                    "No Internet Connection",
+                   Text(
+                    AppUtils.languageTranslate('noInternetConnection'),
                     style: AppTextStyles.style16DarkGrey600,
                   ),
                   Gap(8.0),
-                  const Text(
-                    "Check your WiFi or Mobile Data.",
+                   Text(
+                     AppUtils.languageTranslate('checkYourWifiOrMobileData'),
                     style: AppTextStyles.style14DarkGrey600,
                   ),
                   Gap(20.0),
@@ -100,7 +101,7 @@ class ConnectivityService {
                         return LoaderWidget();
                       }
                       return CustomButton(
-                        text: 'Retry',
+                        text: AppUtils.languageTranslate('retry'),
                         invert: true,
                         onPressed: () async {
                           changeState(() {
@@ -110,7 +111,7 @@ class ConnectivityService {
                           changeState(() {
                             isLoading = false;
                           });
-                          if (hasInternet) {
+                          if (hasInternet && context.mounted) {
                             _showOrDismissPopup(context, true);
                           }
                         },

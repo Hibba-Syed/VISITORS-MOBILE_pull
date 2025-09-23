@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/button/small_button.dart';
@@ -8,18 +8,20 @@ import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.d
 import 'package:visitors/view/widgets/network_image_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-
 class GetInfoCardWidget extends StatelessWidget {
   final String? profileImageUrl;
   final String? name;
-  final String? country;
-  final  Future<bool> Function()? deleteOnPressed;
-  const GetInfoCardWidget(
-      {super.key,
-      this.profileImageUrl,
-      this.name,
-      this.country,
-      this.deleteOnPressed});
+  final String? nationality;
+  final Future<bool> Function()? deleteOnPressed;
+  final VoidCallback onSelectPressed;
+  const GetInfoCardWidget({
+    super.key,
+    this.profileImageUrl,
+    this.name,
+    this.nationality,
+    this.deleteOnPressed,
+    required this.onSelectPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class GetInfoCardWidget extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        country ?? "",
+                        nationality ?? "",
                         style: AppUtils.isTablet(context)
                             ? AppTextStyles.style13DarkGrey600
                             : AppTextStyles.style12DarkGrey600,
@@ -72,6 +74,7 @@ class GetInfoCardWidget extends StatelessWidget {
                   backgroundColor: AppColors.green,
                   onPressed: () {
                     Navigator.pop(context);
+                    onSelectPressed();
                   },
                 ),
                 const Gap(10),
@@ -84,14 +87,14 @@ class GetInfoCardWidget extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return CustomAlertDialogBox(
-                            isCancelButtonDisable: true,
-                            confirmButtonText: 'Delete',
-                            confirmButtonColor: AppColors.red,
-                            onConfirm: deleteOnPressed ,
+                            isFirstButtonDisable: true,
+                            secondButtonText: AppUtils.languageTranslate('delete'),
+                            secondButtonColor: AppColors.red,
+                            onSecondButtonPressed: deleteOnPressed,
                             insetPadding: AppUtils.isTablet(context)
                                 ? EdgeInsets.symmetric(horizontal: 50)
                                 : EdgeInsets.all(20),
-                            title: 'Delete Visitor Record',
+                            title: AppUtils.languageTranslate('deleteVisitorRecord'),
                             contentBuilder: (context, setState) {
                               return Align(
                                 alignment: Alignment.center,
@@ -108,7 +111,7 @@ class GetInfoCardWidget extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
                                       child: Text(
-                                          'Are you sure you want to delete this visitor record  forever?',
+                                          AppUtils.languageTranslate('areYouSureYouWantToDeleteThisVisitorRecordForever'),
                                           textAlign: TextAlign.center,
                                           style: AppTextStyles.style15Red600),
                                     ),

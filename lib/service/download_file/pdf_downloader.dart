@@ -2,17 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog2/progress_dialog2.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../repo/encrption/encryption_helper.dart';
+import 'package:visitors/utils/app_utils.dart';
+import '../../helper/encrption/encryption_helper.dart';
 import '../../resource/constants/api_url.dart';
 import '../../resource/globals.dart';
 import '../../view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-
 
 class FileDownloader {
   static String getBundleId() {
@@ -29,62 +30,61 @@ class FileDownloader {
   /// Main entry point for downloading PDF
   static Future<void> downloadFile({
     required BuildContext context,
-    required String dateRage,
+    required String? dateRage,
   }) async {
-
-
+    final progressDialog = _createProgressDialog(context);
     // Determine download URL based on the type
-    final downloadUrl = _getDownloadUrl(
-        dateRange: dateRage
-    );
+    final downloadUrl = await _getDownloadUrl(dateRange: dateRage);
 
     final token = _getAuthToken(context);
-    final progressDialog = _createProgressDialog(context);
 
     try {
-      final response =
-      await http.get(downloadUrl, headers: {"Authorization": token, "User-Agent": "Windows"});
+      final response = await http.get(downloadUrl,
+          headers: {"Authorization": token, "User-Agent": "Windows"});
       if (response.statusCode == 200 && context.mounted) {
-        await _handleFileDownload(
-            context, progressDialog, response);
-      } else if(response.statusCode== 404){
+        await _handleFileDownload(context, progressDialog, response);
+      } else if (response.statusCode == 404) {
         progressDialog.hide();
-        if(context.mounted){
+        if (context.mounted) {
           _showErrorDialog(context, jsonDecode(response.body)['message']);
         }
       } else if (response.statusCode == 500) {
         progressDialog.hide();
-        if(context.mounted){
-          _showErrorDialog(context,
-              "An error occurred while downloading the document. Please try again. If the issue persists, contact our support team for assistance.");
+        if (context.mounted) {
+          _showErrorDialog(
+              context,
+              AppUtils.languageTranslate(
+                  'errorDownloadingDocumentContactSupport'));
         }
       } else {
-        if(context.mounted){
+        if (context.mounted) {
           _handleDownloadError(context, progressDialog, response);
         }
       }
     } catch (e) {
-      if(context.mounted){
-        _showErrorDialog(context, "An unexpected error occurred: $e");
+      if (context.mounted) {
+        _showErrorDialog(context,
+            "${AppUtils.languageTranslate('anUnexpectedErrorOccurred')}: $e");
         progressDialog.hide();
       }
     }
   }
+
   /// Get the download URL based on the file type
-  static Uri _getDownloadUrl({String? dateRange}) {
-   // final dateRange = getDateRangeStringFromLabel('Last 30 Days');
+  static Future<Uri> _getDownloadUrl({String? dateRange}) async {
+    // final dateRange = getDateRangeStringFromLabel('Last 30 Days');
+    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
     final filter = {
       "date_range": dateRange,
       "export": true,
-      "timezone": "Asia/Karachi"
+      "timezone": currentTimeZone
     };
 
-    final encryptedPayload = Uri.encodeComponent(EncryptionHelper.encryptPayload(filter));
+    final encryptedPayload =
+        Uri.encodeComponent(EncryptionHelper.encryptPayload(filter));
     final url = Uri.parse('${ApiUrl.checkOuts}?xyz=$encryptedPayload');
-
     return url;
   }
-
 
   /// Get authentication token
   static String _getAuthToken(BuildContext context) {
@@ -95,18 +95,17 @@ class FileDownloader {
   static ProgressDialog _createProgressDialog(BuildContext context) {
     final progressDialog = ProgressDialog(context,
         type: ProgressDialogType.Normal, showLogs: true, isDismissible: false);
-    progressDialog.style(message: 'Downloading File...');
+    progressDialog.style(
+        message: AppUtils.languageTranslate('downloadingFile'));
     progressDialog.show();
     return progressDialog;
   }
 
   /// Handle file download process
-  static Future<void> _handleFileDownload(
-      BuildContext context,
-      ProgressDialog progressDialog,
-      http.Response response) async {
-    String? filename = _extractFileName(
-        response.headers['content-disposition']);
+  static Future<void> _handleFileDownload(BuildContext context,
+      ProgressDialog progressDialog, http.Response response) async {
+    String? filename =
+        _extractFileName(response.headers['content-disposition']);
     String? filePath = await _saveFileInIsolate(SaveFileParams(
       data: response.bodyBytes,
       filename: filename,
@@ -119,15 +118,15 @@ class FileDownloader {
       _onDownloadSuccess(
           context, filePath, response.headers['content-disposition']);
     } else {
-      if (context.mounted){
-        _showErrorDialog(context, "Error saving the file.");
+      if (context.mounted) {
+        _showErrorDialog(
+            context, AppUtils.languageTranslate('errorSavingTheFile'));
       }
     }
   }
 
   /// Extract file name from response headers or construct default name
-  static String _extractFileName(
-      String? contentDisposition) {
+  static String _extractFileName(String? contentDisposition) {
     if (contentDisposition != null) {
       final regExp = RegExp(r'filename="?(.*\.(\w+))"?');
       final match = regExp.firstMatch(contentDisposition);
@@ -144,7 +143,7 @@ class FileDownloader {
     progressDialog.hide();
     final errorMsg = response.body.isNotEmpty
         ? response.body
-        : "Error downloading the file.";
+        : AppUtils.languageTranslate('errorDownloadingTheFile');
     _showErrorDialog(context, errorMsg);
   }
 
@@ -153,10 +152,13 @@ class FileDownloader {
       BuildContext context, String filePath, String? contentDisposition) {
     if (contentDisposition?.contains("zip") ?? false) {
       _openFileBasedOnPlatform(filePath);
-      Fluttertoast.showToast(msg: "File has been downloaded successfully!");
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('fileHasBeenDownloadedSuccessfully'));
     } else {
       _showSuccessDialog(
-          context, "File has been downloaded successfully!", filePath);
+          context,
+          AppUtils.languageTranslate('fileHasBeenDownloadedSuccessfully'),
+          filePath);
     }
   }
 
@@ -174,7 +176,7 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -183,7 +185,7 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -233,16 +235,17 @@ class FileDownloader {
       context: context,
       builder: (_) => CustomAlertDialogBox(
         insetPadding: EdgeInsets.all(10),
-        title: "Download Complete",
-        confirmButtonText: "Open File",
-        cancelButtonText: "No",
-        onConfirm: () async {
-          openFile(filePath);
+        title: AppUtils.languageTranslate('downloadComplete'),
+        secondButtonText: AppUtils.languageTranslate('openFile'),
+        firstButtonText: AppUtils.languageTranslate('no'),
+        onSecondButtonPressed: () async {
+          await openFile(filePath);
+
           return true;
         },
         contentBuilder: (p0, p1) {
-          return const Text(
-            "File downloaded successfully",
+          return Text(
+            AppUtils.languageTranslate('fileDownloadedSuccessfully'),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14, color: Colors.grey),
           );
@@ -253,40 +256,45 @@ class FileDownloader {
 
   static Future<void> openFile(String filePath) async {
     try {
+      OpenResult? openResult;
       if (Platform.isAndroid && filePath.startsWith("/storage/emulated/")) {
         if (await File(filePath).exists()) {
-          OpenFile.open(filePath);
-        } else {
-        }
+          openResult = await OpenFile.open(filePath);
+        } else {}
       } else if (Platform.isAndroid && filePath.startsWith("content://")) {
         await launchUrl(Uri.parse(filePath));
       } else {
-        OpenFile.open(filePath);
+        openResult = await OpenFile.open(filePath);
+      }
+      if (openResult?.type != ResultType.done) {
+        if (openResult?.message.isNotEmpty ?? false) {
+          throw openResult!.message;
+        }
       }
     } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
     // }
   }
 
   /// Show error dialog
   static void _showErrorDialog(BuildContext context, String message) {
-    if(context.mounted){
+    if (context.mounted) {
       showDialog(
         barrierDismissible: false,
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text("Error"),
+          title: Text(AppUtils.languageTranslate('error')),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
+              child: Text(AppUtils.languageTranslate('ok')),
             ),
           ],
         ),
       );
     }
-
   }
 }
 
@@ -302,4 +310,3 @@ class SaveFileParams {
     required this.rootIsolateToken,
   });
 }
-

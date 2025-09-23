@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/auth/login_response_model.dart';
-import '../../repo/auth/atuh_repo_impl.dart';
+import '../../repo/auth/auth_repo_impl.dart';
 import '../../repo/auth/auth_repo.dart';
 import '../../resource/constants/strings.dart';
 import '../../utils/preference_utils.dart';
@@ -48,14 +49,16 @@ class AuthCubit extends Cubit<AuthState> {
       spUtil.password = password;
       spUtil.loginId = loginId;
       if (context.mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRoutes.loading, (route) => false);
-     }
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(AppRoutes.loading, (route) => false);
+      }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong, please try again later');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongPleaseTryAgainLater'));
     }
   }
+
   Future<void> logout(BuildContext context) async {
     _authRepo.logout();
     spUtil.remove(Strings.keyToken);

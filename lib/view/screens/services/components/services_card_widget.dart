@@ -36,33 +36,31 @@ class ServicesCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return InkWell(
+      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+      onTap: detailsOnPressed,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: AppColors.white),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OverlapContainerWidget(
-              text: unit ?? "",
-            ),
-            OverlapContainerWidget(
-              text: reference ?? "",
-            ),
-          ],
-        ),
-        InkWell(
-          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-          onTap: detailsOnPressed,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(8),
-                  bottomLeft: Radius.circular(8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OverlapContainerWidget(
+                  text: unit ?? "",
                 ),
-                color: AppColors.white),
-            child: Column(
+                Gap(6),
+                OverlapContainerWidget(
+                  text: reference ?? "",
+                ),
+              ],
+            ),
+            Gap(10),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -104,32 +102,32 @@ class ServicesCardWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomButton(
-                          fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+                          fontSize: AppUtils.isTablet(context) ? 15 : 15,
                           buttonColor: AppColors.green,
                           image: AppImages.checkInButton,
-                          text: 'Check-In',
+                          text: AppUtils.languageTranslate('checkIn'),
                           onPressed: checkInOnPressed),
                     ),
-                    if(isActiveCheckins)...[
+                    if (isActiveCheckins) ...[
                       const Gap(8),
                       Expanded(
                         child: CustomButton(
-                            fontSize: AppUtils.isTablet(context)  ? 15 : 15,
+                            fontSize: AppUtils.isTablet(context) ? 15 : 15,
                             // imageHeight: AppUtils.isTablet(context) ?22 :18,
                             buttonColor: AppColors.cyanBlue,
                             image: AppImages.serviceable,
-                            text: 'Serviceable Check Ins',
+                            text: AppUtils.languageTranslate(
+                                'serviceableCheckIns'),
                             onPressed: serviceableCheckInOnPressed),
                       ),
                     ],
-
                   ],
                 )
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

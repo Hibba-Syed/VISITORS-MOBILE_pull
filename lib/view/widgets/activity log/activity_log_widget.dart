@@ -25,13 +25,14 @@ class ActivityLogWidget extends StatelessWidget {
       this.dateTime,
       this.isLast,
       this.verticalPadding,
-      this.horizontalPadding});
+      this.horizontalPadding
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding ?? 10, vertical: verticalPadding ?? 0),
+          horizontal: horizontalPadding ?? 7, vertical: verticalPadding ?? 0),
       child: Column(
         children: [
           TimelineTile(
@@ -75,13 +76,14 @@ class ActivityLogWidget extends StatelessWidget {
                 maxWidth: double.infinity,
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 6),
+                padding: const EdgeInsets.only(left: 3),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Gap(3),
                         Text(status ?? "",
                             style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style16black600
@@ -90,7 +92,7 @@ class ActivityLogWidget extends StatelessWidget {
                         Flexible(
                           child: Row(
                             children: [
-                              Text(' By'  ,
+                              Text(' ${AppUtils.languageTranslate('by')}'  ,
                                   style: AppUtils.isTablet(context)
                                       ? AppTextStyles.style16black600
                                       : AppTextStyles.style14Black600),
@@ -105,7 +107,7 @@ class ActivityLogWidget extends StatelessWidget {
                     ),
 
                     const Gap(5),
-                    Text( description ?? "",
+                    Text( description ?? "--",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

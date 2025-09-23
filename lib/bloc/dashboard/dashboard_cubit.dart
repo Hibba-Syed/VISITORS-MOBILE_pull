@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:visitors/bloc/directory/directory_cubit.dart';
+import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
 import 'package:visitors/model/service/service_response_model.dart';
+import 'package:visitors/repo/counts/counts_repo.dart';
+import 'package:visitors/repo/counts/counts_repo_impl.dart';
+import 'package:visitors/repo/visitor/visitor_repo.dart';
+import 'package:visitors/repo/visitor/visitor_repo_impl.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_ins/check_ins_response_model.dart';
@@ -19,8 +24,6 @@ import '../../model/work_order/work_order_model.dart';
 import '../../model/work_order/work_order_response_model.dart';
 import '../../repo/check_ins/check_in_repo.dart';
 import '../../repo/check_ins/check_in_repo_impl.dart';
-import '../../repo/dashboard/dashboard_repo.dart';
-import '../../repo/dashboard/dashboard_repo_impl.dart';
 import '../../repo/profile/profile_repo.dart';
 import '../../repo/profile/profile_repo_impl.dart';
 import '../../repo/services/services_repo.dart';
@@ -31,17 +34,17 @@ import '../../repo/work_order_rfp/work_order_repo_impl.dart';
 import '../../repo/work_order_rfp/work_order_repo.dart';
 import '../../utils/preference_utils.dart';
 import '../../utils/routes/app_routes.dart';
-import '../visitor_passes/visitor_pass_cubit.dart';
 part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit() : super(DashboardState());
   final ProfileRepo _profileRepo = ProfileRepoImpl();
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
-  final DashboardRepo _dashboardRepo = DashboardRepoImpl();
+  final CountsRepo _countsRepo = CountsRepoImpl();
   final ServiceRepo _serviceRepo = ServiceRepoImpl();
   final WorkOrderRFPRepo _workOrderRFPRepo = WorkOrderRFPRepoImpl();
   final VisitorPassRepo _visitorPassRepo = VisitorPassRepoImpl();
+  final VisitorRepo _visitorRepo = VisitorRepoImpl();
 
   Future<bool> getProfile() async {
     emit(state.copyWith(isLoading: true));
@@ -55,7 +58,8 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(profileRecord: profileResponse.record));
       return true;
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong');
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('somethingWentWrong'));
       return false;
     }
   }
@@ -74,17 +78,18 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isCheckInLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(checkInsModel: response.record));
+      emit(state.copyWith(checkIns: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitors check-ins');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingVisitorsCheckins'));
     }
   }
 
   Future<void> getDashboardCount() async {
     emit(state.copyWith(isCountLoading: true));
     CountResponseModel? response =
-        await _dashboardRepo.getDashboardCount().onError(
+        await _countsRepo.getDashboardCount().onError(
       (error, stackTrace) {
         emit(state.copyWith(isCountLoading: false));
         Fluttertoast.showToast(
@@ -97,7 +102,9 @@ class DashboardCubit extends Cubit<DashboardState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(countModel: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching count');
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCount'));
     }
   }
 
@@ -115,10 +122,11 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isServicesLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(serviceModel: response.record));
+      emit(state.copyWith(services: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingService'));
     }
   }
 
@@ -136,10 +144,11 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     emit(state.copyWith(isWorkOrderLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(workOrderModel: response.record));
+      emit(state.copyWith(workOrders: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingWorkOrderRfp'));
     }
   }
 
@@ -160,7 +169,8 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(visitorPasses: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitor pass');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingVisitorPass'));
     }
   }
 
@@ -171,7 +181,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   }) async {
     emit(state.copyWith(isCheckOutVisitor: true));
     try {
-      CheckOutVisitorResponseModel? response = await _checkInRepo
+      CheckOutVisitorResponseModel? response = await _visitorRepo
           .checkOutVisitors(data: data, id: id)
           .onError((error, stackTrace) {
         emit(state.copyWith(isCheckOutVisitor: false));
@@ -184,22 +194,34 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(isCheckOutVisitor: false));
       // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");
       if (response != null && response.status == 'success') {
-        emit(state.copyWith(
-            checkOutVisitors: (response.record == null)
-                ? state.checkOutVisitors
-                : [response.record!, ...state.checkOutVisitors ?? []]));
+        final updated = response.record;
+        if (updated != null) {
+          final list = state.checkOutVisitors ?? [];
+
+          final index = list.indexWhere((visitor) => visitor.id == updated.id);
+          final updatedList = [...list];
+
+          if (index != -1) {
+            updatedList[index] = updated; // Replace existing item
+          } else {
+            updatedList.insert(0, updated); // Insert new item at top
+          }
+
+          emit(state.copyWith(checkOutVisitors: updatedList));
+        }
         if (context.mounted) {
+          getDashboardCheckIns(limit: 3);
           Navigator.pop(context);
         }
-        getDashboardCheckIns();
         Fluttertoast.showToast(
             msg: (data['checkout'] != null)
-                ? 'Checkout ${data['checkout'].toString()} visitors successfully'
-                : ' Checkout successfully');
+                ? '${AppUtils.languageTranslate('checkout')} ${data['checkout'].toString()} ${AppUtils.languageTranslate('visitorsSuccessfully')}'
+                : AppUtils.languageTranslate('checkoutSuccessfully'));
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while checking out visitor');
+            msg: AppUtils.languageTranslate(
+                'somethingWentWrongWhileCheckingOutVisitor'));
         return false;
       }
     } catch (e) {
@@ -228,7 +250,8 @@ class DashboardCubit extends Cubit<DashboardState> {
       // print('Visitor Pass Count cubit : ${response.record?.count}');
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching visitor passes count');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingVisitorPassesCount'));
     }
   }
 
@@ -237,8 +260,6 @@ class DashboardCubit extends Cubit<DashboardState> {
     //{bool isNavigationAllow = true}
   ) async {
     final dashboardCubit = context.read<DashboardCubit>();
-    final visitorPassCubit = context.read<VisitorPassCubit>();
-    final directoryCubit = context.read<DirectoryCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
 
@@ -249,8 +270,9 @@ class DashboardCubit extends Cubit<DashboardState> {
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
-        visitorPassCubit.getVisitorPasses(),
-        directoryCubit.getUnits(),
+        context.read<GuestCheckInCubit>().getCountries(),
+        context.read<GuestCheckInCubit>().getProfile(),
+        context.read<GuestCheckInCubit>().getUnits(),
       ]);
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -270,16 +292,10 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> refreshData(BuildContext context) async {
     final dashboardCubit = context.read<DashboardCubit>();
-    final visitorPassCubit = context.read<VisitorPassCubit>();
-    final directoryCubit = context.read<DirectoryCubit>();
     await dashboardCubit.getDashboardCheckIns(limit: 3);
     await dashboardCubit.getDashboardCount();
     await dashboardCubit.getDashboardServices(limit: 3);
     await dashboardCubit.getDashboardWorkOrder(limit: 3);
     dashboardCubit.getVisitorPassesCount();
-    if (context.mounted) {
-      visitorPassCubit.getVisitorPasses();
-      directoryCubit.getUnits();
-    }
   }
 }

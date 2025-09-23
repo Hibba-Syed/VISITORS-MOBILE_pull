@@ -6,50 +6,50 @@ import '../loader/loader_widget.dart';
 
 class CustomAlertDialogBox extends StatefulWidget {
   final String? title;
-  final String? cancelButtonText;
-  final String? confirmButtonText;
-  final double? confirmButtonTextFontSize;
-  final FontWeight? confirmButtonTextFontWeight;
+  final String? firstButtonText;
+  final String? secondButtonText;
+  final double? secondButtonTextFontSize;
+  final FontWeight? secondButtonTextFontWeight;
 
-  final Future<bool> Function()? onConfirm;
-  final Future<bool?> Function()? onCancel;
+  final Future<bool> Function()? onSecondButtonPressed;
+  final Future<bool?> Function()? onFirstButtonPressed;
   final Widget Function(BuildContext, void Function(void Function()))?
       contentBuilder;
   final bool showCloseIcon;
-  final Color? confirmButtonColor;
-  final Color? cancelButtonColor;
+  final Color? secondButtonColor;
+  final Color? firstButtonColor;
   final bool? hideBothButtons;
   final double? horizontalPadding;
-  final bool? disableCancelButtonBorder;
-  final Color? cancelButtonTextColor;
-  final Color? confirmButtonTextColor;
+  final bool? disableFirstButtonBorder;
+  final Color? firstButtonTextColor;
+  final Color? secondButtonTextColor;
   final EdgeInsets? insetPadding;
-  final bool isCancelButtonDisable;
-  final bool? canPopOnConfirm;
+  final bool isFirstButtonDisable;
+  final bool? canPopOnSecondButtonPressed;
   final String? customSubTitleText;
 
   const CustomAlertDialogBox({
     super.key,
     this.title,
-    this.cancelButtonText = "Cancel",
-    this.confirmButtonText = "Confirm",
-    this.onConfirm,
-    this.onCancel,
+    this.firstButtonText,
+    this.secondButtonText,
+    this.onSecondButtonPressed,
+    this.onFirstButtonPressed,
     this.contentBuilder,
     this.showCloseIcon = true,
-    this.confirmButtonColor,
-    this.cancelButtonColor,
+    this.secondButtonColor,
+    this.firstButtonColor,
     this.horizontalPadding,
     this.hideBothButtons = false,
-    this.disableCancelButtonBorder = false,
-    this.cancelButtonTextColor,
-    this.confirmButtonTextColor,
+    this.disableFirstButtonBorder = false,
+    this.firstButtonTextColor,
+    this.secondButtonTextColor,
     this.insetPadding,
-    this.isCancelButtonDisable = false,
-    this.canPopOnConfirm = true,
+    this.isFirstButtonDisable = false,
+    this.canPopOnSecondButtonPressed = true,
     this.customSubTitleText,
-    this.confirmButtonTextFontSize,
-    this.confirmButtonTextFontWeight,
+    this.secondButtonTextFontSize,
+    this.secondButtonTextFontWeight,
   });
 
   @override
@@ -58,15 +58,15 @@ class CustomAlertDialogBox extends StatefulWidget {
 
 class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
   bool isLoading = false;
-  bool isCancelLoading = false;
+  bool isFirstButtonLoading = false;
 
-  Future<void> _handleConfirm() async {
-    if (widget.onConfirm != null) {
+  Future<void> _handleSecondButtonOnPressed() async {
+    if (widget.onSecondButtonPressed != null) {
       FocusManager.instance.primaryFocus?.unfocus();
       setState(() => isLoading = true);
-      bool success = await widget.onConfirm!();
+      bool success = await widget.onSecondButtonPressed!();
       setState(() => isLoading = false);
-      if (success && (widget.canPopOnConfirm ?? true)) {
+      if (success && (widget.canPopOnSecondButtonPressed ?? true)) {
         if (mounted) {
           Navigator.of(context).pop(true);
         }
@@ -76,11 +76,11 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
     }
   }
 
-  Future<void> _handleCancel() async {
-    if (widget.onCancel != null) {
-      setState(() => isCancelLoading = true);
-      bool? success = await widget.onCancel!();
-      setState(() => isCancelLoading = false);
+  Future<void> _handleFirstButtonOnPressed() async {
+    if (widget.onFirstButtonPressed != null) {
+      setState(() => isFirstButtonLoading = true);
+      bool? success = await widget.onFirstButtonPressed!();
+      setState(() => isFirstButtonLoading = false);
       if (success ?? true) {
         if (mounted) {
           Navigator.of(context).pop(true);
@@ -173,8 +173,9 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                               ? widget.contentBuilder!(context, setState)
                               : Align(
                                   alignment: Alignment.center,
-                                  child: const Text(
-                                    "Are you sure you want to proceed with this action?",
+                                  child: Text(
+                                    AppUtils.languageTranslate(
+                                        'areYouSureYouWantToProceedWithThisAction'),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 14,
@@ -187,18 +188,20 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if (!(widget.isCancelButtonDisable)) ...[
+                                if (!(widget.isFirstButtonDisable)) ...[
                                   Expanded(
-                                    child: isCancelLoading
+                                    child: isFirstButtonLoading
                                         ? const Center(child: LoaderWidget())
                                         : TextButton(
-                                            onPressed: (widget.onCancel != null)
-                                                ? _handleCancel
+                                            onPressed: (widget
+                                                        .onFirstButtonPressed !=
+                                                    null)
+                                                ? _handleFirstButtonOnPressed
                                                 : () =>
                                                     Navigator.of(context).pop(),
                                             style: TextButton.styleFrom(
                                               backgroundColor:
-                                                  widget.cancelButtonColor ??
+                                                  widget.firstButtonColor ??
                                                       Colors.white,
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: widget
@@ -210,7 +213,7 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                                     BorderRadius.circular(8),
                                                 side: BorderSide(
                                                     color:
-                                                        (widget.disableCancelButtonBorder ??
+                                                        (widget.disableFirstButtonBorder ??
                                                                 false)
                                                             ? Colors.transparent
                                                             : AppColors
@@ -219,11 +222,17 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                             ),
                                             child: Text(
                                               textAlign: TextAlign.center,
-                                              widget.cancelButtonText!,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              widget.firstButtonText ??
+                                                  AppUtils.languageTranslate(
+                                                      'cancel'),
                                               style: TextStyle(
                                                   color: widget
-                                                          .cancelButtonTextColor ??
-                                                      Colors.black),
+                                                          .firstButtonTextColor ??
+                                                      Colors.black,
+
+                                              ),
                                             ),
                                           ),
                                   ),
@@ -233,10 +242,11 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                   child: isLoading
                                       ? const Center(child: LoaderWidget())
                                       : TextButton(
-                                          onPressed: _handleConfirm,
+                                          onPressed:
+                                              _handleSecondButtonOnPressed,
                                           style: TextButton.styleFrom(
                                             backgroundColor:
-                                                widget.confirmButtonColor ??
+                                                widget.secondButtonColor ??
                                                     AppColors.primary,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal:
@@ -250,15 +260,19 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                           ),
                                           child: Text(
                                             textAlign: TextAlign.center,
-                                            widget.confirmButtonText ?? "Yes",
+                                            widget.secondButtonText ??
+                                                AppUtils.languageTranslate(
+                                                    'confirm'),
                                             style: TextStyle(
                                                 color: widget
-                                                        .confirmButtonTextColor ??
+                                                        .secondButtonTextColor ??
                                                     Colors.white,
-                                              fontSize: widget.confirmButtonTextFontSize ?? 13,
-                                              fontWeight: widget.confirmButtonTextFontWeight ?? FontWeight.w600
-
-                                            ),
+                                                fontSize: widget
+                                                        .secondButtonTextFontSize ??
+                                                    14,
+                                                fontWeight: widget
+                                                        .secondButtonTextFontWeight ??
+                                                    FontWeight.w600),
                                           ),
                                         ),
                                 ),

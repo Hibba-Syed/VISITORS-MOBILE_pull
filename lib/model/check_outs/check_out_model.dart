@@ -12,7 +12,7 @@ class CheckOutModel {
   DateTime? checkoutTime;
   String? type;
   dynamic purpose;
-  String? visitorCount;
+  dynamic visitorCount;
   dynamic idExpiry;
   String? entryCardNumber;
   String? name;

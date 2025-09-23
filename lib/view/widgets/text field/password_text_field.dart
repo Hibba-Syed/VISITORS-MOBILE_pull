@@ -79,12 +79,13 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           onTap: widget.onTap,
           maxLength: widget.maxLength,
           expands: widget.expands,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             isDense: true,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: widget.hint,
-            hintStyle: AppUtils.isTablet(context) ? AppTextStyles.style15black400 : AppTextStyles.style14darkGray400,
+            hintStyle: AppUtils.isTablet(context) ? AppTextStyles.style15DarkGrey400 : AppTextStyles.style14darkGray400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             focusedBorder:
             OutlineInputBorder(
@@ -96,11 +97,17 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide:  BorderSide(color:  AppColors.outLineGray, width: 1),
+              borderSide: BorderSide(
+                  color: AppColors.outLineGray, width: 1),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide:  BorderSide(color:  AppColors.red, width: 1),
+              borderSide: BorderSide(color: AppColors.red, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(
+                  color:  AppColors.outLineGray, width: 1),
             ),
             prefixIcon: Padding(
               padding:

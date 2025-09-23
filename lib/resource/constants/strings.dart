@@ -8,8 +8,8 @@ class Strings {
   static String keyPassword = 'password';
   static String keyServices = 'application';
   static String keyWorkOrder = 'job';
-  static String keyVisitorPass = 'visitor_passes';
+  static String keyVisitorPass = 'visitor-pass';
   static String guests = 'guests';
-  static String guest = 'guest';
+  static String keyGuest = 'guest';
 
 }

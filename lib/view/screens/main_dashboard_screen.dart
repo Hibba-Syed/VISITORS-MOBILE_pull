@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/bloc/auth/auth_cubit.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/bloc/message/message_cubit.dart';
 import 'package:visitors/bloc/work_order/work_order_cubit.dart';
@@ -23,7 +25,8 @@ import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../service/connectivity_service.dart';
 import '../../utils/app_utils.dart';
-import 'check_ins/check_in_screen.dart';
+import '../widgets/custom_switch_widget.dart';
+import 'check_ins/check_ins_screen.dart';
 import 'check_outs/check_outs_screen.dart';
 import 'components/drawer_item_model.dart';
 import 'dashboard/dashboard_screen.dart';
@@ -34,41 +37,6 @@ class MainDashboardScreen extends StatefulWidget {
   const MainDashboardScreen({super.key});
   @override
   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
-
-  static final List<DrawerItemModel> drawerItems = [
-    DrawerItemModel(
-        index: AppConstants.dashboardIndex,
-        title: 'Dashboard',
-        iconPath: AppImages.dashboard),
-    DrawerItemModel(
-        index: AppConstants.checkInsIndex,
-        title: 'Check-Ins',
-        iconPath: AppImages.menuCheckIn),
-    DrawerItemModel(
-        index: AppConstants.eServicesIndex,
-        title: 'E-Services',
-        iconPath: AppImages.menuEservices),
-    DrawerItemModel(
-        index: AppConstants.workOrderRfpIndex,
-        title: 'Work Order / RFPs',
-        iconPath: AppImages.menuRFPs),
-    DrawerItemModel(
-        index: AppConstants.messagesIndex,
-        title: 'Messages',
-        iconPath: AppImages.menuMsg),
-    DrawerItemModel(
-        index: AppConstants.checkOutsIndex,
-        title: 'Check-Outs',
-        iconPath: AppImages.menuCheckout),
-    DrawerItemModel(
-        index: AppConstants.directoryIndex,
-        title: 'Directory',
-        iconPath: AppImages.directory),
-    DrawerItemModel(
-        index: AppConstants.logoutIndex,
-        title: 'Logout',
-        iconPath: AppImages.logout),
-  ];
 }
 
 class _MainDashboardScreenState extends State<MainDashboardScreen> {
@@ -87,6 +55,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       builder: (context, selectedIndex) {
         return Scaffold(
           key: _scaffoldKey,
+          drawerEnableOpenDragGesture: false,
           appBar: AppBarWidget(
             leading: IconButton(
               icon: const Icon(Icons.menu, color: AppColors.black),
@@ -118,19 +87,19 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     colorFilter: const ColorFilter.mode(
                         AppColors.primary, BlendMode.srcIn)),
                 const Gap(16),
-                const Text('Are you sure you want to logout?',
+                Text(AppUtils.languageTranslate('areYouSureYouWantToLogout'),
                     style: AppTextStyles.style16DarkGrey600),
                 const Gap(20),
                 Row(
                   children: [
                     Expanded(
                         child: CustomButton(
-                            text: 'Cancel',
+                            text: AppUtils.languageTranslate('cancel'),
                             onPressed: () => Navigator.pop(context, false))),
                     const Gap(10),
                     Expanded(
                         child: CustomButton(
-                            text: 'Logout',
+                            text: AppUtils.languageTranslate('logout'),
                             invert: true,
                             onPressed: () {
                               Navigator.pop(context, true);
@@ -146,7 +115,43 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
   }
 
   Widget _buildDrawer(BuildContext context, int selectedIndex) {
-    final items = MainDashboardScreen.drawerItems;
+    final items = [
+      DrawerItemModel(
+          index: AppConstants.dashboardIndex,
+          title: AppUtils.languageTranslate('dashboard'),
+          iconPath: AppImages.dashboard),
+      DrawerItemModel(
+          index: AppConstants.checkInsIndex,
+          title: AppUtils.languageTranslate('checkIns'),
+          iconPath: AppImages.menuCheckIn),
+      DrawerItemModel(
+          index: AppConstants.eServicesIndex,
+          title: AppUtils.languageTranslate('eServices'),
+          iconPath: AppImages.menuEservices),
+      DrawerItemModel(
+          index: AppConstants.workOrderRfpIndex,
+          title: AppUtils.languageTranslate('workOrderRFPs'),
+          iconPath: AppImages.menuRFPs),
+      DrawerItemModel(
+          index: AppConstants.messagesIndex,
+          title: AppUtils.languageTranslate('messages'),
+          iconPath: AppImages.menuMsg),
+      DrawerItemModel(
+          index: AppConstants.checkOutsIndex,
+          title: AppUtils.languageTranslate('checkOuts'),
+          iconPath: AppImages.menuCheckout),
+      if (context
+              .read<DashboardCubit>()
+              .state
+              .profileRecord
+              ?.association
+              ?.isVisitorDirHidden ==
+          0)
+        DrawerItemModel(
+            index: AppConstants.directoryIndex,
+            title: AppUtils.languageTranslate('directory'),
+            iconPath: AppImages.directory)
+    ];
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
       backgroundColor: AppColors.white,
@@ -171,7 +176,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text('VMS APPLICATION',
+                  child: Text(AppUtils.languageTranslate('vMSAPPLICATION'),
                       style: AppTextStyles.style13white500),
                 )
               ],
@@ -183,64 +188,121 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 isSelected: item.index == selectedIndex,
                 onTap: () {
                   Navigator.of(context).pop();
-                  if (item.index == AppConstants.logoutIndex) {
-                    _showLogoutDialog(context);
-                  } else {
-                    context
-                        .read<MainDashboardCubit>()
-                        .onChangeSelectedIndex(item.index);
-
-                    // Optionally trigger specific cubits
-                    switch (item.index) {
-                      case AppConstants.checkInsIndex:
-                        context.read<CheckInsCubit>().resetFilterData();
-                        context.read<CheckInsCubit>().getCheckIns();
-                        break;
-                      case AppConstants.eServicesIndex:
-                        context.read<ServiceCubit>().resetFilterData();
-                        context.read<ServiceCubit>().getServices();
-                        break;
-                      case AppConstants.workOrderRfpIndex:
-                        context.read<WorkOrderCubit>().resetFilterData();
-                        context.read<WorkOrderCubit>().getWorkOrder();
-                        break;
-                      case AppConstants.messagesIndex:
-                        context.read<MessageCubit>().getMessages();
-                        break;
-                      case AppConstants.checkOutsIndex:
-                        context.read<CheckOutCubit>().onChangeDateRange(
-                            AppUtils.getDateRangeStringFromLabel(
-                                'Last 30 Days'));
-                        context.read<CheckOutCubit>().getCheckOuts();
-                        break;
-                      case AppConstants.directoryIndex:
-                     context.read<DirectoryCubit>().getUnits();
-                        break;
-                    }
-                  }
+                  context
+                      .read<MainDashboardCubit>()
+                      .onChangeSelectedIndex(item.index);
+                  // Optionally trigger specific cubits
+                  gettingApiCall(context, item.index);
                 },
-              ))
+              )),
+          ListTile(
+            dense: true,
+            leading: Icon(
+              Icons.translate,
+              color: AppColors.darkGrey,
+              size: 23,
+            ),
+            title: Text(
+              AppUtils.languageTranslate('changeLanguage'),
+              style: AppUtils.isTablet(context)
+                  ? AppTextStyles.style21DarkGrey400
+                  : AppTextStyles.style16DarkGrey400,
+              textAlign: (context.locale.languageCode == "en")
+                  ? TextAlign.left
+                  : TextAlign.right,
+            ),
+            trailing: CustomSwitch(
+              value: context.locale.languageCode == "en",
+              onChanged: (value) {
+                final changedLocale = value
+                    ? AppConstants.englishLocale
+                    : AppConstants.arabicLocale;
+                context.deleteSaveLocale();
+                context.setLocale(changedLocale);
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              _showLogoutDialog(context);
+            },
+            dense: true,
+            leading: SvgPicture.asset(
+              AppImages.logout,
+              width: AppUtils.isTablet(context) ? 30 : 22,
+              height: AppUtils.isTablet(context) ? 30 : 22,
+              colorFilter: ColorFilter.mode(
+                AppColors.red,
+                BlendMode.srcIn,
+              ),
+            ),
+            title: Text(
+              AppUtils.languageTranslate('logout'),
+              style: AppUtils.isTablet(context)
+                  ? AppTextStyles.style21Red400
+                  : AppTextStyles.style16Red400,
+              textAlign: (context.locale.languageCode == "en")
+                  ? TextAlign.left
+                  : TextAlign.right,
+            ),
+          ),
         ],
       ),
     );
   }
 
+  void gettingApiCall(BuildContext context, int index) {
+    switch (index) {
+      case AppConstants.checkInsIndex:
+        context.read<CheckInsCubit>().resetFilterData();
+        context.read<CheckInsCubit>().getCheckIns();
+        break;
+      case AppConstants.eServicesIndex:
+        context.read<ServiceCubit>().resetFilterData();
+        context.read<ServiceCubit>().getServices();
+        break;
+      case AppConstants.workOrderRfpIndex:
+        context.read<WorkOrderCubit>().resetFilterData();
+        context.read<WorkOrderCubit>().getWorkOrder();
+        break;
+      case AppConstants.messagesIndex:
+        context.read<MessageCubit>().getMessages();
+        break;
+      case AppConstants.checkOutsIndex:
+        context
+            .read<CheckOutCubit>()
+            .onChangeSelectedRange(AppConstants().rangeList.first);
+        context.read<CheckOutCubit>().onChangeDateRange(
+            AppUtils.getDateRangeStringFromLabel(
+                AppConstants().rangeList.first));
+        context.read<CheckOutCubit>().getCheckOuts();
+        break;
+      case AppConstants.directoryIndex:
+        context.read<DirectoryCubit>().resetOwnerAndResident();
+        context.read<DirectoryCubit>().getUnits();
+        break;
+      default:
+        debugPrint("Index in gettingApiCall: $index");
+    }
+  }
+
   String _getTitle(int index) {
     switch (index) {
       case AppConstants.dashboardIndex:
-        return 'Dashboard';
+        return AppUtils.languageTranslate('dashboard');
       case AppConstants.checkInsIndex:
-        return 'Check-Ins';
+        return AppUtils.languageTranslate('checkIns');
       case AppConstants.eServicesIndex:
-        return 'All E-Services Requests';
+        return AppUtils.languageTranslate('allE-ServicesRequests');
       case AppConstants.workOrderRfpIndex:
-        return 'Work Order / RFPs';
+        return AppUtils.languageTranslate('workOrderRFPs');
       case AppConstants.messagesIndex:
-        return 'Messages';
+        return AppUtils.languageTranslate('messages');
       case AppConstants.checkOutsIndex:
-        return 'Check-Outs';
+        return AppUtils.languageTranslate('checkOuts');
       case AppConstants.directoryIndex:
-        return 'Directory';
+        return AppUtils.languageTranslate('directory');
       default:
         return '';
     }

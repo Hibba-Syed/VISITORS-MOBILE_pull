@@ -6,13 +6,15 @@ import 'dart:convert';
 
 import 'check_out_model.dart';
 
-CheckOutResponseModel checkOutResponseModelFromJson(String str) => CheckOutResponseModel.fromJson(json.decode(str));
+CheckOutResponseModel checkOutResponseModelFromJson(String str) =>
+    CheckOutResponseModel.fromJson(json.decode(str));
 
-String checkOutResponseModelToJson(CheckOutResponseModel data) => json.encode(data.toJson());
+String checkOutResponseModelToJson(CheckOutResponseModel data) =>
+    json.encode(data.toJson());
 
 class CheckOutResponseModel {
   String? status;
-  List<CheckOutVisitor>? record;
+  List<CheckOutModel>? record;
   int? code;
   Meta? meta;
   bool? requestStatus;
@@ -27,23 +29,29 @@ class CheckOutResponseModel {
     this.message,
   });
 
-  factory CheckOutResponseModel.fromJson(Map<String, dynamic> json) => CheckOutResponseModel(
-    status: json["status"],
-    record: json["record"] == null ? [] : List<CheckOutVisitor>.from(json["record"]!.map((x) => CheckOutVisitor.fromJson(x))),
-    code: json["code"],
-    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-    requestStatus: json["request_status"],
-    message: json["message"],
-  );
+  factory CheckOutResponseModel.fromJson(Map<String, dynamic> json) =>
+      CheckOutResponseModel(
+        status: json["status"],
+        record: json["record"] == null
+            ? []
+            : List<CheckOutModel>.from(
+                json["record"]!.map((x) => CheckOutModel.fromJson(x))),
+        code: json["code"],
+        meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+        requestStatus: json["request_status"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "record": record == null ? [] : List<dynamic>.from(record!.map((x) => x.toJson())),
-    "code": code,
-    "meta": meta?.toJson(),
-    "request_status": requestStatus,
-    "message": message,
-  };
+        "status": status,
+        "record": record == null
+            ? []
+            : List<dynamic>.from(record!.map((x) => x.toJson())),
+        "code": code,
+        "meta": meta?.toJson(),
+        "request_status": requestStatus,
+        "message": message,
+      };
 }
 
 class Meta {
@@ -68,25 +76,24 @@ class Meta {
   });
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    page: json["page"],
-    lastPage: json["last_page"],
-    from: json["from"],
-    to: json["to"],
-    limit: json["limit"],
-    total: json["total"],
-    hasMorePages: json["has_more_pages"],
-    isFirstPage: json["is_first_page"],
-  );
+        page: json["page"],
+        lastPage: json["last_page"],
+        from: json["from"],
+        to: json["to"],
+        limit: json["limit"],
+        total: json["total"],
+        hasMorePages: json["has_more_pages"],
+        isFirstPage: json["is_first_page"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "page": page,
-    "last_page": lastPage,
-    "from": from,
-    "to": to,
-    "limit": limit,
-    "total": total,
-    "has_more_pages": hasMorePages,
-    "is_first_page": isFirstPage,
-  };
+        "page": page,
+        "last_page": lastPage,
+        "from": from,
+        "to": to,
+        "limit": limit,
+        "total": total,
+        "has_more_pages": hasMorePages,
+        "is_first_page": isFirstPage,
+      };
 }
-

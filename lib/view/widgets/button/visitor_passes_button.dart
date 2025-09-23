@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/app_utils.dart';
@@ -18,7 +19,8 @@ class VisitorPassesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: Row(
+      child: context.locale.languageCode == 'en' ?
+      Row(
         children: [
           Expanded(
             child: Container(
@@ -48,7 +50,7 @@ class VisitorPassesButton extends StatelessWidget {
               ),
               color: AppColors.yellow,
             ),
-            child:  Text("Visitor Passes",
+            child:  Text(AppUtils.languageTranslate("visitorPasses"),
               style: TextStyle(
                 fontSize:  AppUtils.isTablet(context)  ? 15 : 14,
                   fontWeight: FontWeight.w600,
@@ -59,7 +61,49 @@ class VisitorPassesButton extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      ) : Row(
+        children: [
+          Expanded(
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 10,vertical: verticalPadding ?? 10),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
+                color: AppColors.yellow,
+              ),
+              child:  Text(AppUtils.languageTranslate("visitorPasses"),
+                style: TextStyle(
+                    fontSize:  AppUtils.isTablet(context)  ? 15 : 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.white
+                ),
+                // AppTextStyles.style15white600
+
+              ),
+            ),
+          ),
+          Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal:  12,vertical:  context.locale.languageCode == 'en' ? 15 : 12 ),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(5),
+                  bottomLeft: Radius.circular(5),
+                ),
+                color:AppColors.lightYellow,
+              ),
+              child: Text(count?.toString() ?? "",style: TextStyle(
+                  fontSize: AppUtils.isTablet(context)  ? 15 : 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.white
+              ),
+              )),
+
+        ],
+      )
     );
   }
 }

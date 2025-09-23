@@ -5,10 +5,11 @@ import 'package:gap/gap.dart';
 import '../../../resource/constants/app_colors.dart';
 import '../../../resource/constants/images.dart';
 import '../../../resource/styles/styles.dart';
+import '../../../utils/app_utils.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? initialValue;
-  final String hint;
+  final String? hint;
   final TextEditingController? controller;
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
@@ -21,7 +22,7 @@ class SearchTextField extends StatelessWidget {
   const SearchTextField(
       {super.key,
       this.initialValue,
-      this.hint = 'Search by keyword',
+      this.hint ,
       this.controller,
       this.onChanged,
       this.onFieldSubmitted,
@@ -50,10 +51,11 @@ class SearchTextField extends StatelessWidget {
               onFieldSubmitted: onFieldSubmitted,
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.text,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
-                hintText: hint,
+                hintText: hint ?? AppUtils.languageTranslate('searchByKeyword'),
                 hintStyle: AppTextStyles.style12darkGrey400,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 suffixIcon: controller?.text.isNotEmpty == true

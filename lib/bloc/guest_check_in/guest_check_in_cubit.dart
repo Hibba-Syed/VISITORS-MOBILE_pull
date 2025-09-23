@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
 import 'package:visitors/repo/check_ins/check_in_repo_impl.dart';
 import 'package:visitors/repo/countries/countries_repo.dart';
 import 'package:visitors/repo/countries/countries_repo_impl.dart';
+import 'package:visitors/repo/visitor/visitor_repo.dart';
+import 'package:visitors/repo/visitor/visitor_repo_impl.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../model/check_ins/check_in_model.dart';
 import '../../model/check_ins/guest_checkin_response_model.dart';
@@ -25,6 +27,7 @@ import '../../repo/profile/profile_repo_impl.dart';
 import '../../repo/units/units_repo.dart';
 import '../../repo/units/units_repo_impl.dart';
 import '../../utils/preference_utils.dart';
+import '../../view/screens/guest_check_in/guest_check_in_screen.dart';
 
 part 'guest_check_in_state.dart';
 
@@ -35,19 +38,34 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   final CountriesRepo _countriesRepo = CountriesRepoImpl();
   final UnitsRepo _unitsRepo = UnitsRepoImpl();
   final CheckInRepo _checkInRepo = CheckInRepoImpl();
+  final VisitorRepo _visitorRepo = VisitorRepoImpl();
 
-  void onChangeSelectedCountry(Country? country) {
-    emit(state.copyWith(selectedCountry: country));
+  void onChangeSelectedNationality(Country? country) {
+    emit(state.copyWith(selectedNationality: country));
   }
 
   void onChangeSelectedPurpose(VisitorsPurpose? purpose) {
     emit(state.copyWith(selectedPurpose: purpose));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
+  void onChangeSelectedVisitType(TypeItemModel? value) {
+    emit(state.copyWith(selectedVisitType: value));
+  }
+
+  void clearData() {
+    emit(state.copyWith(
+      selectedNationality: null,
+      selectedPurpose: null,
+      selectedUnit: null,
+      selectedVisitType: null,
+    ));
+  }
+
+  //
   Future<void> getCountries() async {
     emit(state.copyWith(isCountriesLoading: true));
     CountriesResponseModel? response =
@@ -64,11 +82,12 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(
           countries: response.record,
-          selectedCountry: response.record?.firstWhere((country) =>
+          selectedNationality: response.record?.firstWhere((country) =>
               country.name?.toLowerCase() == 'united arab emirates')));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching countries');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingCountries'));
     }
   }
 
@@ -84,7 +103,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       emit(state.copyWith(profileRecord: profileResponse.record));
       return true;
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong');
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('somethingWentWrong'));
       return false;
     }
   }
@@ -104,7 +124,9 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingUnits'));
     }
   }
 
@@ -125,7 +147,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       emit(state.copyWith(numberInfo: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching number Info');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongWhileFetchingNumberInfo'));
     }
   }
 
@@ -135,13 +158,14 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       int? remainingVisitors}) async {
     emit(state.copyWith(isDeleteVisitorLoading: true));
     DeleteVisitorResponseModel? response =
-        await _checkInRepo.deleteVisitor(id: id).onError((error, stackTrace) {
+        await _visitorRepo.deleteVisitor(id: id).onError((error, stackTrace) {
       emit(state.copyWith(isDeleteVisitorLoading: false));
       return null;
     });
     emit(state.copyWith(isDeleteVisitorLoading: false));
     if (response != null && response.status == 'success') {
-      Fluttertoast.showToast(msg: 'visitor deleted successfully');
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('visitorDeletedSuccessfully'));
       if ((phoneNumber?.isNotEmpty ?? false) && (remainingVisitors ?? 0) > 0) {
         // If there are remaining visitors, fetch the number info again
         // to update the UI with the latest visitor count.
@@ -155,45 +179,44 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
       return true;
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong, please try again later');
+          msg: AppUtils.languageTranslate(
+              'somethingWentWrongPleaseTryAgainLater'));
       return false;
     }
   }
 
-  Future<bool> guestCheckIn(
+  Future<bool?> guestCheckIn(
     BuildContext context, {
     required Map<String, dynamic> data,
   }) async {
     emit(state.copyWith(isGuestCheckInLoading: true));
-    try {
-      GuestCheckInResponseModel? response = await _checkInRepo
-          .guestCheckIn(
-        data: data,
-      )
-          .onError((error, stackTrace) {
-        emit(state.copyWith(isGuestCheckInLoading: false));
-        log(error.toString());
-        Fluttertoast.showToast(
-          msg: error.toString(),
-        );
-        return null;
-      });
+    GuestCheckInResponseModel? response = await _checkInRepo
+        .guestCheckIn(
+      data: data,
+    )
+        .onError((error, stackTrace) {
       emit(state.copyWith(isGuestCheckInLoading: false));
-      if (response != null && response.status == 'success') {
-        emit(state.copyWith(checkInModel: response.record));
-        if (context.mounted) {
-          context.read<CheckInsCubit>().getCheckIns();
-          Navigator.pop(context);
-        }
-        Fluttertoast.showToast(msg: 'Check in successfully');
-        return true;
-      } else {
-        Fluttertoast.showToast(msg: 'Something went wrong while checking in ');
-        return false;
+      log(error.toString());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+      );
+      if (error != null) {
+        throw error;
       }
-    } catch (e) {
-      emit(state.copyWith(isGuestCheckInLoading: false));
-      Fluttertoast.showToast(msg: e.toString());
+      return null;
+    });
+    emit(state.copyWith(isGuestCheckInLoading: false));
+    if (response != null && response.status == 'success') {
+      emit(state.copyWith(checkInModel: response.record));
+      if (context.mounted) {
+        Navigator.pop(context, true);
+      }
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('checkInSuccessfully'));
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileCheckingIn'));
       return false;
     }
   }

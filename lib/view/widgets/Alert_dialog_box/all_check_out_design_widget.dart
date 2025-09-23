@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
 
@@ -23,11 +23,11 @@ class AllCheckOutDesignWidget extends StatelessWidget {
         ),
         const Gap(15),
         Text(
-          'Are you sure you want to checkout currently listed checkins?',style: AppUtils.isTablet(context) ?  AppTextStyles.style16Black500 : AppTextStyles.style14Black500 ,
+          AppUtils.languageTranslate('areYouSureYouWantToCheckoutCurrentlyListedCheckins'),style: AppUtils.isTablet(context) ?  AppTextStyles.style16Black500 : AppTextStyles.style14Black500 ,
         ),
         const Gap(5),
           Text(
-          'Selected filters will be applied',style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
+            AppUtils.languageTranslate('selectedFiltersWillBeApplied'),style: AppUtils.isTablet(context) ? AppTextStyles.style15Black600 : AppTextStyles.style14Black600,
         ),
         const Gap(15),
       ],

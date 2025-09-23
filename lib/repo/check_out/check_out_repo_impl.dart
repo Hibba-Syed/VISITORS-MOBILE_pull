@@ -1,5 +1,8 @@
+import 'package:visitors/model/check_out/check_in_log_response_model.dart';
+
 import '../../data/network/base_api_services.dart';
 import '../../data/network/network_api_services.dart';
+import '../../model/check_out/check_out_all_model.dart';
 import '../../model/check_out/check_out_response_model.dart';
 import '../../resource/constants/api_url.dart';
 import 'check_out_repo.dart';
@@ -21,6 +24,30 @@ class CheckOutRepoImpl implements CheckOutRepo {
           '${ApiUrl.checkOuts}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${(dateRange?.isNotEmpty ?? false) ? dateRange : ''}&unit_id=${unitId ?? ''}';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return CheckOutResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CheckOutAll?> checkOutAll() async {
+    try {
+      dynamic response = await _apiService
+          .getAuthPutApiResponse(ApiUrl.checkOutAll, data: {"is_mobile": true});
+
+      return CheckOutAll.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CheckOutLogResponseModel?> getCheckOutDetailsLogs(
+      {required int? id}) async {
+    try {
+      String url = '${ApiUrl.checkInLogs}/$id';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
+      return CheckOutLogResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

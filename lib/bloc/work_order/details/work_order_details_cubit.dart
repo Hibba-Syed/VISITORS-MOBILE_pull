@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:visitors/model/work_order/work_order_details_model.dart';
 import 'package:visitors/repo/work_order_rfp/work_order_repo_impl.dart';
 import 'package:visitors/repo/work_order_rfp/work_order_repo.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 import '../../../model/work_order/add_log_work_order_response_model.dart';
 import '../../../model/work_order/work_order_details_response_model.dart';
@@ -34,7 +35,7 @@ class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
       emit(state.copyWith(workOrderDetailsModel: response.record,isLoading: false));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order details');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderDetails'));
     }
     emit(state.copyWith(isLoading: false));
     return null;
@@ -58,14 +59,14 @@ class WorkOrderDetailsCubit extends Cubit<WorkOrderDetailsState> {
       emit(state.copyWith(isAddLogLoading: false));
 
       if (response != null && response.status == 'success') {
-        Fluttertoast.showToast(msg: 'Log added successfully');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('logAddedSuccessfully'));
         if(context.mounted){
           getWorkOrderDetails(workOrderId: context.read<WorkOrderDetailsCubit>().state.workOrderDetailsModel?.id);
         }
         return true;
       } else {
         Fluttertoast.showToast(
-            msg: 'Something went wrong while adding log');
+            msg: AppUtils.languageTranslate('somethingWentWrongWhileAddingLog'));
         return false;
       }
     } catch (e) {

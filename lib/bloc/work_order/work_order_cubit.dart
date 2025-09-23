@@ -21,7 +21,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   void onChangeSearchKeyWord(String? keyword) {
     emit(state.copyWith(searchKeyword: keyword));
   }
-  void onChangeSelectedVendors(VendorModel vendor) {
+  void onChangeSelectedVendors(VendorModel? vendor) {
     emit(state.copyWith(selectedVendor: vendor));
   }
 
@@ -32,7 +32,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
   }
   void resetFilterData() {
     emit(WorkOrderState(
-      workOrderModel: state.workOrderModel,
+      workOrders: state.workOrders,
       isLoading: state.isLoading,
       loadMore: state.loadMore,
       isVendorLoading: state.isVendorLoading,
@@ -42,13 +42,15 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     );
   }
 
-  Future<void> getWorkOrder(
-      ) async {
+  Future<void> getWorkOrder({
+    String? keyword,
+  }) async {
     emit(state.copyWith(isLoading: true, page: 1));
     WorkOrderResponseModel? response = await _workOrderRFPRepo.getWorkOrder(
       keyword: state.searchKeyword,
       isAwarded: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
+      page: state.page
     ).onError(
           (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -60,10 +62,10 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(workOrderModel: response.record));
+      emit(state.copyWith(workOrders: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order, rfp');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderRfp'));
     }
   }
   Future<void> getVendors() async {
@@ -83,10 +85,10 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
       emit(state.copyWith(vendors: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching vendors');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingVendors'));
     }
   }
-  Future<void> getMoreWorkOrder() async {
+  Future<void> getMoreWorkOrder({ String? keyword,}) async {
     int page = state.page+ 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     WorkOrderResponseModel? response = await _workOrderRFPRepo
@@ -94,7 +96,7 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
       keyword: state.searchKeyword,
       isAwarded: state.selectedType?.value,
       vendorId: state.selectedVendor?.id,
-
+      page: state.page
     )
         .onError(
           (error, stackTrace) {
@@ -108,17 +110,17 @@ class WorkOrderCubit extends Cubit<WorkOrderState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<WorkOrderModel> checkIns = state.workOrderModel ?? [];
-        checkIns.addAll(response.record as Iterable<WorkOrderModel>);
-        emit(state.copyWith(workOrderModel: checkIns));
+        List<WorkOrderModel> workOrders = state.workOrders ?? [];
+        workOrders.addAll(response.record as Iterable<WorkOrderModel>);
+        emit(state.copyWith(workOrders: workOrders));
       } else {
-        Fluttertoast.showToast(msg: 'No more work order');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreWorkOrder'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching work order');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingWorkOrderRfp'));
     }
   }
 }

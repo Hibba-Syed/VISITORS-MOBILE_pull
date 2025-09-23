@@ -1,6 +1,6 @@
 import '../../model/count/count_response_model.dart';
 
-abstract class DashboardRepo {
+abstract class CountsRepo {
 
   Future<CountResponseModel?> getDashboardCount();
 }

@@ -32,11 +32,10 @@ class ReadMoreWidget extends StatelessWidget {
         const Gap(8),
         ReadMoreText(
           valueText,
-          textAlign: TextAlign.justify,
           trimLines: 2,
           trimMode: TrimMode.Line,
-          trimExpandedText: "  Show Less",
-          trimCollapsedText: " Show More",
+          trimExpandedText: AppUtils.languageTranslate('showLess'),
+          trimCollapsedText: AppUtils.languageTranslate('showMore'),
           lessStyle: const TextStyle(
             fontSize: 13,
             color: AppColors.primary,

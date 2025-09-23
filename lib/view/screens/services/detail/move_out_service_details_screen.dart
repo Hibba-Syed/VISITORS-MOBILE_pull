@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
@@ -22,506 +22,571 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
+import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../widgets/empty_widget.dart';
+import '../components/services_documents_card_widget.dart';
 
 class MoveOutServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
-  const  MoveOutServiceDetailsScreen({super.key,required this.service});
+  const MoveOutServiceDetailsScreen({super.key, required this.service});
 
   @override
-  State<MoveOutServiceDetailsScreen> createState() => _MoveOutServiceDetailsScreenState();
+  State<MoveOutServiceDetailsScreen> createState() =>
+      _MoveOutServiceDetailsScreenState();
 }
 
-class _MoveOutServiceDetailsScreenState extends State<MoveOutServiceDetailsScreen> {
- final TextEditingController _noteController = TextEditingController();
- final TextEditingController _nameController = TextEditingController();
- final TextEditingController _idController = TextEditingController();
-  List<XFile>? selectedImages = [];
+class _MoveOutServiceDetailsScreenState
+    extends State<MoveOutServiceDetailsScreen> {
+  final TextEditingController _noteController = TextEditingController();
+  final GlobalKey<FormState> _noteFormKey = GlobalKey<FormState>();
+
+  XFile? selectedImage;
   String? filePath;
   bool? isPaymentReceived;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Service Details',
-          titleColor: AppColors.black,
-          iconColor: AppColors.black,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding),
-          child: SingleChildScrollView(
-            child: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
-              builder: (context, state) {
-                if(state.isLoading){
-                  return Padding(
-                    padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height /3),
-                    child: LoaderWidget(),
-                  );
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      appBar: AppBarWidget(
+        title: AppUtils.languageTranslate('serviceDetails'),
+        titleColor: AppColors.black,
+        iconColor: AppColors.black,
+      ),
+      body: BlocBuilder<ServiceDetailsCubit, ServiceDetailsState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height / 3),
+              child: LoaderWidget(),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalPadding),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: HeadingWidget(
-                            heading: AppUtils.getRequestName(
-                                state.serviceDetails?.applicationType ?? "--"),
+                        const Gap(20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: HeadingWidget(
+                                heading: AppUtils.getRequestName(
+                                    state.serviceDetails?.applicationType ??
+                                        "--"),
+                              ),
+                            ),
+                            StatusWidget(
+                                status: state.serviceDetails?.status ?? "--"),
+                          ],
+                        ),
+                        const Gap(3),
+                        HeadingWidget(
+                          heading: state.serviceDetails?.reference ?? "--",
+                          style: AppTextStyles.style14Black600,
+                        ),
+                        const Gap(10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title:
+                                    AppUtils.languageTranslate('requestedDate'),
+                                value: DateTimeUtil.getFormattedDate(state
+                                    .serviceDetails?.application?.moveDate),
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title:
+                                    AppUtils.languageTranslate('requestedTime'),
+                                value:
+                                    '${state.serviceDetails?.application?.moveTimeFrom ?? "--"} - ${state.serviceDetails?.application?.moveTimeTo ?? "--"}',
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                  isLast: true,
+                                  title: AppUtils.languageTranslate(
+                                      'emergencyNumber'),
+                                  value: state.serviceDetails?.application
+                                          ?.emergencyNumber ??
+                                      '--'),
+                            ],
                           ),
                         ),
-                        StatusWidget(
-                            status: state.serviceDetails?.status ?? "--"),
+                        if (state.serviceDetails?.securityDeposit != null) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'security_deposit_details'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: TitleValueRowDividerDetailsContainerWidget(
+                              title: AppUtils.languageTranslate(
+                                  'deposit_amount'),
+                              value: state.serviceDetails?.securityDeposit
+                                      ?.toString() ??
+                                  "--",
+                              isLast: true,
+                            ),
+                          ),
+                        ],
+                        if ((state.serviceDetails?.application?.mcCompanyName
+                                    ?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails
+                                    ?.application?.mcContactPerson?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails?.application
+                                    ?.mcTradeLicensePathUrl?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails?.application
+                                    ?.mcEmiratesPathUrl?.isNotEmpty ??
+                                false)) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'movingCompanyDetails'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title:
+                                      AppUtils.languageTranslate('companyName'),
+                                  value: state.serviceDetails?.application
+                                          ?.mcCompanyName ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'contactPerson'),
+                                  value: state.serviceDetails?.application
+                                          ?.mcContactPerson ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'companyTradeLicense'),
+                                  url: state.serviceDetails?.application
+                                          ?.mcTradeLicensePathUrl ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'contactPersonEmiratesId'),
+                                  url: state.serviceDetails?.application
+                                          ?.mcEmiratesPathUrl ??
+                                      "--",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        const Gap(20),
+                        HeadingWidget(
+                          heading:
+                              AppUtils.languageTranslate('applicantDetails'),
+                        ),
+                        const Gap(10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'requesterType'),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate('name'),
+                                value: state.serviceDetails?.clientName ?? "--",
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate('phone'),
+                                value:
+                                    state.serviceDetails?.clientPhone ?? "--",
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                isLast: true,
+                                title: AppUtils.languageTranslate('email'),
+                                value:
+                                    state.serviceDetails?.clientEmail ?? "--",
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Gap(20),
+                        Text(
+                          AppUtils.languageTranslate('activityLog'),
+                          style: AppTextStyles.style20primary600,
+                        ),
+                        const Gap(10),
+                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListView.builder(
+                                  padding: EdgeInsets.only(top: 10),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
+                                      0,
+                                  itemBuilder: (context, index) {
+                                    StatusHistory? statusHistory = state
+                                        .serviceDetails?.statusHistory?[index];
+                                    bool isLast = (state.serviceDetails
+                                                    ?.statusHistory?.length ??
+                                                0) -
+                                            1 ==
+                                        index;
+                                    return ActivityLogWidget(
+                                      horizontalPadding: 8,
+                                      isLast: isLast,
+                                      status:
+                                          (statusHistory?.status != 'Pending')
+                                              ? statusHistory?.status ?? ""
+                                              : "Request Received",
+                                      byValue: (statusHistory?.user?.fullName !=
+                                                  null &&
+                                              statusHistory!
+                                                  .user!.fullName!.isNotEmpty)
+                                          ? ' ${statusHistory.user?.fullName ?? ""}'
+                                          : " System",
+                                      description: statusHistory?.note
+                                          ?.replaceAll('\n\n', ' ')
+                                          .trim()
+                                          .split('.')
+                                          .first
+                                          .trim(),
+                                      dateTime:
+                                          DateTimeUtil.getFormattedDateTime(
+                                              statusHistory?.createdAt),
+                                    );
+                                  },
+                                ),
+                              )
+                            : EmptyWidget(
+                                text: AppUtils.languageTranslate(
+                                    'noDataAvailable')),
                       ],
                     ),
-                    const Gap(3),
-                    HeadingWidget(
-                      heading: state.serviceDetails?.reference ?? "--",
-                      style: AppTextStyles.style14Black600,
-                    ),
-                    const Gap(10),
-
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requested Date',
-                              value:
-                          DateTimeUtil.getFormattedDateTime(
-                              state.serviceDetails?.application?.moveDate),
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Requested Time',
-                            value: '${state.serviceDetails?.application?.moveTimeFrom ?? "--"} - ${state.serviceDetails?.application?.moveTimeTo ?? "--"}'
-                                ,
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            isLast: true,
-                              title: 'Emergency Number',
-                              value: state.serviceDetails?.application?.emergencyNumber ?? '--'
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    const Gap(20),
-                    const HeadingWidget(
-                      heading: 'Applicant Details',
-                    ),
-                    const Gap(10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          TitleValueRowDividerDetailsContainerWidget(
-                              title: 'Requester Type',
-                              value: state.serviceDetails?.clientType ?? "--"),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Name',
-                            value: state.serviceDetails?.clientName ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            title: 'Phone',
-                            value: state.serviceDetails?.clientPhone ?? "--",
-                          ),
-                          TitleValueRowDividerDetailsContainerWidget(
-                            isLast: true,
-                            title: 'Email',
-                            value: state.serviceDetails?.clientEmail ?? "--",
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Gap(20),
-                    const Text(
-                      'Activity Log',
-                      style: AppTextStyles.style20primary600,
-                    ),
-                    const Gap(10),
-                    state.serviceDetails?.statusHistory?.isNotEmpty ?? true ?
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(top: 10),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount:
-                        state.serviceDetails?.statusHistory?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          StatusHistory? statusHistory = state.serviceDetails?.statusHistory?[index];
-                          bool isLast = (state.serviceDetails?.statusHistory?.length ?? 0) - 1 == index;
-                          return ActivityLogWidget(
-                            horizontalPadding: 8,
-                            isLast: isLast,
-                            status: (statusHistory?.status != 'Pending') ? statusHistory?.status ?? "" : "Request Received",
-                            byValue:  (statusHistory?.user?.fullName != null && statusHistory!.user!.fullName!.isNotEmpty)
-                                ? ' ${statusHistory.user?.fullName ?? ""}'
-                                : " System",
-                            description: statusHistory?.note
-                                ?.replaceAll('\n\n', ' ')
-                                .trim()
-                                .split('.')
-                                .first
-                                .trim(),
-
-                            dateTime: DateTimeUtil.getFormattedDateTime(statusHistory?.createdAt),
-                          );
-                        },
-
-                      ),
-                    ) : EmptyWidget(text: 'No data available',),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.horizontalPadding),
-          child: Row(
-            children: [
-              Expanded(
-                child: CustomButton(
-                    buttonColor: AppColors.cyanBlue,
-                    text: 'Add Log',
-                    onPressed: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-
-                            return CustomAlertDialogBox(
-                              isCancelButtonDisable: true,
-                              insetPadding: AppUtils.isTablet(context)
-                                  ? EdgeInsets.symmetric(horizontal: 35)
-                                  : EdgeInsets.symmetric(horizontal: 10),
-                              title: 'Add Log to ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                              confirmButtonText: 'Add Log',
-                              onConfirm: () async {
-                                if (_noteController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please type note first.");
-                                  return false;
-                                }
-                                final result = await context
-                                    .read<ServiceDetailsCubit>()
-                                    .addServiceLog(
-                                  context,
-                                  data: {
-                                    'application_id':
-                                    '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                    'note': _noteController.text,
-                                  },
-                                );
-                                _noteController.clear();
-
-                                return result;
-                              },
-                              contentBuilder: (context, setState) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(5),
-                                    SvgPicture.asset(
-                                      AppImages.question,
-                                      height: 35,
-                                      width: 35,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                    const Gap(5),
-                                    TextFieldWidget(
-                                      controller: _noteController,
-                                      label: 'Note*',
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          });
-                    }),
-              ),
-              if(context
-                  .read<ServiceDetailsCubit>()
-                  .state
-                  .serviceDetails?.application?.securityDeposit ==
-                  null &&
-                  context
-                      .read<ServiceDetailsCubit>()
-                      .state
-                      .serviceDetails
-                      ?.status ==
-                      'Approved')...[
-                const Gap(10),
-                Expanded(
-                    child: CustomButton(
-                        buttonColor: AppColors.green,
-                        text: 'Complete',
-                        onPressed: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                return CustomAlertDialogBox(
-                                  insetPadding: AppUtils.isTablet(context)
-                                      ? EdgeInsets.symmetric(horizontal: 35)
-                                      : EdgeInsets.symmetric(horizontal: 10),
-                                  title:
-                                  'Complete ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference ?? ""}',
-                                  disableCancelButtonBorder: true,
-                                  cancelButtonTextColor: AppColors.white,
-                                  cancelButtonColor: AppColors.primary,
-                                  cancelButtonText: 'Scan ID',
-                                  confirmButtonText: 'Complete',
-                                  confirmButtonColor: AppColors.green,
-                                  onConfirm: () async {
-                                    if (_nameController.text.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please type name first.");
-                                      return false;
-                                    }
-                                    if (_idController.text.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please type id first.");
-                                      return false;
-                                    }
-                                    final result = await context
-                                        .read<ServiceDetailsCubit>()
-                                        .completeService(
-                                      context,
-                                      data: {
-                                        'id':
-                                        '${context.read<ServiceDetailsCubit>().state.serviceDetails?.id}',
-                                        'requester_name':
-                                        _nameController.text,
-                                        'id_number': _idController.text,
-                                        'note': _noteController.text,
-                                      },
-                                    );
-                                    _noteController.clear();
-                                    _idController.clear();
-                                    _nameController.clear();
-
-                                    return result;
-                                  },
-                                  contentBuilder: (context, setState) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                      children: [
-                                        const Gap(5),
-                                        SvgPicture.asset(
-                                          AppImages.question,
-                                          height: 35,
-                                          width: 35,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColors.green,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label: 'Requester Name',
-                                          controller: _nameController,
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          label: 'ID Number',
-                                          controller: _idController,
-                                        ),
-                                        const Gap(5),
-                                        TextFieldWidget(
-                                          controller: _noteController,
-                                          label: 'Note*',
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              });
-                        })
-                ), ],
-
-              if(context.read<ServiceDetailsCubit>().state.serviceDetails?.status != 'Approved')...[
-                const Gap(10),
-                Expanded(
-                  child: CustomButton(
-                      buttonColor: AppColors.yellow,
-                      text: 'Clear Payment',
-                      onPressed: () {
-                        showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return CustomAlertDialogBox(
-                                insetPadding: AppUtils.isTablet(context)
-                                    ? EdgeInsets.symmetric(horizontal: 35)
-                                    : EdgeInsets.symmetric(horizontal: 10),
-                                isCancelButtonDisable: true,
-                                title: 'Clear Payment for ${context.read<ServiceDetailsCubit>().state.serviceDetails?.reference}',
-                                disableCancelButtonBorder: true,
-                                confirmButtonText: 'Clear Payment',
-                                confirmButtonColor: AppColors.yellow,
-                                onConfirm: () async {
-                                  if (selectedImages?.isEmpty ?? false) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please choose image file first.");
-                                    return false;
-                                  }
-                                  if (isPaymentReceived == null) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please select checkbox first.");
-                                    return false;
-                                  }
-                                  final filePaths = selectedImages
-                                      ?.where((file) => file.path.isNotEmpty)
-                                      .map((file) => file.path)
-                                      .toList();
-                                  final result = await context
-                                      .read<ServiceDetailsCubit>()
-                                      .clearPayment(
-                                    context,
-                                    id: context.read<ServiceDetailsCubit>().state.serviceDetails?.id,
-                                    file: filePaths,
-                                    data: {
-                                      'payment_received': isPaymentReceived,
-                                      'note': _noteController.text,
-                                    },
-                                  );
-                                  // noteController.clear();
-                                  return result;
-                                },
-                                contentBuilder: (context, setState) {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Gap(5),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: SvgPicture.asset(
-                                          AppImages.question,
-                                          height: 35,
-                                          width: 35,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColors.yellow,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                      const Gap(5),
-                                      TextFieldWidget(
-                                        controller: _noteController,
-                                        label: 'Note*',
-                                      ),
-                                      const Gap(5),
-                                      Text('Cheque File *',style: AppTextStyles.style14Black600),
-                                      const Gap(10),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              (filePath?.isNotEmpty ?? true)
-                                                  ? selectedImages?.firstOrNull?.name??""
-                                                  : 'Choose File',
-                                              style: AppTextStyles.style14darkGrey400,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                          InkWell(
-                                            overlayColor:
-                                            const WidgetStatePropertyAll(Colors.transparent),
-                                            onTap: () async {
-                                              if ((selectedImages?.length ?? 0) >= 1) {
-                                                Fluttertoast.showToast(
-                                                    msg: "You cannot select more than one file");
-                                                return;
-                                              }
-                                              await FilePicker.platform
-                                                  .pickFiles(allowMultiple: false)
-                                                  .then((FilePickerResult? result) {
-                                                if (result != null && result.files.isNotEmpty) {
-                                                  selectedImages
-                                                      ?.addAll(result.files.map((e) => e.xFile));
-                                                  setState(() {});
-                                                }
-                                                return null;
-                                              });
-                                            },
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(7),
-                                                color: AppColors.cyanBlue,
-                                                border: Border.all(color: AppColors.outLineGray, width: 0.5),
-                                              ),
-                                              child: const Icon(
-                                                Icons.add,
-                                                color: AppColors.white,
-                                                size: 25,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const Gap(10),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                              height: 25,
-                                              child: Checkbox(
-                                                  fillColor: WidgetStateProperty.all(AppColors.cyanBlue),
-                                                  side: BorderSide(color: AppColors.gray, width: 2),
-                                                  value: isPaymentReceived??false,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      isPaymentReceived = value;
-                                                    });
-                                                  })),
-                                          const Text('Payment Received *',style: AppTextStyles.style14Black600,
-                                          ),
-                                        ],
-                                      ),
-
-                                    ],
-                                  );
-                                },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.horizontalPadding,
+                      vertical: AppConstants.horizontalPadding),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.cyanBlue,
+                            text: AppUtils.languageTranslate('addLog'),
+                            onPressed: () {
+                              AppUtils.addLogServiceAction(
+                                context: context,
+                                state: state,
                               );
-                            });
-                      }),
-                )
-              ]
-
-            ],
-          ),
-        ),
+                            }),
+                      ),
+                      if (((state.serviceDetails?.securityDeposit == null) ||
+                              (state.serviceDetails?.securityDeposit == 0)) &&
+                          state.serviceDetails?.status?.toLowerCase() ==
+                              'approved') ...[
+                        const Gap(10),
+                        Expanded(
+                            child: CustomButton(
+                                buttonColor: AppColors.green,
+                                text: AppUtils.languageTranslate('complete'),
+                                onPressed: () {
+                                  AppUtils.completeServiceAction(
+                                    context: context,
+                                    state: state,
+                                  );
+                                })),
+                      ],
+                      if (state.serviceDetails?.status?.toLowerCase() !=
+                          'approved') ...[
+                        const Gap(10),
+                        Expanded(
+                          child: CustomButton(
+                              buttonColor: AppColors.yellow,
+                              text: AppUtils.languageTranslate('clearPayment'),
+                              onPressed: () {
+                                _noteController.clear();
+                                selectedImage = null;
+                                isPaymentReceived = false;
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return CustomAlertDialogBox(
+                                        insetPadding: AppUtils.isTablet(context)
+                                            ? EdgeInsets.symmetric(
+                                                horizontal: 35)
+                                            : EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                        isFirstButtonDisable: true,
+                                        title:
+                                            '${AppUtils.languageTranslate('clearPaymentFor')} ${state.serviceDetails?.reference}',
+                                        disableFirstButtonBorder: true,
+                                        secondButtonText:
+                                            AppUtils.languageTranslate(
+                                                'clearPayment'),
+                                        secondButtonColor: AppColors.yellow,
+                                        onSecondButtonPressed: () async {
+                                          if (_noteFormKey.currentState
+                                                  ?.validate() ??
+                                              false) {
+                                            if (selectedImage?.path.isEmpty ??
+                                                true) {
+                                              Fluttertoast.showToast(
+                                                  msg: AppUtils.languageTranslate(
+                                                      'pleaseUploadTheChequeFile'));
+                                              return false;
+                                            }
+                                            if (isPaymentReceived == null) {
+                                              Fluttertoast.showToast(
+                                                  msg: AppUtils.languageTranslate(
+                                                      'pleaseSelectCheckboxFirst'));
+                                              return false;
+                                            }
+                                            final result = await context
+                                                .read<ServiceDetailsCubit>()
+                                                .clearPayment(
+                                              context,
+                                              id: state.serviceDetails?.id,
+                                              filePath: selectedImage?.path,
+                                              data: {
+                                                'payment_received':
+                                                    isPaymentReceived,
+                                                'note': _noteController.text,
+                                              },
+                                            );
+                                            if (result) {
+                                              _noteController.clear();
+                                              selectedImage = null;
+                                              isPaymentReceived = null;
+                                            }
+                                            return result;
+                                          }
+                                          return false;
+                                        },
+                                        contentBuilder: (context, setState) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Gap(5),
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: SvgPicture.asset(
+                                                  AppImages.question,
+                                                  height: 35,
+                                                  width: 35,
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
+                                                    AppColors.yellow,
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                ),
+                                              ),
+                                              const Gap(5),
+                                              Form(
+                                                key: _noteFormKey,
+                                                child: TextFieldWidget(
+                                                  controller: _noteController,
+                                                  label: AppUtils
+                                                      .languageTranslate(
+                                                          'note'),
+                                                  maxLength: 1000,
+                                                  validator: (value) {
+                                                    if (value?.trim().isEmpty ??
+                                                        true) {
+                                                      return AppUtils
+                                                          .languageTranslate(
+                                                              'fieldIsMandatory');
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                              const Gap(5),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                        AppUtils
+                                                            .languageTranslate(
+                                                                'chequeFile'),
+                                                        style: AppTextStyles
+                                                            .style14DarkGrey600),
+                                                  ),
+                                                  InkWell(
+                                                    overlayColor:
+                                                        const WidgetStatePropertyAll(
+                                                            Colors.transparent),
+                                                    onTap: () async {
+                                                      await FilePicker.platform
+                                                          .pickFiles(
+                                                              allowMultiple:
+                                                                  false)
+                                                          .then(
+                                                              (FilePickerResult?
+                                                                  result) {
+                                                        if (result != null &&
+                                                            result.files
+                                                                .isNotEmpty) {
+                                                          selectedImage = result
+                                                              .files
+                                                              .first
+                                                              .xFile;
+                                                          setState(() {});
+                                                        }
+                                                        return null;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7),
+                                                        color:
+                                                            AppColors.cyanBlue,
+                                                        border: Border.all(
+                                                            color: AppColors
+                                                                .outLineGray,
+                                                            width: 0.5),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.add,
+                                                        color: AppColors.white,
+                                                        size: 25,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const Gap(10),
+                                              if (selectedImage
+                                                      ?.name.isNotEmpty ??
+                                                  false)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        selectedImage?.name ??
+                                                            "",
+                                                        style: AppTextStyles
+                                                            .style14darkGrey400,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          selectedImage = null;
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.close,
+                                                        size: 18,
+                                                        color:
+                                                            AppColors.darkGrey,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              const Gap(10),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                      padding: EdgeInsets.zero,
+                                                      height: 20,
+                                                      width: 20,
+                                                      child: Checkbox(
+                                                          fillColor:
+                                                              WidgetStateProperty.all(
+                                                                  AppColors
+                                                                      .cyanBlue),
+                                                          side: BorderSide(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              width: 1),
+                                                          value:
+                                                              isPaymentReceived ??
+                                                                  false,
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              isPaymentReceived =
+                                                                  value;
+                                                            });
+                                                          })),
+                                                  Gap(6),
+                                                  Text(
+                                                    AppUtils.languageTranslate(
+                                                        'paymentReceived'),
+                                                    style: AppTextStyles
+                                                        .style14DarkGrey600,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    });
+                              }),
+                        )
+                      ]
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

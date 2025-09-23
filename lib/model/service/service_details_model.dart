@@ -33,7 +33,7 @@ class ServiceDetailsModel {
   String? passportNumber;
   dynamic clientCountryId;
   String? clientType;
-  dynamic description;
+  String? description;
   dynamic deletedAt;
   String? status;
   dynamic securityNumber;

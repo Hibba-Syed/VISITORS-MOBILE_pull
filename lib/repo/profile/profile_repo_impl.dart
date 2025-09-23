@@ -1,3 +1,4 @@
+
 import 'package:visitors/repo/profile/profile_repo.dart';
 
 import '../../data/network/base_api_services.dart';
@@ -14,7 +15,9 @@ class ProfileRepoImpl implements ProfileRepo {
       dynamic response = await _apiService.getAuthGetApiResponse(
         ApiUrl.profile,
       );
+      // print('getProfile${response.toString()}');
       return ProfileResponseModel.fromJson(response);
+
     } catch (e) {
       rethrow;
     }

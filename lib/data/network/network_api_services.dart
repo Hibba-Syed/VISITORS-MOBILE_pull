@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class NetworkApiServices implements BaseApiServices {
         throw FetchDataException(
             "Connection timeout, please check your internet");
       });
-      debugPrint(
+      log(
           'get status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
     } on SocketException {
@@ -100,7 +101,6 @@ class NetworkApiServices implements BaseApiServices {
       debugPrint(
           'status code: ${response.statusCode}\n body: ${response.body}');
       responseJson = returnResponse(response);
-      // print('response::: ${response.body}');
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     }
@@ -196,8 +196,8 @@ class NetworkApiServices implements BaseApiServices {
       var response = await http.Response.fromStream(streamedResponse);
       responseJson = returnResponse(response);
       return responseJson;
-    } on SocketException catch (e) {
-      throw FetchDataException(e.toString());
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
     }
   }
 
@@ -221,9 +221,13 @@ class NetworkApiServices implements BaseApiServices {
         "content-type": "application/json",
         'Accept': 'application/json',
         "Authorization": 'Bearer ${Globals().token}'
-
       };
       request.headers.addAll(headers);
+      // print('fields and files::');
+      // print(request.fields);
+      // for (var file in request.files) {
+      //   print('${file.field} , ${file.filename}');
+      // }
       var streamedResponse = await request
           .send()
           .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
@@ -231,12 +235,11 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
-      // print('response::: ${response.body}');
       responseJson = returnResponse(response);
 
       return responseJson;
-    } on SocketException catch (e) {
-      throw FetchDataException(e.toString());
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
     }
   }
 
@@ -271,14 +274,12 @@ class NetworkApiServices implements BaseApiServices {
 
       responseJson = returnResponse(response);
       return responseJson;
-    } on SocketException catch (e) {
-      throw FetchDataException(e.toString());
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
     }
   }
 
   dynamic returnResponse(http.Response response) {
-    print('ress Code:: ${response.statusCode}');
-    print('ress:: ${response.body}');
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
     // print('body:: $body');

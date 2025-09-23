@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:visitors/bloc/e_service/service_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/styles/styles.dart';
@@ -21,6 +21,21 @@ class ServicesFilterBottomSheet extends StatefulWidget {
 }
 
 class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
+  TypeModel? _selectedType;
+  UnitModel? _selectedUnit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final serviceState = context.read<ServiceCubit>().state;
+      _selectedType = serviceState.selectedType;
+      _selectedUnit = serviceState.selectedUnit;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,64 +51,63 @@ class _ServicesFilterBottomSheetState extends State<ServicesFilterBottomSheet> {
               ),
               border: Border.all(color: AppColors.gray)),
           child: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(10),
-              const Align(
-                alignment: Alignment.center,
-                child: HeadingWidget(
-                    heading: 'E-Services Filter',
-                    style: AppTextStyles.style16black600),
-              ),
-              const Gap(15),
-              SingleSelectedDropdownWidget<TypeModel>(
-                  hint: "Type",
-                  fillColor: AppColors.white,
-                  selectedItem:
-                      context.watch<ServiceCubit>().state.selectedType,
-                  itemAsString: (type) => type.label,
-                  compareFn: (type, item) => type.value == item.value,
-                  items: AppUtils.serviceTypeList,
-                  onChanged: (value) {
-                    // print(' Type***${value?.value}');
-                    context.read<ServiceCubit>().onChangeSelectedType(value);
-                  }),
-              const Gap(10),
-              BlocBuilder<ServiceCubit, ServiceState>(
-                builder: (context, state) {
-                  if (state.isUnitLoading) {
-                    return LoaderWidget();
-                  }
-
-                  return SingleSelectedDropdownWidget<UnitModel>(
-                      hint: "Unit",
+              child: BlocBuilder<ServiceCubit, ServiceState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: HeadingWidget(
+                        heading: AppUtils.languageTranslate('eServicesFilter'),
+                        style: AppTextStyles.style16black600),
+                  ),
+                  const Gap(15),
+                  SingleSelectedDropdownWidget<TypeModel>(
+                      hint: AppUtils.languageTranslate('type'),
                       fillColor: AppColors.white,
-                      selectedItem:
-                          context.watch<ServiceCubit>().state.selectedUnit,
-                      itemAsString: (unit) => unit.unitNumber ?? "",
-                      compareFn: (unit, item) => unit.id == item.id,
-                      items: state.units ?? [],
+                      selectedItem: _selectedType,
+                      itemAsString: (type) => type.label,
+                      compareFn: (type, item) => type.value == item.value,
+                      items: AppUtils().serviceTypeList,
                       onChanged: (value) {
-                        context
-                            .read<ServiceCubit>()
-                            .onChangeSelectedUnit(value!);
-                      });
-                },
-              ),
-              const Gap(30),
-              FilterButtonWidget(
-                applyOnPressed: () {
-                  context.read<ServiceCubit>().getServices();
-                  Navigator.pop(context);
-                },
-                clearOnPressed: () {
-                  context.read<ServiceCubit>().resetFilterData();
-                  Navigator.pop(context);
-                  context.read<ServiceCubit>().getServices();
-                },
-              ),
-            ],
+                        _selectedType = value;
+                      }),
+                  const Gap(10),
+                  state.isUnitLoading
+                      ? LoaderWidget()
+                      : SingleSelectedDropdownWidget<UnitModel>(
+                          hint: AppUtils.languageTranslate('unit'),
+                          fillColor: AppColors.white,
+                          selectedItem: _selectedUnit,
+                          itemAsString: (unit) => unit.unitNumber ?? "",
+                          compareFn: (unit, item) => unit.id == item.id,
+                          items: state.units ?? [],
+                          onChanged: (value) {
+                            _selectedUnit = value;
+                          }),
+                  const Gap(30),
+                  FilterButtonWidget(
+                    applyOnPressed: () {
+                      final cubit = context.read<ServiceCubit>();
+
+                      cubit.onChangeSelectedType(_selectedType);
+                      cubit.onChangeSelectedUnit(_selectedUnit);
+                      context.read<ServiceCubit>().getServices();
+                      Navigator.pop(context);
+                    },
+                    clearOnPressed: () {
+                      _selectedType = null;
+                      _selectedUnit = null;
+                      context.read<ServiceCubit>().resetFilterData();
+                      Navigator.pop(context);
+                      context.read<ServiceCubit>().getServices();
+                    },
+                  ),
+                ],
+              );
+            },
           )),
         ),
       ),

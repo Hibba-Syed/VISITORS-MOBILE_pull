@@ -9,37 +9,40 @@ class CheckInsState {
   final bool loadMore;
   final int page;
   final int? serviceableId;
-  final List<CheckInModel>? checkInModel;
+  final List<CheckInModel>? checkIns;
   final List<UnitModel>? units;
   final List<VendorModel>? vendors;
-  final TypeModel? selectedType;
   final UnitModel? selectedUnit;
   final VendorModel? selectedVendor;
-  final DateTimeRange? dateRange;
-  final String? selectedRange;
+  final DateTimeRange? selectedDateRange;
+  final RangeModel? selectedRange;
   final String? searchKeyword;
-  final List<CheckOutVisitor>? checkOutVisitors;
+  final TypeModel? selectedVisitorType;
+  final List<CheckOutModel>? checkOutVisitors;
 
-  CheckInsState({
+  const CheckInsState({
     this.isLoading = false,
     this.loadMore = false,
     this.isUnitLoading = false,
     this.isVendorLoading = false,
     this.isCheckOutVisitor = false,
     this.page = 1,
-    this.checkInModel,
+    this.checkIns,
     this.units,
     this.vendors,
-    this.selectedType,
     this.selectedUnit,
     this.selectedVendor,
     this.isCheckOutAllLoading = false,
-    this.dateRange,
+    this.selectedDateRange,
     this.selectedRange,
     this.searchKeyword,
     this.serviceableId,
     this.checkOutVisitors,
+    this.selectedVisitorType,
   });
+
+  static const _sentinel = Object();
+
   CheckInsState copyWith({
     bool? isLoading,
     bool? isUnitLoading,
@@ -48,37 +51,60 @@ class CheckInsState {
     bool? loadMore,
     bool? isCheckOutVisitor,
     int? page,
-    List<CheckInModel>? checkInModel,
+    List<CheckInModel>? checkIns,
     List<UnitModel>? units,
     List<VendorModel>? vendors,
-    TypeModel? selectedType,
-    UnitModel? selectedUnit,
-    VendorModel? selectedVendor,
-    DateTimeRange? dateRange,
-    String? selectedRange,
-     String? searchKeyword,
-     int? serviceableId,
-    List<CheckOutVisitor>? checkOutVisitors,
+    Object? selectedVisitorType = _sentinel,
+    Object? selectedUnit = _sentinel,
+    Object? selectedVendor = _sentinel,
+    Object? selectedDateRange = _sentinel,
+    Object? selectedRange = _sentinel,
+    Object? searchKeyword = _sentinel,
+    Object? serviceableId = _sentinel,
+    List<CheckOutModel>? checkOutVisitors,
   }) {
     return CheckInsState(
-        isLoading: isLoading ?? this.isLoading,
-        isUnitLoading: isUnitLoading ?? this.isUnitLoading,
-        isVendorLoading: isVendorLoading ?? this.isVendorLoading,
-        isCheckOutAllLoading: isCheckOutAllLoading ?? this.isCheckOutAllLoading,
-        loadMore: loadMore ?? this.loadMore,
-        page: page ?? this.page,
-        checkInModel: checkInModel ?? this.checkInModel,
-        vendors: vendors ?? this.vendors,
-        units: units ?? this.units,
-        selectedType: selectedType ?? this.selectedType,
-        selectedUnit: selectedUnit ?? this.selectedUnit,
-        selectedVendor: selectedVendor ?? this.selectedVendor,
-        dateRange: dateRange ?? this.dateRange,
-        selectedRange: selectedRange ?? this.selectedRange,
-        searchKeyword: searchKeyword ?? this.searchKeyword,
-        serviceableId: serviceableId ?? this.serviceableId,
-        isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
-        checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
+      isLoading: isLoading ?? this.isLoading,
+      isUnitLoading: isUnitLoading ?? this.isUnitLoading,
+      isVendorLoading: isVendorLoading ?? this.isVendorLoading,
+      isCheckOutAllLoading: isCheckOutAllLoading ?? this.isCheckOutAllLoading,
+      loadMore: loadMore ?? this.loadMore,
+      page: page ?? this.page,
+      checkIns: checkIns ?? this.checkIns,
+      vendors: vendors ?? this.vendors,
+      units: units ?? this.units,
+
+      // 👇 sentinel handling
+      selectedVisitorType: identical(selectedVisitorType, _sentinel)
+          ? this.selectedVisitorType
+          : selectedVisitorType as TypeModel?,
+
+      selectedUnit: identical(selectedUnit, _sentinel)
+          ? this.selectedUnit
+          : selectedUnit as UnitModel?,
+
+      selectedVendor: identical(selectedVendor, _sentinel)
+          ? this.selectedVendor
+          : selectedVendor as VendorModel?,
+
+      selectedDateRange: identical(selectedDateRange, _sentinel)
+          ? this.selectedDateRange
+          : selectedDateRange as DateTimeRange?,
+
+      selectedRange: identical(selectedRange, _sentinel)
+          ? this.selectedRange
+          : selectedRange as RangeModel?,
+
+      searchKeyword: identical(searchKeyword, _sentinel)
+          ? this.searchKeyword
+          : searchKeyword as String?,
+
+      serviceableId: identical(serviceableId, _sentinel)
+          ? this.serviceableId
+          : serviceableId as int?,
+
+      isCheckOutVisitor: isCheckOutVisitor ?? this.isCheckOutVisitor,
+      checkOutVisitors: checkOutVisitors ?? this.checkOutVisitors,
     );
   }
 }

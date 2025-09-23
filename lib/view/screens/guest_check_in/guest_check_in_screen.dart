@@ -1,38 +1,42 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gap/gap.dart' show Gap;
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image/image.dart' as img;
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:visitors/bloc/guest_check_in/guest_check_in_cubit.dart';
+import 'package:visitors/model/driving_license_model.dart';
+import 'package:visitors/model/emirates_id_model.dart';
+import 'package:visitors/model/passport_model.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
 import 'package:visitors/resource/styles/styles.dart';
+import 'package:visitors/service/scanner/scanner_service.dart';
+import 'package:visitors/utils/validation_util.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
-import 'package:visitors/view/widgets/container_widgets/scan_type_container_widget.dart';
-import 'package:visitors/view/widgets/network_image_widget.dart';
-import 'package:visitors/view/widgets/picker/custom_date_time_picker.dart';
+import 'package:visitors/view/widgets/container_widgets/title_value_column_divider_details_container.dart';
+import 'package:visitors/view/widgets/loader/loader_widget.dart';
+import 'package:visitors/view/widgets/picker/date_picker_widget.dart';
 import 'package:visitors/view/widgets/single_selected_dropdown_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
-
-import '../../../bloc/check_ins/check_ins_cubit.dart';
 import '../../../model/country/country_model.dart';
+import '../../../model/service/service_model.dart';
 import '../../../model/unit/unit_model.dart';
 import '../../../model/visitor_info/number_info_model.dart';
 import '../../../model/visitor_info/visitors_purpose_model.dart';
+import '../../../model/work_order/work_order_model.dart';
 import '../../widgets/button/custom_button.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
-  const GuestCheckInScreen({super.key});
+  const GuestCheckInScreen({
+    super.key,
+  });
 
   @override
   State<GuestCheckInScreen> createState() => _GuestCheckInScreenState();
@@ -50,1226 +54,423 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _entryCardNumberController =
       TextEditingController();
-  final TextEditingController _idNumberController = TextEditingController();
-  final TextEditingController _passportExpiryController =
+  final TextEditingController _photoIdNumberController =
       TextEditingController();
-  final TextEditingController _passportNumberController =
+  final TextEditingController _emiratesIdNumberController =
       TextEditingController();
-  String? _selectedItemType;
-  String? _selectedIssueDate;
-  String? _selectedExpiryDate;
-  String? _selectedItemNationality;
-  File? _imageFile;
-  List<File?>? _personImageFiles;
-  final List<String> _nationalityItems = [
-    'Pakistan',
-    'Australia',
-    'United Arab Emirates',
-    'India'
+  final TextEditingController _travelDocumentNumberController =
+      TextEditingController();
+  DateTime? _selectedEmiratesIdIssueDate;
+  DateTime? _selectedEmiratesIdExpiryDate;
+  DateTime? _selectedPhotoIdIssueDate;
+  DateTime? _selectedPhotoIdExpiryDate;
+  DateTime? _selectedTravelDocumentIssueDate;
+  DateTime? _selectedTravelDocumentExpiryDate;
+  File? _personImage;
+  TypeItemModel? _selectedDocumentType;
+  ServiceModel? _service;
+  WorkOrderModel? _workOrder;
+
+  final List<TypeItemModel> _visitTypes = [
+    TypeItemModel(
+      value: 'Unit Visit',
+      label: AppUtils.languageTranslate('unitVisit'),
+    ),
+    TypeItemModel(
+      value: 'Community Visit',
+      label: AppUtils.languageTranslate('communityVisit'),
+    ),
   ];
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-        source: ImageSource.camera, maxWidth: 539, maxHeight: 340);
-
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-
-      await _performOCR(_imageFile!);
-    }
-  }
-
-  Future<void> _performOCR(File imageFile) async {
-    final inputImage = InputImage.fromFile(imageFile);
-    TextRecognizer textDetector =
-        TextRecognizer(script: TextRecognitionScript.latin);
-    FaceDetector faceDetector = FaceDetector(
-      options: FaceDetectorOptions(
-        performanceMode: FaceDetectorMode.accurate,
-        minFaceSize: 1,
-      ),
-    );
-
-    final RecognizedText recognizedText =
-        await textDetector.processImage(inputImage);
-    String text = recognizedText.text;
-
-    final List<Face> faces = await faceDetector.processImage(inputImage);
-
-    ///
-    final Map<String, String> parsedData = _parseExtractedText(text);
-
-    setState(() {
-      // _extractedText = text;
-      _personImageFiles = _extractPersonImage(imageFile, faces);
-
-      // Auto-fill form fields
-      _nameController.text = parsedData['Name'] ?? '';
-      _selectedItemNationality = parsedData['Nationality'];
-      _idNumberController.text = parsedData['ID Number'] ?? '';
-      _selectedIssueDate = parsedData['Issuing Date'] ?? '';
-      _selectedExpiryDate = parsedData['Expiry Date'] ?? '';
-      _passportExpiryController.text = parsedData[''] ?? '';
-      _passportNumberController.text = parsedData[''] ?? '';
-
-      String? nationality =
-          parsedData['Nationality'] ?? parsedData['nationality'];
-
-      if (nationality != null && _nationalityItems.isNotEmpty) {
-        final normalized = nationality.trim().toLowerCase();
-
-        final match = _nationalityItems.firstWhere(
-          (item) => item.toLowerCase() == normalized,
-          orElse: () => '',
-        );
-
-        if (match.isNotEmpty) {
-          setState(() {
-            _selectedItemNationality = match;
-          });
+  @override
+  void initState() {
+    super.initState();
+    GuestCheckInCubit guestCheckInCubit = context.read<GuestCheckInCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeArgs = ModalRoute.of(context)?.settings.arguments;
+      if (routeArgs != null) {
+        final args = routeArgs as Map<String, dynamic>;
+        if (args['service'] != null) {
+          _service = args['service'] as ServiceModel;
+        } else if (args['work_order'] != null) {
+          _workOrder = args['work_order'] as WorkOrderModel;
         }
+      }
+      if (_service?.id != null) {
+        guestCheckInCubit.onChangeSelectedVisitType(TypeItemModel(
+          value: 'Unit Service',
+          label: AppUtils.languageTranslate('unitService'),
+        ));
+      } else if (_workOrder?.id != null) {
+        guestCheckInCubit.onChangeSelectedVisitType(TypeItemModel(
+          value: 'Community Service',
+          label: AppUtils.languageTranslate('communityService'),
+        ));
+      } else {
+        guestCheckInCubit.onChangeSelectedVisitType(_visitTypes.first);
       }
     });
-    textDetector.close();
+
+    _selectedDocumentType = AppConstants().documentTypes.first;
   }
 
-  List<File?>? _extractPersonImage(File originalImage, List<Face> faces) {
-    if (faces.isNotEmpty) {
-
-      List<File?>? images = [];
-      for (int i = 0; i < faces.length; i++) {
-        final face = faces[i];
-        final boundingBox = face.boundingBox;
-        images.add(_cropImage(originalImage, boundingBox, index: i));
-      }
-      for (var element in images) {
-        print(element?.path);
-      }
-      return images;
-    }
-    return null; // Return null if no image is extracted
-  }
-
-  File? _cropImage(
-    File originalImage,
-    Rect boundingBox, {
-    required int index,
-  }) {
-    // Load the original image
-    final img.Image originalImg =
-        img.decodeImage(originalImage.readAsBytesSync())!;
-
-    // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt() - 20;
-    final int top = boundingBox.top.toInt() - 16;
-    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 40;
-    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 46;
-
-    // print('left:: $left');
-    // print('top:: $top');
-    // print('width:: $width');
-    // print('height:: $height');
-    // Crop the image
-    final img.Image croppedImg = img.copyCrop(originalImg,
-        x: left, y: top, width: width, height: height);
-
-    // Save the cropped image to a new file
-    final String fileName =
-        '${path.basenameWithoutExtension(originalImage.path)}_cropped_$index.jpg';
-    final String dir = path.dirname(originalImage.path);
-    final File croppedFile = File('$dir/$fileName')
-      ..writeAsBytesSync(img.encodeJpg(croppedImg));
-
-    return croppedFile; // Return the cropped image file
-  }
-
-  Map<String, String> _parseExtractedText(String text) {
-    Map<String, String> parsedData = {};
-    List<String> lines = text.split('\n');
-
-    for (int i = 0; i < lines.length; i++) {
-      String line = lines[i].trim();
-      String lineLower = line.toLowerCase();
-
-      // ID Number
-      if (lineLower.contains('رقم الهوية') || lineLower.contains('id number')) {
-        parsedData['ID Number'] = _extractValue(line, lines, i);
-      }
-      // Name (special case)
-      else if (lineLower.contains('الاسم') || lineLower.contains('name')) {
-        if (line.contains(':')) {
-          parsedData['Name'] = line.split(':').last.trim();
-        }
-      }
-      // Nationality
-      else if (lineLower.contains('الجنسية') ||
-          lineLower.contains('nationality')) {
-        parsedData['Nationality'] = _extractValue(line, lines, i);
-      }
-      // // Issuing Date
-      // else if (lineLower.contains('تاريخ الاصدار') || lineLower.contains('issuing date')) {
-      //   parsedData['Issuing Date'] = _extractValue(line, lines, i);
-      // }
-      // // Expiry Date
-      // else if (lineLower.contains('تاريخ الانتهاء') || lineLower.contains('expiry date')) {
-      //   parsedData['Expiry Date'] = _extractValue(line, lines, i);
-      // }
-      // Issuing Date (ONLY next line)
-      else if (lineLower.contains('تاريخ الاصدار/') ||
-          lineLower.contains('issuing date')) {
-        if (i + 1 < lines.length) {
-          parsedData['Issuing Date'] = lines[i + 1].trim();
-        }
-      }
-      // Expiry Date (ONLY next line)
-      else if (lineLower.contains('تاريخ الانتهاء/') ||
-          lineLower.contains('expiry date')) {
-        if (i + 1 < lines.length) {
-          parsedData['Expiry Date'] = lines[i + 1].trim();
-        }
-      }
-    }
-
-    // print(
-    //     'Parsed UAE ID Data: ${parsedData['Expiry Date']}${parsedData['Issuing Date']}${parsedData['Nationality']}');
-    return parsedData;
-  }
-
-  String _extractValue(String line, List<String> lines, int currentIndex) {
-    if (line.contains(':')) {
-      return line.split(':').last.trim();
-    } else if (currentIndex + 1 < lines.length) {
-      return lines[currentIndex + 1].trim();
-    }
-    return '';
+  void clearData() {
+    _personImage = null;
+    _emiratesIdNumberController.clear();
+    _photoIdNumberController.clear();
+    _travelDocumentNumberController.clear();
+    _selectedEmiratesIdIssueDate = null;
+    _selectedEmiratesIdExpiryDate = null;
+    _selectedPhotoIdIssueDate = null;
+    _selectedPhotoIdExpiryDate = null;
+    _selectedTravelDocumentIssueDate = null;
+    _selectedTravelDocumentExpiryDate = null;
+    context.read<GuestCheckInCubit>().onChangeSelectedNationality(null);
+    context.read<GuestCheckInCubit>().onChangeSelectedPurpose(null);
+    context.read<GuestCheckInCubit>().onChangeSelectedUnit(null);
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        appBar: const AppBarWidget(
-          title: 'Guest Check-In',
-          titleColor: AppColors.black,
-          iconColor: AppColors.black,
-        ),
-        body: width >= AppConstants.tabletScreen
-            ? tabletGuestCheckInScreen(context)
-            : mobileGuestCheckInScreen(context),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.verticalPadding),
-          child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
-            builder: (context, state) {
-              return CustomButton(
-                  imageHeight: AppUtils.isTablet(context) ? 22 : 18,
-                  image: AppImages.checkInButton,
-                  buttonColor: AppColors.green,
-                  text: 'Check-In',
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context
-                          .read<GuestCheckInCubit>()
-                          .guestCheckIn(context, data: {
-                        'type': _selectedItemType,
-                        'name': _nameController.text,
-                        'purpose': state.selectedPurpose,
-                        'unit_id': state.selectedUnit?.id,
-                        'unit_number': state.selectedUnit,
-                        'visitor_count': _visitorCountController.text,
-                        'phone': _phoneNumberController.text,
-                        'email': _emailController.text,
-                        'entry_card_number': _entryCardNumberController.text,
-                        'nationality': state.selectedCountry,
-                        'description': _descriptionController.text,
-                        'serviceable_id': '',
-                        'serviceable_type': '',
-                        'sms': false,
-                        'visitor_id': ''
-                      });
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      appBar: AppBarWidget(
+        title: AppUtils.languageTranslate('guestCheckIn'),
+        titleColor: AppColors.black,
+        iconColor: AppColors.black,
+      ),
+      body: width >= AppConstants.tabletScreen
+          ? _tabletGuestCheckInScreen(context)
+          : _mobileGuestCheckInScreen(context),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding,
+            vertical: AppConstants.verticalPadding),
+        child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
+          builder: (context, state) {
+            return CustomButton(
+              imageHeight: AppUtils.isTablet(context) ? 22 : 18,
+              image: AppImages.checkInButton,
+              buttonColor: AppColors.green,
+              text: AppUtils.languageTranslate('checkIn'),
+              onPressed: state.isGuestCheckInLoading
+                  ? null
+                  : () async {
+                      // print(' state${state.selectedUnit?.id}');
+                      if ((_formKey.currentState?.validate() ?? false) &&
+                          (_phoneNumberKey.currentState?.validate() ?? false)) {
+                        String? base64Image;
+                        if (_personImage != null &&
+                            _personImage!.path.isNotEmpty) {
+                          base64Image =
+                              await encodeImageToBase64(_personImage!);
+                        }
+                        Map<String, dynamic> formData = {
+                          if (_selectedDocumentType?.value ==
+                              'Emirates ID') ...{
+                            'id_number': _emiratesIdNumberController.text,
+                            'id_issue_date':
+                                _selectedEmiratesIdIssueDate?.toString(),
+                            'id_expiry_date':
+                                _selectedEmiratesIdExpiryDate?.toString(),
+                          },
+                          if (_selectedDocumentType?.value == 'Photo ID') ...{
+                            'photo_id_number': _photoIdNumberController.text,
+                            'photo_id_issue_date':
+                                _selectedPhotoIdIssueDate?.toString(),
+                            'photo_id_expiry_date':
+                                _selectedPhotoIdExpiryDate?.toString(),
+                          },
+                          if (_selectedDocumentType?.value == 'Photo ID') ...{
+                            'passport_number':
+                                _travelDocumentNumberController.text,
+                            'passport_issue_date':
+                                _selectedTravelDocumentIssueDate?.toString(),
+                            'passport_expiry_date':
+                                _selectedTravelDocumentExpiryDate?.toString(),
+                          },
 
-                      if (_phoneNumberKey.currentState!.validate()) {
-                        // print("Form is valid. Proceeding with check-in...");
-                      } else {
-                        // print("Form validation failed.");
+                          ///
+                          'type': state.selectedVisitType?.value,
+                          'name': _nameController.text,
+                          if (state.selectedVisitType?.value == 'Unit Visit' &&
+                              _service?.id == null &&
+                              _workOrder?.id == null) ...{
+                            'purpose': state.selectedPurpose?.purpose,
+                            'unit_id': state.selectedUnit?.id,
+                            'unit_number': state.selectedUnit?.toJson(),
+                          },
+                          if (_service?.id != null &&
+                              _workOrder?.id == null) ...{
+                            'purpose': _service?.reference,
+                            'unit_id': _service?.unit?.id,
+                            'unit_number': _service?.unit?.unitNumber,
+                          },
+                          if (_workOrder?.id != null &&
+                              _service?.id == null) ...{
+                            'purpose': _workOrder?.reference,
+                            'unit_id': null,
+                            'unit_number': null,
+                          },
+                          'phone': _phoneNumberController.text,
+                          'email': _emailController.text,
+                          'entry_card_number': _entryCardNumberController.text,
+                          'nationality': state.selectedNationality?.name,
+                          'description': _descriptionController.text,
+                          'serviceable_id': _service?.id ?? _workOrder?.id,
+                          'serviceable_type': _service?.id != null
+                              ? 'application'
+                              : _workOrder?.id != null
+                                  ? 'job'
+                                  : null,
+
+                          'sms': false,
+                          'visitor_count':
+                              int.tryParse(_visitorCountController.text),
+                          'visitor_id': null,
+                          if (_personImage?.path.isNotEmpty ?? false)
+                            if (base64Image != null) 'user_photo': base64Image,
+                        };
+                        if (context.mounted) {
+                          context
+                              .read<GuestCheckInCubit>()
+                              .guestCheckIn(context, data: formData);
+                        }
                       }
-                    }
-                  });
-            },
-          ),
+                    },
+              loading: state.isGuestCheckInLoading,
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget tabletGuestCheckInScreen(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.verticalPadding),
-          child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(20),
-                  Align(
-                    alignment: Alignment.center,
-                    child: const NetworkImageWidget(
-                      url:
-                          "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                      height: 150,
-                      width: 150,
-                    ),
-                  ),
-                  const Gap(25),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomButton(
-                        buttonColor: AppColors.primary,
-                        text: 'Scan ID',
-                        fontSize: 20,
-                        height: 60,
-                        imageHeight: 25,
-                        borderRadius: 6,
-                        image: AppImages.scan,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CustomAlertDialogBox(
-                                  insetPadding: AppUtils.isTablet(context)
-                                      ? EdgeInsets.all(70)
-                                      : EdgeInsets.all(10),
-                                  hideBothButtons: true,
-                                  title: 'Select Type',
-                                  contentBuilder: (context, setState) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('Select any ID type for Scan',
-                                            style: AppUtils.isTablet(context)
-                                                ? AppTextStyles.style16black600
-                                                : AppTextStyles
-                                                    .style14Black600),
-                                        Gap(20),
-                                        AppUtils.isTablet(context)
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 0,
-                                                        vertical: 20),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    ScanTypeContainerWidget(
-                                                      text: 'Passport',
-                                                      textSize: 16,
-                                                      iconSize: 30,
-                                                      padding: 10,
-                                                      heightContainer: 110,
-                                                      widthContainer: 110,
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    ScanTypeContainerWidget(
-                                                      text: 'Emirates Id',
-                                                      textSize: 16,
-                                                      iconSize: 30,
-                                                      padding: 10,
-                                                      heightContainer: 110,
-                                                      widthContainer: 110,
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    ScanTypeContainerWidget(
-                                                      text: 'Driving license',
-                                                      textSize: 16,
-                                                      iconSize: 30,
-                                                      padding: 10,
-                                                      heightContainer: 110,
-                                                      widthContainer: 110,
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  ScanTypeContainerWidget(
-                                                    text: 'Passport',
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  ScanTypeContainerWidget(
-                                                    text: 'Emirates Id',
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  ScanTypeContainerWidget(
-                                                    text: 'Driving license',
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              )
-                                      ],
-                                    );
-                                  },
-                                );
-                              });
-                        }),
-                  ),
-                  const Gap(25),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+  Widget _tabletGuestCheckInScreen(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding,
+            vertical: AppConstants.verticalPadding),
+        child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
+          builder: (ctx, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(20),
+                _imageAvatarWidget(),
+                const Gap(25),
+                _scanButton(isTablet: true),
+                const Gap(25),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _documentTypeDropDown(),
+                      const Gap(5),
+                      if (_selectedDocumentType?.value == 'Emirates ID')
+                        _emiratesIdNumberTextField(),
+                      if (_selectedDocumentType?.value == 'Photo ID')
+                        _photoIdNumberTextField(),
+                      if (_selectedDocumentType?.value == 'Travel Document')
+                        _travelDocumentNumberTextField(),
+                      const Gap(5),
+                      if (_selectedDocumentType?.value == 'Emirates ID')
+                        _emiratesIdIssueDatePicker(),
+                      if (_selectedDocumentType?.value == 'Photo ID')
+                        _photoIdIssueDatePicker(),
+                      if (_selectedDocumentType?.value == 'Travel Document')
+                        _travelDocumentIssueDatePicker(),
+                      const Gap(5),
+                      if (_selectedDocumentType?.value == 'Emirates ID')
+                        _emiratesIdExpiryDatePicker(),
+                      if (_selectedDocumentType?.value == 'Photo ID')
+                        _photoIdExpiryDatePicker(),
+                      if (_selectedDocumentType?.value == 'Travel Document')
+                        _travelDocumentExpiryDatePicker(),
+                      const Gap(5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (_service?.id == null &&
+                              _workOrder?.id == null) ...[
+                            Expanded(
+                              child: _visitTypeDropDown(state),
+                            ),
+                            const Gap(8),
+                          ],
+                          Expanded(
+                            child: _visitorCountTextField(),
+                          ),
+                        ],
+                      ),
+                      if (state.selectedVisitType?.value == "Unit Visit") ...[
+                        Gap(5),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: TextFieldWidget(
-                                outLineColor: AppColors.outLineGray,
-                                enabledBorder: InputBorder.none,
-                                controller: _idNumberController,
-                                label: 'ID Number',
-                                hint: 'Enter id number',
-                                keyboardType: TextInputType.text,
-                                // validator: (value) {
-                                //   if (value == null || value.isEmpty) {
-                                //     return 'required';
-                                //   }
-                                //   return null;
-                                // },
-                              ),
+                              child: _purposeDropDown(state),
                             ),
                             const Gap(8),
                             Expanded(
-                              child: TextFieldWidget(
-                                enabledBorder: InputBorder.none,
-                                controller: _nameController,
-                                label: 'Name*',
-                                hint: 'Enter name',
-                                keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'required';
-                                  }
-                                  return null;
-                                },
-                              ),
+                              child: _unitNumberDropDown(state),
                             ),
                           ],
-                        ),
-                        const Gap(5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Date of Issue",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  CustomDateTimePickerWidget(
-                                    fillColor: AppColors.white,
-                                    hintText: 'Date of issue',
-                                    onlyDatePicker: true,
-                                    selectedDateTime: _selectedIssueDate,
-                                    onChangeDateTime: (value) {
-                                      _selectedIssueDate = value;
-                                      //print('Selected Date: $value');
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Date of Expiry",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  CustomDateTimePickerWidget(
-                                    // outLineColor: AppColors.outLineGray
-                                    fillColor: AppColors.white,
-                                    hintText: 'Date of issue',
-                                    onlyDatePicker: true,
-                                    selectedDateTime: _selectedExpiryDate,
-                                    onChangeDateTime: (value) {
-                                      _selectedExpiryDate = value;
-                                      //print('Selected Date: $value');
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFieldWidget(
-                                outLineColor: AppColors.outLineGray,
-                                enabledBorder: InputBorder.none,
-                                controller: _passportNumberController,
-                                label: 'Passport Number',
-                                hint: 'Passport number',
-                                keyboardType: TextInputType.text,
-                              ),
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: TextFieldWidget(
-                                outLineColor: AppColors.outLineGray,
-                                fillColor: AppColors.white,
-                                enabledBorder: InputBorder.none,
-                                controller: _passportExpiryController,
-                                label: 'Passport Expiry',
-                                hint: 'Passport expiry',
-                                keyboardType: TextInputType.text,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Type*",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  SingleSelectedDropdownWidget<String>(
-                                    hint: "Select type",
-                                    fillColor: AppColors.white,
-                                    selectedItem: _selectedItemType,
-                                    compareFn: (p0, p1) => p0 == p1,
-                                    items: const [
-                                      'Unit Visit',
-                                      'Community Visit',
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedItemType = value;
-                                      });
-                                    },
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'required';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: TextFieldWidget(
-                                controller: _visitorCountController,
-                                label: 'Visitor Count*',
-                                hint: 'Enter count ',
-                                keyboardType: TextInputType.number,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'required';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(5),
-                        if (_selectedItemType == 'Unit Visit')
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Purpose*",
-                                      style: AppTextStyles.style12Black600,
-                                    ),
-                                    const Gap(8),
-                                    SingleSelectedDropdownWidget<
-                                        VisitorsPurpose>(
-                                      hint: "Select purpose",
-                                      fillColor: AppColors.white,
-                                      selectedItem: context
-                                          .watch<GuestCheckInCubit>()
-                                          .state
-                                          .selectedPurpose,
-                                      itemAsString: (purpose) =>
-                                          purpose.purpose ?? "",
-                                      compareFn: (p0, p1) => p0.id == p1.id,
-                                      items: state.profileRecord?.association
-                                              ?.visitorsPurposes ??
-                                          [],
-                                      onChanged: (value) {
-                                        context
-                                            .read<GuestCheckInCubit>()
-                                            .onChangeSelectedPurpose(value);
-                                      },
-                                      // validator: (value) {
-                                      //   if (value?.purpose?.isNotEmpty ?? false) {
-                                      //     return 'required';
-                                      //   }
-                                      //   return null;
-                                      // },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Gap(10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Unit Number*",
-                                      style: AppTextStyles.style12Black600,
-                                    ),
-                                    const Gap(8),
-                                    SingleSelectedDropdownWidget<UnitModel>(
-                                      hint: "Unit",
-                                      fillColor: AppColors.white,
-                                      selectedItem: context
-                                          .watch<GuestCheckInCubit>()
-                                          .state
-                                          .selectedUnit,
-                                      itemAsString: (unit) =>
-                                          unit.unitNumber ?? "",
-                                      compareFn: (unit, item) =>
-                                          unit.id == item.id,
-                                      items: state.units ?? [],
-                                      onChanged: (value) {
-                                        context
-                                            .read<GuestCheckInCubit>()
-                                            .onChangeSelectedUnit(value!);
-                                      },
-                                      validator: (value) {
-                                        if (value?.name?.isNotEmpty ?? false) {
-                                          return 'required';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        else
-                          const SizedBox.shrink(),
-                        const Gap(5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Nationality",
-                                    style: AppTextStyles.style12Black600,
-                                  ),
-                                  const Gap(8),
-                                  SingleSelectedDropdownWidget<Country>(
-                                    outLineColor: AppColors.outLineGray,
-                                    hint: "Select nationality",
-                                    fillColor: AppColors.white,
-                                    selectedItem: context
-                                        .watch<GuestCheckInCubit>()
-                                        .state
-                                        .selectedCountry,
-                                    items: state.countries ?? [],
-                                    itemAsString: (country) =>
-                                        country.name ?? "",
-                                    compareFn: (p0, p1) => p0.id == p1.id,
-                                    onChanged: (value) {
-                                      context
-                                          .read<GuestCheckInCubit>()
-                                          .onChangeSelectedCountry(value);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Gap(10),
-                            Expanded(
-                              child: TextFieldWidget(
-                                controller: _emailController,
-                                label: 'Email',
-                                hint: 'Enter email',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          controller: _entryCardNumberController,
-                          label: 'Entry Card Number',
-                          hint: 'Enter card number',
-                        ),
-                        const Gap(5),
-                        Form(
-                          key: _phoneNumberKey,
-                          child: TextFieldWidget(
-                            label: "Phone Number*",
-                            hint: "Enter phone number",
-                            controller: _phoneNumberController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Required max length 13 digits';
-                              }
-                              if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
-                                return 'Please enter a valid mobile number';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(13),
-                            ],
-                            suffix: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(5),
-                                    bottomRight: Radius.circular(5),
-                                  ),
-                                  border: Border.all(color: AppColors.primary)),
-                              child: TextButton(
-                                style: ButtonStyle(
-                                  overlayColor: WidgetStateProperty.all(
-                                      Colors.transparent),
-                                ),
-                                onPressed: () async {
-                                  final phoneNumber =
-                                      _phoneNumberController.text.trim();
-
-                                  if (phoneNumber.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please type note first.");
-                                    return;
-                                  }
-                                  if (!(_phoneNumberKey.currentState
-                                          ?.validate() ??
-                                      false)) {
-                                    return;
-                                  }
-                                  await context
-                                      .read<GuestCheckInCubit>()
-                                      .getNumberInfo(phoneNumber: phoneNumber);
-                                  if (!context.mounted) return;
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return CustomAlertDialogBox(
-                                        hideBothButtons: true,
-                                        insetPadding: AppUtils.isTablet(context)
-                                            ? const EdgeInsets.symmetric(
-                                                horizontal: 35)
-                                            : const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                        title: 'Select Visitor',
-                                        contentBuilder: (context, setState) {
-                                          return visitorNumberWidget(
-                                            _phoneNumberController.text,
-                                            remainingVisitors: ((context
-                                                        .read<
-                                                            GuestCheckInCubit>()
-                                                        .state
-                                                        .numberInfo
-                                                        ?.length ??
-                                                    0) -
-                                                1),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Text("Get Info",
-                                    style: TextStyle(color: AppColors.primary)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          controller: _descriptionController,
-                          label: 'Description',
-                          hint: 'Enter description',
                         ),
                       ],
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget mobileGuestCheckInScreen(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.horizontalPadding,
-              vertical: AppConstants.verticalPadding),
-          child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      height: MediaQuery.of(context).size.width / 4,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.darkGrey),
-                      ),
-                      child:
-                          (_personImageFiles?.first?.path.isNotEmpty ?? false)
-                              ? Image.file(
-                                  _personImageFiles!.first!,
-                                  fit: BoxFit.fill,
-                                )
-                              : Icon(
-                                  Icons.person_outline_rounded,
-                                  size: MediaQuery.of(context).size.width / 4,
-                                ),
-                    ),
-                  ),
-                  const Gap(20),
-                  CustomButton(
-                      buttonColor: AppColors.primary,
-                      text: 'Scan ID',
-                      height: 41,
-                      borderRadius: 6,
-                      image: AppImages.scan,
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return CustomAlertDialogBox(
-                                insetPadding: EdgeInsets.all(10),
-                                hideBothButtons: true,
-                                title: 'Select Type',
-                                contentBuilder: (context, setState) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          ScanTypeContainerWidget(
-                                            text: 'Passport',
-                                            onTap: () {
-                                              _pickImage();
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ScanTypeContainerWidget(
-                                            text: 'Emirates Id',
-                                            onTap: () {
-                                              _pickImage();
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ScanTypeContainerWidget(
-                                            text: 'Driving license',
-                                            onTap: () {
-                                              _pickImage();
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            });
-                        // _pickImage();
-                      }),
-                  const Gap(20),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Gap(20),
-                        TextFieldWidget(
-                          outLineColor: AppColors.outLineGray,
-                          enabledBorder: InputBorder.none,
-                          controller: _nameController,
-                          label: 'Name*',
-                          hint: 'Enter name',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.outLineGray,
-                          enabledBorder: InputBorder.none,
-                          controller: _idNumberController,
-                          label: 'ID Number',
-                          hint: 'Enter id number',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        const Text(
-                          "Date of Issue",
-                          style: AppTextStyles.style13Black600,
-                        ),
-                        const Gap(8),
-                        CustomDateTimePickerWidget(
-                          fillColor: AppColors.white,
-                          hintText: 'Date of issue',
-                          onlyDatePicker: true,
-                          selectedDateTime: _selectedIssueDate,
-                          onChangeDateTime: (value) {
-                            _selectedIssueDate = value;
-                            //print('Selected Date: $value');
-                          },
-                        ),
-                        const Gap(5),
-                        const Text(
-                          "Date of expiry",
-                          style: AppTextStyles.style13Black600,
-                        ),
-                        const Gap(8),
-                        CustomDateTimePickerWidget(
-                          fillColor: AppColors.white,
-                          hintText: 'Date of Issue',
-                          onlyDatePicker: true,
-                          selectedDateTime: _selectedExpiryDate,
-                          onChangeDateTime: (value) {
-                            _selectedExpiryDate = value;
-                            //print('Selected Date: $value');
-                          },
-                        ),
-                        const Gap(5),
-                        const Text(
-                          "Nationality",
-                          style: AppTextStyles.style13Black600,
-                        ),
-                        const Gap(5),
-                        SingleSelectedDropdownWidget<Country>(
-                          outLineColor: AppColors.outLineGray,
-                          hint: "United Arab Emirates",
-                          fillColor: AppColors.white,
-                          selectedItem: context
-                              .watch<GuestCheckInCubit>()
-                              .state
-                              .selectedCountry,
-                          items: state.countries ?? [],
-                          itemAsString: (country) => country.name ?? "",
-                          compareFn: (p0, p1) => p0.id == p1.id,
-                          onChanged: (value) {
-                            context
-                                .read<GuestCheckInCubit>()
-                                .onChangeSelectedCountry(value);
-                          },
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.outLineGray,
-                          enabledBorder: InputBorder.none,
-                          controller: _passportNumberController,
-                          label: 'Passport Number',
-                          hint: 'Passport number',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.outLineGray,
-                          enabledBorder: InputBorder.none,
-                          controller: _passportExpiryController,
-                          label: 'Passport Expiry',
-                          hint: 'Passport expiry',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        const Text(
-                          "Type*",
-                          style: AppTextStyles.style12Black600,
-                        ),
-                        const Gap(5),
-                        SingleSelectedDropdownWidget<String>(
-                          outLineColor: AppColors.outLineGray,
-                          hint: "Select type",
-                          fillColor: AppColors.white,
-                          selectedItem: _selectedItemType,
-                          compareFn: (p0, p1) => p0 == p1,
-                          items: const [
-                            'Unit Visit',
-                            'Community Visit',
-                          ],
-                          onChanged: (value) {
-                            _selectedItemType = value;
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.outLineGray,
-                          controller: _visitorCountController,
-                          label: 'Visitor Count*',
-                          hint: 'Enter count',
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(5),
-                        if (_selectedItemType == 'Unit Visit') ...[
-                          const Text(
-                            "Purpose*",
-                            style: AppTextStyles.style12Black600,
+                      if (state.selectedUnit?.id != null)
+                        _residentInfoContainer(state),
+                      const Gap(5),
+                      _nameTextField(),
+                      const Gap(5),
+                      _phoneNumberTextField(state),
+                      const Gap(5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _emailTextField(),
                           ),
-                          const Gap(5),
-                          SingleSelectedDropdownWidget<VisitorsPurpose>(
-                            hint: "Select purpose",
-                            fillColor: AppColors.white,
-                            outLineColor: AppColors.outLineGray,
-                            selectedItem: context
-                                .watch<GuestCheckInCubit>()
-                                .state
-                                .selectedPurpose,
-                            itemAsString: (purpose) => purpose.purpose ?? "",
-                            compareFn: (p0, p1) => p0.id == p1.id,
-                            items: state.profileRecord?.association
-                                    ?.visitorsPurposes ??
-                                [],
-                            onChanged: (value) {
-                              context
-                                  .read<GuestCheckInCubit>()
-                                  .onChangeSelectedPurpose(value);
-                            },
-                            validator: (value) {
-                              if (value?.purpose?.isNotEmpty ?? false) {
-                                return 'required';
-                              }
-                              return null;
-                            },
-                          ),
-                          const Gap(5),
-                          const Text(
-                            "Unit Number*",
-                            style: AppTextStyles.style12Black600,
-                          ),
-                          const Gap(5),
-                          SingleSelectedDropdownWidget<UnitModel>(
-                            outLineColor: AppColors.outLineGray,
-                            hint: "Unit",
-                            fillColor: AppColors.white,
-                            selectedItem: context
-                                .watch<CheckInsCubit>()
-                                .state
-                                .selectedUnit,
-                            itemAsString: (unit) => unit.unitNumber ?? "",
-                            compareFn: (unit, item) => unit.id == item.id,
-                            items: state.units ?? [],
-                            onChanged: (value) {
-                              context
-                                  .read<CheckInsCubit>()
-                                  .onChangeSelectedUnit(value!);
-                            },
-                            validator: (value) {
-                              if (value?.name?.isNotEmpty ?? false) {
-                                return 'required';
-                              }
-                              return null;
-                            },
+                          const Gap(8),
+                          Expanded(
+                            child: _nationalityDropDown(state),
                           ),
                         ],
-                        const Gap(5),
-                        Form(
-                          key: _phoneNumberKey,
-                          child: TextFieldWidget(
-                            outLineColor: AppColors.gray,
-                            label: "Phone number*",
-                            hint: "+971",
-                            controller: _phoneNumberController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Required max length 13 digits';
-                              }
-                              if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
-                                return 'Please enter a valid mobile number';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(13),
-                            ],
-                            suffix: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(5),
-                                    bottomRight: Radius.circular(5),
-                                  ),
-                                  border: Border.all(color: AppColors.primary)),
-                              child: TextButton(
-                                style: ButtonStyle(
-                                  overlayColor: WidgetStateProperty.all(
-                                      Colors.transparent),
-                                ),
-                                onPressed: () {
-                                  final phoneNumber =
-                                      _phoneNumberController.text.trim();
-
-                                  if (phoneNumber.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please type note first.");
-                                    return;
-                                  }
-
-                                  if (!_phoneNumberKey.currentState!
-                                      .validate()) {
-                                    return;
-                                  }
-
-                                  context
-                                      .read<GuestCheckInCubit>()
-                                      .getNumberInfo(phoneNumber: phoneNumber);
-
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return CustomAlertDialogBox(
-                                        hideBothButtons: true,
-                                        insetPadding: AppUtils.isTablet(context)
-                                            ? const EdgeInsets.symmetric(
-                                                horizontal: 35)
-                                            : const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                        title: 'Select Visitor',
-                                        contentBuilder: (context, setState) {
-                                          return visitorNumberWidget(
-                                              _phoneNumberController.text);
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Text("Get Info",
-                                    style: TextStyle(color: AppColors.primary)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.gray,
-                          controller: _emailController,
-                          label: 'Email',
-                          hint: 'Enter email',
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.gray,
-                          controller: _entryCardNumberController,
-                          label: 'Entry Card Number',
-                          hint: 'Enter card number',
-                        ),
-                        const Gap(5),
-                        TextFieldWidget(
-                          outLineColor: AppColors.gray,
-                          controller: _descriptionController,
-                          label: 'Description',
-                          hint: 'Enter description',
-                        ),
-                      ],
-                    ),
+                      ),
+                      const Gap(5),
+                      _entryCardNumberTextField(),
+                      const Gap(5),
+                      _descriptionTextField(),
+                    ],
                   ),
-                ],
-              );
-            },
-          ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget visitorNumberWidget(String phoneNumber, {int? remainingVisitors}) {
+  Widget _mobileGuestCheckInScreen(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.horizontalPadding,
+            vertical: AppConstants.verticalPadding),
+        child: BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _imageAvatarWidget(),
+                const Gap(20),
+                _scanButton(isTablet: false),
+                const Gap(20),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _documentTypeDropDown(),
+                      const Gap(5),
+                      if (_selectedDocumentType?.value == 'Emirates ID')
+                        _emiratesIdNumberTextField(),
+                      if (_selectedDocumentType?.value == 'Photo ID')
+                        _photoIdNumberTextField(),
+                      if (_selectedDocumentType?.value == 'Travel Document')
+                        _travelDocumentNumberTextField(),
+                      const Gap(5),
+                      if (_selectedDocumentType?.value == 'Emirates ID')
+                        _emiratesIdIssueDatePicker(),
+                      if (_selectedDocumentType?.value == 'Photo ID')
+                        _photoIdIssueDatePicker(),
+                      if (_selectedDocumentType?.value == 'Travel Document')
+                        _travelDocumentIssueDatePicker(),
+                      const Gap(5),
+                      if (_selectedDocumentType?.value == 'Emirates ID')
+                        _emiratesIdExpiryDatePicker(),
+                      if (_selectedDocumentType?.value == 'Photo ID')
+                        _photoIdExpiryDatePicker(),
+                      if (_selectedDocumentType?.value == 'Travel Document')
+                        _travelDocumentExpiryDatePicker(),
+                      const Gap(5),
+                      if (_service?.id == null && _workOrder?.id == null) ...[
+                        _visitTypeDropDown(state),
+                        const Gap(5),
+                      ],
+                      _visitorCountTextField(),
+                      const Gap(5),
+                      if (state.selectedVisitType?.value == "Unit Visit") ...[
+                        _purposeDropDown(state),
+                        const Gap(5),
+                        _unitNumberDropDown(state),
+                      ],
+                      if (state.selectedUnit?.id != null)
+                        _residentInfoContainer(state),
+                      const Gap(5),
+                      _nameTextField(),
+                      const Gap(5),
+                      _phoneNumberTextField(state),
+                      const Gap(5),
+                      _emailTextField(),
+                      const Gap(5),
+                      _nationalityDropDown(state),
+                      const Gap(5),
+                      _entryCardNumberTextField(),
+                      const Gap(5),
+                      _descriptionTextField(),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _onGetInfoPressed(BuildContext context) async {
+    if (!(_phoneNumberKey.currentState?.validate() ?? false)) {
+      return;
+    }
+    final phoneNumber = _phoneNumberController.text.trim();
+    await context
+        .read<GuestCheckInCubit>()
+        .getNumberInfo(phoneNumber: phoneNumber);
+    if (!context.mounted) return;
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) {
+        return CustomAlertDialogBox(
+          hideBothButtons: true,
+          insetPadding: AppUtils.isTablet(context)
+              ? const EdgeInsets.symmetric(horizontal: 35)
+              : const EdgeInsets.symmetric(horizontal: 10),
+          title: AppUtils.languageTranslate('selectVisitor'),
+          contentBuilder: (context, setState) {
+            return _visitorNumberWidget(
+              _phoneNumberController.text,
+              remainingVisitors: ((context
+                          .read<GuestCheckInCubit>()
+                          .state
+                          .numberInfo
+                          ?.length ??
+                      0) -
+                  1),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _visitorNumberWidget(String phoneNumber, {int? remainingVisitors}) {
     return BlocBuilder<GuestCheckInCubit, GuestCheckInState>(
       builder: (context, state) {
         if (state.isNumberInfoLoading) {
@@ -1280,7 +481,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
         if (state.numberInfo?.isEmpty ?? true) {
           return Center(
             child: Text(
-              'No visitor records found for this number',
+              AppUtils.languageTranslate('noVisitorRecordsFound'),
               style: AppTextStyles.style14DarkGrey600,
             ),
           );
@@ -1294,7 +495,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
               style: AppTextStyles.style36Blue500,
             ),
             Text(
-              'Visitor records found for this number',
+              AppUtils.languageTranslate('visitorRecordsFound'),
               style: AppUtils.isMobile(context)
                   ? AppTextStyles.style14Black600
                   : AppTextStyles.style15Black600,
@@ -1321,8 +522,53 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           );
                     },
                     name: numberInfo?.name ?? '',
-                    country: numberInfo?.nationality ?? '',
+                    nationality: numberInfo?.nationality ?? '',
                     profileImageUrl: numberInfo?.imageUrl ?? '',
+                    onSelectPressed: () {
+                      _nameController.text = numberInfo?.name ?? '';
+                      _emailController.text = numberInfo?.email ?? '';
+                      _emiratesIdNumberController.text =
+                          numberInfo?.idNumber ?? '';
+                      _photoIdNumberController.text =
+                          numberInfo?.photoIdNumber ?? '';
+                      _travelDocumentNumberController.text =
+                          numberInfo?.passportNumber ?? '';
+
+                      _selectedEmiratesIdIssueDate =
+                          DateTime.tryParse(numberInfo?.idIssueDate ?? '');
+                      _selectedEmiratesIdExpiryDate =
+                          DateTime.tryParse(numberInfo?.idExpiryDate ?? '');
+                      _selectedPhotoIdIssueDate =
+                          DateTime.tryParse(numberInfo?.photoIdIssueDate ?? '');
+                      _selectedPhotoIdExpiryDate = DateTime.tryParse(
+                          numberInfo?.photoIdExpiryDate ?? '');
+                      _selectedTravelDocumentIssueDate = DateTime.tryParse(
+                          numberInfo?.passportIssueDate ?? '');
+                      _selectedTravelDocumentExpiryDate = DateTime.tryParse(
+                          numberInfo?.passportExpiryDate ?? '');
+                      _selectedPhotoIdExpiryDate = DateTime.tryParse(
+                          numberInfo?.photoIdExpiryDate ?? '');
+                      _selectedTravelDocumentIssueDate = DateTime.tryParse(
+                          numberInfo?.passportIssueDate ?? '');
+                      _selectedTravelDocumentExpiryDate = DateTime.tryParse(
+                          numberInfo?.passportExpiryDate ?? '');
+
+                      if (numberInfo?.nationality?.isNotEmpty ?? false) {
+                        List<Country>? countries =
+                            context.read<GuestCheckInCubit>().state.countries;
+                        final Country? matchedCountry = countries?.firstWhere(
+                          (item) =>
+                              item.name?.toLowerCase() ==
+                              numberInfo?.nationality?.toLowerCase(),
+                          orElse: () => Country(),
+                        );
+
+                        if (matchedCountry?.id != null) {}
+                        context
+                            .read<GuestCheckInCubit>()
+                            .onChangeSelectedNationality(matchedCountry);
+                      }
+                    },
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -1337,4 +583,551 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       },
     );
   }
+
+  void _onScanPassportTap(BuildContext context) async {
+    // PassportModel? passportData =
+    //     await ScannerService().scanPassportAndPerformOcr();
+    PassportModel? passportData =
+        await ScannerService().scanMrzForPassportAndParse(context);
+    if (passportData != null) {
+      clearData();
+
+      setState(() {
+        _personImage = passportData.personImage;
+        _nameController.text = passportData.name ?? '';
+        _travelDocumentNumberController.text =
+            passportData.passportNumber ?? '';
+        _selectedTravelDocumentExpiryDate =
+            DateTime.tryParse(passportData.expiryDate ?? '');
+        List<Country>? countries =
+            context.read<GuestCheckInCubit>().state.countries;
+        if ((passportData.nationality?.isNotEmpty ?? false) &&
+            (countries?.isNotEmpty ?? false)) {
+          final normalized = passportData.nationality?.trim().toLowerCase();
+
+          final Country? matchedCountry = countries?.firstWhere(
+            (item) => item.name?.toLowerCase() == normalized,
+            orElse: () => Country(),
+          );
+
+          if (matchedCountry?.id != null) {
+            context
+                .read<GuestCheckInCubit>()
+                .onChangeSelectedNationality(matchedCountry);
+          }
+        }
+      });
+    }
+  }
+
+  void _onScanEmiratesIdTap() async {
+    EmiratesIdModel? emiratesIdData =
+        await ScannerService().scanEmiratesIdAndPerformOcr();
+    if (emiratesIdData != null) {
+      clearData();
+
+      setState(() {
+        _personImage = emiratesIdData.personImage;
+        _nameController.text = emiratesIdData.name ?? '';
+        _emiratesIdNumberController.text = emiratesIdData.idNumber ?? '';
+        DateFormat format = DateFormat('dd/MM/yyyy');
+        _selectedEmiratesIdIssueDate =
+            format.tryParse(emiratesIdData.issueDate ?? '');
+        _selectedEmiratesIdExpiryDate =
+            format.tryParse(emiratesIdData.expiryDate ?? '');
+        List<Country>? countries =
+            context.read<GuestCheckInCubit>().state.countries;
+        if ((emiratesIdData.nationality?.isNotEmpty ?? false) &&
+            (countries?.isNotEmpty ?? false)) {
+          final normalized = emiratesIdData.nationality?.trim().toLowerCase();
+
+          final Country? matchedCountry = countries?.firstWhere(
+            (item) => item.name?.toLowerCase() == normalized,
+            orElse: () => Country(),
+          );
+
+          if (matchedCountry?.id != null) {
+            context
+                .read<GuestCheckInCubit>()
+                .onChangeSelectedNationality(matchedCountry);
+          }
+        }
+      });
+    }
+  }
+
+  Future<void> _onScanDrivingLicenseTap() async {
+    DrivingLicenseModel? drivingLicenseData =
+        await ScannerService().scanDrivingLicenseAndPerformOcr();
+    if (drivingLicenseData != null) {
+      clearData();
+      setState(() {
+        _personImage = drivingLicenseData.personImage;
+        _nameController.text = drivingLicenseData.name ?? '';
+        _photoIdNumberController.text = drivingLicenseData.licenseNumber ?? '';
+        // DateFormat format = DateFormat('dd/MM/yyyy');
+        // _selectedPhotoIdIssueDate =
+        //     format.tryParse(drivingLicenseData.issueDate ?? '');
+        _selectedPhotoIdIssueDate = drivingLicenseData.issueDate != null
+            ? DateTime.tryParse(drivingLicenseData.issueDate!)
+            : null;
+        _selectedPhotoIdExpiryDate = drivingLicenseData.expiryDate != null
+            ? DateTime.tryParse(drivingLicenseData.expiryDate!)
+            : null;
+        // _selectedPhotoIdExpiryDate =
+        //     format.tryParse(drivingLicenseData.expiryDate ?? '');
+        List<Country>? countries =
+            context.read<GuestCheckInCubit>().state.countries;
+        if ((drivingLicenseData.nationality?.isNotEmpty ?? false) &&
+            (countries?.isNotEmpty ?? false)) {
+          final normalized =
+              drivingLicenseData.nationality?.trim().toLowerCase();
+
+          final Country? matchedCountry = countries?.firstWhere(
+            (item) => item.name?.toLowerCase() == normalized,
+            orElse: () => Country(),
+          );
+
+          if (matchedCountry?.id != null) {
+            context
+                .read<GuestCheckInCubit>()
+                .onChangeSelectedNationality(matchedCountry);
+          }
+        }
+      });
+    }
+  }
+
+  Future<String> encodeImageToBase64(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    final base64Image = base64Encode(bytes);
+
+    final ext = imageFile.path.split('.').last.toLowerCase();
+    String mime = 'image/jpeg';
+    if (ext == 'png') mime = 'image/png';
+    if (ext == 'bmp') mime = 'image/bmp';
+    if (ext == 'jpg' || ext == 'jpeg') mime = 'image/jpeg';
+
+    return 'data:$mime;base64,$base64Image';
+  }
+
+  Widget _imageAvatarWidget() {
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        width: MediaQuery.of(context).size.width / 4,
+        height: MediaQuery.of(context).size.width / 4,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.gray),
+        ),
+        child: (_personImage?.path.isNotEmpty ?? false)
+            ? Image.file(
+                _personImage!,
+                fit: BoxFit.fill,
+              )
+            : SvgPicture.asset(
+                AppImages.placeHolder,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.placeHolder,
+                  BlendMode.srcIn,
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _scanButton({required bool isTablet}) {
+    return CustomButton(
+      buttonColor: AppColors.primary,
+      text: _selectedDocumentType?.value == 'Emirates ID'
+          ? AppUtils.languageTranslate('scanEmiratesId')
+          : _selectedDocumentType?.value == 'Photo ID'
+              ? AppUtils.languageTranslate('scanPhotoId')
+              : AppUtils.languageTranslate('scanTravelDocument'),
+      height: isTablet ? 60 : 41,
+      borderRadius: 6,
+      fontSize: isTablet ? 20 : null,
+      imageHeight: isTablet ? 25 : null,
+      image: AppImages.scan,
+      onPressed: () {
+        if (_selectedDocumentType?.value == 'Emirates ID') {
+          _onScanEmiratesIdTap();
+        } else if (_selectedDocumentType?.value == 'Photo ID') {
+          _onScanDrivingLicenseTap();
+        } else {
+          _onScanPassportTap(context);
+        }
+      },
+    );
+  }
+
+  Widget _documentTypeDropDown() {
+    return SingleSelectedDropdownWidget<TypeItemModel>(
+      label: AppUtils.languageTranslate('type'),
+      hint: AppUtils.languageTranslate('selectType'),
+      isClearButtonVisible: false,
+      fillColor: AppColors.white,
+      selectedItem: _selectedDocumentType,
+      compareFn: (p0, p1) => p0.value == p1.value,
+      items: AppConstants().documentTypes,
+      itemAsString: (item) => item.label,
+      onChanged: (value) {
+        _selectedDocumentType = value;
+        clearData();
+      },
+      validator: (value) {
+        if (value == null) {
+          return AppUtils.languageTranslate('required');
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _emiratesIdNumberTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.outLineGray,
+      enabledBorder: InputBorder.none,
+      controller: _emiratesIdNumberController,
+      label: AppUtils.languageTranslate('emiratesId'),
+      hint: AppUtils.languageTranslate('enterNumber'),
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  Widget _photoIdNumberTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.outLineGray,
+      enabledBorder: InputBorder.none,
+      controller: _photoIdNumberController,
+      label: AppUtils.languageTranslate('photoId'),
+      hint: AppUtils.languageTranslate('enterNumber'),
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  Widget _travelDocumentNumberTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.outLineGray,
+      enabledBorder: InputBorder.none,
+      controller: _travelDocumentNumberController,
+      label: AppUtils.languageTranslate('travelDocument'),
+      hint: AppUtils.languageTranslate('enterNumber'),
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  Widget _emiratesIdIssueDatePicker() {
+    return DatePickerWidget(
+      label: AppUtils.languageTranslate('issueDate'),
+      hint: AppUtils.languageTranslate('selectIssueDate'),
+      initialDate: _selectedEmiratesIdIssueDate,
+      onDatePicked: (value) {
+        _selectedEmiratesIdIssueDate = value;
+      },
+    );
+  }
+
+  Widget _photoIdIssueDatePicker() {
+    return DatePickerWidget(
+      label: AppUtils.languageTranslate('issueDate'),
+      hint: AppUtils.languageTranslate('selectIssueDate'),
+      initialDate: _selectedPhotoIdIssueDate,
+      onDatePicked: (value) {
+        _selectedPhotoIdIssueDate = value;
+      },
+    );
+  }
+
+  Widget _travelDocumentIssueDatePicker() {
+    return DatePickerWidget(
+      label: AppUtils.languageTranslate('issueDate'),
+      hint: AppUtils.languageTranslate('selectIssueDate'),
+      initialDate: _selectedTravelDocumentIssueDate,
+      onDatePicked: (value) {
+        _selectedTravelDocumentIssueDate = value;
+      },
+    );
+  }
+
+  Widget _emiratesIdExpiryDatePicker() {
+    return DatePickerWidget(
+      label: AppUtils.languageTranslate('expiryDate'),
+      hint: AppUtils.languageTranslate('selectExpiryDate'),
+      initialDate: _selectedEmiratesIdExpiryDate,
+      firstDate: _selectedEmiratesIdIssueDate,
+      onDatePicked: (value) {
+        _selectedEmiratesIdExpiryDate = value;
+        //print('Selected Date: $value');
+      },
+    );
+  }
+
+  Widget _photoIdExpiryDatePicker() {
+    return DatePickerWidget(
+      label: AppUtils.languageTranslate('expiryDate'),
+      hint: AppUtils.languageTranslate('selectExpiryDate'),
+      initialDate: _selectedPhotoIdExpiryDate,
+      firstDate: _selectedPhotoIdIssueDate,
+      onDatePicked: (value) {
+        _selectedPhotoIdExpiryDate = value;
+        //print('Selected Date: $value');
+      },
+    );
+  }
+
+  Widget _travelDocumentExpiryDatePicker() {
+    return DatePickerWidget(
+      label: AppUtils.languageTranslate('expiryDate'),
+      hint: AppUtils.languageTranslate('selectExpiryDate'),
+      initialDate: _selectedTravelDocumentExpiryDate,
+      firstDate: _selectedTravelDocumentIssueDate,
+      onDatePicked: (value) {
+        _selectedTravelDocumentExpiryDate = value;
+        //print('Selected Date: $value');
+      },
+    );
+  }
+
+  Widget _visitTypeDropDown(GuestCheckInState state) {
+    return SingleSelectedDropdownWidget<TypeItemModel>(
+      label: "${AppUtils.languageTranslate('type')}*",
+      isClearButtonVisible: false,
+      outLineColor: AppColors.outLineGray,
+      hint: AppUtils.languageTranslate('selectType'),
+      fillColor: AppColors.white,
+      selectedItem: state.selectedVisitType,
+      compareFn: (p0, p1) => p0.value == p1.value,
+      items: _visitTypes,
+      itemAsString: (item) => item.label,
+      onChanged: (value) {
+        context.read<GuestCheckInCubit>().onChangeSelectedVisitType(value);
+        context.read<GuestCheckInCubit>().onChangeSelectedUnit(null);
+      },
+      validator: (value) {
+        if (value == null) {
+          return AppUtils.languageTranslate('required');
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _visitorCountTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.outLineGray,
+      controller: _visitorCountController,
+      label: '${AppUtils.languageTranslate('visitorCount')}*',
+      hint: AppUtils.languageTranslate('enterCount'),
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return AppUtils.languageTranslate('required');
+        }
+        if (value.length > 8) {
+          return AppUtils.languageTranslate('validVisitorCountRequired');
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _purposeDropDown(GuestCheckInState state) {
+    return SingleSelectedDropdownWidget<VisitorsPurpose>(
+      label: "${AppUtils.languageTranslate('purpose')}*",
+      hint: AppUtils.languageTranslate('selectPurpose'),
+      fillColor: AppColors.white,
+      outLineColor: AppColors.outLineGray,
+      selectedItem: state.selectedPurpose,
+      itemAsString: (purpose) => purpose.purpose ?? "",
+      compareFn: (p0, p1) => p0.id == p1.id,
+      items: state.profileRecord?.association?.visitorsPurposes ?? [],
+      onChanged: (value) {
+        context.read<GuestCheckInCubit>().onChangeSelectedPurpose(value);
+      },
+      validator: (value) {
+        if (value?.purpose?.isEmpty ?? true) {
+          return AppUtils.languageTranslate('required');
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _unitNumberDropDown(GuestCheckInState state) {
+    return SingleSelectedDropdownWidget<UnitModel>(
+      label: "${AppUtils.languageTranslate('unitNumber')}*",
+      outLineColor: AppColors.outLineGray,
+      hint: AppUtils.languageTranslate('selectUnitNumber'),
+      fillColor: AppColors.white,
+      selectedItem: state.selectedUnit,
+      itemAsString: (unit) => unit.unitNumber ?? "",
+      compareFn: (unit, item) => unit.id == item.id,
+      items: state.units ?? [],
+      onChanged: (value) {
+        context.read<GuestCheckInCubit>().onChangeSelectedUnit(value);
+      },
+      validator: (value) {
+        if (value?.unitNumber?.isEmpty ?? true) {
+          return AppUtils.languageTranslate('required');
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _residentInfoContainer(GuestCheckInState state) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          color: AppColors.primary.withValues(alpha: 0.2),
+          borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TitleValueColumnDividerDetailsContainerWidget(
+            title: AppUtils.languageTranslate('residentName'),
+            value: state.selectedUnit?.resident?.fullName ?? '--',
+          ),
+          TitleValueColumnDividerDetailsContainerWidget(
+            title: AppUtils.languageTranslate('residentNumber'),
+            value: state.selectedUnit?.resident?.primaryPhone ?? '--',
+            isLast: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _nameTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.outLineGray,
+      enabledBorder: InputBorder.none,
+      controller: _nameController,
+      label: '${AppUtils.languageTranslate('name')}*',
+      hint: AppUtils.languageTranslate('enterName'),
+      keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return AppUtils.languageTranslate('required');
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _phoneNumberTextField(GuestCheckInState state) {
+    return Form(
+      key: _phoneNumberKey,
+      child: TextFieldWidget(
+        label: "${AppUtils.languageTranslate('phoneNumber')}*",
+        hint: AppUtils.languageTranslate('enterPhoneNumber'),
+        controller: _phoneNumberController,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return AppUtils.languageTranslate('requiredMax13Digits');
+          }
+          if (!RegExp(r'^\d{7,13}$').hasMatch(value)) {
+            return AppUtils.languageTranslate('enterValidMobileNumber');
+          }
+          return null;
+        },
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(13),
+        ],
+        suffix: Container(
+          width: 80,
+          height: 48,
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(5),
+                bottomRight: Radius.circular(5),
+              ),
+              border: Border.all(color: AppColors.primary)),
+          child: state.isNumberInfoLoading
+              ? LoaderWidget()
+              : TextButton(
+                  style: ButtonStyle(
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                  ),
+                  onPressed: () {
+                    _onGetInfoPressed(context);
+                  },
+                  child: Text(
+                    AppUtils.languageTranslate('getInfo'),
+                    style: TextStyle(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+
+  Widget _emailTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.gray,
+      controller: _emailController,
+      label: AppUtils.languageTranslate('email'),
+      hint: AppUtils.languageTranslate('enterEmail'),
+      validator: (value) {
+        if (value?.isNotEmpty ?? false) {
+          if (!(ValidationUtil.isEmailValid(value))) {
+            return AppUtils.languageTranslate('pleaseEnterValidEmail');
+          }
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _nationalityDropDown(GuestCheckInState state) {
+    return SingleSelectedDropdownWidget<Country>(
+      label: AppUtils.languageTranslate('nationality'),
+      outLineColor: AppColors.outLineGray,
+      hint: AppUtils.languageTranslate('selectNationality'),
+      fillColor: AppColors.white,
+      selectedItem: state.selectedNationality,
+      items: state.countries ?? [],
+      itemAsString: (country) => country.name ?? "",
+      compareFn: (p0, p1) => p0.id == p1.id,
+      onChanged: (value) {
+        context.read<GuestCheckInCubit>().onChangeSelectedNationality(value);
+      },
+    );
+  }
+
+  Widget _entryCardNumberTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.gray,
+      controller: _entryCardNumberController,
+      label: AppUtils.languageTranslate('entryCardNumber'),
+      hint: AppUtils.languageTranslate('enterCardNumber'),
+    );
+  }
+
+  Widget _descriptionTextField() {
+    return TextFieldWidget(
+      outLineColor: AppColors.gray,
+      controller: _descriptionController,
+      label: AppUtils.languageTranslate('description'),
+      hint: AppUtils.languageTranslate('enterDescription'),
+      maxLines: 3,
+    );
+  }
+}
+
+class TypeItemModel {
+  final String value;
+  final String label;
+
+  TypeItemModel({
+    required this.value,
+    required this.label,
+  });
 }

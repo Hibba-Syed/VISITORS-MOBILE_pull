@@ -372,7 +372,7 @@ class Pivot {
         "owner_id": ownerId,
         "id": id,
         "is_primary": isPrimary,
-        "start_date":
+        "start_date":startDate==null?null:
             "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
         "end_date": endDate,
         "communication_email": communicationEmail,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 class SendChatButtonContainerWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class SendChatButtonContainerWidget extends StatelessWidget {
             highlightColor: Colors.transparent,
         onPressed: onPressed,
         icon: Transform.rotate(
-          angle: 125,
+          angle: context.locale.languageCode == 'en' ? 125 : 70,
           child: Icon(Icons.send,
             color: iconColor?? AppColors.primary,
           ),

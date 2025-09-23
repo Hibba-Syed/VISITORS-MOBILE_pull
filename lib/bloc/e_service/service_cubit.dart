@@ -24,13 +24,13 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(state.copyWith(selectedType: type));
   }
 
-  void onChangeSelectedUnit(UnitModel unit) {
+  void onChangeSelectedUnit(UnitModel? unit) {
     emit(state.copyWith(selectedUnit: unit));
   }
 
   void resetFilterData() {
     emit(ServiceState(
-      serviceModel: state.serviceModel,
+      services: state.services,
       isServicesDetailsLoading: state.isServicesDetailsLoading,
       isLoading: state.isLoading,
       isUnitLoading: state.isUnitLoading,
@@ -42,15 +42,14 @@ class ServiceCubit extends Cubit<ServiceState> {
   }
 
   Future<void> getServices({String? keyword}) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true,page: 1));
 
     ServiceResponseModel? response =
         await _serviceRepo.getServices(
           page: state.page,
           keyword: state.searchKeyword,
           unitId: state.selectedUnit?.id,
-          serviceType: state.selectCheckInTypeList?.value,
-          type: state.selectedType?.value
+          type: state.selectedType?.value,
         ).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -62,24 +61,22 @@ class ServiceCubit extends Cubit<ServiceState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null && response.status == 'success') {
-      emit(state.copyWith(serviceModel: response.record));
+      emit(state.copyWith(services: response.record));
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
-  Future<void> getMoreServices({
-    String? keyword,
-  }) async {
-    int page = state.page + 1;
+
+  Future<void> getMoreServices({ String? keyword,}) async {
+    int page = state.page+ 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     ServiceResponseModel? response = await _serviceRepo
         .getServices(
-      page: state.page,
-      keyword: state.searchKeyword,
-      unitId: state.selectedUnit?.id,
-      serviceType: state.selectedType?.value,
-
+          page: page,
+          keyword: state.searchKeyword,
+          unitId: state.selectedUnit?.id,
+          type: state.selectedType?.value,
     )
         .onError(
           (error, stackTrace) {
@@ -93,20 +90,19 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<ServiceModel> checkIns = state.serviceModel ?? [];
-        checkIns.addAll(response.record as Iterable<ServiceModel>);
-        emit(state.copyWith(serviceModel: checkIns));
+        List<ServiceModel> services = state.services ?? [];
+        services.addAll(response.record as Iterable<ServiceModel>);
+        emit(state.copyWith(services: services,page: page));
       } else {
-        Fluttertoast.showToast(msg: 'No more service');
+        Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreService'));
         page = state.page - 1;
         emit(state.copyWith(page: page));
       }
     } else {
       Fluttertoast.showToast(
-          msg: 'Something went wrong while fetching service');
+          msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingService'));
     }
   }
-
   Future<void> getUnits() async {
     emit(state.copyWith(isUnitLoading: true));
     UnitsResponseModel? response = await _unitsRepo.getUnits().onError(
@@ -122,7 +118,7 @@ class ServiceCubit extends Cubit<ServiceState> {
     if (response != null && response.status == 'success') {
       emit(state.copyWith(units: response.record));
     } else {
-      Fluttertoast.showToast(msg: 'Something went wrong while fetching units');
+      Fluttertoast.showToast(msg: AppUtils.languageTranslate('somethingWentWrongWhileFetchingUnits'));
     }
   }
 }

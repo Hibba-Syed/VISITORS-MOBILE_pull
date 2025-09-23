@@ -1,73 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart' show Gap;
+import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 class OverlapContainerWidget extends StatelessWidget {
   final String? text;
-  final Color? backgroundColor;
-  final Color? imagedColor;
-  final Color? textColor;
-  final String? image;
+  final Color? color;
+  final String? svgImagePath;
   const OverlapContainerWidget({
     super.key,
     this.text,
-    this.backgroundColor,
-    this.imagedColor,
-    this.textColor,
-    this.image,
-
+    this.color,
+    this.svgImagePath,
   });
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-          decoration:  BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(6),
-                topLeft: Radius.circular(6),
-              ),
-              color: backgroundColor ?? AppColors.primary),
-          child: Row(
-            children: [
-          if (image != null && image!.isNotEmpty) ...[
-          SvgPicture.asset(
-                image ?? "",
+    return Flexible(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: color != null
+              ? color!.withValues(alpha: 0.1)
+              : AppColors.primary.withValues(alpha: 0.1),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (svgImagePath != null && svgImagePath!.isNotEmpty) ...[
+              SvgPicture.asset(
+                svgImagePath ?? "",
                 height: 13,
                 width: 13,
-                colorFilter:   ColorFilter.mode(
-                  imagedColor ??  AppColors.white,
+                colorFilter: ColorFilter.mode(
+                  color ?? AppColors.primary,
                   BlendMode.srcIn,
                 ),
               ),
               const Gap(3),
-          ],
-              Text(
-                text ?? "",
-                style:  AppUtils.isTablet(context) ? TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: textColor ?? AppColors.white
-                )
-
-               // AppTextStyles.style15white500
-                    :
-                TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: textColor ?? AppColors.white
-                )
-               // AppTextStyles.style13white500,
-              ),
             ],
-          ),
+            if (text?.isNotEmpty ?? false)
+              Flexible(
+                child: Text(
+                  text ?? "",
+                  style: TextStyle(
+                      fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                      fontWeight: FontWeight.w500,
+                      color: color ?? AppColors.primary,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

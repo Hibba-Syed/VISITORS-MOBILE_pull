@@ -5,6 +5,7 @@ import 'package:visitors/view/widgets/button/custom_button.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/overlap_container_widget.dart';
 import 'package:visitors/view/widgets/container_widgets/stack_count_container_widget.dart';
+import 'package:visitors/view/widgets/mobile_web_icon_widget.dart';
 
 import '../../../../resource/constants/app_colors.dart';
 import '../../../../resource/constants/images.dart';
@@ -21,10 +22,10 @@ class CheckInCardWidget extends StatelessWidget {
   final String? count;
   final String? typeText;
   final String? typeImage;
-  final Color? typeBackgroundColor;
   final VoidCallback checkOutOnPressed;
   final VoidCallback? detailsOnPressed;
   final bool isServiceable;
+  final bool? isMobile;
   const CheckInCardWidget({
     super.key,
     this.profileImageUrl,
@@ -36,50 +37,60 @@ class CheckInCardWidget extends StatelessWidget {
     this.count,
     this.reference,
     this.purpose,
-    this.typeBackgroundColor,
     required this.checkOutOnPressed,
     this.detailsOnPressed,
     this.phone,
     this.isServiceable = false,
+    required this.isMobile,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OverlapContainerWidget(
-              text: typeText,
-              image: typeImage,
-            ),
-            isServiceable
-                ? OverlapContainerWidget(
-                  backgroundColor: AppColors.yellow,
-                    text: reference,
-                  )
-                : OverlapContainerWidget(
-                   backgroundColor: typeBackgroundColor,
-                    text: type,
-            ),
-          ],
+    return InkWell(
+      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+      onTap: detailsOnPressed,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(10),
         ),
-        InkWell(
-          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-          onTap: detailsOnPressed,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OverlapContainerWidget(
+                  text: typeText,
+                  svgImagePath: typeImage,
+                ),
+                Gap(10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    isServiceable
+                        ? OverlapContainerWidget(
+                            color: AppColors.yellow,
+                            text: reference,
+                          )
+                        : OverlapContainerWidget(
+                            color:
+                                AppUtils.getCheckOutTypeColor(type),
+                            //typeBackgroundColor,
+                            text: type,
+                          ),
+                    Gap(6),
+                    MobileWebIconWidget(
+                      isMobile: isMobile ?? false,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            child: Column(
+            Gap(10),
+            Column(
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +100,7 @@ class CheckInCardWidget extends StatelessWidget {
                         StackCountContainerWidget(
                           imageHeight: 55,
                           imageWidth: 55,
-                          count: count ?? "",
+                          count: count,
                           countTopPositioned: -5,
                           countRightPositioned: -6,
                           backgroundColor: AppColors.primary,
@@ -102,15 +113,12 @@ class CheckInCardWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            name ?? "",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppUtils.isTablet(context) ?
-                            AppTextStyles.style15Black600
-                                :
-                            AppTextStyles.style14Black600
-                          ),
+                          Text(name ?? "",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppUtils.isTablet(context)
+                                  ? AppTextStyles.style15Black600
+                                  : AppTextStyles.style14Black600),
                           const Gap(6),
                           Row(
                             children: [
@@ -135,31 +143,35 @@ class CheckInCardWidget extends StatelessWidget {
                   ],
                 ),
                 const Gap(5),
-                isServiceable ?
-                Row(
-                  children: [
-                    const Text(
-                      'Purpose: ',
-                      style: AppTextStyles.style14Black600,
-                    ),
-                    Text(
-                      purpose ?? "",
-                      style: AppTextStyles.style13black400,
-                    ),
-                  ],
-                ): SizedBox.shrink(),
+                isServiceable
+                    ? Row(
+                        children: [
+                          Text(
+                            '${AppUtils.languageTranslate("purpose")}:',
+                            style: AppTextStyles.style14Black600,
+                          ),
+                          Gap(3),
+                          Expanded(
+                            child: Text(
+                              purpose ?? "",
+                              style: AppTextStyles.style13black400,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox.shrink(),
                 const Gap(5),
                 CustomButton(
                     image: AppImages.logoutCard,
                     buttonColor: AppColors.red,
-                    text: 'Checkout',
-                    onPressed: checkOutOnPressed
-                ),
+                    text: AppUtils.languageTranslate("checkout"),
+                    onPressed: checkOutOnPressed),
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

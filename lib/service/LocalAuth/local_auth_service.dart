@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:visitors/utils/app_utils.dart';
 
 class LocalAuthService {
   final LocalAuthentication _auth = LocalAuthentication();
@@ -13,14 +14,14 @@ class LocalAuthService {
   Future<bool> authenticate() async {
     try {
       return await _auth.authenticate(
-        localizedReason: 'Please authenticate to proceed',
+        localizedReason: AppUtils.languageTranslate('pleaseAuthenticateToProceed'),
         options: const AuthenticationOptions(
           useErrorDialogs: true,
           stickyAuth: true,
         ),
       );
     } catch (e) {
-      debugPrint("Authentication Error: $e");
+      debugPrint( "${AppUtils.languageTranslate('authenticationError')} $e");
       return false;
     }
   }

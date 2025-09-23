@@ -4,14 +4,18 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../resource/constants/app_colors.dart';
 
 class LoaderWidget extends StatelessWidget {
-  const LoaderWidget({super.key});
+  final Color? loaderColor;
+  const LoaderWidget({
+    super.key,
+    this.loaderColor
+  });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
         child: LoadingAnimationWidget.dotsTriangle(
-          color: AppColors.primary,
+          color: loaderColor ?? AppColors.primary,
           size: 35,
        ),
       ),

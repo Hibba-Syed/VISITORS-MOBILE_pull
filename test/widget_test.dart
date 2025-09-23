@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:visitors/view/screens/iskaan_visitors_mobile.dart';
+import 'package:visitors/iskaan_visitors_mobile.dart';
 
 
 void main() {

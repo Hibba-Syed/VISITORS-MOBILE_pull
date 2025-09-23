@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visitors/bloc/check_ins/check_ins_cubit.dart';
+import 'package:visitors/bloc/check_out/details/check_out_details_cubit.dart';
 import 'package:visitors/bloc/dashboard/dashboard_cubit.dart';
 import 'package:visitors/bloc/main_dashboard/main_dashboard_cubit.dart';
+import 'package:visitors/view/screens/check_outs/detail/check_out_details_screen.dart';
 import 'package:visitors/view/screens/guest_check_in/guest_check_in_screen.dart';
 import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/check_ins/details/check_ins_details_cubit.dart';
@@ -24,7 +25,7 @@ import '../../view/screens/dashboard/dashboard_screen.dart';
 import '../../view/screens/main_dashboard_screen.dart';
 import '../../view/screens/services/detail/fit_out_service_details_screen.dart';
 import '../../view/screens/splash_screen.dart';
-import '../../view/screens/visitor passes/serviceable_check_ins_screen.dart';
+import '../../view/screens/services/serviceable_check_ins_screen.dart';
 import '../../view/screens/visitor passes/visitor_passes_screen.dart';
 import '../../view/screens/work order/detail/work_order_job_details_screen.dart';
 import '../../view/screens/work order/job_check_ins_screen.dart';
@@ -54,7 +55,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.mainDashboard,
-      page:  MainDashboardScreen(),
+      page: MainDashboardScreen(),
       bloc: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -77,7 +78,8 @@ class AppPages {
           ),
           BlocProvider(
             create: (context) => DirectoryCubit(),
-          ), BlocProvider(
+          ),
+          BlocProvider(
             create: (context) => GuestCheckInCubit(),
           ),
         ],
@@ -85,24 +87,29 @@ class AppPages {
       ),
     ),
     PageEntity(
-      route: AppRoutes.workOrderJobDetails,
-      page: const WorkOrderJobDetailsScreen(),
-      bloc: BlocProvider(
+        route: AppRoutes.workOrderJobDetails,
+        page: const WorkOrderJobDetailsScreen(),
+        bloc: BlocProvider(
           create: (context) => WorkOrderDetailsCubit(),
-      )
-    ),
+        )),
     PageEntity(
-      route: AppRoutes.servicesDetails,
-      page:  FitOutServiceDetailsScreen(),
+        route: AppRoutes.servicesDetails,
+        page: FitOutServiceDetailsScreen(),
         bloc: BlocProvider(
           create: (context) => ServiceDetailsCubit(),
-        )
-    ),
+        )),
     PageEntity(
       route: AppRoutes.checkInDetails,
-      page:  CheckInDetailsScreen(),
+      page: CheckInDetailsScreen(),
       bloc: BlocProvider(
         create: (context) => CheckInsDetailsCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.checkOutDetails,
+      page: CheckOutDetailsScreen(),
+      bloc: BlocProvider(
+        create: (context) => CheckoutDetailsCubit(),
       ),
     ),
     PageEntity(
@@ -118,7 +125,6 @@ class AppPages {
       bloc: BlocProvider(
         create: (context) => VisitorPassCubit(),
       ),
-
     ),
     PageEntity(
       route: AppRoutes.serviceableCheckIns,
@@ -130,7 +136,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.dashboard,
-      page:  DashboardScreen(),
+      page: DashboardScreen(),
     ),
     PageEntity(
       route: AppRoutes.jobCheckIns,
@@ -165,7 +171,7 @@ class AppPages {
       }
     }
     return MaterialPageRoute(
-        builder: (context) =>  LoginScreen(), settings: settings);
+        builder: (context) => LoginScreen(), settings: settings);
   }
 }
 

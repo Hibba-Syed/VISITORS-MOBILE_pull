@@ -17,7 +17,6 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
   final String? updatedDate;
   final String? status;
   final String? reference;
-  final String? typeText;
   final String? typeAssetImage;
   final VoidCallback checkInPressed;
   final VoidCallback detailsOnPressed;
@@ -31,7 +30,6 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
     this.vendorName,
     this.createdDate,
     this.reference,
-    this.typeText,
     required this.checkInPressed,
     required this.detailsOnPressed,
     this.typeAssetImage,
@@ -43,36 +41,36 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return InkWell(
+      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+      onTap: detailsOnPressed,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: AppColors.white),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OverlapContainerWidget(
-              text: (isAwarded == 1) ? 'Work Order' : 'RFP',
-              image: (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard ,
-              backgroundColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
-              // imagedColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
-              // textColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
-            ),
-            OverlapContainerWidget(
-              text: reference,
-            ),
-          ],
-        ),
-        InkWell(
-          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-          onTap: detailsOnPressed,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OverlapContainerWidget(
+                  text: (isAwarded == 1) ? 'Work Order' : 'RFP',
+                  svgImagePath:
+                      (isAwarded == 1) ? AppImages.hammer : AppImages.rfpCard,
+                  color:
+                      (isAwarded == 1) ? AppColors.cyanBlue : AppColors.brown,
+                  // imagedColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
+                  // textColor: (isAwarded == 1) ?  AppColors.cyanBlue : AppColors.brown,
                 ),
-                color: AppColors.white),
-            child: Column(
+                Gap(6),
+                OverlapContainerWidget(
+                  text: reference,
+                ),
+              ],
+            ),
+            Gap(10),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -83,7 +81,9 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         title ?? "",
-                        style: AppUtils.isTablet(context) ? AppTextStyles.style16black600 : AppTextStyles.style15Black600,
+                        style: AppUtils.isTablet(context)
+                            ? AppTextStyles.style16black600
+                            : AppTextStyles.style15Black600,
                       ),
                     ),
                     Column(
@@ -120,34 +120,32 @@ class WorkOrderRFPCardWidget extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                              buttonColor: AppColors.green,
-                              image: AppImages.checkInButton,
-                              text: 'Check-In',
-                              onPressed: checkInPressed),
-                        ),
-                        if(isActiveCheckins)...[
-                          const Gap(8),
-                          Expanded(
-                            child: CustomButton(
-                                buttonColor: AppColors.cyanBlue,
-                                image: AppImages.serviceable,
-                                text: 'Job Check - Ins', onPressed: jobCheckInOnPressed
-                            ),
-                          ),
-                        ]
-
-                      ],
-                    )
-
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                          buttonColor: AppColors.green,
+                          image: AppImages.checkInButton,
+                          text: AppUtils.languageTranslate('checkIn'),
+                          onPressed: checkInPressed),
+                    ),
+                    if (isActiveCheckins) ...[
+                      const Gap(8),
+                      Expanded(
+                        child: CustomButton(
+                            buttonColor: AppColors.cyanBlue,
+                            image: AppImages.serviceable,
+                            text: AppUtils.languageTranslate('jobCheckIns'),
+                            onPressed: jobCheckInOnPressed),
+                      ),
+                    ]
+                  ],
+                )
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

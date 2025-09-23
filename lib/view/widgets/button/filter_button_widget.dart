@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/widgets/button/custom_button.dart';
 
 class FilterButtonWidget extends StatelessWidget {
@@ -45,7 +46,7 @@ class FilterButtonWidget extends StatelessWidget {
             overlayColor: const WidgetStatePropertyAll(Colors.transparent),
             onTap: applyOnPressed,
             child: CustomButton(
-                height: 45, text: 'Apply Filters', onPressed: applyOnPressed,),
+                height: 45, text: AppUtils.languageTranslate('applyFilters'), onPressed: applyOnPressed,),
           ),
         ),
       ],

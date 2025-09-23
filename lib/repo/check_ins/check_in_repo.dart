@@ -3,10 +3,6 @@ import 'package:visitors/model/check_ins/check_ins_response_model.dart';
 
 import '../../model/check_ins/check_in_log_response_model.dart';
 import '../../model/check_ins/guest_checkin_response_model.dart';
-import '../../model/check_out/check_out_all_model.dart';
-import 'package:visitors/model/check_outs/check_out_visitor_response_model.dart';
-
-import '../../model/visitor_info/delete_visitor_response_model.dart';
 import '../../model/visitor_info/visitor_phone_info_response_model.dart';
 
 abstract class CheckInRepo {
@@ -23,15 +19,10 @@ abstract class CheckInRepo {
   });
   Future<CheckInLogResponseModel?> getCheckInDetailsLogs({required int? id});
 
-  Future<CheckOutAll?> checkOutAll();
 
-  Future<CheckOutVisitorResponseModel?> checkOutVisitors({
-    required int? id,
-    required Map<String, dynamic> data,
-  });
+
   Future<VisitorPhoneInfoResponseModel?> getNumberInfo({required String? phoneNumber});
 
-  Future<DeleteVisitorResponseModel?> deleteVisitor({required int? id});
   Future<GuestCheckInResponseModel?> guestCheckIn(
   {required Map<String, dynamic> data}
       );

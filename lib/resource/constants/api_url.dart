@@ -1,5 +1,6 @@
 class ApiUrl {
   static const String baseUrl = 'https://staging.iskaanapi.com';
+  // static const String baseUrl = 'https://iskaanapi.com';
 
   ///
   static const String dashboard = '$baseUrl/';
@@ -24,6 +25,7 @@ class ApiUrl {
   static const String checkOutVisitor = '$baseUrl/visitor/check-out';
   static const String addServiceLog = '$baseUrl/visitor/log-application';
   static const String serviceComplete = '$baseUrl/visitor/service-complete';
+  static const String serviceAccessDeviceComplete = '$baseUrl/visitor/access-device-complete';
   static const String clearPayment = '$baseUrl/visitor/clear-payment';
   static const String visitorPassesCount = '$baseUrl/visitor/visitor-passes/counts';
   static const String countries = '$baseUrl/countries';

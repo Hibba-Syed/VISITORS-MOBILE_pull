@@ -1,11 +1,10 @@
 import 'package:visitors/data/network/base_api_services.dart';
 import 'package:visitors/data/network/network_api_services.dart';
-import 'package:visitors/repo/dashboard/dashboard_repo.dart';
-
+import 'package:visitors/repo/counts/counts_repo.dart';
 import '../../model/count/count_response_model.dart';
 import '../../resource/constants/api_url.dart';
 
-class DashboardRepoImpl implements DashboardRepo {
+class CountsRepoImpl implements CountsRepo {
   final BaseApiServices _apiService = NetworkApiServices();
 
   @override

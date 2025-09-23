@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart' show CachedNetworkImage;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 
+import '../../resource/constants/images.dart';
 import '../../utils/validation_util.dart';
 
 class NetworkImageWidget extends StatefulWidget {
@@ -47,10 +49,17 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> {
         shape: widget.shape,
       ),
       child: widget.placeHolder ??
-          const Icon(
-            Icons.person,
-            color: AppColors.darkGrey,
+        SvgPicture.asset(
+          AppImages.placeHolder,
+          colorFilter:  const ColorFilter.mode(
+            AppColors.placeHolder,
+            BlendMode.srcIn,
           ),
+        ),
+          // const Icon(
+          //   Icons.person,
+          //   color: AppColors.primary,
+          // ),
     );
   }
 
