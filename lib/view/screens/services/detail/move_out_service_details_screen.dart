@@ -44,7 +44,7 @@ class _MoveOutServiceDetailsScreenState
 
   XFile? selectedImage;
   String? filePath;
-  bool? isPaymentReceived;
+  bool isPaymentReceived = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,6 +202,7 @@ class _MoveOutServiceDetailsScreenState
                                   url: state.serviceDetails?.application
                                           ?.mcEmiratesPathUrl ??
                                       "--",
+                                  isLast: true,
                                 ),
                               ],
                             ),
@@ -378,7 +379,7 @@ class _MoveOutServiceDetailsScreenState
                                                       'pleaseUploadTheChequeFile'));
                                               return false;
                                             }
-                                            if (isPaymentReceived == null) {
+                                            if (isPaymentReceived == false) {
                                               Fluttertoast.showToast(
                                                   msg: AppUtils.languageTranslate(
                                                       'pleaseSelectCheckboxFirst'));
@@ -399,7 +400,7 @@ class _MoveOutServiceDetailsScreenState
                                             if (result) {
                                               _noteController.clear();
                                               selectedImage = null;
-                                              isPaymentReceived = null;
+                                              isPaymentReceived = false;
                                             }
                                             return result;
                                           }
@@ -555,12 +556,11 @@ class _MoveOutServiceDetailsScreenState
                                                                   .transparent,
                                                               width: 1),
                                                           value:
-                                                              isPaymentReceived ??
-                                                                  false,
+                                                              isPaymentReceived,
                                                           onChanged: (value) {
                                                             setState(() {
                                                               isPaymentReceived =
-                                                                  value;
+                                                                  value??false;
                                                             });
                                                           })),
                                                   Gap(6),

@@ -66,12 +66,16 @@ class ServicesCardWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title ?? "",
-                      style: AppUtils.isTablet(context)
-                          ? AppTextStyles.style15Black600
-                          : AppTextStyles.style14Black600,
+                    Expanded(
+                      child: Text(
+                        title ?? "",
+                        style: AppUtils.isTablet(context)
+                            ? AppTextStyles.style15Black600
+                            : AppTextStyles.style14Black600,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
+                    Gap(10),
                     status?.isNotEmpty ?? true
                         ? StatusWidget(
                             status: status ?? "",

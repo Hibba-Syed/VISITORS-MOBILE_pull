@@ -170,7 +170,18 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                             const SizedBox(height: 15),
                           ],
                           widget.contentBuilder != null
-                              ? widget.contentBuilder!(context, setState)
+                              ? Stack(
+                                  children: [
+                                    widget.contentBuilder!(context, setState),
+                                    if ((isLoading || isFirstButtonLoading))
+                                      Positioned.fill(
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          color: AppColors.transparent,
+                                        ),
+                                      ),
+                                  ],
+                                )
                               : Align(
                                   alignment: Alignment.center,
                                   child: Text(
@@ -228,10 +239,9 @@ class CustomAlertDialogBoxState extends State<CustomAlertDialogBox> {
                                                   AppUtils.languageTranslate(
                                                       'cancel'),
                                               style: TextStyle(
-                                                  color: widget
-                                                          .firstButtonTextColor ??
-                                                      Colors.black,
-
+                                                color: widget
+                                                        .firstButtonTextColor ??
+                                                    Colors.black,
                                               ),
                                             ),
                                           ),

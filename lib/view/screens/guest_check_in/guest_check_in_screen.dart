@@ -922,6 +922,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       label: '${AppUtils.languageTranslate('visitorCount')}*',
       hint: AppUtils.languageTranslate('enterCount'),
       keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: (value) {
         if (value == null || value.isEmpty) {
           return AppUtils.languageTranslate('required');

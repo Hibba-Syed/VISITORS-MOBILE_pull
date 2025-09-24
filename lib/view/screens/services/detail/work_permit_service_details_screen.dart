@@ -105,7 +105,7 @@ class _WorkPermitServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                   title:
                                       AppUtils.languageTranslate('startDate'),
-                                  value: DateTimeUtil.getFormattedDateTime(state
+                                  value: DateTimeUtil.getFormattedDate(state
                                       .serviceDetails?.application?.startDate)),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate(
@@ -124,7 +124,7 @@ class _WorkPermitServiceDetailsScreenState
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('endDate'),
-                                value: DateTimeUtil.getFormattedDateTime(
+                                value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.application?.endDate),
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
@@ -257,7 +257,7 @@ class _WorkPermitServiceDetailsScreenState
                                                 ?.passportExpiry !=
                                             null) &&
                                         (state.serviceDetails!.passportExpiry!
-                                            .isAfter(DateTime.now())))
+                                            .isBefore(DateTime.now())))
                                     ? AppColors.red
                                     : null,
                               ),
@@ -276,7 +276,7 @@ class _WorkPermitServiceDetailsScreenState
                                                 ?.clientIdExpiry !=
                                             null) &&
                                         (state.serviceDetails!.clientIdExpiry!
-                                            .isAfter(DateTime.now())))
+                                            .isBefore(DateTime.now())))
                                     ? AppColors.red
                                     : null,
                               ),

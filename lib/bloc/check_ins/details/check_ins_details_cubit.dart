@@ -91,7 +91,7 @@ class CheckInsDetailsCubit extends Cubit<CheckInsDetailsState> {
         Fluttertoast.showToast(
             msg: (data['checkout'] != null)
                 ? '${AppUtils.languageTranslate('checkout')} ${data['checkout'].toString()} ${AppUtils.languageTranslate('visitorsSuccessfully')}'
-                : AppUtils.languageTranslate('checkoutSuccessfully'));
+                : AppUtils.languageTranslate('checkedOutSuccessfully'));
         return true;
       } else {
         Fluttertoast.showToast(

@@ -63,6 +63,7 @@ class _CustomServiceDetailsScreenState
                         const Gap(20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: HeadingWidget(
@@ -97,7 +98,7 @@ class _CustomServiceDetailsScreenState
                               final field = state
                                   .serviceDetails!.application!.fields![index];
 
-                              String displayValue = '--';
+                              String? displayValue;
 
                               switch (field.type) {
                                 case "text":
@@ -132,8 +133,7 @@ class _CustomServiceDetailsScreenState
                                   break;
 
                                 case "file":
-                                  displayValue =
-                                      field.value?.toString() ?? '--';
+                                  displayValue = field.value?.toString() ?? '';
                                   // You could render a clickable link/button here if needed
                                   break;
 
@@ -155,9 +155,33 @@ class _CustomServiceDetailsScreenState
 
                               return TitleValueColumnDividerDetailsContainerWidget(
                                 title: field.label ?? '--',
-                                url: field.type == 'file' ? displayValue : null,
-                                value:
-                                    field.type != 'file' ? displayValue : null,
+                                url: field.type == 'file'
+                                    ? (displayValue?.isNotEmpty ?? false)
+                                        ? displayValue
+                                        : null
+                                    : null,
+                                value: (field.type == 'file' &&
+                                        (displayValue?.isEmpty ?? true))
+                                    ? '--'
+                                    : field.type != 'file'
+                                        ? displayValue ?? '--'
+                                        : null,
+                                valueWidget: (field.type == 'rating' &&
+                                        (int.tryParse(displayValue ?? '') !=
+                                            null))
+                                    ? Row(
+                                        children: List.generate(
+                                          int.tryParse(displayValue ?? '') ?? 0,
+                                          (index) {
+                                            return Icon(
+                                              Icons.star,
+                                              size: 16,
+                                              color: AppColors.darkGrey,
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    : null,
                                 isLast: isLast,
                               );
                             },
@@ -190,7 +214,10 @@ class _CustomServiceDetailsScreenState
                                           .serviceDetails?.documents?[index];
                                       if (document?.label ==
                                               "Sent For Approval File" ||
-                                          document?.label == "Approve File") {
+                                          document?.label == "Approve File" ||
+                                          (document?.name?.isEmpty ?? true) ||
+                                          (document?.pathUrl?.isEmpty ??
+                                              true)) {
                                         return SizedBox.shrink();
                                       }
                                       return ServicesDocumentsCardWidget(
@@ -199,6 +226,16 @@ class _CustomServiceDetailsScreenState
                                       );
                                     },
                                     separatorBuilder: (context, index) {
+                                      Document? document = state
+                                          .serviceDetails?.documents?[index];
+                                      if (document?.label ==
+                                              "Sent For Approval File" ||
+                                          document?.label == "Approve File" ||
+                                          (document?.name?.isEmpty ?? true) ||
+                                          (document?.pathUrl?.isEmpty ??
+                                              true)) {
+                                        return SizedBox.shrink();
+                                      }
                                       return Divider(
                                         color: AppColors.gray,
                                       );
@@ -282,7 +319,7 @@ class _CustomServiceDetailsScreenState
                                                 ?.passportExpiry !=
                                             null) &&
                                         (state.serviceDetails!.passportExpiry!
-                                            .isAfter(DateTime.now())))
+                                            .isBefore(DateTime.now())))
                                     ? AppColors.red
                                     : null,
                               ),
@@ -301,7 +338,7 @@ class _CustomServiceDetailsScreenState
                                                 ?.clientIdExpiry !=
                                             null) &&
                                         (state.serviceDetails!.clientIdExpiry!
-                                            .isAfter(DateTime.now())))
+                                            .isBefore(DateTime.now())))
                                     ? AppColors.red
                                     : null,
                               ),

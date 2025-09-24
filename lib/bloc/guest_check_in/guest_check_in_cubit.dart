@@ -212,7 +212,7 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
         Navigator.pop(context, true);
       }
       Fluttertoast.showToast(
-          msg: AppUtils.languageTranslate('checkInSuccessfully'));
+          msg: AppUtils.languageTranslate('checkedInSuccessfully'));
       return true;
     } else {
       Fluttertoast.showToast(

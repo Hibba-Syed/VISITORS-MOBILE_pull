@@ -22,11 +22,9 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../widgets/empty_widget.dart';
-import '../components/services_documents_card_widget.dart';
 
 class MoveInServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;
@@ -43,7 +41,7 @@ class _MoveInServiceDetailsScreenState
   final GlobalKey<FormState> _noteFormKey = GlobalKey<FormState>();
   XFile? selectedImage;
   String? filePath;
-  bool? isPaymentReceived;
+  bool isPaymentReceived = false;
 
   @override
   Widget build(BuildContext context) {
@@ -138,12 +136,72 @@ class _MoveInServiceDetailsScreenState
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate(
-                                  'deposit_amount'),
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
                               value: state.serviceDetails?.securityDeposit
                                       ?.toString() ??
                                   "--",
                               isLast: true,
+                            ),
+                          ),
+                        ],
+                        if ((state.serviceDetails?.application?.mcCompanyName
+                                    ?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails
+                                    ?.application?.mcContactPerson?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails?.application
+                                    ?.mcTradeLicensePathUrl?.isNotEmpty ??
+                                false) ||
+                            (state.serviceDetails?.application
+                                    ?.mcEmiratesPathUrl?.isNotEmpty ??
+                                false)) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate(
+                                'movingCompanyDetails'),
+                          ),
+                          const Gap(10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title:
+                                      AppUtils.languageTranslate('companyName'),
+                                  value: state.serviceDetails?.application
+                                          ?.mcCompanyName ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'contactPerson'),
+                                  value: state.serviceDetails?.application
+                                          ?.mcContactPerson ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'companyTradeLicense'),
+                                  url: state.serviceDetails?.application
+                                          ?.mcTradeLicensePathUrl ??
+                                      "--",
+                                ),
+                                TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'contactPersonEmiratesId'),
+                                  url: state.serviceDetails?.application
+                                          ?.mcEmiratesPathUrl ??
+                                      "--",
+                                  isLast: true,
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -181,6 +239,45 @@ class _MoveInServiceDetailsScreenState
                                 title: AppUtils.languageTranslate('email'),
                                 value:
                                     state.serviceDetails?.clientEmail ?? "--",
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                  title: AppUtils.languageTranslate(
+                                      'passportNumber'),
+                                  value: state.serviceDetails?.passportNumber
+                                          ?.toString() ??
+                                      "--"),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate(
+                                    'passportExpiry'),
+                                value: DateTimeUtil.getFormattedDate(
+                                    state.serviceDetails?.passportExpiry),
+                                textColor: ((state.serviceDetails
+                                                ?.passportExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.passportExpiry!
+                                            .isBefore(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                title: AppUtils.languageTranslate('idNumber'),
+                                value: state.serviceDetails?.clientIdNumber
+                                        ?.toString() ??
+                                    "--",
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                isLast: true,
+                                title: AppUtils.languageTranslate('idExpiry'),
+                                valueColor: AppColors.red,
+                                value: DateTimeUtil.getFormattedDate(
+                                    state.serviceDetails?.clientIdExpiry),
+                                textColor: ((state.serviceDetails
+                                                ?.clientIdExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.clientIdExpiry!
+                                            .isBefore(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                             ],
                           ),
@@ -319,7 +416,7 @@ class _MoveInServiceDetailsScreenState
                                                       'pleaseUploadTheChequeFile'));
                                               return false;
                                             }
-                                            if (isPaymentReceived == null) {
+                                            if (isPaymentReceived == false) {
                                               Fluttertoast.showToast(
                                                   msg: AppUtils.languageTranslate(
                                                       'pleaseSelectCheckboxFirst'));
@@ -340,7 +437,7 @@ class _MoveInServiceDetailsScreenState
                                             if (result) {
                                               _noteController.clear();
                                               selectedImage = null;
-                                              isPaymentReceived = null;
+                                              isPaymentReceived = false;
                                             }
 
                                             return result;
@@ -387,11 +484,6 @@ class _MoveInServiceDetailsScreenState
                                                 ),
                                               ),
                                               const Gap(5),
-                                              Text(
-                                                  AppUtils.languageTranslate(
-                                                      'chequeFile'),
-                                                  style: AppTextStyles
-                                                      .style14DarkGrey600),
                                               Row(
                                                 children: [
                                                   Expanded(
@@ -503,12 +595,12 @@ class _MoveInServiceDetailsScreenState
                                                                   .transparent,
                                                               width: 1),
                                                           value:
-                                                              isPaymentReceived ??
-                                                                  false,
+                                                              isPaymentReceived,
                                                           onChanged: (value) {
                                                             setState(() {
                                                               isPaymentReceived =
-                                                                  value;
+                                                                  value ??
+                                                                      false;
                                                             });
                                                           })),
                                                   Text(

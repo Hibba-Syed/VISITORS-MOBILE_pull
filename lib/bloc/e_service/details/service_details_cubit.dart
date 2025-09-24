@@ -193,13 +193,9 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     }
     List<http.MultipartFile> multipartFiles = [];
     if (filePath?.isNotEmpty ?? false) {
-      for (int i = 0; i < (filePath?.length ?? 0); i++) {
-        if (filePath?[i].isNotEmpty ?? false) {
-          multipartFiles.add(
-            await http.MultipartFile.fromPath('file', filePath?[i] ?? ""),
-          );
-        }
-      }
+      multipartFiles.add(
+        await http.MultipartFile.fromPath('file', filePath!),
+      );
     }
 
     final response = await _paymentRepo

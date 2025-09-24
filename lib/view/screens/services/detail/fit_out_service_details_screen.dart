@@ -269,7 +269,7 @@ class _FitOutServiceDetailsScreenState
                                                 ?.passportExpiry !=
                                             null) &&
                                         (state.serviceDetails!.passportExpiry!
-                                            .isAfter(DateTime.now())))
+                                            .isBefore(DateTime.now())))
                                     ? AppColors.red
                                     : null,
                               ),
@@ -289,7 +289,7 @@ class _FitOutServiceDetailsScreenState
                                                 ?.clientIdExpiry !=
                                             null) &&
                                         (state.serviceDetails!.clientIdExpiry!
-                                            .isAfter(DateTime.now())))
+                                            .isBefore(DateTime.now())))
                                     ? AppColors.red
                                     : null,
                               ),

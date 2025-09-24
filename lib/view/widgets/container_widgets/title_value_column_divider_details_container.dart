@@ -15,6 +15,7 @@ class TitleValueColumnDividerDetailsContainerWidget extends StatelessWidget {
   final IconData? valueIcon;
   final bool isLast;
   final String? url;
+  final Widget? valueWidget;
 
   const TitleValueColumnDividerDetailsContainerWidget({
     super.key,
@@ -25,6 +26,7 @@ class TitleValueColumnDividerDetailsContainerWidget extends StatelessWidget {
     this.isLast = false,
     this.valueIcon,
     this.url,
+    this.valueWidget,
   });
 
   Future<void> _launchUrl(String url) async {
@@ -89,24 +91,28 @@ class TitleValueColumnDividerDetailsContainerWidget extends StatelessWidget {
                           ],
                         ),
                       )
-                    : ReadMoreText(
-                        value ?? "",
-                        style: TextStyle(
-                          color: textColor ?? AppColors.darkGrey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.isTablet(context) ? 15 : 13,
-                          //AppTextStyles.style10Black400
-                        ),
-                        trimMode: TrimMode.Line,
-                        trimLines: 3,
-                        colorClickableText: Colors.pink,
-                        trimCollapsedText: AppUtils.languageTranslate('showMore'),
-                        trimExpandedText: AppUtils.languageTranslate('showLess'),
-                        moreStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue),
-                      )
+                    : valueWidget != null
+                        ? valueWidget!
+                        : ReadMoreText(
+                            value ?? "",
+                            style: TextStyle(
+                              color: textColor ?? AppColors.darkGrey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                              //AppTextStyles.style10Black400
+                            ),
+                            trimMode: TrimMode.Line,
+                            trimLines: 3,
+                            colorClickableText: Colors.pink,
+                            trimCollapsedText:
+                                AppUtils.languageTranslate('showMore'),
+                            trimExpandedText:
+                                AppUtils.languageTranslate('showLess'),
+                            moreStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          )
           ],
         ),
         if (!isLast)

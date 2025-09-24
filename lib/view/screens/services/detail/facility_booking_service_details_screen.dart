@@ -32,7 +32,6 @@ class FacilityBookingServiceDetailsScreen extends StatefulWidget {
 
 class _FacilityBookingServiceDetailsScreenState
     extends State<FacilityBookingServiceDetailsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,8 +90,7 @@ class _FacilityBookingServiceDetailsScreenState
                           child: Column(
                             children: [
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title:
-                                      AppUtils.languageTranslate('facility'),
+                                  title: AppUtils.languageTranslate('facility'),
                                   value: state.serviceDetails?.application
                                           ?.facility ??
                                       "--"),
@@ -111,23 +109,21 @@ class _FacilityBookingServiceDetailsScreenState
                                           ?.toString() ??
                                       '--'),
                               TitleValueRowDividerDetailsContainerWidget(
-                                  title: AppUtils.languageTranslate(
-                                      'bookingDate'),
+                                  title:
+                                      AppUtils.languageTranslate('bookingDate'),
                                   value: DateTimeUtil.getFormattedDate(state
                                       .serviceDetails
                                       ?.application
                                       ?.bookingDate)),
                               TitleValueRowDividerDetailsContainerWidget(
-                                title:
-                                    AppUtils.languageTranslate('startTime'),
+                                title: AppUtils.languageTranslate('startTime'),
                                 value: state.serviceDetails?.application
                                         ?.startTime ??
                                     "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                   isLast: true,
-                                  title:
-                                      AppUtils.languageTranslate('endTime'),
+                                  title: AppUtils.languageTranslate('endTime'),
                                   value: state.serviceDetails?.application
                                           ?.endTime ??
                                       '--'),
@@ -149,10 +145,10 @@ class _FacilityBookingServiceDetailsScreenState
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate(
-                                  'deposit_amount'),
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
                               value: state.serviceDetails?.securityDeposit
-                                  ?.toString() ??
+                                      ?.toString() ??
                                   "--",
                               isLast: true,
                             ),
@@ -176,12 +172,11 @@ class _FacilityBookingServiceDetailsScreenState
                               TitleValueRowDividerDetailsContainerWidget(
                                   title: AppUtils.languageTranslate(
                                       'requesterType'),
-                                  value: state.serviceDetails?.clientType ??
-                                      "--"),
+                                  value:
+                                      state.serviceDetails?.clientType ?? "--"),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('name'),
-                                value:
-                                    state.serviceDetails?.clientName ?? "--",
+                                value: state.serviceDetails?.clientName ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('phone'),
@@ -204,8 +199,13 @@ class _FacilityBookingServiceDetailsScreenState
                                     'passportExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.passportExpiry),
-                                textColor: ((state.serviceDetails?.passportExpiry!=null) &&(state.serviceDetails!.passportExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
-
+                                textColor: ((state.serviceDetails
+                                                ?.passportExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.passportExpiry!
+                                            .isBefore(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 title: AppUtils.languageTranslate('idNumber'),
@@ -218,8 +218,13 @@ class _FacilityBookingServiceDetailsScreenState
                                 title: AppUtils.languageTranslate('idExpiry'),
                                 value: DateTimeUtil.getFormattedDate(
                                     state.serviceDetails?.clientIdExpiry),
-                                textColor: ((state.serviceDetails?.clientIdExpiry!=null) &&(state.serviceDetails!.clientIdExpiry!.isAfter(DateTime.now())))?AppColors.red:null,
-
+                                textColor: ((state.serviceDetails
+                                                ?.clientIdExpiry !=
+                                            null) &&
+                                        (state.serviceDetails!.clientIdExpiry!
+                                            .isBefore(DateTime.now())))
+                                    ? AppColors.red
+                                    : null,
                               ),
                             ],
                           ),
@@ -230,8 +235,7 @@ class _FacilityBookingServiceDetailsScreenState
                           style: AppTextStyles.style20primary600,
                         ),
                         const Gap(10),
-                        state.serviceDetails?.statusHistory?.isNotEmpty ??
-                                true
+                        state.serviceDetails?.statusHistory?.isNotEmpty ?? true
                             ? Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.white,
@@ -241,13 +245,12 @@ class _FacilityBookingServiceDetailsScreenState
                                   padding: EdgeInsets.only(top: 10),
                                   shrinkWrap: true,
                                   primary: false,
-                                  itemCount: state.serviceDetails
-                                          ?.statusHistory?.length ??
+                                  itemCount: state.serviceDetails?.statusHistory
+                                          ?.length ??
                                       0,
                                   itemBuilder: (context, index) {
                                     StatusHistory? statusHistory = state
-                                        .serviceDetails
-                                        ?.statusHistory?[index];
+                                        .serviceDetails?.statusHistory?[index];
                                     bool isLast = (state.serviceDetails
                                                     ?.statusHistory?.length ??
                                                 0) -
@@ -260,8 +263,7 @@ class _FacilityBookingServiceDetailsScreenState
                                           (statusHistory?.status != 'Pending')
                                               ? statusHistory?.status ?? ""
                                               : "Request Received",
-                                      byValue: (statusHistory
-                                                      ?.user?.fullName !=
+                                      byValue: (statusHistory?.user?.fullName !=
                                                   null &&
                                               statusHistory!
                                                   .user!.fullName!.isNotEmpty)
@@ -312,7 +314,7 @@ class _FacilityBookingServiceDetailsScreenState
                               buttonColor: AppColors.green,
                               text: AppUtils.languageTranslate('complete'),
                               onPressed: () {
-                               AppUtils.completeServiceAction(
+                                AppUtils.completeServiceAction(
                                   context: context,
                                   state: state,
                                 );
