@@ -215,11 +215,6 @@ class ServiceDetailsCubit extends Cubit<ServiceDetailsState> {
     if (response != null && response.status == 'success') {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate('paymentClearedSuccessfully'));
-      if (context.mounted) {
-        getServiceDetails(
-            serviceId:
-                context.read<ServiceDetailsCubit>().state.serviceDetails?.id);
-      }
       return true;
     }
 

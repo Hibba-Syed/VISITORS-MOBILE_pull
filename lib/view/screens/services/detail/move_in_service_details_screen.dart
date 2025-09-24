@@ -439,7 +439,7 @@ class _MoveInServiceDetailsScreenState
                                               selectedImage = null;
                                               isPaymentReceived = false;
                                             }
-
+                                            Navigator.pop(context, true);
                                             return result;
                                           }
                                           return false;

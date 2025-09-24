@@ -139,8 +139,8 @@ class _MoveOutServiceDetailsScreenState
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TitleValueRowDividerDetailsContainerWidget(
-                              title: AppUtils.languageTranslate(
-                                  'deposit_amount'),
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
                               value: state.serviceDetails?.securityDeposit
                                       ?.toString() ??
                                   "--",
@@ -402,6 +402,7 @@ class _MoveOutServiceDetailsScreenState
                                               selectedImage = null;
                                               isPaymentReceived = false;
                                             }
+                                            Navigator.pop(context, true);
                                             return result;
                                           }
                                           return false;
@@ -560,7 +561,8 @@ class _MoveOutServiceDetailsScreenState
                                                           onChanged: (value) {
                                                             setState(() {
                                                               isPaymentReceived =
-                                                                  value??false;
+                                                                  value ??
+                                                                      false;
                                                             });
                                                           })),
                                                   Gap(6),

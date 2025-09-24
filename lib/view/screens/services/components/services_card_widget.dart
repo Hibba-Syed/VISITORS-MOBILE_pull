@@ -36,6 +36,7 @@ class ServicesCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('srevice type:::$serviceType');
     return InkWell(
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: detailsOnPressed,
@@ -104,14 +105,15 @@ class ServicesCardWidget extends StatelessWidget {
                 const Gap(10),
                 Row(
                   children: [
-                    Expanded(
-                      child: CustomButton(
-                          fontSize: AppUtils.isTablet(context) ? 15 : 15,
-                          buttonColor: AppColors.green,
-                          image: AppImages.checkInButton,
-                          text: AppUtils.languageTranslate('checkIn'),
-                          onPressed: checkInOnPressed),
-                    ),
+                    if (serviceType != "AD")
+                      Expanded(
+                        child: CustomButton(
+                            fontSize: AppUtils.isTablet(context) ? 15 : 15,
+                            buttonColor: AppColors.green,
+                            image: AppImages.checkInButton,
+                            text: AppUtils.languageTranslate('checkIn'),
+                            onPressed: checkInOnPressed),
+                      ),
                     if (isActiveCheckins) ...[
                       const Gap(8),
                       Expanded(

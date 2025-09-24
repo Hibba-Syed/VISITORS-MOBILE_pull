@@ -77,9 +77,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                       controller: _searchController,
                       onClearPressed: () async {
                         _searchController.clear();
-                        context
-                            .read<ServiceCubit>()
-                            .onChangeSearchKeyWord('');
+                        context.read<ServiceCubit>().onChangeSearchKeyWord('');
                         await context.read<ServiceCubit>().getServices();
                       },
                       onFieldSubmitted: (value) {
@@ -119,8 +117,7 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                     ServiceModel? service =
                                         state.services?[index];
                                     return ServicesCardWidget(
-                                      isActiveCheckins: (service
-                                                  ?.activeCheckIns
+                                      isActiveCheckins: (service?.activeCheckIns
                                                   ?.isNotEmpty ??
                                               true)
                                           ? true
@@ -133,17 +130,20 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                           service?.applicationTitle ?? "--",
                                       name: service?.clientName ?? "--",
                                       checkInOnPressed: () {
-                                        context.read<GuestCheckInCubit>().clearData();
-                                        Navigator.pushNamed(context,
-                                                AppRoutes.guestCheckIn,arguments: {"service":service})
+                                        context
+                                            .read<GuestCheckInCubit>()
+                                            .clearData();
+                                        Navigator.pushNamed(
+                                                context, AppRoutes.guestCheckIn,
+                                                arguments: {"service": service})
                                             .then(
                                           (value) {
                                             if (value == true) {
                                               context
                                                   .read<ServiceCubit>()
                                                   .getServices(
-                                                    keyword: _searchController
-                                                        .text,
+                                                    keyword:
+                                                        _searchController.text,
                                                   );
                                             }
                                           },
@@ -167,10 +167,12 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                       },
                                       detailsOnPressed: () {
                                         ServiceDetailsCubit
-                                            serviceDetailsCubit = context
-                                                .read<ServiceDetailsCubit>();
+                                            serviceDetailsCubit =
+                                            context.read<ServiceDetailsCubit>();
                                         serviceDetailsCubit.clearData();
-                                        serviceDetailsCubit.onChangeApplicationType(service?.applicationTitle);
+                                        serviceDetailsCubit
+                                            .onChangeApplicationType(
+                                                service?.applicationTitle);
                                         serviceDetailsCubit.getServiceDetails(
                                             serviceId: service?.id);
                                         Navigator.push(
@@ -179,15 +181,24 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                               builder: (context) =>
                                                   AppUtils.getServiceRouteName(
                                                       service),
-                                            ));
+                                            )).then((value) {
+                                          if (value == true) {
+                                            context
+                                                .read<ServiceCubit>()
+                                                .getServices(
+                                                  keyword:
+                                                      _searchController.text,
+                                                );
+                                          }
+                                        });
                                       },
                                     );
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) {
                                     return const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 5));
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5));
                                   },
                                 ),
                               )
