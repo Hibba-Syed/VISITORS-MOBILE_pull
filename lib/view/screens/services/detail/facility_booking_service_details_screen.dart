@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../bloc/e_service/details/service_details_cubit.dart';
-import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../../resource/constants/app_colors.dart';
@@ -19,7 +18,6 @@ import '../../../widgets/empty_widget.dart';
 import '../../../widgets/heading_widget.dart';
 import '../../../widgets/loader/loader_widget.dart';
 import '../../../widgets/status/status_widget.dart';
-import '../components/services_documents_card_widget.dart';
 
 class FacilityBookingServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;

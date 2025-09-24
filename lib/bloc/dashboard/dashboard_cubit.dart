@@ -260,6 +260,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     //{bool isNavigationAllow = true}
   ) async {
     final dashboardCubit = context.read<DashboardCubit>();
+    final guestCheckInCubit = context.read<GuestCheckInCubit>();
 
     bool profileSuccess = await dashboardCubit.getProfile();
 
@@ -270,9 +271,9 @@ class DashboardCubit extends Cubit<DashboardState> {
         dashboardCubit.getDashboardCount(),
         dashboardCubit.getDashboardServices(limit: 3),
         dashboardCubit.getDashboardWorkOrder(limit: 3),
-        context.read<GuestCheckInCubit>().getCountries(),
-        context.read<GuestCheckInCubit>().getProfile(),
-        context.read<GuestCheckInCubit>().getUnits(),
+        guestCheckInCubit.getCountries(),
+        guestCheckInCubit.getProfile(),
+        guestCheckInCubit.getUnits(),
       ]);
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(

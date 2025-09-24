@@ -21,12 +21,9 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
-
-import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../widgets/empty_widget.dart';
-import '../components/services_documents_card_widget.dart';
 
 class MoveOutServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;

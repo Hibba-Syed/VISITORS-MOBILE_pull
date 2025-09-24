@@ -17,13 +17,11 @@ import 'package:visitors/view/widgets/status/status_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
 import '../../../../model/emirates_id_model.dart';
-import '../../../../model/service/document_model.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
 import '../../../../service/scanner/scanner_service.dart';
 import '../../../widgets/empty_widget.dart';
 import '../../../widgets/add_log_complete_action_design_widget.dart';
-import '../components/services_documents_card_widget.dart';
 
 class AccessDeviceServiceDetailsScreen extends StatefulWidget {
   final ServiceModel? service;

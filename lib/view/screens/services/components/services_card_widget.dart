@@ -36,7 +36,6 @@ class ServicesCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('srevice type:::$serviceType');
     return InkWell(
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       onTap: detailsOnPressed,
