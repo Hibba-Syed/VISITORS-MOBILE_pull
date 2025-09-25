@@ -47,8 +47,6 @@ class ScannerService {
         );
         return emiratesIdData;
       }
-    } else {
-      _showInvalidDocumentToast();
     }
     return null;
   }
@@ -71,8 +69,6 @@ class ScannerService {
                 recognizedText!, ocrData.personImage);
         return drivingLicenseData;
       }
-    } else {
-      _showInvalidDocumentToast();
     }
     return null;
   }
@@ -168,6 +164,7 @@ class ScannerService {
       }
       return null;
     } catch (e) {
+      _showInvalidDocumentToast();
       return null;
     }
   }

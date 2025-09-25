@@ -776,6 +776,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       onChanged: (value) {
         _selectedDocumentType = value;
         clearData();
+        setState(() {});
       },
       validator: (value) {
         if (value == null) {

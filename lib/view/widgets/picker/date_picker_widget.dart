@@ -43,16 +43,19 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   @override
   void didUpdateWidget(covariant DatePickerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialDate != oldWidget.initialDate &&
-        widget.initialDate != null) {
-      _dateController.text =
-          DateFormat('EEEE, dd MMMM, yyyy').format(widget.initialDate!);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.initialDate != oldWidget.initialDate &&
+          widget.initialDate != null) {
+        _dateController.text =
+            DateFormat('EEEE, dd MMMM, yyyy').format(widget.initialDate!);
+      }
 
-    // Clear if the initialDate becomes null (e.g. reset)
-    if (widget.initialDate == null && oldWidget.initialDate != null) {
-      _dateController.clear();
-    }
+      // Clear if the initialDate becomes null (e.g. reset)
+      if (widget.initialDate == null && oldWidget.initialDate != null) {
+        _dateController.clear();
+      }
+      setState(() {});
+    });
   }
 
   @override
@@ -88,8 +91,9 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                     lastDate:
                         widget.lastDate ?? DateTime(DateTime.now().year + 100),
                   );
-                  widget.onDatePicked(date);
+
                   if (date != null) {
+                    widget.onDatePicked(date);
                     setState(() {
                       _dateController.text =
                           DateFormat('EEEE, dd MMMM, yyyy').format(date);
