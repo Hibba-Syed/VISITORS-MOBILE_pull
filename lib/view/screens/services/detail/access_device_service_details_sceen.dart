@@ -378,7 +378,7 @@ class _AccessDeviceServiceDetailsScreenState
                                                 'requester_name':
                                                     _nameController.text,
                                                 'id_number':
-                                                    _idController,
+                                                    _idController.text,
                                                 'note': _noteController.text,
                                                 'new_card':
                                                     _newCardController.text,

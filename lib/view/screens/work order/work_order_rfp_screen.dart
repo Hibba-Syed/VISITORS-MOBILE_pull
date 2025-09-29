@@ -34,7 +34,8 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+          _scrollController.position.maxScrollExtent &&
+      context.read<WorkOrderCubit>().state.loadMore == false) {
         context
             .read<WorkOrderCubit>()
             .getMoreWorkOrder(keyword: _searchController.text);

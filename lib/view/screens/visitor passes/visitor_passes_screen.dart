@@ -35,7 +35,8 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+          _scrollController.position.maxScrollExtent &&
+          context.read<VisitorPassCubit>().state.loadMore == false ) {
         context.read<VisitorPassCubit>().getMoreVisitorPasses();
       }
     });

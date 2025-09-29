@@ -40,7 +40,8 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+              _scrollController.position.maxScrollExtent &&
+          context.read<CheckInsCubit>().state.loadMore == false) {
         context.read<CheckInsCubit>().getMoreCheckIns(
               keyword: _searchController.text,
             );

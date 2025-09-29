@@ -38,7 +38,8 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+              _scrollController.position.maxScrollExtent &&
+          context.read<CheckOutCubit>().state.loadMore == false) {
         context
             .read<CheckOutCubit>()
             .getMoreCheckOut(keyword: _searchController.text);

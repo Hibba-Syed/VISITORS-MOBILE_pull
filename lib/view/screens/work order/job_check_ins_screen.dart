@@ -24,7 +24,7 @@ class JobCheckInsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBarWidget(
+      appBar: AppBarWidget(
         title: AppUtils.languageTranslate('jobCheckIns'),
         titleColor: AppColors.black,
         iconColor: AppColors.black,
@@ -61,8 +61,10 @@ class JobCheckInsScreen extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 10),
                               isFirstButtonDisable: true,
                               secondButtonColor: AppColors.red,
-                              secondButtonText: AppUtils.languageTranslate('yes'),
-                              title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
+                              secondButtonText:
+                                  AppUtils.languageTranslate('yes'),
+                              title: AppUtils.languageTranslate(
+                                  'checkOutForAllCheckIns'),
                               contentBuilder: (context, setState) {
                                 return const Align(
                                   alignment: Alignment.center,
@@ -73,7 +75,7 @@ class JobCheckInsScreen extends StatelessWidget {
                           },
                         );
                       }),
-                ) ,
+                ),
                 const Gap(15),
                 Expanded(
                   child: RefreshIndicator(
@@ -86,10 +88,9 @@ class JobCheckInsScreen extends StatelessWidget {
                       primary: false,
                       itemCount: state.checkIns?.length ?? 0,
                       itemBuilder: (context, index) {
-                        CheckInModel? checkIn =
-                            state.checkIns?[index];
+                        CheckInModel? checkIn = state.checkIns?[index];
                         return CheckInCardWidget(
-                          phone: checkIn?.phone?? "--",
+                          phone: checkIn?.phone ?? "--",
                           isServiceable: true,
                           count: checkIn?.visitorCount ?? "",
                           reference: checkIn?.purpose ?? "--",
@@ -99,18 +100,16 @@ class JobCheckInsScreen extends StatelessWidget {
                                       'community service')
                               ? AppImages.community
                               : "",
-                          typeText: (checkIn?.type?.toLowerCase() ==
-                                      'unit visit' ||
-                                  checkIn?.type?.toLowerCase() ==
-                                      'unit service')
-                              ? checkIn?.unit?.unitNumber
-                              : checkIn?.type ?? "--",
+                          typeText:
+                              (checkIn?.type?.toLowerCase() == 'unit visit' ||
+                                      checkIn?.type?.toLowerCase() ==
+                                          'unit service')
+                                  ? checkIn?.unit?.unitNumber
+                                  : checkIn?.type ?? "--",
                           name: checkIn?.name ?? "--",
-                          profileImageUrl:
-                              checkIn?.visitor?.imageUrl ?? "",
+                          profileImageUrl: checkIn?.visitor?.imageUrl ?? "",
                           type:
-                              AppUtils.getServiceableType(checkIn?.type)
-                                  .label,
+                              AppUtils.getServiceableType(checkIn?.type).label,
                           createdDate: DateTimeUtil.getFormattedDateTime(
                               checkIn?.createdAt.toString()),
                           purpose: checkIn?.description ?? "--",
@@ -118,9 +117,8 @@ class JobCheckInsScreen extends StatelessWidget {
                           checkOutOnPressed: () {
                             context
                                 .read<CheckInsDetailsCubit>()
-                                .getCheckInDetailsLog(
-                                id: checkIn?.id);
-                            _showCheckoutDialog(context,checkIn);
+                                .getCheckInDetailsLog(id: checkIn?.id);
+                            _showCheckoutDialog(context, checkIn);
                           },
                           detailsOnPressed: () {
                             context
@@ -146,20 +144,21 @@ class JobCheckInsScreen extends StatelessWidget {
     );
   }
 
-  void _showCheckoutDialog(BuildContext context,CheckInModel? checkIns) {
+  void _showCheckoutDialog(BuildContext context, CheckInModel? checkIns) {
     final TextEditingController visitorsNoController = TextEditingController();
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return  CustomAlertDialogBox(
+        return CustomAlertDialogBox(
           insetPadding: const EdgeInsets.symmetric(horizontal: 10),
           hideBothButtons: true,
-          title: '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
+          title:
+              '${AppUtils.languageTranslate('checkoutFor')} ${checkIns?.name ?? ""}',
           contentBuilder: (context, setState) {
             return CheckOutContainerWidget(
               visitorsCount: //int.tryParse(checkIns?.visitorCount ?? ''),
-              checkIns?.visitorCount ?? "",
+                  checkIns?.visitorCount ?? "",
               controller: visitorsNoController,
               checkOutAllOnPress: () {
                 showDialog(
@@ -171,7 +170,8 @@ class JobCheckInsScreen extends StatelessWidget {
                       isFirstButtonDisable: true,
                       secondButtonColor: AppColors.red,
                       secondButtonText: AppUtils.languageTranslate('yes'),
-                      title: AppUtils.languageTranslate('checkOutForAllCheckIns'),
+                      title:
+                          AppUtils.languageTranslate('checkOutForAllCheckIns'),
                       onSecondButtonPressed: () async {
                         final result = await context
                             .read<CheckInsCubit>()
@@ -194,17 +194,19 @@ class JobCheckInsScreen extends StatelessWidget {
                   builder: (context) {
                     return CustomAlertDialogBox(
                         insetPadding:
-                        const EdgeInsets.symmetric(horizontal: 20),
+                            const EdgeInsets.symmetric(horizontal: 20),
                         isFirstButtonDisable: true,
                         secondButtonColor: AppColors.red,
-                        secondButtonText: AppUtils.languageTranslate('checkout'),
-                        title: AppUtils.languageTranslate('checkOutForVisitors'),
+                        secondButtonText:
+                            AppUtils.languageTranslate('checkout'),
+                        title:
+                            AppUtils.languageTranslate('checkOutForVisitors'),
                         onSecondButtonPressed: () async {
                           final result = await context
                               .read<CheckInsCubit>()
                               .checkOutVisitors(context,
-                              id: checkIns?.id,
-                              data: {
+                                  id: checkIns?.id,
+                                  data: {
                                 "checkout_count": visitorsNoController.text
                               });
                           visitorsNoController.clear();

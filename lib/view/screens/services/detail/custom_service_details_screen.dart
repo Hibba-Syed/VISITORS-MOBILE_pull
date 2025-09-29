@@ -50,6 +50,15 @@ class _CustomServiceDetailsScreenState
               child: LoaderWidget(),
             );
           }
+          final List<Document>? filteredDocuments =
+              state.serviceDetails?.documents?.where((item) {
+            if (item.label == "Sent For Approval File" ||
+                item.label == "Approve File") {
+              return false;
+            } else {
+              return true;
+            }
+          }).toList();
           return Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.horizontalPadding),
@@ -186,64 +195,68 @@ class _CustomServiceDetailsScreenState
                               );
                             },
                           ),
-                        if (state.serviceDetails?.documents?.isNotEmpty ??
-                            true) ...[
+                        const Gap(20),
+                        HeadingWidget(
+                          heading: AppUtils.languageTranslate('documents'),
+                        ),
+                        const Gap(10),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: filteredDocuments?.isNotEmpty ?? true
+                              ? ListView.separated(
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: filteredDocuments?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    Document? document =
+                                        filteredDocuments?[index];
+                                    if (document?.label ==
+                                            "Sent For Approval File" ||
+                                        document?.label == "Approve File") {
+                                      return SizedBox.shrink();
+                                    }
+                                    return ServicesDocumentsCardWidget(
+                                      name: document?.name,
+                                      url: document?.pathUrl ?? "",
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      color: AppColors.gray,
+                                    );
+                                  },
+                                )
+                              : EmptyWidget(
+                                  text: AppUtils.languageTranslate(
+                                      'noDataAvailable')),
+                        ),
+                        if (state.serviceDetails?.securityDeposit != null) ...[
                           const Gap(20),
                           HeadingWidget(
-                            heading: AppUtils.languageTranslate('documents'),
+                            heading: AppUtils.languageTranslate(
+                                'security_deposit_details'),
                           ),
                           const Gap(10),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 7, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.serviceDetails?.documents
-                                        ?.isNotEmpty ??
-                                    true
-                                ? ListView.separated(
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemCount: state.serviceDetails?.documents
-                                            ?.length ??
-                                        0,
-                                    itemBuilder: (context, index) {
-                                      Document? document = state
-                                          .serviceDetails?.documents?[index];
-                                      if (document?.label ==
-                                              "Sent For Approval File" ||
-                                          document?.label == "Approve File" ||
-                                          (document?.name?.isEmpty ?? true) ||
-                                          (document?.pathUrl?.isEmpty ??
-                                              true)) {
-                                        return SizedBox.shrink();
-                                      }
-                                      return ServicesDocumentsCardWidget(
-                                        name: document?.name,
-                                        url: document?.pathUrl ?? "",
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      Document? document = state
-                                          .serviceDetails?.documents?[index];
-                                      if (document?.label ==
-                                              "Sent For Approval File" ||
-                                          document?.label == "Approve File" ||
-                                          (document?.name?.isEmpty ?? true) ||
-                                          (document?.pathUrl?.isEmpty ??
-                                              true)) {
-                                        return SizedBox.shrink();
-                                      }
-                                      return Divider(
-                                        color: AppColors.gray,
-                                      );
-                                    },
-                                  )
-                                : EmptyWidget(
-                                    text: AppUtils.languageTranslate(
-                                        'noDataAvailable')),
+                            child: TitleValueRowDividerDetailsContainerWidget(
+                              title:
+                                  AppUtils.languageTranslate('deposit_amount'),
+                              value: state.serviceDetails?.securityDeposit
+                                      ?.toString() ??
+                                  "--",
+                              isLast: true,
+                            ),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[

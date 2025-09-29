@@ -36,7 +36,8 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+              _scrollController.position.maxScrollExtent &&
+          context.read<ServiceCubit>().state.loadMore == false) {
         context.read<ServiceCubit>().getMoreServices(
               keyword: _searchController.text,
             );
