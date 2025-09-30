@@ -30,6 +30,7 @@ class _IskaanVisitorsMobileState extends State<IskaanVisitorsMobile> {
           },
           child: MaterialApp(
             title: AppUtils.languageTranslate('visitorsMobile'),
+            navigatorKey: globalNavigatorKey,
             locale: context.locale,
             supportedLocales: context.supportedLocales,
             localizationsDelegates: context.localizationDelegates,

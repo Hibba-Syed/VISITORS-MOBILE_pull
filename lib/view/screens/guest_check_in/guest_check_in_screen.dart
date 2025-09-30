@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/service/scanner/scanner_service.dart';
 import 'package:visitors/utils/validation_util.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
+import 'package:visitors/view/screens/id_card_scanner_claude.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_column_divider_details_container.dart';
@@ -32,6 +34,8 @@ import '../../../model/visitor_info/number_info_model.dart';
 import '../../../model/visitor_info/visitors_purpose_model.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../widgets/button/custom_button.dart';
+import '../scanner/id_scanner_gemini.dart';
+import '../scanner/id_scanner_gpt.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
   const GuestCheckInScreen({
@@ -751,7 +755,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
       fontSize: isTablet ? 20 : null,
       imageHeight: isTablet ? 25 : null,
       image: AppImages.scan,
-      onPressed: () {
+      onPressed: () async {
         if (_selectedDocumentType?.value == 'Emirates ID') {
           _onScanEmiratesIdTap();
         } else if (_selectedDocumentType?.value == 'Photo ID') {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../model/profile/profile_response_model.dart';
 import '../utils/preference_utils.dart';
+final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 class Globals {
   ProfileRecord? profileRecord = spUtil.profileRecord;

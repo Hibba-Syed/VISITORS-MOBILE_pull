@@ -13,11 +13,13 @@ import '../../model/driving_license_model.dart';
 import '../../model/emirates_id_model.dart';
 import '../../model/ocr_model.dart';
 import '../../model/passport_model.dart';
+import '../../resource/globals.dart';
 import '../../utils/app_utils.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
 
 import '../../utils/date_time.dart';
+import '../../view/screens/id_card_scanner_claude.dart';
 
 class ScannerService {
   Future<EmiratesIdModel?> scanEmiratesIdAndPerformOcr() async {
@@ -151,16 +153,29 @@ class ScannerService {
 
   Future<OcrModel?> _scanDocumentAndPerformOCR() async {
     try {
-      final imagesPaths = await CunningDocumentScanner.getPictures(
-        noOfPages: 1,
+      // final imagesPaths = await CunningDocumentScanner.getPictures(
+      //   noOfPages: 1,
+      // );
+      //
+      // File? scannedImageFile;
+      // final List<String> images = imagesPaths ?? [];
+      // if (images.isNotEmpty && images.first.isNotEmpty) {
+      //   scannedImageFile = File(images.first);
+      //
+      //   return await _performOCR(scannedImageFile);
+      // }
+      File? capturedImageFile = await Navigator.push(
+        globalNavigatorKey.currentContext!,
+        MaterialPageRoute(
+          builder: (context) {
+            // return IdScannerGpt();
+            // return IDCaptureScreen();
+            return IDCardScanner();
+          },
+        ),
       );
-
-      File? scannedImageFile;
-      final List<String> images = imagesPaths ?? [];
-      if (images.isNotEmpty && images.first.isNotEmpty) {
-        scannedImageFile = File(images.first);
-
-        return await _performOCR(scannedImageFile);
+      if (capturedImageFile != null) {
+        return await _performOCR(capturedImageFile);
       }
       return null;
     } catch (e) {
