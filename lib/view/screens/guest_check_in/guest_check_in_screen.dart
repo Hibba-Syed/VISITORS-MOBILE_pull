@@ -589,10 +589,11 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   void _onScanPassportTap(BuildContext context) async {
+    final ScannerService scannerService = ScannerService();
     // PassportModel? passportData =
     //     await ScannerService().scanPassportAndPerformOcr();
     PassportModel? passportData =
-        await ScannerService().scanMrzForPassportAndParse(context);
+        await scannerService.scanMrzForPassportAndParse(context);
     if (passportData != null) {
       clearData();
 
@@ -625,8 +626,9 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   void _onScanEmiratesIdTap() async {
+    final ScannerService scannerService = ScannerService();
     EmiratesIdModel? emiratesIdData =
-        await ScannerService().scanEmiratesIdAndPerformOcr();
+        await scannerService.scanEmiratesIdAndPerformOcr();
     if (emiratesIdData != null) {
       clearData();
 
@@ -661,8 +663,10 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   }
 
   Future<void> _onScanDrivingLicenseTap() async {
+    final ScannerService scannerService = ScannerService();
+
     DrivingLicenseModel? drivingLicenseData =
-        await ScannerService().scanDrivingLicenseAndPerformOcr();
+        await scannerService.scanDrivingLicenseAndPerformOcr();
     if (drivingLicenseData != null) {
       clearData();
       setState(() {

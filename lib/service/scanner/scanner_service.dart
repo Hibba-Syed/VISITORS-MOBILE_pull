@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -115,7 +116,7 @@ class ScannerService {
         final result = MRZParser.parse(mrzLines);
         PassportModel passportData = PassportModel(
           personImage: extractedPersonImage,
-          name: result.givenNames,
+          name: "${result.givenNames} ${result.surnames}",
           passportNumber: result.documentNumber,
           issueDate: result.expiryDate.toString(),
           expiryDate: result.expiryDate.toString(),
@@ -164,13 +165,14 @@ class ScannerService {
       //
       //   return await _performOCR(scannedImageFile);
       // }
+      final cameras = await availableCameras();
       File? capturedImageFile = await Navigator.push(
         globalNavigatorKey.currentContext!,
         MaterialPageRoute(
           builder: (context) {
-            // return IdScannerGpt();
-            // return IDCaptureScreen();
-            return IDCardScanner();
+            return IDCardScanner(
+              cameras: cameras,
+            );
           },
         ),
       );
@@ -204,9 +206,10 @@ class ScannerService {
     final File? extractedPersonImage = _extractPersonImage(imageFile, faces);
     textDetector.close();
     faceDetector.close();
-    if (text.isNotEmpty && extractedPersonImage != null) {
+    if (text.isNotEmpty || extractedPersonImage != null) {
       return OcrModel(personImage: extractedPersonImage, recognizedTExt: text);
     } else {
+      _showInvalidDocumentToast();
       return null;
     }
   }
@@ -234,10 +237,10 @@ class ScannerService {
         img.decodeImage(originalImage.readAsBytesSync())!;
 
     // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt() - 130;
-    final int top = boundingBox.top.toInt() - 130;
-    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 270;
-    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 270;
+    final int left = boundingBox.left.toInt() - 50;
+    final int top = boundingBox.top.toInt() - 40;
+    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 100;
+    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 100;
     // Crop the image
     final img.Image croppedImg = img.copyCrop(originalImg,
         x: left, y: top, width: width, height: height);

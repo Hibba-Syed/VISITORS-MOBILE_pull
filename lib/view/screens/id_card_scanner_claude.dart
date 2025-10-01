@@ -1,9 +1,3 @@
-// pubspec.yaml dependencies:
-// camera: ^0.10.5+5
-// image: ^4.1.3
-// permission_handler: ^11.0.1
-// path_provider: ^2.1.1
-
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:io';
@@ -13,8 +7,10 @@ import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
 class IDCardScanner extends StatefulWidget {
+  final List<CameraDescription> cameras;
   const IDCardScanner({
     super.key,
+    required this.cameras,
   });
 
   @override
@@ -44,14 +40,13 @@ class _IDCardScannerState extends State<IDCardScanner> {
   }
 
   Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    if (cameras.isEmpty) {
+    if (widget.cameras.isEmpty) {
       setState(() => _message = 'No camera found');
       return;
     }
 
     _controller = CameraController(
-      cameras[0],
+      widget.cameras[0],
       ResolutionPreset.veryHigh,
       enableAudio: false,
       imageFormatGroup: ImageFormatGroup.jpeg,
@@ -68,9 +63,19 @@ class _IDCardScannerState extends State<IDCardScanner> {
   }
 
   void _startDetection() {
+    // Cancel existing timer if any
+    _detectionTimer?.cancel();
+
     _detectionTimer = Timer.periodic(
       const Duration(milliseconds: 500),
-      (timer) => _detectCard(),
+      (timer) {
+        // Double check we should still be detecting
+        if (_capturedImage != null || !mounted) {
+          timer.cancel();
+          return;
+        }
+        _detectCard();
+      },
     );
   }
 
@@ -125,26 +130,28 @@ class _IDCardScannerState extends State<IDCardScanner> {
         _stableFrameCount = 0;
       }
 
-      setState(() {
-        _isCardDetected = cardPresent && cardFillsFrame;
-        _isImageClear = imageClear;
+      if (mounted) {
+        setState(() {
+          _isCardDetected = cardPresent && cardFillsFrame;
+          _isImageClear = imageClear;
 
-        if (_stableFrameCount >= _requiredStableFrames) {
-          _message = 'Card detected - Hold steady';
-          if (_autoCapture && _countdown == 0) {
-            _startCountdown();
+          if (_stableFrameCount >= _requiredStableFrames) {
+            _message = 'Card detected - Hold steady';
+            if (_autoCapture && _countdown == 0 && _capturedImage == null) {
+              _startCountdown();
+            }
+          } else if (cardPresent && !imageClear) {
+            _message = 'Image blurry - Hold steady';
+            _resetCountdown();
+          } else if (cardPresent && !cardFillsFrame) {
+            _message = 'Move card inside the frame completely';
+            _resetCountdown();
+          } else {
+            _message = 'Position card within frame';
+            _resetCountdown();
           }
-        } else if (cardPresent && !imageClear) {
-          _message = 'Image blurry - Hold steady';
-          _resetCountdown();
-        } else if (cardPresent && !cardFillsFrame) {
-          _message = 'Move card inside the frame completely';
-          _resetCountdown();
-        } else {
-          _message = 'Position card within frame';
-          _resetCountdown();
-        }
-      });
+        });
+      }
     } catch (e) {
       print('Detection error: $e');
     }
@@ -155,8 +162,8 @@ class _IDCardScannerState extends State<IDCardScanner> {
   bool _checkCardPresence(img.Image image) {
     int edgeCount = 0;
     int strongEdgeCount = 0;
-    const threshold = 50; // Increased threshold
-    const strongThreshold = 100; // Higher strong threshold
+    const threshold = 45; // Balanced threshold
+    const strongThreshold = 90;
 
     // Enhanced edge detection with both horizontal and vertical edges
     for (int y = 5; y < image.height - 5; y += 6) {
@@ -185,7 +192,7 @@ class _IDCardScannerState extends State<IDCardScanner> {
     }
 
     // Card should have significant strong edges
-    return edgeCount > 200 && strongEdgeCount > 50;
+    return edgeCount > 180 && strongEdgeCount > 40;
   }
 
   bool _checkCardFillsFrame(img.Image image) {
@@ -300,7 +307,7 @@ class _IDCardScannerState extends State<IDCardScanner> {
     // Card is properly inside frame if:
     // 1. Very few edges in the margin area (card not extending outside)
     // 2. Good amount of edges in inner area (card is present)
-    return edgeRatioInMargin < 0.08 && innerEdgeRatio > 0.12;
+    return edgeRatioInMargin < 0.10 && innerEdgeRatio > 0.10;
   }
 
   bool _checkImageClarity(img.Image image) {
@@ -324,8 +331,8 @@ class _IDCardScannerState extends State<IDCardScanner> {
     }
 
     final variance = laplacianSum / sampleCount;
-    // Much higher threshold for stricter clarity detection
-    return variance > 20;
+    // Balanced threshold
+    return variance > 18;
   }
 
   double _getLuminance(img.Pixel pixel) {
@@ -335,19 +342,19 @@ class _IDCardScannerState extends State<IDCardScanner> {
   void _startCountdown() {
     if (_countdownTimer != null && _countdownTimer!.isActive) return;
 
-    int count = 3;
-    setState(() => _countdown = count);
+    // int count = 1;
+    // setState(() => _countdown = count);
 
     _countdownTimer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
-        count--;
-        setState(() => _countdown = count);
+        // count--;
+        // setState(() => _countdown = count);
 
-        if (count == 0) {
-          timer.cancel();
-          _captureImage();
-        }
+        // if (count == 0) {
+        timer.cancel();
+        _captureImage();
+        // }
       },
     );
   }
@@ -361,7 +368,12 @@ class _IDCardScannerState extends State<IDCardScanner> {
   }
 
   Future<void> _captureImage() async {
-    if (_controller == null || !_controller!.value.isInitialized) return;
+    if (_controller == null ||
+        !_controller!.value.isInitialized ||
+        _isProcessing ||
+        _capturedImage != null) {
+      return;
+    }
 
     if (_stableFrameCount < _requiredStableFrames) {
       setState(() => _message = 'Error: Card not stable in frame');
@@ -369,12 +381,22 @@ class _IDCardScannerState extends State<IDCardScanner> {
       return;
     }
 
+    // Stop detection immediately to prevent double capture
+    _detectionTimer?.cancel();
+    _resetCountdown();
+
+    setState(() => _isProcessing = true);
+
     try {
       final image = await _controller!.takePicture();
       final bytes = await image.readAsBytes();
       final decodedImage = img.decodeImage(bytes);
 
-      if (decodedImage == null) return;
+      if (decodedImage == null) {
+        setState(() => _isProcessing = false);
+        _startDetection(); // Restart detection if failed
+        return;
+      }
 
       // Crop to frame area (ID card ratio) - smaller frame
       final screenWidth = decodedImage.width * 0.75;
@@ -405,13 +427,14 @@ class _IDCardScannerState extends State<IDCardScanner> {
         _capturedImage = jpegBytes;
         _capturedImageFile = imageFile;
         _message = 'Image captured successfully!';
+        _isProcessing = false;
       });
-
-      _detectionTimer?.cancel();
-      _resetCountdown();
     } catch (e) {
-      setState(() => _message = 'Capture error: ${e.toString()}');
-      _resetCountdown();
+      setState(() {
+        _message = 'Capture error: ${e.toString()}';
+        _isProcessing = false;
+      });
+      _startDetection(); // Restart detection if failed
     }
   }
 
@@ -420,13 +443,30 @@ class _IDCardScannerState extends State<IDCardScanner> {
   }
 
   void _retakePhoto() {
+    // Clean up old file if exists
+    if (_capturedImageFile != null && _capturedImageFile!.existsSync()) {
+      try {
+        _capturedImageFile!.deleteSync();
+      } catch (e) {
+        print('Error deleting old file: $e');
+      }
+    }
+
     setState(() {
       _capturedImage = null;
+      _capturedImageFile = null;
       _message = 'Position card within frame';
       _countdown = 0;
       _stableFrameCount = 0;
+      _isProcessing = false;
     });
-    _startDetection();
+
+    // Small delay before restarting to ensure camera is ready
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        _startDetection();
+      }
+    });
   }
 
   @override
@@ -434,6 +474,16 @@ class _IDCardScannerState extends State<IDCardScanner> {
     _detectionTimer?.cancel();
     _countdownTimer?.cancel();
     _controller?.dispose();
+
+    // Clean up temporary file if exists
+    if (_capturedImageFile != null && _capturedImageFile!.existsSync()) {
+      try {
+        _capturedImageFile!.deleteSync();
+      } catch (e) {
+        print('Error deleting file on dispose: $e');
+      }
+    }
+
     super.dispose();
   }
 
@@ -856,15 +906,25 @@ class _IDCardScannerState extends State<IDCardScanner> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Handle upload/confirm
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     content: Text('Image ready for processing!'),
-                              //     backgroundColor: Colors.green,
-                              //   ),
-                              // );
-                              Navigator.pop(context,_capturedImageFile);
+                            onPressed: () async {
+                              // Get the file
+                              // final file = await getCapturedImageFile();
+                              Navigator.pop(context, _capturedImageFile);
+                              // if (file != null) {
+                              //   // Use the file - upload to server, save, etc.
+                              //   print('Image file path: ${file.path}');
+                              //
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       content:
+                              //           Text('Image saved at: ${file.path}'),
+                              //       backgroundColor: Colors.green,
+                              //     ),
+                              //   );
+                              //
+                              //   // Example: You can now upload this file to your server
+                              //   // await uploadToServer(file);
+                              // }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
