@@ -170,7 +170,7 @@ class ScannerService {
         globalNavigatorKey.currentContext!,
         MaterialPageRoute(
           builder: (context) {
-            return IDCardScanner(
+            return CardScanner(
               cameras: cameras,
             );
           },

@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _gateController.dispose();
     _loginIdController.dispose();
   }
+
   Widget _loginUi(
     BuildContext context,
   ) {
@@ -83,7 +84,8 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 child: Image.asset(
                   AppImages.appLogo,
-                  width: MediaQuery.of(context).size.width * 0.15,
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.height / 6,
                 ),
               ),
               Gap(10),

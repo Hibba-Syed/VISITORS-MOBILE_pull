@@ -6,18 +6,18 @@ import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
-class IDCardScanner extends StatefulWidget {
+class CardScanner extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const IDCardScanner({
+  const CardScanner({
     super.key,
     required this.cameras,
   });
 
   @override
-  State<IDCardScanner> createState() => _IDCardScannerState();
+  State<CardScanner> createState() => _CardScannerState();
 }
 
-class _IDCardScannerState extends State<IDCardScanner> {
+class _CardScannerState extends State<CardScanner> {
   CameraController? _controller;
   bool _isInitialized = false;
   bool _isCardDetected = false;
@@ -99,13 +99,39 @@ class _IDCardScannerState extends State<IDCardScanner> {
         return;
       }
 
-      // Define frame area (ID card aspect ratio 1.586:1) - smaller frame
-      final screenWidth = decodedImage.width * 0.75;
-      final frameWidth = screenWidth.toInt();
-      final frameHeight = (screenWidth / 1.586).toInt();
+      // Calculate frame dimensions based on screen size and camera preview
+      final screenSize = MediaQuery.of(context).size;
+      final screenWidth = screenSize.width;
+      final screenHeight = screenSize.height;
+
+      // UI frame dimensions
+      final uiFrameWidth = screenWidth * 0.75;
+      final uiFrameHeight = uiFrameWidth / 1.586;
+
+      // Camera aspect ratio
+      final cameraRatio = _controller!.value.aspectRatio;
+      final screenAspect = screenHeight / screenWidth;
+
+      // Calculate scale factors based on BoxFit.cover behavior
+      double scaleX, scaleY;
+
+      if (screenAspect > cameraRatio) {
+        // Screen is taller - preview width extends beyond screen
+        final previewWidth = screenHeight / cameraRatio;
+        scaleX = decodedImage.width / previewWidth;
+        scaleY = decodedImage.height / screenHeight;
+      } else {
+        // Screen is wider - preview height extends beyond screen
+        final previewHeight = screenWidth * cameraRatio;
+        scaleX = decodedImage.width / screenWidth;
+        scaleY = decodedImage.height / previewHeight;
+      }
+
+      // Apply scale to get actual crop dimensions
+      final frameWidth = (uiFrameWidth * scaleX).toInt();
+      final frameHeight = (uiFrameHeight * scaleY).toInt();
       final frameX = ((decodedImage.width - frameWidth) / 2).toInt();
       final frameY = ((decodedImage.height - frameHeight) / 2).toInt();
-
       // Crop to frame area
       final croppedImage = img.copyCrop(
         decodedImage,
