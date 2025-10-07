@@ -8,7 +8,6 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/view/widgets/container_widgets/icon_text_container_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 
-
 class ActivityLogWidget extends StatelessWidget {
   final String? status;
   final String? byValue;
@@ -25,8 +24,7 @@ class ActivityLogWidget extends StatelessWidget {
       this.dateTime,
       this.isLast,
       this.verticalPadding,
-      this.horizontalPadding
-      });
+      this.horizontalPadding});
 
   @override
   Widget build(BuildContext context) {
@@ -88,35 +86,38 @@ class ActivityLogWidget extends StatelessWidget {
                             style: AppUtils.isTablet(context)
                                 ? AppTextStyles.style16black600
                                 : AppTextStyles.style14Black600),
-                        if(byValue?.isNotEmpty ?? false)
-                        Flexible(
-                          child: Row(
-                            children: [
-                              Text(' ${AppUtils.languageTranslate('by')}'  ,
-                                  style: AppUtils.isTablet(context)
-                                      ? AppTextStyles.style16black600
-                                      : AppTextStyles.style14Black600),
-                              Text('$byValue'  ,
-                                  style: AppUtils.isTablet(context)
-                                      ? AppTextStyles.style16Primary600
-                                      : AppTextStyles.style14Primary600),
-                            ],
+                        if (byValue?.isNotEmpty ?? false)
+                          Flexible(
+                            child: Row(
+                              children: [
+                                Text(' ${AppUtils.languageTranslate('by')}',
+                                    style: AppUtils.isTablet(context)
+                                        ? AppTextStyles.style16black600
+                                        : AppTextStyles.style14Black600),
+                                Text('$byValue',
+                                    style: AppUtils.isTablet(context)
+                                        ? AppTextStyles.style16Primary600
+                                        : AppTextStyles.style14Primary600),
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
-
-                    const Gap(5),
-                    Text( description ?? "--",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: AppColors.darkGrey,
-                        fontWeight:  FontWeight.w500,
-                        fontSize: AppUtils.isTablet(context)  ? 15 :  13,
-                        //AppTextStyles.style10Black400
+                    if (description?.isNotEmpty ?? false) ...[
+                      const Gap(5),
+                      Text(
+                        description!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: AppColors.darkGrey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: AppUtils.isTablet(context) ? 15 : 13,
+                          //AppTextStyles.style10Black400
+                        ),
                       ),
-                    ),
+                    ],
+
                     // Text(
                     //   description ?? "",
                     //   style: AppUtils.isTablet(context)

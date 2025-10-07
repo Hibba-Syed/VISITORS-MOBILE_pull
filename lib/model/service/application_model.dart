@@ -1,3 +1,5 @@
+import 'package:visitors/model/addons_model.dart';
+
 import '../device_info_model.dart';
 import 'guest_model.dart';
 
@@ -61,7 +63,7 @@ class Application {
   String? feePaymentStatusLbl;
   String? dewaNocPaymentStatusLbl;
   String? finalNocPaymentStatusLbl;
-  List<dynamic>? addons;
+  List<AddonsModel>? addons;
   List<dynamic>? dewanoc;
   // type move out and type move in are same
   String? requestType;
@@ -337,7 +339,7 @@ class Application {
         finalNocPaymentStatusLbl: json["final_noc_payment_status_lbl"],
         addons: json["addons"] == null
             ? []
-            : List<dynamic>.from(json["addons"]!.map((x) => x)),
+            : List<AddonsModel>.from(json["addons"]!.map((x) => AddonsModel.fromJson(x))),
         dewanoc: json["dewanoc"] == null
             ? []
             : List<dynamic>.from(json["dewanoc"]!.map((x) => x)),
@@ -494,7 +496,7 @@ class Application {
         "dewa_noc_payment_status_lbl": dewaNocPaymentStatusLbl,
         "final_noc_payment_status_lbl": finalNocPaymentStatusLbl,
         "addons":
-            addons == null ? [] : List<dynamic>.from(addons!.map((x) => x)),
+            addons == null ? [] : List<AddonsModel>.from(addons!.map((x) => x)),
         "dewanoc":
             dewanoc == null ? [] : List<dynamic>.from(dewanoc!.map((x) => x)),
 

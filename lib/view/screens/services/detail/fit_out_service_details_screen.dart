@@ -149,11 +149,17 @@ class _FitOutServiceDetailsScreenState
                                 valueIcon: Icons.clear,
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                isLast: true,
                                 title:
                                     AppUtils.languageTranslate('description'),
                                 value:
                                     state.serviceDetails?.description ?? "--",
+                              ),
+                              TitleValueRowDividerDetailsContainerWidget(
+                                isLast: true,
+                                title:
+                                AppUtils.languageTranslate('addOns'),
+                                value:
+                                state.serviceDetails?.application?.addons?.map((item)=>item.serviceName).toList().join(','),
                               ),
                             ],
                           ),
@@ -198,30 +204,6 @@ class _FitOutServiceDetailsScreenState
                                   text: AppUtils.languageTranslate(
                                       'noDataAvailable')),
                         ),
-                        if (state.serviceDetails?.securityDeposit != null) ...[
-                          const Gap(20),
-                          HeadingWidget(
-                            heading: AppUtils.languageTranslate(
-                                'security_deposit_details'),
-                          ),
-                          const Gap(10),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TitleValueRowDividerDetailsContainerWidget(
-                              title:
-                                  AppUtils.languageTranslate('deposit_amount'),
-                              value: state.serviceDetails?.securityDeposit
-                                      ?.toString() ??
-                                  "--",
-                              isLast: true,
-                            ),
-                          ),
-                        ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
                           const Gap(20),
                           HeadingWidget(

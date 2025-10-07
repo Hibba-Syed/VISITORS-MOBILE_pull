@@ -100,31 +100,38 @@ class _AccessDeviceServiceDetailsScreenState
                           child: (state.serviceDetails?.application?.deviceInfo
                                       ?.isNotEmpty ??
                                   false)
-                              ? Column(
-                                  children: state.serviceDetails?.application
-                                          ?.deviceInfo
-                                          ?.map(
-                                            (device) => Column(
-                                              children: [
-                                                TitleValueRowDividerDetailsContainerWidget(
-                                                    title: AppUtils
-                                                        .languageTranslate(
-                                                            'device'),
-                                                    value: device.deviceType ??
-                                                        "--"),
-                                                TitleValueRowDividerDetailsContainerWidget(
-                                                    isLast: true,
-                                                    title: AppUtils
-                                                        .languageTranslate(
-                                                            'numberOfDevices'),
-                                                    value: device.deviceCount
-                                                            ?.toString() ??
-                                                        "--"),
-                                              ],
-                                            ),
-                                          )
-                                          .toList() ??
-                                      [],
+                              ? ListView.separated(
+                                  itemCount: state.serviceDetails?.application
+                                          ?.deviceInfo?.length ??
+                                      0,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    final device = state.serviceDetails
+                                        ?.application?.deviceInfo?[index];
+                                    return Column(
+                                      children: [
+                                        TitleValueRowDividerDetailsContainerWidget(
+                                          title: AppUtils.languageTranslate(
+                                              'device'),
+                                          value: device?.deviceType ?? "--",
+                                          isLast: true,
+                                        ),
+                                        Gap(5),
+                                        TitleValueRowDividerDetailsContainerWidget(
+                                            isLast: true,
+                                            title: AppUtils.languageTranslate(
+                                                'numberOfDevices'),
+                                            value: device?.deviceCount
+                                                    ?.toString() ??
+                                                "--"),
+                                      ],
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      color: AppColors.gray,
+                                    );
+                                  },
                                 )
                               : Column(
                                   children: [
@@ -377,8 +384,7 @@ class _AccessDeviceServiceDetailsScreenState
                                               data: {
                                                 'requester_name':
                                                     _nameController.text,
-                                                'id_number':
-                                                    _idController.text,
+                                                'id_number': _idController.text,
                                                 'note': _noteController.text,
                                                 'new_card':
                                                     _newCardController.text,

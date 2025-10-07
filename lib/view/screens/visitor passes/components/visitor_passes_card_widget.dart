@@ -56,8 +56,7 @@ class VisitorPassesCardWidget extends StatelessWidget {
             children: [
               OverlapContainerWidget(text: unit),
               Gap(6),
-              OverlapContainerWidget(
-                  text: reference, color: AppColors.yellow),
+              OverlapContainerWidget(text: reference, color: AppColors.yellow),
             ],
           ),
           Gap(10),
@@ -88,12 +87,14 @@ class VisitorPassesCardWidget extends StatelessWidget {
                           value: fromDate,
                           image: AppImages.date,
                         ),
-                        const Gap(5),
-                        IconTextContainerWidget(
-                          icon: Icons.email_outlined,
-                          iconColor: AppColors.darkGrey,
-                          text: email,
-                        ),
+                        if (email?.isNotEmpty ?? false) ...[
+                          const Gap(5),
+                          IconTextContainerWidget(
+                            icon: Icons.email_outlined,
+                            iconColor: AppColors.darkGrey,
+                            text: email,
+                          ),
+                        ],
                         const Gap(5),
                         IconTextContainerWidget(
                           image: AppImages.phone,

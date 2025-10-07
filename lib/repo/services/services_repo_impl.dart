@@ -70,7 +70,18 @@ class ServiceRepoImpl implements ServiceRepo {
               "select": ["id"]
             },
             {"relation": "evidence"},
-            {"relation": "documents"}
+            {
+              "relation": "documents",
+              "where": {
+                "and": [
+                  {
+                    "field": "label",
+                    "operator": "not_in",
+                    "value": ["Sent For Approval File", "Approve File"]
+                  }
+                ]
+              },
+            }
           ]
         }
       };
