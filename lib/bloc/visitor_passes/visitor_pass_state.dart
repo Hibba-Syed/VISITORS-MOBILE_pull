@@ -8,7 +8,7 @@ class VisitorPassState {
   final bool isUnitLoading;
   final List<UnitModel>? units;
   final UnitModel? selectedUnit;
-  List<VisitorPasses>? visitorPasses;
+  List<VisitorPassModel>? visitorPasses;
   VisitorPassState({
     this.isLoading = false,
     this.visitorPasses,
@@ -22,7 +22,7 @@ class VisitorPassState {
   VisitorPassState copyWith({
     bool? isLoading,
     bool? isUnitLoading,
-    List<VisitorPasses>? visitorPasses,
+    List<VisitorPassModel>? visitorPasses,
     bool? loadMore,
     int? page,
     String? searchKeyword,

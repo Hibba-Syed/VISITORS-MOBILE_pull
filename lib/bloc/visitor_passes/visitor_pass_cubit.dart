@@ -83,8 +83,8 @@ class VisitorPassCubit extends Cubit<VisitorPassState> {
     emit(state.copyWith(loadMore: false));
     if (response != null && response.status == 'success') {
       if (response.record?.isNotEmpty ?? false) {
-        List<VisitorPasses> checkIns = state.visitorPasses ?? [];
-        checkIns.addAll(response.record as Iterable<VisitorPasses>);
+        List<VisitorPassModel> checkIns = state.visitorPasses ?? [];
+        checkIns.addAll(response.record as Iterable<VisitorPassModel>);
         emit(state.copyWith(visitorPasses: checkIns));
       } else {
         Fluttertoast.showToast(msg: AppUtils.languageTranslate('noMoreVisitorPass'));

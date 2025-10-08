@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +17,6 @@ import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/service/scanner/scanner_service.dart';
 import 'package:visitors/utils/validation_util.dart';
 import 'package:visitors/view/screens/guest_check_in/components/get_info_card_widget.dart';
-import 'package:visitors/view/screens/id_card_scanner_claude.dart';
 import 'package:visitors/view/widgets/app_bar/appbar_widget.dart';
 import 'package:visitors/view/widgets/Alert_dialog_box/custom_alert_dialog_box.dart';
 import 'package:visitors/view/widgets/container_widgets/title_value_column_divider_details_container.dart';
@@ -32,10 +30,9 @@ import '../../../model/service/service_model.dart';
 import '../../../model/unit/unit_model.dart';
 import '../../../model/visitor_info/number_info_model.dart';
 import '../../../model/visitor_info/visitors_purpose_model.dart';
+import '../../../model/visitor_passes/visitor_pass_model.dart';
 import '../../../model/work_order/work_order_model.dart';
 import '../../widgets/button/custom_button.dart';
-import '../scanner/id_scanner_gemini.dart';
-import '../scanner/id_scanner_gpt.dart';
 
 class GuestCheckInScreen extends StatefulWidget {
   const GuestCheckInScreen({
@@ -74,6 +71,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   TypeItemModel? _selectedDocumentType;
   ServiceModel? _service;
   WorkOrderModel? _workOrder;
+  VisitorPassModel? _visitorPass;
 
   final List<TypeItemModel> _visitTypes = [
     TypeItemModel(
@@ -97,6 +95,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           _service = args['service'] as ServiceModel;
         } else if (args['work_order'] != null) {
           _workOrder = args['work_order'] as WorkOrderModel;
+        } else if (args['visitor_pass'] != null) {
+          _visitorPass = args['visitor_pass'] as VisitorPassModel;
         }
       }
       if (_service?.id != null) {
@@ -109,6 +109,14 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
           value: 'Community Service',
           label: AppUtils.languageTranslate('communityService'),
         ));
+      } else if (_visitorPass?.id != null) {
+        _visitorCountController.text = '1';
+        _nameController.text = _visitorPass?.visitor ?? '';
+        _phoneNumberController.text = _visitorPass?.mobile ?? '';
+        _emailController.text = _visitorPass?.email ?? '';
+        _descriptionController.text =
+            "Visitor pass for visitor from company: ${_visitorPass?.visitorCompany ?? ''}";
+        guestCheckInCubit.onChangeSelectedVisitType(_visitTypes.first);
       } else {
         guestCheckInCubit.onChangeSelectedVisitType(_visitTypes.first);
       }
@@ -199,16 +207,26 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           'name': _nameController.text,
                           if (state.selectedVisitType?.value == 'Unit Visit' &&
                               _service?.id == null &&
-                              _workOrder?.id == null) ...{
+                              _workOrder?.id == null &&
+                              _visitorPass?.id == null) ...{
                             'purpose': state.selectedPurpose?.purpose,
                             'unit_id': state.selectedUnit?.id,
                             'unit_number': state.selectedUnit?.toJson(),
                           },
                           if (_service?.id != null &&
-                              _workOrder?.id == null) ...{
+                              _workOrder?.id == null &&
+                              _visitorPass?.id == null) ...{
                             'purpose': _service?.reference,
                             'unit_id': _service?.unit?.id,
                             'unit_number': _service?.unit?.unitNumber,
+                          },
+                          if (_visitorPass?.id != null &&
+                              _workOrder?.id == null &&
+                              _service?.id == null) ...{
+                            'purpose': _visitorPass?.reference,
+                            'unit_id': _visitorPass?.ownerUnit?.unit?.id,
+                            'unit_number':
+                                _visitorPass?.ownerUnit?.unit?.unitNumber,
                           },
                           if (_workOrder?.id != null &&
                               _service?.id == null) ...{
@@ -221,12 +239,16 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           'entry_card_number': _entryCardNumberController.text,
                           'nationality': state.selectedNationality?.name,
                           'description': _descriptionController.text,
-                          'serviceable_id': _service?.id ?? _workOrder?.id,
+                          'serviceable_id': _service?.id ??
+                              _workOrder?.id ??
+                              _visitorPass?.id,
                           'serviceable_type': _service?.id != null
                               ? 'application'
                               : _workOrder?.id != null
                                   ? 'job'
-                                  : null,
+                                  : _visitorPass?.id != null
+                                      ? 'visitor-pass'
+                                      : null,
 
                           'sms': false,
                           'visitor_count':
@@ -298,7 +320,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (_service?.id == null &&
-                              _workOrder?.id == null) ...[
+                              _workOrder?.id == null&&
+                              _visitorPass?.id == null) ...[
                             Expanded(
                               child: _visitTypeDropDown(state),
                             ),
@@ -309,7 +332,8 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                           ),
                         ],
                       ),
-                      if (state.selectedVisitType?.value == "Unit Visit") ...[
+                      if (state.selectedVisitType?.value == "Unit Visit" &&
+                          _visitorPass?.id == null) ...[
                         Gap(5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -402,13 +426,16 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                       if (_selectedDocumentType?.value == 'Travel Document')
                         _travelDocumentExpiryDatePicker(),
                       const Gap(5),
-                      if (_service?.id == null && _workOrder?.id == null) ...[
+                      if (_service?.id == null &&
+                          _workOrder?.id == null &&
+                          _visitorPass?.id == null) ...[
                         _visitTypeDropDown(state),
                         const Gap(5),
                       ],
                       _visitorCountTextField(),
                       const Gap(5),
-                      if (state.selectedVisitType?.value == "Unit Visit") ...[
+                      if (state.selectedVisitType?.value == "Unit Visit" &&
+                          _visitorPass?.id == null) ...[
                         _purposeDropDown(state),
                         const Gap(5),
                         _unitNumberDropDown(state),

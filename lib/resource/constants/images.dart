@@ -59,5 +59,5 @@ class AppImages {
   static const String rfpCard = "${baseSvgPath}rfp_card.svg";
   static const String chat = "${baseSvgPath}message_icon.svg";
   static const String auth = "${baseSvgPath}auth_icon.svg";
-
+  static const String unit = "${baseSvgPath}unit.svg";
 }

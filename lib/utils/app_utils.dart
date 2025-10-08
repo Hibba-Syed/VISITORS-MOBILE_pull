@@ -45,7 +45,8 @@ class AppUtils {
     if (status?.toLowerCase() == "waiting for payment") {
       return Colors.grey;
     }
-    if (status?.toLowerCase() == "payment clear") {
+    if (status?.toLowerCase() == "payment clear" ||
+        status?.toLowerCase() == "extension approved") {
       return Colors.green;
     }
 

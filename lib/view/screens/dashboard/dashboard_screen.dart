@@ -338,7 +338,7 @@ class DashboardScreen extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          AppUtils.languageTranslate("checkIns"),
+                          AppUtils.languageTranslate("checkIn"),
                           style: AppTextStyles.style19Primary600,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -389,41 +389,46 @@ class DashboardScreen extends StatelessWidget {
                           primary: false,
                           itemCount: state.checkIns?.length ?? 0,
                           itemBuilder: (context, index) {
-                            CheckInModel? checkIns = state.checkIns?[index];
+                            CheckInModel? checkIn = state.checkIns?[index];
                             return CheckInCardWidget(
-                              phone: checkIns?.phone ?? "--",
-                              count: checkIns?.visitorCount ?? "",
-                              typeImage: (checkIns?.type?.toLowerCase() ==
-                                          'community visit' ||
-                                      checkIns?.type?.toLowerCase() ==
-                                          'community service')
+                              phone: checkIn?.phone ?? "--",
+                              count: checkIn?.visitorCount ?? "",
+                              typeImage: (checkIn?.type?.toLowerCase() ==
+                                  'community visit' ||
+                                  checkIn?.type?.toLowerCase() ==
+                                      'community service')
                                   ? AppImages.community
+                                  : (checkIn?.type?.toLowerCase() ==
+                                  'unit visit' ||
+                                  checkIn?.type?.toLowerCase() ==
+                                      'unit service')
+                                  ? AppImages.unit
                                   : "",
-                              typeText: (checkIns?.type?.toLowerCase() ==
+                              typeText: (checkIn?.type?.toLowerCase() ==
                                           'unit visit' ||
-                                      checkIns?.type?.toLowerCase() ==
+                                      checkIn?.type?.toLowerCase() ==
                                           'unit service')
-                                  ? checkIns?.unit?.unitNumber
-                                  : checkIns?.type ?? "--",
-                              name: checkIns?.name ?? "--",
+                                  ? checkIn?.unit?.unitNumber
+                                  : checkIn?.type ?? "--",
+                              name: checkIn?.name ?? "--",
                               profileImageUrl:
-                                  checkIns?.visitor?.imageUrl ?? "",
+                                  checkIn?.visitor?.imageUrl ?? "",
                               type: AppUtils.getServiceableType(
-                                      checkIns?.serviceableType)
+                                      checkIn?.serviceableType)
                                   .label,
                               createdDate: DateTimeUtil.getFormattedDateTime(
-                                  checkIns?.createdAt),
-                              isMobile: checkIns?.isMobile,
+                                  checkIn?.createdAt),
+                              isMobile: checkIn?.isMobile,
                               checkOutOnPressed: () {
                                 context
                                     .read<CheckInsDetailsCubit>()
-                                    .getCheckInDetailsLog(id: checkIns?.id);
-                                showCheckoutDialog(context, checkIns);
+                                    .getCheckInDetailsLog(id: checkIn?.id);
+                                showCheckoutDialog(context, checkIn);
                               },
                               detailsOnPressed: () {
                                 context
                                     .read<CheckInsDetailsCubit>()
-                                    .getCheckInDetailsLog(id: checkIns?.id);
+                                    .getCheckInDetailsLog(id: checkIn?.id);
                                 Navigator.pushNamed(
                                     context, AppRoutes.checkInDetails,
                                     arguments: state.checkIns?[index]);
@@ -789,7 +794,7 @@ class DashboardScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      AppUtils.languageTranslate("checkIns"),
+                      AppUtils.languageTranslate("checkIn"),
                       style: AppTextStyles.style19Primary600,
                     ),
                     const Gap(20),
@@ -842,40 +847,45 @@ class DashboardScreen extends StatelessWidget {
                         primary: false,
                         itemCount: state.checkIns?.length ?? 0,
                         itemBuilder: (context, index) {
-                          CheckInModel? checkIns = state.checkIns?[index];
+                          CheckInModel? checkIn = state.checkIns?[index];
                           return CheckInCardWidget(
-                            count: checkIns?.visitorCount ?? "",
-                            typeImage: (checkIns?.type?.toLowerCase() ==
-                                        'community visit' ||
-                                    checkIns?.type?.toLowerCase() ==
-                                        'community service')
+                            count: checkIn?.visitorCount ?? "",
+                            typeImage: (checkIn?.type?.toLowerCase() ==
+                                'community visit' ||
+                                checkIn?.type?.toLowerCase() ==
+                                    'community service')
                                 ? AppImages.community
+                                : (checkIn?.type?.toLowerCase() ==
+                                'unit visit' ||
+                                checkIn?.type?.toLowerCase() ==
+                                    'unit service')
+                                ? AppImages.unit
                                 : "",
-                            typeText: (checkIns?.type?.toLowerCase() ==
+                            typeText: (checkIn?.type?.toLowerCase() ==
                                         'unit visit' ||
-                                    checkIns?.type?.toLowerCase() ==
+                                    checkIn?.type?.toLowerCase() ==
                                         'unit service')
-                                ? checkIns?.unit?.unitNumber
-                                : checkIns?.type ?? "",
-                            name: checkIns?.name ?? "",
-                            profileImageUrl: checkIns?.visitor?.imageUrl ?? "",
+                                ? checkIn?.unit?.unitNumber
+                                : checkIn?.type ?? "",
+                            name: checkIn?.name ?? "",
+                            profileImageUrl: checkIn?.visitor?.imageUrl ?? "",
                             type: AppUtils.getServiceableType(
-                                    checkIns?.serviceableType)
+                                    checkIn?.serviceableType)
                                 .label,
                             createdDate: DateTimeUtil.getFormattedDateTime(
-                                checkIns?.createdAt),
-                            isMobile: checkIns?.isMobile,
-                            phone: checkIns?.phone ?? "",
+                                checkIn?.createdAt),
+                            isMobile: checkIn?.isMobile,
+                            phone: checkIn?.phone ?? "",
                             checkOutOnPressed: () {
                               context
                                   .read<CheckInsDetailsCubit>()
-                                  .getCheckInDetailsLog(id: checkIns?.id);
-                              showCheckoutDialog(context, checkIns);
+                                  .getCheckInDetailsLog(id: checkIn?.id);
+                              showCheckoutDialog(context, checkIn);
                             },
                             detailsOnPressed: () {
                               context
                                   .read<CheckInsDetailsCubit>()
-                                  .getCheckInDetailsLog(id: checkIns?.id);
+                                  .getCheckInDetailsLog(id: checkIn?.id);
                               Navigator.pushNamed(
                                   context, AppRoutes.checkInDetails,
                                   arguments: state.checkIns?[index]);

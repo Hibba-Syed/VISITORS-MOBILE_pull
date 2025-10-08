@@ -32,8 +32,8 @@ class OverlapContainerWidget extends StatelessWidget {
             if (svgImagePath != null && svgImagePath!.isNotEmpty) ...[
               SvgPicture.asset(
                 svgImagePath ?? "",
-                height: 13,
-                width: 13,
+                height: 12,
+                width: 12,
                 colorFilter: ColorFilter.mode(
                   color ?? AppColors.primary,
                   BlendMode.srcIn,

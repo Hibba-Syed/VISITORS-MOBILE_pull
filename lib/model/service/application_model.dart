@@ -18,7 +18,7 @@ class Application {
   int? totalPayableFee;
   int? securityDeposit;
   dynamic securityDepositDetails;
-  String? securityDepositStatus;
+  dynamic securityDepositStatus;
   dynamic securityChequeDetails;
   dynamic securityChequeAttachment;
   dynamic rejectionNote;

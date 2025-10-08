@@ -39,6 +39,7 @@ class ServiceableCheckInsScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Gap(10),
+                if(state.checkIns?.isNotEmpty??false)
                 Align(
                   alignment: Alignment.bottomRight,
                   child: CustomButton(
@@ -102,10 +103,15 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                                     count: checkIn?.visitorCount ?? "",
                                     reference: checkIn?.purpose ?? "--",
                                     typeImage: (checkIn?.type?.toLowerCase() ==
-                                                'community visit' ||
-                                            checkIn?.type?.toLowerCase() ==
-                                                'community service')
+                                        'community visit' ||
+                                        checkIn?.type?.toLowerCase() ==
+                                            'community service')
                                         ? AppImages.community
+                                        : (checkIn?.type?.toLowerCase() ==
+                                        'unit visit' ||
+                                        checkIn?.type?.toLowerCase() ==
+                                            'unit service')
+                                        ? AppImages.unit
                                         : "",
                                     typeText: (checkIn?.type?.toLowerCase() ==
                                                 'unit visit' ||

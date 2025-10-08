@@ -35,8 +35,8 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent &&
-          context.read<VisitorPassCubit>().state.loadMore == false ) {
+              _scrollController.position.maxScrollExtent &&
+          context.read<VisitorPassCubit>().state.loadMore == false) {
         context.read<VisitorPassCubit>().getMoreVisitorPasses();
       }
     });
@@ -101,7 +101,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                                 primary: false,
                                 itemCount: state.visitorPasses?.length ?? 0,
                                 itemBuilder: (context, index) {
-                                  VisitorPasses? visitorPass =
+                                  VisitorPassModel? visitorPass =
                                       state.visitorPasses?[index];
                                   return VisitorPassesCardWidget(
                                     unit: visitorPass
@@ -122,10 +122,21 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                                             ? true
                                             : false,
                                     checkInOnPressed: () {
-                                      context.read<GuestCheckInCubit>().clearData();
+                                      GuestCheckInCubit guestCheckInCubit =
+                                          context.read<GuestCheckInCubit>();
+                                      guestCheckInCubit.clearData();
+                                      guestCheckInCubit
+                                          .onChangeSelectedNationality(
+                                              guestCheckInCubit.state.countries
+                                                  ?.firstWhere((country) =>
+                                                      country.name
+                                                          ?.toLowerCase() ==
+                                                      'united arab emirates'));
                                       Navigator.pushNamed(
-                                              context, AppRoutes.guestCheckIn)
-                                          .then(
+                                          context, AppRoutes.guestCheckIn,
+                                          arguments: {
+                                            "visitor_pass": visitorPass
+                                          }).then(
                                         (value) {
                                           if (value == true) {
                                             context

@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
 import 'package:visitors/utils/app_utils.dart';
 import 'package:visitors/view/screens/messages/components/send_chat_button_contrainer_widget.dart';
 
 import '../../../../bloc/message/message_cubit.dart';
 import '../../../../resource/constants/app_colors.dart';
+import '../../../../utils/remove_emoji_input_formatter.dart';
 import '../../../widgets/loader/loader_widget.dart';
 
 class ChatBottomRowWidget extends StatefulWidget {

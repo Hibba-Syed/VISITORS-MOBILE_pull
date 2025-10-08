@@ -84,6 +84,8 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
           countries: response.record,
           selectedNationality: response.record?.firstWhere((country) =>
               country.name?.toLowerCase() == 'united arab emirates')));
+
+      print('selected natiionality::::${state.selectedNationality?.name}');
     } else {
       Fluttertoast.showToast(
           msg: AppUtils.languageTranslate(

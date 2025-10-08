@@ -54,7 +54,10 @@ class VisitorPassesCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              OverlapContainerWidget(text: unit),
+              OverlapContainerWidget(
+                text: unit,
+                svgImagePath: AppImages.unit,
+              ),
               Gap(6),
               OverlapContainerWidget(text: reference, color: AppColors.yellow),
             ],

@@ -52,6 +52,7 @@ class ServicesCardWidget extends StatelessWidget {
               children: [
                 OverlapContainerWidget(
                   text: unit ?? "",
+                  svgImagePath: AppImages.unit,
                 ),
                 Gap(6),
                 OverlapContainerWidget(

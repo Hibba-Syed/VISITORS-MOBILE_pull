@@ -73,11 +73,12 @@ class FileDownloader {
   /// Get the download URL based on the file type
   static Future<Uri> _getDownloadUrl({String? dateRange}) async {
     // final dateRange = getDateRangeStringFromLabel('Last 30 Days');
-    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    final TimezoneInfo currentTimeZone =
+        await FlutterTimezone.getLocalTimezone();
     final filter = {
       "date_range": dateRange,
       "export": true,
-      "timezone": currentTimeZone
+      "timezone": currentTimeZone.identifier
     };
 
     final encryptedPayload =

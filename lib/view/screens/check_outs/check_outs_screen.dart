@@ -122,6 +122,7 @@ class _CheckOutsScreenState extends State<CheckOutsScreen> {
                                           state.checkOuts?[index];
                                       return CheckOutCardWidget(
                                         visitorCount: item?.visitorCount ?? "",
+                                        typeImage: AppImages.unit,
                                         typeText: item?.unit?.unitNumber ?? "",
                                         name: item?.name ?? "--",
                                         profileImageUrl:
