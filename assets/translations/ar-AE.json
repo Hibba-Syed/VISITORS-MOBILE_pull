@@ -310,7 +310,24 @@
     "file": "ملف",
     "pleaseEnterValidEmail": "يرجى إدخال بريد إلكتروني صالح",
     "customService": "خدمة مخصصة",
-    "addOns": "الإضافات"
+    "addOns": "الإضافات",
+    "vendorName": "اسم البائع",
+    "emiratesIdNumber": "رقم الهوية الإماراتية",
+    "emiratesIdIssueDate": "تاريخ إصدار الهوية الإماراتية",
+    "emiratesIdExpiryDate": "تاريخ انتهاء الهوية الإماراتية",
+    "photoIdNumber": "رقم بطاقة الهوية المصورة",
+    "photoIdIssueDate": "تاريخ إصدار بطاقة الهوية المصورة",
+    "photoIdExpiryDate": "تاريخ انتهاء بطاقة الهوية المصورة",
+    "travelDocumentNumber": "رقم وثيقة السفر",
+    "travelDocumentIssueDate": "تاريخ إصدار وثيقة السفر",
+    "travelDocumentExpiryDate": "تاريخ انتهاء وثيقة السفر"
+
+
+
+
+
+
+
 
 
 

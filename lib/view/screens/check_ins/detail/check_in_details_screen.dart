@@ -94,10 +94,11 @@ class CheckInDetailsScreen extends StatelessWidget {
                           title: AppUtils.languageTranslate('email'),
                           value: checkIn?.email ?? "--",
                         ),
-                        TitleValueRowDividerDetailsContainerWidget(
-                          title: AppUtils.languageTranslate('unit'),
-                          value: checkIn?.unit?.unitNumber ?? "--",
-                        ),
+                        if (checkIn?.unit?.unitNumber?.isNotEmpty ?? false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate('unit'),
+                            value: checkIn?.unit?.unitNumber ?? "--",
+                          ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate(
                               'currentVisitorsCount'),
@@ -109,6 +110,76 @@ class CheckInDetailsScreen extends StatelessWidget {
                               ? checkIn?.purpose
                               : "--",
                         ),
+                        if (checkIn?.vendor?.name?.isNotEmpty ?? false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate('vendorName'),
+                            value: checkIn?.vendor?.name ?? "--",
+                          ),
+                        if (checkIn?.visitor?.idNumber?.isNotEmpty ?? false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title:
+                                AppUtils.languageTranslate('emiratesIdNumber'),
+                            value: checkIn?.visitor?.idNumber ?? "--",
+                          ),
+                        if (checkIn?.visitor?.idIssueDate != null)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate(
+                                'emiratesIdIssueDate'),
+                            value: DateTimeUtil.getFormattedDate(
+                                checkIn?.visitor?.idIssueDate),
+                          ),
+                        if (checkIn?.visitor?.idExpiryDate != null)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate(
+                                'emiratesIdExpiryDate'),
+                            value: DateTimeUtil.getFormattedDate(
+                                checkIn?.visitor?.idExpiryDate),
+                          ),
+                        if (checkIn?.visitor?.photoIdNumber?.isNotEmpty ??
+                            false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate('photoIdNumber'),
+                            value: checkIn?.visitor?.photoIdNumber ?? "--",
+                          ),
+                        if (checkIn?.visitor?.photoIdIssueDate?.isNotEmpty ??
+                            false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title:
+                                AppUtils.languageTranslate('photoIdIssueDate'),
+                            value: DateTimeUtil.getFormattedDate(
+                                checkIn?.visitor?.photoIdIssueDate),
+                          ),
+                        if (checkIn?.visitor?.photoIdExpiryDate?.isNotEmpty ??
+                            false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title:
+                                AppUtils.languageTranslate('photoIdExpiryDate'),
+                            value: DateTimeUtil.getFormattedDate(
+                                checkIn?.visitor?.photoIdExpiryDate),
+                          ),
+                        if (checkIn?.visitor?.passportNumber?.isNotEmpty ??
+                            false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate(
+                                'travelDocumentNumber'),
+                            value: checkIn?.visitor?.passportNumber ?? "--",
+                          ),
+                        if (checkIn?.visitor?.passportIssueDate?.isNotEmpty ??
+                            false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate(
+                                'travelDocumentIssueDate'),
+                            value: DateTimeUtil.getFormattedDate(
+                                checkIn?.visitor?.passportIssueDate),
+                          ),
+                        if (checkIn?.visitor?.passportExpiryDate?.isNotEmpty ??
+                            false)
+                          TitleValueRowDividerDetailsContainerWidget(
+                            title: AppUtils.languageTranslate(
+                                'travelDocumentExpiryDate'),
+                            value: DateTimeUtil.getFormattedDate(
+                                checkIn?.visitor?.passportExpiryDate),
+                          ),
                         TitleValueRowDividerDetailsContainerWidget(
                           title: AppUtils.languageTranslate('entryCardNumber'),
                           value: checkIn?.entryCardNumber ?? "--",

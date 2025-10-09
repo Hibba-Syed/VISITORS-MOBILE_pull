@@ -118,7 +118,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                                     company:
                                         visitorPass?.visitorCompany ?? "--",
                                     isActiveCheckins:
-                                        visitorPass?.activeCheckInsCount == 1
+                                        (visitorPass?.activeCheckInsCount??0) >= 1
                                             ? true
                                             : false,
                                     checkInOnPressed: () {

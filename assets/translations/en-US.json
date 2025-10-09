@@ -311,7 +311,20 @@
     "file": "File",
     "pleaseEnterValidEmail": "Please enter valid email",
     "customService": "Custom Service",
-    "addOns": "Add Ons"
+    "addOns": "Add Ons",
+    "vendorName": "Vendor Name",
+    "emiratesIdNumber": "Emirates ID Number",
+    "emiratesIdIssueDate": "Emirates ID Issue Date",
+    "emiratesIdExpiryDate": "Emirates ID Expiry Date",
+    "photoIdNumber": "Photo ID Number",
+    "photoIdIssueDate": "Photo ID Issue Date",
+    "photoIdExpiryDate": "Photo ID Expiry Date",
+    "travelDocumentNumber": "Travel Document Number",
+    "travelDocumentIssueDate": "Travel Document Issue Date",
+    "travelDocumentExpiryDate": "Travel Document Expiry Date"
+
+
+
 
 
 
