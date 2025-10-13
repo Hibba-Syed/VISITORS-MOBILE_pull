@@ -314,11 +314,14 @@ class CheckInDetailsScreen extends StatelessWidget {
                       onSecondButtonPressed: () async {
                         final result = await context
                             .read<CheckInsDetailsCubit>()
-                            .checkOutVisitors(context, id: checkIns?.id, data: {
-                          "checkout_count": visitorsNoController.text.isNotEmpty
-                              ? {"checkout_count": visitorsNoController.text}
-                              : {}
-                        });
+                            .checkOutVisitors(context,
+                                id: checkIns?.id,
+                                data: visitorsNoController.text.isNotEmpty
+                                    ? {
+                                        "checkout_count":
+                                            visitorsNoController.text
+                                      }
+                                    : {});
                         visitorsNoController.clear();
                         return result;
                       },

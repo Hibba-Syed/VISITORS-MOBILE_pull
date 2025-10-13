@@ -39,46 +39,46 @@ class ServiceableCheckInsScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Gap(10),
-                if(state.checkIns?.isNotEmpty??false)
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: CustomButton(
-                      buttonColor: AppColors.red,
-                      text: AppUtils.languageTranslate('checkoutAll'),
-                      height: AppUtils.isTablet(context) ? 43 : 42,
-                      width: AppUtils.isTablet(context) ? 200 : 150,
-                      borderRadius: 6,
-                      image: AppImages.logoutCard,
-                      onPressed: () {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return CustomAlertDialogBox(
-                              insetPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              isFirstButtonDisable: true,
-                              secondButtonColor: AppColors.red,
-                              secondButtonText:
-                                  AppUtils.languageTranslate('yes'),
-                              title: AppUtils.languageTranslate(
-                                  'checkOutForAllCheckIns'),
-                              onSecondButtonPressed: () async {
-                                return context
-                                    .read<CheckInsCubit>()
-                                    .checkOutAll(context);
-                              },
-                              contentBuilder: (context, setState) {
-                                return const Align(
-                                  alignment: Alignment.center,
-                                  child: AllCheckOutDesignWidget(),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      }),
-                ),
+                if (state.checkIns?.isNotEmpty ?? false)
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: CustomButton(
+                        buttonColor: AppColors.red,
+                        text: AppUtils.languageTranslate('checkoutAll'),
+                        height: AppUtils.isTablet(context) ? 43 : 42,
+                        width: AppUtils.isTablet(context) ? 200 : 150,
+                        borderRadius: 6,
+                        image: AppImages.logoutCard,
+                        onPressed: () {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialogBox(
+                                insetPadding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                isFirstButtonDisable: true,
+                                secondButtonColor: AppColors.red,
+                                secondButtonText:
+                                    AppUtils.languageTranslate('yes'),
+                                title: AppUtils.languageTranslate(
+                                    'checkOutForAllCheckIns'),
+                                onSecondButtonPressed: () async {
+                                  return context
+                                      .read<CheckInsCubit>()
+                                      .checkOutAll(context);
+                                },
+                                contentBuilder: (context, setState) {
+                                  return const Align(
+                                    alignment: Alignment.center,
+                                    child: AllCheckOutDesignWidget(),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        }),
+                  ),
                 const Gap(15),
                 Expanded(
                   child: state.isLoading
@@ -103,16 +103,16 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                                     count: checkIn?.visitorCount ?? "",
                                     reference: checkIn?.purpose ?? "--",
                                     typeImage: (checkIn?.type?.toLowerCase() ==
-                                        'community visit' ||
-                                        checkIn?.type?.toLowerCase() ==
-                                            'community service')
+                                                'community visit' ||
+                                            checkIn?.type?.toLowerCase() ==
+                                                'community service')
                                         ? AppImages.community
                                         : (checkIn?.type?.toLowerCase() ==
-                                        'unit visit' ||
-                                        checkIn?.type?.toLowerCase() ==
-                                            'unit service')
-                                        ? AppImages.unit
-                                        : "",
+                                                    'unit visit' ||
+                                                checkIn?.type?.toLowerCase() ==
+                                                    'unit service')
+                                            ? AppImages.unit
+                                            : "",
                                     typeText: (checkIn?.type?.toLowerCase() ==
                                                 'unit visit' ||
                                             checkIn?.type?.toLowerCase() ==
@@ -200,11 +200,14 @@ class ServiceableCheckInsScreen extends StatelessWidget {
                       onSecondButtonPressed: () async {
                         final result = await context
                             .read<CheckInsCubit>()
-                            .checkOutVisitors(context, id: checkIn?.id, data: {
-                          "checkout_count": visitorsNoController.text.isNotEmpty
-                              ? {"checkout_count": visitorsNoController.text}
-                              : {}
-                        });
+                            .checkOutVisitors(context,
+                                id: checkIn?.id,
+                                data: visitorsNoController.text.isNotEmpty
+                                    ? {
+                                        "checkout_count":
+                                            visitorsNoController.text
+                                      }
+                                    : {});
                         visitorsNoController.clear();
                         return result;
                       },

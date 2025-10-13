@@ -194,7 +194,7 @@ class CheckInsCubit extends Cubit<CheckInsState> {
         Fluttertoast.showToast(
           msg: error.toString(),
         );
-        return null;
+        throw error!;
       });
       emit(state.copyWith(isCheckOutVisitor: false));
       // log("CHECKOUT RESPONSES:::: ${response?.toJson()}");

@@ -193,7 +193,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
                             'photo_id_expiry_date':
                                 _selectedPhotoIdExpiryDate?.toString(),
                           },
-                          if (_selectedDocumentType?.value == 'Photo ID') ...{
+                          if (_selectedDocumentType?.value == 'Travel Document') ...{
                             'passport_number':
                                 _travelDocumentNumberController.text,
                             'passport_issue_date':

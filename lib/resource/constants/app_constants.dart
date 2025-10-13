@@ -6,6 +6,9 @@ import '../../utils/app_utils.dart';
 import '../../view/screens/guest_check_in/guest_check_in_screen.dart';
 
 class AppConstants {
+
+  static const int notesMaxLength = 900;
+
   static const int dashboardIndex = 0;
   static const int checkInsIndex = 1;
   static const int eServicesIndex = 2;

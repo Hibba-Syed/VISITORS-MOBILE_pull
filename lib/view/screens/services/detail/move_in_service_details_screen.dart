@@ -471,7 +471,7 @@ class _MoveInServiceDetailsScreenState
                                                   label: AppUtils
                                                       .languageTranslate(
                                                           'note'),
-                                                  maxLength: 1000,
+                                                  maxLength: AppConstants.notesMaxLength,
                                                   validator: (value) {
                                                     if (value?.trim().isEmpty ??
                                                         true) {

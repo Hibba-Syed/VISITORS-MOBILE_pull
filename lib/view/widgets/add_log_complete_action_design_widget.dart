@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../../resource/constants/app_colors.dart';
+import '../../resource/constants/app_constants.dart';
 import '../../resource/constants/images.dart';
 import '../../utils/app_utils.dart';
 import 'text field/text_field_widget.dart';
@@ -96,7 +97,7 @@ class AddLogCompleteActionDesignWidget extends StatelessWidget {
           label: isAccessDevice
               ? AppUtils.languageTranslate('servicesNote')
               : AppUtils.languageTranslate('note'),
-          maxLength: 1000,
+          maxLength: AppConstants.notesMaxLength,
           validator: (value) {
             if (isAccessDevice) return null;
             if (value?.trim().isEmpty ?? true) {

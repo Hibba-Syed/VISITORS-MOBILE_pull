@@ -156,54 +156,61 @@ class _FitOutServiceDetailsScreenState
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
                                 isLast: true,
-                                title:
-                                AppUtils.languageTranslate('addOns'),
-                                value:
-                                state.serviceDetails?.application?.addons?.map((item)=>item.serviceName).toList().join(','),
+                                title: AppUtils.languageTranslate('addOns'),
+                                value: (state.serviceDetails?.application
+                                            ?.addons?.isNotEmpty ??
+                                        false)
+                                    ? state.serviceDetails?.application?.addons
+                                        ?.map((item) => item.serviceName)
+                                        .toList()
+                                        .join(',')
+                                    : '--',
                               ),
                             ],
                           ),
                         ),
-                        const Gap(20),
-                        HeadingWidget(
-                          heading: AppUtils.languageTranslate('documents'),
-                        ),
-                        const Gap(10),
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 7, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10),
+                        if (filteredDocuments?.isNotEmpty ?? false) ...[
+                          const Gap(20),
+                          HeadingWidget(
+                            heading: AppUtils.languageTranslate('documents'),
                           ),
-                          child: filteredDocuments?.isNotEmpty ?? true
-                              ? ListView.separated(
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: filteredDocuments?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    Document? document =
-                                        filteredDocuments?[index];
-                                    if (document?.label ==
-                                            "Sent For Approval File" ||
-                                        document?.label == "Approve File") {
-                                      return SizedBox.shrink();
-                                    }
-                                    return ServicesDocumentsCardWidget(
-                                      name: document?.name,
-                                      url: document?.pathUrl ?? "",
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return Divider(
-                                      color: AppColors.gray,
-                                    );
-                                  },
-                                )
-                              : EmptyWidget(
-                                  text: AppUtils.languageTranslate(
-                                      'noDataAvailable')),
-                        ),
+                          const Gap(10),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: filteredDocuments?.isNotEmpty ?? true
+                                ? ListView.separated(
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: filteredDocuments?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      Document? document =
+                                          filteredDocuments?[index];
+                                      if (document?.label ==
+                                              "Sent For Approval File" ||
+                                          document?.label == "Approve File") {
+                                        return SizedBox.shrink();
+                                      }
+                                      return ServicesDocumentsCardWidget(
+                                        name: document?.name,
+                                        url: document?.pathUrl ?? "",
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return Divider(
+                                        color: AppColors.gray,
+                                      );
+                                    },
+                                  )
+                                : EmptyWidget(
+                                    text: AppUtils.languageTranslate(
+                                        'noDataAvailable')),
+                          ),
+                        ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
                           const Gap(20),
                           HeadingWidget(

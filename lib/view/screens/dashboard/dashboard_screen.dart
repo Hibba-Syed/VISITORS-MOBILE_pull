@@ -151,11 +151,14 @@ class DashboardScreen extends StatelessWidget {
                       onSecondButtonPressed: () async {
                         final result = await context
                             .read<DashboardCubit>()
-                            .checkOutVisitors(context, id: checkIns?.id, data: {
-                          "checkout_count": visitorsNoController.text.isNotEmpty
-                              ? {"checkout_count": visitorsNoController.text}
-                              : {}
-                        });
+                            .checkOutVisitors(context,
+                                id: checkIns?.id,
+                                data: visitorsNoController.text.isNotEmpty
+                                    ? {
+                                        "checkout_count":
+                                            visitorsNoController.text
+                                      }
+                                    : {});
                         visitorsNoController.clear();
                         return result;
                       },
@@ -394,16 +397,16 @@ class DashboardScreen extends StatelessWidget {
                               phone: checkIn?.phone ?? "--",
                               count: checkIn?.visitorCount ?? "",
                               typeImage: (checkIn?.type?.toLowerCase() ==
-                                  'community visit' ||
-                                  checkIn?.type?.toLowerCase() ==
-                                      'community service')
+                                          'community visit' ||
+                                      checkIn?.type?.toLowerCase() ==
+                                          'community service')
                                   ? AppImages.community
                                   : (checkIn?.type?.toLowerCase() ==
-                                  'unit visit' ||
-                                  checkIn?.type?.toLowerCase() ==
-                                      'unit service')
-                                  ? AppImages.unit
-                                  : "",
+                                              'unit visit' ||
+                                          checkIn?.type?.toLowerCase() ==
+                                              'unit service')
+                                      ? AppImages.unit
+                                      : "",
                               typeText: (checkIn?.type?.toLowerCase() ==
                                           'unit visit' ||
                                       checkIn?.type?.toLowerCase() ==
@@ -411,8 +414,7 @@ class DashboardScreen extends StatelessWidget {
                                   ? checkIn?.unit?.unitNumber
                                   : checkIn?.type ?? "--",
                               name: checkIn?.name ?? "--",
-                              profileImageUrl:
-                                  checkIn?.visitor?.imageUrl ?? "",
+                              profileImageUrl: checkIn?.visitor?.imageUrl ?? "",
                               type: AppUtils.getServiceableType(
                                       checkIn?.serviceableType)
                                   .label,
@@ -851,22 +853,22 @@ class DashboardScreen extends StatelessWidget {
                           return CheckInCardWidget(
                             count: checkIn?.visitorCount ?? "",
                             typeImage: (checkIn?.type?.toLowerCase() ==
-                                'community visit' ||
-                                checkIn?.type?.toLowerCase() ==
-                                    'community service')
+                                        'community visit' ||
+                                    checkIn?.type?.toLowerCase() ==
+                                        'community service')
                                 ? AppImages.community
                                 : (checkIn?.type?.toLowerCase() ==
-                                'unit visit' ||
-                                checkIn?.type?.toLowerCase() ==
-                                    'unit service')
-                                ? AppImages.unit
-                                : "",
-                            typeText: (checkIn?.type?.toLowerCase() ==
-                                        'unit visit' ||
-                                    checkIn?.type?.toLowerCase() ==
-                                        'unit service')
-                                ? checkIn?.unit?.unitNumber
-                                : checkIn?.type ?? "",
+                                            'unit visit' ||
+                                        checkIn?.type?.toLowerCase() ==
+                                            'unit service')
+                                    ? AppImages.unit
+                                    : "",
+                            typeText:
+                                (checkIn?.type?.toLowerCase() == 'unit visit' ||
+                                        checkIn?.type?.toLowerCase() ==
+                                            'unit service')
+                                    ? checkIn?.unit?.unitNumber
+                                    : checkIn?.type ?? "",
                             name: checkIn?.name ?? "",
                             profileImageUrl: checkIn?.visitor?.imageUrl ?? "",
                             type: AppUtils.getServiceableType(

@@ -6,6 +6,8 @@ import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
+import '../../widgets/button/custom_button.dart';
+
 class CardScanner extends StatefulWidget {
   final List<CameraDescription> cameras;
   const CardScanner({
@@ -911,27 +913,16 @@ class _CardScannerState extends State<CardScanner> {
                     Row(
                       children: [
                         Expanded(
-                          child: ElevatedButton(
+                          child: CustomButton(
+                            text: 'Retake Photo',
                             onPressed: _retakePhoto,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey.shade600,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              'Retake Photo',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            invert: true,
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: ElevatedButton(
+                          child: CustomButton(
+                            text: 'Confirm & Upload',
                             onPressed: () async {
                               // Get the file
                               // final file = await getCapturedImageFile();
@@ -952,20 +943,6 @@ class _CardScannerState extends State<CardScanner> {
                               //   // await uploadToServer(file);
                               // }
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              'Confirm & Upload',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                           ),
                         ),
                       ],

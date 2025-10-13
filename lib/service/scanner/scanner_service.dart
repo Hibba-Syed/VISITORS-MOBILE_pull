@@ -20,7 +20,7 @@ import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
 
 import '../../utils/date_time.dart';
-import '../../view/screens/id_card_scanner_claude.dart';
+import '../../view/screens/scanner/card_scanner.dart';
 
 class ScannerService {
   Future<EmiratesIdModel?> scanEmiratesIdAndPerformOcr() async {
