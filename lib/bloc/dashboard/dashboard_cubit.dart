@@ -255,10 +255,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
-  Future<void> getData(
-    BuildContext context,
-    //{bool isNavigationAllow = true}
-  ) async {
+  Future<void> getData(BuildContext context) async {
     final dashboardCubit = context.read<DashboardCubit>();
     final guestCheckInCubit = context.read<GuestCheckInCubit>();
 
@@ -266,30 +263,32 @@ class DashboardCubit extends Cubit<DashboardState> {
 
     if (profileSuccess) {
       await Future.wait([
-        dashboardCubit.getVisitorPassesCount(),
-        dashboardCubit.getDashboardCheckIns(limit: 3),
-        dashboardCubit.getDashboardCount(),
-        dashboardCubit.getDashboardServices(limit: 3),
-        dashboardCubit.getDashboardWorkOrder(limit: 3),
-        guestCheckInCubit.getCountries(),
-        guestCheckInCubit.getProfile(),
-        guestCheckInCubit.getUnits(),
+        dashboardCubit.getVisitorPassesCount().catchError((_) {}),
+        dashboardCubit.getDashboardCheckIns(limit: 3).catchError((_) {}),
+        dashboardCubit.getDashboardCount().catchError((_) {}),
+        dashboardCubit.getDashboardServices(limit: 3).catchError((_) {}),
+        dashboardCubit.getDashboardWorkOrder(limit: 3).catchError((_) {}),
+        guestCheckInCubit.getCountries().catchError((_) {}),
+        guestCheckInCubit.getProfile().catchError((_) {}),
+        guestCheckInCubit.getUnits().catchError((_) {}),
       ]);
+
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.mainDashboard,
-          (route) => false,
+              (route) => false,
         );
       }
     } else {
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.login,
-          (route) => false,
+              (route) => false,
         );
       }
     }
   }
+
 
   Future<void> refreshData(BuildContext context) async {
     final dashboardCubit = context.read<DashboardCubit>();
