@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
+import '../../../utils/app_utils.dart';
 import '../../widgets/button/custom_button.dart';
 
 class CardScanner extends StatefulWidget {
@@ -25,7 +26,8 @@ class _CardScannerState extends State<CardScanner> {
   bool _isCardDetected = false;
   bool _isImageClear = false;
   bool _autoCapture = true;
-  String _message = 'Position card within frame';
+  String _message = AppUtils.languageTranslate('positionCardWithinFrame');
+  
   int _countdown = 0;
   Timer? _detectionTimer;
   Timer? _countdownTimer;
@@ -43,7 +45,8 @@ class _CardScannerState extends State<CardScanner> {
 
   Future<void> _initializeCamera() async {
     if (widget.cameras.isEmpty) {
-      setState(() => _message = 'No camera found');
+      setState(() => _message = AppUtils.languageTranslate('noCameraFound')
+      );
       return;
     }
 
@@ -60,7 +63,7 @@ class _CardScannerState extends State<CardScanner> {
       setState(() => _isInitialized = true);
       _startDetection();
     } catch (e) {
-      setState(() => _message = 'Camera error: ${e.toString()}');
+      setState(() => _message = '${AppUtils.languageTranslate('cameraError')} ${e.toString()}');
     }
   }
 
@@ -164,18 +167,18 @@ class _CardScannerState extends State<CardScanner> {
           _isImageClear = imageClear;
 
           if (_stableFrameCount >= _requiredStableFrames) {
-            _message = 'Card detected - Hold steady';
+            _message = AppUtils.languageTranslate('cardDetectedHoldSteady');
             if (_autoCapture && _countdown == 0 && _capturedImage == null) {
               _startCountdown();
             }
           } else if (cardPresent && !imageClear) {
-            _message = 'Image blurry - Hold steady';
+            _message = AppUtils.languageTranslate('imageBlurryHoldSteady');
             _resetCountdown();
           } else if (cardPresent && !cardFillsFrame) {
-            _message = 'Move card inside the frame completely';
+            _message = AppUtils.languageTranslate('moveCardInsideFrameCompletely');
             _resetCountdown();
           } else {
-            _message = 'Position card within frame';
+            _message = AppUtils.languageTranslate('positionCardWithinFrame');
             _resetCountdown();
           }
         });
@@ -404,7 +407,7 @@ class _CardScannerState extends State<CardScanner> {
     }
 
     if (_stableFrameCount < _requiredStableFrames) {
-      setState(() => _message = 'Error: Card not stable in frame');
+      setState(() => _message = AppUtils.languageTranslate('errorCardNotStableInFrame'));
       _resetCountdown();
       return;
     }
@@ -454,12 +457,12 @@ class _CardScannerState extends State<CardScanner> {
       setState(() {
         _capturedImage = jpegBytes;
         _capturedImageFile = imageFile;
-        _message = 'Image captured successfully!';
+        _message = AppUtils.languageTranslate('imageCapturedSuccessfully');
         _isProcessing = false;
       });
     } catch (e) {
       setState(() {
-        _message = 'Capture error: ${e.toString()}';
+        _message = '${AppUtils.languageTranslate('captureError')} ${e.toString()}';
         _isProcessing = false;
       });
       _startDetection(); // Restart detection if failed
@@ -483,7 +486,7 @@ class _CardScannerState extends State<CardScanner> {
     setState(() {
       _capturedImage = null;
       _capturedImageFile = null;
-      _message = 'Position card within frame';
+      _message = AppUtils.languageTranslate('positionCardWithinFrame');
       _countdown = 0;
       _stableFrameCount = 0;
       _isProcessing = false;
@@ -593,12 +596,12 @@ class _CardScannerState extends State<CardScanner> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
+                     Row(
                       children: [
                         Icon(Icons.camera_alt, color: Colors.white),
                         SizedBox(width: 8),
                         Text(
-                          'ID Card Scanner',
+                          AppUtils.languageTranslate('idCardScanner'),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -609,8 +612,8 @@ class _CardScannerState extends State<CardScanner> {
                     ),
                     Row(
                       children: [
-                        const Text(
-                          'Auto',
+                         Text(
+                          AppUtils.languageTranslate('auto'),
                           style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
                         Switch(
@@ -693,8 +696,8 @@ class _CardScannerState extends State<CardScanner> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatusIndicator('Card Detected', _isCardDetected),
-                _buildStatusIndicator('Image Clear', _isImageClear),
+                _buildStatusIndicator(AppUtils.languageTranslate("cardDetected"), _isCardDetected),
+                _buildStatusIndicator(AppUtils.languageTranslate('imageClear'), _isImageClear),
               ],
             ),
           ),
@@ -796,8 +799,8 @@ class _CardScannerState extends State<CardScanner> {
                 color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                'Align card here',
+              child:  Text(
+                AppUtils.languageTranslate('alignCardHere'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -889,13 +892,13 @@ class _CardScannerState extends State<CardScanner> {
                 ),
                 child: Column(
                   children: [
-                    const Row(
+                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.check_circle, color: Colors.green, size: 32),
                         SizedBox(width: 8),
                         Text(
-                          'Capture Successful!',
+                          AppUtils.languageTranslate('captureSuccessful'),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -914,7 +917,7 @@ class _CardScannerState extends State<CardScanner> {
                       children: [
                         Expanded(
                           child: CustomButton(
-                            text: 'Retake Photo',
+                            text: AppUtils.languageTranslate('retakePhoto'),
                             onPressed: _retakePhoto,
                             invert: true,
                           ),
@@ -922,7 +925,7 @@ class _CardScannerState extends State<CardScanner> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: CustomButton(
-                            text: 'Confirm & Upload',
+                            text: AppUtils.languageTranslate('confirmAndUpload'),
                             onPressed: () async {
                               // Get the file
                               // final file = await getCapturedImageFile();

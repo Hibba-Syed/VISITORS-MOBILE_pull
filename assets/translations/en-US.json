@@ -321,18 +321,25 @@
     "photoIdExpiryDate": "Photo ID Expiry Date",
     "travelDocumentNumber": "Travel Document Number",
     "travelDocumentIssueDate": "Travel Document Issue Date",
-    "travelDocumentExpiryDate": "Travel Document Expiry Date"
+    "travelDocumentExpiryDate": "Travel Document Expiry Date",
 
-
-
-
-
-
-
-
-
-
-
+    "positionCardWithinFrame": "Position card within frame",
+    "noCameraFound": "No camera found",
+    "cameraError": "Camera error:",
+    "cardDetectedHoldSteady": "Card detected - Hold steady",
+    "imageBlurryHoldSteady":"Image blurry - Hold steady",
+    "moveCardInsideFrameCompletely": "Move card inside the frame completely",
+    "errorCardNotStableInFrame": "Error: Card not stable in frame",
+    "imageCapturedSuccessfully": "Image captured successfully!",
+    "captureError": "Capture error",
+    "idCardScanner": "ID Card Scanner",
+    "auto": "Auto",
+    "cardDetected": "Card Detected:",
+    "imageClear": "Image Clear",
+    "alignCardHere": "Align card here",
+    "captureSuccessful": "Capture Successful!",
+    "retakePhoto": "Retake Photo",
+    "confirmAndUpload": "Confirm & Upload"
 
 }
 

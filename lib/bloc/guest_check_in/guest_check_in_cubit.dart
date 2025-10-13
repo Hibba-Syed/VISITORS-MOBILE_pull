@@ -96,7 +96,15 @@ class GuestCheckInCubit extends Cubit<GuestCheckInState> {
   Future<bool> getProfile() async {
     emit(state.copyWith(isProfileLoading: true));
 
-    ProfileResponseModel? profileResponse = await _profileRepo.getProfile();
+    ProfileResponseModel? profileResponse = await _profileRepo.getProfile().onError(
+          (error, stackTrace) {
+        emit(state.copyWith(isUnitLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
 
     emit(state.copyWith(isProfileLoading: false));
 
