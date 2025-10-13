@@ -25,7 +25,6 @@ class CheckInRepoImpl implements CheckInRepo {
     try {
       String url =
           '${ApiUrl.checkIns}?page=${page ?? 1}&limit=${limit ?? 10}&keyword=${keyword ?? ''}&vendor_id=${vendorId ?? ''}&serviceable_type=${serviceableType ?? ''}&date_range=${dateRange ?? ''}&unit_id=${unitId ?? ''}&serviceable_id=${serviceableId ?? ''}';
-      // print('checkIns$url');
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       // print('checkIns$response');
       return CheckInsResponseModel.fromJson(response);

@@ -320,22 +320,23 @@
     "photoIdExpiryDate": "تاريخ انتهاء بطاقة الهوية المصورة",
     "travelDocumentNumber": "رقم وثيقة السفر",
     "travelDocumentIssueDate": "تاريخ إصدار وثيقة السفر",
-    "travelDocumentExpiryDate": "تاريخ انتهاء وثيقة السفر"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    "travelDocumentExpiryDate": "تاريخ انتهاء وثيقة السفر",
+    "positionCardWithinFrame": "ضع البطاقة داخل الإطار",
+    "noCameraFound": "لم يتم العثور على الكاميرا",
+    "cardDetectedHoldSteady": "تم اكتشاف البطاقة - أبقِ ثابتًا",
+    "imageBlurryHoldSteady": "الصورة غير واضحة - أبقِ ثابتًا",
+    "moveCardInsideFrameCompletely": "حرك البطاقة بالكامل داخل الإطار",
+    "errorCardNotStableInFrame":"خطأ: البطاقة غير ثابتة داخل الإطار",
+    "captureError": "خطأ في الالتقاط",
+    "idCardScanner": "ماسح بطاقة الهوية",
+    "auto": "تلقائي",
+    "cardDetected": "تم اكتشاف البطاقة",
+    "imageClear": "الصورة واضحة",
+    "alignCardHere": "قم بمحاذاة البطاقة هنا",
+    "captureSuccessful": "تم الالتقاط بنجاح!",
+    "retakePhoto": "إعادة التقاط الصورة",
+    "confirmAndUpload": "تأكيد وتحميل",
+    "cameraError": "خطأ في الكاميرا",
+    "imageCapturedSuccessfully": "تم التقاط الصورة بنجاح"
 
 }
