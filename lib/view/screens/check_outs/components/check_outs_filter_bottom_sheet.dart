@@ -84,9 +84,10 @@ class _CheckOutsFilterBottomSheetState
                   hint: AppUtils.languageTranslate('range'),
                   fillColor: AppColors.white,
                   selectedItem: _selectedRange,
-                  itemAsString: (range) => range.label,
+                  itemAsString: (range) =>
+                      AppUtils.languageTranslate(range.label),
                   compareFn: (p0, p1) => p0 == p1,
-                  items: AppConstants().rangeList,
+                  items: AppConstants.rangeList,
                   onChanged: (value) {
                     _selectedRange = value;
 
@@ -104,7 +105,8 @@ class _CheckOutsFilterBottomSheetState
                   hint: AppUtils.languageTranslate('type'),
                   fillColor: AppColors.white,
                   selectedItem: _selectedType,
-                  itemAsString: (type) => type.label,
+                  itemAsString: (type) =>
+                      AppUtils.languageTranslate(type.label),
                   compareFn: (p0, p1) => p0.value == p1.value,
                   items: AppUtils.checkInTypeList,
                   onChanged: (value) {

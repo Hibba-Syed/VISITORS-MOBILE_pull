@@ -162,15 +162,15 @@ class AppUtils {
 
   static List<TypeModel> checkInTypeList = [
     TypeModel(
-        label: AppUtils.languageTranslate('guests'), value: Strings.keyGuest),
+        label: "guests", value: Strings.keyGuest),
     TypeModel(
-        label: AppUtils.languageTranslate('services'),
+        label: "services",
         value: Strings.keyServices),
     TypeModel(
-        label: AppUtils.languageTranslate('workOrdersRFPs'),
+        label:"workOrdersRFPs",
         value: Strings.keyWorkOrder),
     TypeModel(
-        label: AppUtils.languageTranslate('visitorPass'),
+        label: "visitorPass",
         value: Strings.keyVisitorPass),
   ];
 

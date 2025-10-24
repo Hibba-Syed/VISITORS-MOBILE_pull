@@ -272,10 +272,10 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       case AppConstants.checkOutsIndex:
         context
             .read<CheckOutCubit>()
-            .onChangeSelectedRange(AppConstants().rangeList.first);
+            .onChangeSelectedRange(AppConstants.rangeList.first);
         context.read<CheckOutCubit>().onChangeDateRange(
             AppUtils.getDateRangeStringFromLabel(
-                AppConstants().rangeList.first));
+                AppConstants.rangeList.first));
         context.read<CheckOutCubit>().getCheckOuts();
         break;
       case AppConstants.directoryIndex:

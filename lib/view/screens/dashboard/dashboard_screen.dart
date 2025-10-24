@@ -1143,9 +1143,9 @@ class DashboardScreen extends StatelessWidget {
     } else if (targetIndex == AppConstants.checkOutsIndex) {
       context
           .read<CheckOutCubit>()
-          .onChangeSelectedRange(AppConstants().rangeList.first);
+          .onChangeSelectedRange(AppConstants.rangeList.first);
       context.read<CheckOutCubit>().onChangeDateRange(
-          AppUtils.getDateRangeStringFromLabel(AppConstants().rangeList.first));
+          AppUtils.getDateRangeStringFromLabel(AppConstants.rangeList.first));
       context.read<CheckOutCubit>().getCheckOuts();
       cubit.onChangeSelectedIndex(AppConstants.checkOutsIndex);
     } else {}

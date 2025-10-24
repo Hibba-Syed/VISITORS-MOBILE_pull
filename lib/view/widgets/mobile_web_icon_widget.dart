@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../resource/constants/app_colors.dart';
@@ -22,17 +23,23 @@ class MobileWebIconWidget extends StatelessWidget {
           : AppUtils.languageTranslate("web_check_in"),
       child: Container(
         padding: isDecorationEnabled
-            ?  EdgeInsets.symmetric(vertical: AppUtils.isTablet(context)?7:6, horizontal: 10)
+            ? EdgeInsets.symmetric(
+                vertical: AppUtils.isTablet(context) ? 7 : 6, horizontal: 10)
             : null,
         decoration: isDecorationEnabled
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
                 color: AppColors.primary)
             : null,
-        child: Icon(
-          isMobile == true ? Icons.phone_iphone : Icons.desktop_mac_outlined,
-          color: iconColor ?? AppColors.lightGrey,
-          size: 19,
+        child: Align(
+          alignment: context.locale.languageCode == 'en'
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
+          child: Icon(
+            isMobile == true ? Icons.phone_iphone : Icons.desktop_mac_outlined,
+            color: iconColor ?? AppColors.lightGrey,
+            size: 19,
+          ),
         ),
       ),
     );

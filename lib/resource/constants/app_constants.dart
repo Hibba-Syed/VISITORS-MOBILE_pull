@@ -6,7 +6,6 @@ import '../../utils/app_utils.dart';
 import '../../view/screens/guest_check_in/guest_check_in_screen.dart';
 
 class AppConstants {
-
   static const int notesMaxLength = 900;
 
   static const int dashboardIndex = 0;
@@ -24,13 +23,10 @@ class AppConstants {
   static const double tabletScreen = 600;
   static const double mobileScreen = 360;
 
-  final List<RangeModel> rangeList = [
-    RangeModel(
-        label: AppUtils.languageTranslate('last30Days'), value: "Last 30 Days"),
-    RangeModel(
-        label: AppUtils.languageTranslate('last60Days'), value: "Last 60 Days"),
-    RangeModel(
-        label: AppUtils.languageTranslate('last90Days'), value: "Last 90 Days"),
+  static final List<RangeModel> rangeList = [
+    RangeModel(label: "last30Days", value: "Last 30 Days"),
+    RangeModel(label: "last60Days", value: "Last 60 Days"),
+    RangeModel(label: "last90Days", value: "Last 90 Days"),
   ];
 
   static const Map<String, String> nationalityMap = {
