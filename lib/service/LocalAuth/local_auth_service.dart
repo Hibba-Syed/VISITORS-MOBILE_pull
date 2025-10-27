@@ -15,10 +15,7 @@ class LocalAuthService {
     try {
       return await _auth.authenticate(
         localizedReason: AppUtils.languageTranslate('pleaseAuthenticateToProceed'),
-        options: const AuthenticationOptions(
-          useErrorDialogs: true,
-          stickyAuth: true,
-        ),
+
       );
     } catch (e) {
       debugPrint( "${AppUtils.languageTranslate('authenticationError')} $e");

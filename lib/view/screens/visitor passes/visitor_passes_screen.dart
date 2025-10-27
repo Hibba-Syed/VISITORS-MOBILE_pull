@@ -118,12 +118,16 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                                     company:
                                         visitorPass?.visitorCompany ?? "--",
                                     isActiveCheckins:
-                                        (visitorPass?.activeCheckInsCount??0) >= 1
+                                        (visitorPass?.activeCheckInsCount ??
+                                                    0) >=
+                                                1
                                             ? true
                                             : false,
                                     checkInOnPressed: () {
                                       GuestCheckInCubit guestCheckInCubit =
                                           context.read<GuestCheckInCubit>();
+                                      VisitorPassCubit visitorPassCubit =
+                                          context.read<VisitorPassCubit>();
                                       guestCheckInCubit.clearData();
                                       guestCheckInCubit
                                           .onChangeSelectedNationality(
@@ -139,9 +143,7 @@ class _VisitorPassesScreenState extends State<VisitorPassesScreen> {
                                           }).then(
                                         (value) {
                                           if (value == true) {
-                                            context
-                                                .read<VisitorPassCubit>()
-                                                .getVisitorPasses();
+                                            visitorPassCubit.getVisitorPasses();
                                           }
                                         },
                                       );

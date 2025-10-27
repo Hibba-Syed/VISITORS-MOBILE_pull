@@ -11,10 +11,7 @@ import '../../widgets/button/custom_button.dart';
 
 class CardScanner extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const CardScanner({
-    super.key,
-    required this.cameras,
-  });
+  const CardScanner({super.key, required this.cameras});
 
   @override
   State<CardScanner> createState() => _CardScannerState();
@@ -27,15 +24,14 @@ class _CardScannerState extends State<CardScanner> {
   bool _isImageClear = false;
   bool _autoCapture = true;
   String _message = AppUtils.languageTranslate('positionCardWithinFrame');
-  
-  int _countdown = 0;
+
   Timer? _detectionTimer;
-  Timer? _countdownTimer;
   Uint8List? _capturedImage;
   File? _capturedImageFile;
-  bool _isProcessing = false;
+  bool _isCapturing = false;
   int _stableFrameCount = 0;
   static const int _requiredStableFrames = 3;
+  bool _captureTriggered = false;
 
   @override
   void initState() {
@@ -45,14 +41,13 @@ class _CardScannerState extends State<CardScanner> {
 
   Future<void> _initializeCamera() async {
     if (widget.cameras.isEmpty) {
-      setState(() => _message = AppUtils.languageTranslate('noCameraFound')
-      );
+      setState(() => _message = AppUtils.languageTranslate('noCameraFound'));
       return;
     }
 
     _controller = CameraController(
       widget.cameras[0],
-      ResolutionPreset.veryHigh,
+      ResolutionPreset.high,
       enableAudio: false,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
@@ -63,19 +58,18 @@ class _CardScannerState extends State<CardScanner> {
       setState(() => _isInitialized = true);
       _startDetection();
     } catch (e) {
-      setState(() => _message = '${AppUtils.languageTranslate('cameraError')} ${e.toString()}');
+      setState(() => _message =
+          '${AppUtils.languageTranslate('cameraError')} ${e.toString()}');
     }
   }
 
   void _startDetection() {
-    // Cancel existing timer if any
     _detectionTimer?.cancel();
-
+    _captureTriggered = false;
     _detectionTimer = Timer.periodic(
       const Duration(milliseconds: 500),
       (timer) {
-        // Double check we should still be detecting
-        if (_capturedImage != null || !mounted) {
+        if (_capturedImage != null || !mounted || _isCapturing) {
           timer.cancel();
           return;
         }
@@ -87,245 +81,218 @@ class _CardScannerState extends State<CardScanner> {
   Future<void> _detectCard() async {
     if (_controller == null ||
         !_controller!.value.isInitialized ||
-        _isProcessing ||
-        _capturedImage != null) {
+        _isCapturing ||
+        _capturedImage != null ||
+        _captureTriggered) {
       return;
     }
-
-    _isProcessing = true;
 
     try {
       final image = await _controller!.takePicture();
       final bytes = await image.readAsBytes();
       final decodedImage = img.decodeImage(bytes);
 
-      if (decodedImage == null) {
-        _isProcessing = false;
-        return;
-      }
+      if (decodedImage == null || !mounted) return;
 
-      // Calculate frame dimensions based on screen size and camera preview
-      final screenSize = MediaQuery.of(context).size;
-      final screenWidth = screenSize.width;
-      final screenHeight = screenSize.height;
+      final croppedImage = _getCroppedFrame(decodedImage);
 
-      // UI frame dimensions
-      final uiFrameWidth = screenWidth * 0.75;
-      final uiFrameHeight = uiFrameWidth / 1.586;
-
-      // Camera aspect ratio
-      final cameraRatio = _controller!.value.aspectRatio;
-      final screenAspect = screenHeight / screenWidth;
-
-      // Calculate scale factors based on BoxFit.cover behavior
-      double scaleX, scaleY;
-
-      if (screenAspect > cameraRatio) {
-        // Screen is taller - preview width extends beyond screen
-        final previewWidth = screenHeight / cameraRatio;
-        scaleX = decodedImage.width / previewWidth;
-        scaleY = decodedImage.height / screenHeight;
-      } else {
-        // Screen is wider - preview height extends beyond screen
-        final previewHeight = screenWidth * cameraRatio;
-        scaleX = decodedImage.width / screenWidth;
-        scaleY = decodedImage.height / previewHeight;
-      }
-
-      // Apply scale to get actual crop dimensions
-      final frameWidth = (uiFrameWidth * scaleX).toInt();
-      final frameHeight = (uiFrameHeight * scaleY).toInt();
-      final frameX = ((decodedImage.width - frameWidth) / 2).toInt();
-      final frameY = ((decodedImage.height - frameHeight) / 2).toInt();
-      // Crop to frame area
-      final croppedImage = img.copyCrop(
-        decodedImage,
-        x: frameX,
-        y: frameY,
-        width: frameWidth,
-        height: frameHeight,
-      );
-
-      // Enhanced card detection
+      final hasContent = _checkContentPresence(croppedImage);
       final cardPresent = _checkCardPresence(croppedImage);
       final imageClear = _checkImageClarity(croppedImage);
-
-      // Check if card fills the frame properly
       final cardFillsFrame = _checkCardFillsFrame(croppedImage);
 
-      final bothConditionsMet = cardPresent && imageClear && cardFillsFrame;
+      final allConditionsMet =
+          hasContent && cardPresent && imageClear && cardFillsFrame;
 
-      if (bothConditionsMet) {
+      if (allConditionsMet) {
         _stableFrameCount++;
       } else {
         _stableFrameCount = 0;
       }
 
-      if (mounted) {
+      if (mounted && !_captureTriggered) {
         setState(() {
-          _isCardDetected = cardPresent && cardFillsFrame;
+          _isCardDetected = hasContent && cardPresent && cardFillsFrame;
           _isImageClear = imageClear;
 
-          if (_stableFrameCount >= _requiredStableFrames) {
+          if (allConditionsMet && _stableFrameCount >= _requiredStableFrames) {
             _message = AppUtils.languageTranslate('cardDetectedHoldSteady');
-            if (_autoCapture && _countdown == 0 && _capturedImage == null) {
-              _startCountdown();
+
+            if (_autoCapture && !_captureTriggered) {
+              _captureTriggered = true;
+              _detectionTimer?.cancel();
+              Future.delayed(const Duration(milliseconds: 300), () {
+                if (mounted && _capturedImage == null) {
+                  _captureImage();
+                }
+              });
             }
           } else if (cardPresent && !imageClear) {
             _message = AppUtils.languageTranslate('imageBlurryHoldSteady');
-            _resetCountdown();
           } else if (cardPresent && !cardFillsFrame) {
-            _message = AppUtils.languageTranslate('moveCardInsideFrameCompletely');
-            _resetCountdown();
+            _message =
+                AppUtils.languageTranslate('moveCardInsideFrameCompletely');
           } else {
             _message = AppUtils.languageTranslate('positionCardWithinFrame');
-            _resetCountdown();
           }
         });
       }
     } catch (e) {
-      print('Detection error: $e');
+      debugPrint('Detection error: $e');
+    }
+  }
+
+  img.Image _getCroppedFrame(img.Image decodedImage) {
+    final screenSize = MediaQuery.of(context).size;
+    final isTablet = screenSize.shortestSide >= 600;
+    final frameWidthRatio = isTablet ? 0.55 : 0.80;
+
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+    final uiFrameWidth = screenWidth * frameWidthRatio;
+    final uiFrameHeight = uiFrameWidth / 1.586;
+
+    final cameraRatio = _controller!.value.aspectRatio;
+    final screenAspect = screenHeight / screenWidth;
+
+    double scaleX, scaleY;
+    if (screenAspect > cameraRatio) {
+      final previewWidth = screenHeight / cameraRatio;
+      scaleX = decodedImage.width / previewWidth;
+      scaleY = decodedImage.height / screenHeight;
+    } else {
+      final previewHeight = screenWidth * cameraRatio;
+      scaleX = decodedImage.width / screenWidth;
+      scaleY = decodedImage.height / previewHeight;
     }
 
-    _isProcessing = false;
+    final frameWidth = (uiFrameWidth * scaleX).toInt();
+    final frameHeight = (uiFrameHeight * scaleY).toInt();
+    final frameX = ((decodedImage.width - frameWidth) / 2).toInt();
+    final frameY = ((decodedImage.height - frameHeight) / 2).toInt();
+
+    return img.copyCrop(decodedImage,
+        x: frameX, y: frameY, width: frameWidth, height: frameHeight);
+  }
+
+  bool _checkContentPresence(img.Image image) {
+    int totalLuminance = 0;
+    int samples = 0;
+    List<int> luminanceValues = [];
+
+    for (int y = 10; y < image.height - 10; y += 15) {
+      for (int x = 10; x < image.width - 10; x += 15) {
+        final pixel = image.getPixel(x, y);
+        final lum = _getLuminance(pixel).toInt();
+        luminanceValues.add(lum);
+        totalLuminance += lum;
+        samples++;
+      }
+    }
+
+    if (samples == 0) return false;
+
+    final mean = totalLuminance / samples;
+    double variance = 0;
+    for (var lum in luminanceValues) {
+      variance += (lum - mean) * (lum - mean);
+    }
+    variance /= samples;
+
+    int colorVariation = 0;
+    for (int y = 10; y < image.height - 10; y += 20) {
+      for (int x = 10; x < image.width - 10; x += 20) {
+        if (x + 20 < image.width - 10 && y + 20 < image.height - 10) {
+          final p1 = image.getPixel(x, y);
+          final p2 = image.getPixel(x + 20, y + 20);
+
+          final rDiff = (p1.r - p2.r).abs();
+          final gDiff = (p1.g - p2.g).abs();
+          final bDiff = (p1.b - p2.b).abs();
+
+          if (rDiff > 20 || gDiff > 20 || bDiff > 20) {
+            colorVariation++;
+          }
+        }
+      }
+    }
+
+    return variance > 350 && colorVariation > 12;
   }
 
   bool _checkCardPresence(img.Image image) {
-    int edgeCount = 0;
-    int strongEdgeCount = 0;
-    const threshold = 45; // Balanced threshold
-    const strongThreshold = 90;
+    int strongEdges = 0;
+    int texturePoints = 0;
 
-    // Enhanced edge detection with both horizontal and vertical edges
-    for (int y = 5; y < image.height - 5; y += 6) {
-      for (int x = 5; x < image.width - 5; x += 6) {
-        final pixel = image.getPixel(x, y);
-        final pixelRight = image.getPixel(x + 5, y);
-        final pixelBottom = image.getPixel(x, y + 5);
+    for (int y = 8; y < image.height - 8; y += 8) {
+      for (int x = 8; x < image.width - 8; x += 8) {
+        final center = image.getPixel(x, y);
+        final right = image.getPixel(x + 8, y);
+        final bottom = image.getPixel(x, y + 8);
 
-        final lumCenter = _getLuminance(pixel);
-        final lumRight = _getLuminance(pixelRight);
-        final lumBottom = _getLuminance(pixelBottom);
+        final lumC = _getLuminance(center);
+        final lumR = _getLuminance(right);
+        final lumB = _getLuminance(bottom);
 
-        final edgeHorizontal = (lumCenter - lumRight).abs();
-        final edgeVertical = (lumCenter - lumBottom).abs();
+        final edgeH = (lumC - lumR).abs();
+        final edgeV = (lumC - lumB).abs();
+        final maxEdge = edgeH > edgeV ? edgeH : edgeV;
 
-        final maxEdge =
-            edgeHorizontal > edgeVertical ? edgeHorizontal : edgeVertical;
-
-        if (maxEdge > threshold) {
-          edgeCount++;
-          if (maxEdge > strongThreshold) {
-            strongEdgeCount++;
-          }
-        }
+        if (maxEdge > 60) strongEdges++;
+        if (maxEdge > 25) texturePoints++;
       }
     }
 
-    // Card should have significant strong edges
-    return edgeCount > 180 && strongEdgeCount > 40;
+    return strongEdges > 20 && texturePoints > 100;
   }
 
   bool _checkCardFillsFrame(img.Image image) {
-    // Strategy: Check that there's NO card edge in the outer margin area
-    // This ensures the card is fully inside the frame, not outside it
+    const margin = 35;
+    int marginEdges = 0;
+    int marginSamples = 0;
 
-    const marginSize = 30; // Check outer 30px margin
-    int edgesInMargin = 0;
-    int totalMarginSamples = 0;
+    // Check top and bottom margins
+    for (int x = margin; x < image.width - margin; x += 10) {
+      if (20 < margin && image.height - 8 > 0) {
+        final p1 = image.getPixel(x, 8);
+        final p2 = image.getPixel(x, 20);
+        if (((_getLuminance(p1) - _getLuminance(p2)).abs() > 40)) marginEdges++;
+        marginSamples++;
 
-    // Check top margin (should be background, not card)
-    for (int x = marginSize; x < image.width - marginSize; x += 8) {
-      for (int y = 5; y < marginSize; y += 5) {
-        if (y + 5 < marginSize) {
-          final pixel1 = image.getPixel(x, y);
-          final pixel2 = image.getPixel(x, y + 5);
-          final lum1 = _getLuminance(pixel1);
-          final lum2 = _getLuminance(pixel2);
-
-          if ((lum1 - lum2).abs() > 50) {
-            edgesInMargin++;
-          }
-          totalMarginSamples++;
-        }
+        final p3 = image.getPixel(x, image.height - 20);
+        final p4 = image.getPixel(x, image.height - 8);
+        if (((_getLuminance(p3) - _getLuminance(p4)).abs() > 40)) marginEdges++;
+        marginSamples++;
       }
     }
 
-    // Check bottom margin
-    for (int x = marginSize; x < image.width - marginSize; x += 8) {
-      for (int y = image.height - marginSize; y < image.height - 5; y += 5) {
-        if (y + 5 < image.height - 5) {
-          final pixel1 = image.getPixel(x, y);
-          final pixel2 = image.getPixel(x, y + 5);
-          final lum1 = _getLuminance(pixel1);
-          final lum2 = _getLuminance(pixel2);
+    // Check left and right margins
+    for (int y = margin; y < image.height - margin; y += 10) {
+      if (20 < margin && image.width - 8 > 0) {
+        final p1 = image.getPixel(8, y);
+        final p2 = image.getPixel(20, y);
+        if (((_getLuminance(p1) - _getLuminance(p2)).abs() > 40)) marginEdges++;
+        marginSamples++;
 
-          if ((lum1 - lum2).abs() > 50) {
-            edgesInMargin++;
-          }
-          totalMarginSamples++;
-        }
+        final p3 = image.getPixel(image.width - 20, y);
+        final p4 = image.getPixel(image.width - 8, y);
+        if (((_getLuminance(p3) - _getLuminance(p4)).abs() > 40)) marginEdges++;
+        marginSamples++;
       }
     }
 
-    // Check left margin
-    for (int y = marginSize; y < image.height - marginSize; y += 8) {
-      for (int x = 5; x < marginSize; x += 5) {
-        if (x + 5 < marginSize) {
-          final pixel1 = image.getPixel(x, y);
-          final pixel2 = image.getPixel(x + 5, y);
-          final lum1 = _getLuminance(pixel1);
-          final lum2 = _getLuminance(pixel2);
+    if (marginSamples == 0) return false;
+    final marginEdgeRatio = marginEdges / marginSamples;
 
-          if ((lum1 - lum2).abs() > 50) {
-            edgesInMargin++;
-          }
-          totalMarginSamples++;
-        }
-      }
-    }
-
-    // Check right margin
-    for (int y = marginSize; y < image.height - marginSize; y += 8) {
-      for (int x = image.width - marginSize; x < image.width - 5; x += 5) {
-        if (x + 5 < image.width - 5) {
-          final pixel1 = image.getPixel(x, y);
-          final pixel2 = image.getPixel(x + 5, y);
-          final lum1 = _getLuminance(pixel1);
-          final lum2 = _getLuminance(pixel2);
-
-          if ((lum1 - lum2).abs() > 50) {
-            edgesInMargin++;
-          }
-          totalMarginSamples++;
-        }
-      }
-    }
-
-    if (totalMarginSamples == 0) return false;
-
-    final edgeRatioInMargin = edgesInMargin / totalMarginSamples;
-
-    // Now check that there ARE edges in the inner area (the actual card)
+    // Check inner area
     int innerEdges = 0;
     int innerSamples = 0;
-
-    // Check inner area for card presence
-    for (int y = marginSize + 10; y < image.height - marginSize - 10; y += 10) {
-      for (int x = marginSize + 10;
-          x < image.width - marginSize - 10;
-          x += 10) {
-        if (x + 5 < image.width - marginSize - 10 &&
-            y + 5 < image.height - marginSize - 10) {
-          final pixel1 = image.getPixel(x, y);
-          final pixel2 = image.getPixel(x + 5, y);
-          final pixel3 = image.getPixel(x, y + 5);
-
-          final lum1 = _getLuminance(pixel1);
-          final lum2 = _getLuminance(pixel2);
-          final lum3 = _getLuminance(pixel3);
-
-          if ((lum1 - lum2).abs() > 40 || (lum1 - lum3).abs() > 40) {
+    for (int y = margin + 15; y < image.height - margin - 15; y += 12) {
+      for (int x = margin + 15; x < image.width - margin - 15; x += 12) {
+        if (x + 8 < image.width - margin && y + 8 < image.height - margin) {
+          final p1 = image.getPixel(x, y);
+          final p2 = image.getPixel(x + 8, y);
+          if (((_getLuminance(p1) - _getLuminance(p2)).abs() > 30)) {
             innerEdges++;
           }
           innerSamples++;
@@ -334,26 +301,20 @@ class _CardScannerState extends State<CardScanner> {
     }
 
     final innerEdgeRatio = innerSamples > 0 ? innerEdges / innerSamples : 0;
-
-    // Card is properly inside frame if:
-    // 1. Very few edges in the margin area (card not extending outside)
-    // 2. Good amount of edges in inner area (card is present)
-    return edgeRatioInMargin < 0.10 && innerEdgeRatio > 0.10;
+    return marginEdgeRatio < 0.10 && innerEdgeRatio > 0.10;
   }
 
   bool _checkImageClarity(img.Image image) {
     double laplacianSum = 0;
     int sampleCount = 0;
 
-    // Enhanced Laplacian variance for blur detection
-    // Sample more densely for better accuracy
-    for (int y = 2; y < image.height - 2; y += 3) {
-      for (int x = 2; x < image.width - 2; x += 3) {
+    for (int y = 3; y < image.height - 3; y += 4) {
+      for (int x = 3; x < image.width - 3; x += 4) {
         final center = _getLuminance(image.getPixel(x, y));
-        final top = _getLuminance(image.getPixel(x, y - 2));
-        final bottom = _getLuminance(image.getPixel(x, y + 2));
-        final left = _getLuminance(image.getPixel(x - 2, y));
-        final right = _getLuminance(image.getPixel(x + 2, y));
+        final top = _getLuminance(image.getPixel(x, y - 3));
+        final bottom = _getLuminance(image.getPixel(x, y + 3));
+        final left = _getLuminance(image.getPixel(x - 3, y));
+        final right = _getLuminance(image.getPixel(x + 3, y));
 
         final laplacian = (4 * center - top - bottom - left - right).abs();
         laplacianSum += laplacian;
@@ -362,167 +323,105 @@ class _CardScannerState extends State<CardScanner> {
     }
 
     final variance = laplacianSum / sampleCount;
-    // Balanced threshold
-    return variance > 18;
+    return variance > 12;
   }
 
   double _getLuminance(img.Pixel pixel) {
     return 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
   }
 
-  void _startCountdown() {
-    if (_countdownTimer != null && _countdownTimer!.isActive) return;
-
-    // int count = 1;
-    // setState(() => _countdown = count);
-
-    _countdownTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        // count--;
-        // setState(() => _countdown = count);
-
-        // if (count == 0) {
-        timer.cancel();
-        _captureImage();
-        // }
-      },
-    );
-  }
-
-  void _resetCountdown() {
-    _countdownTimer?.cancel();
-    _countdownTimer = null;
-    if (_countdown != 0) {
-      setState(() => _countdown = 0);
-    }
-  }
-
   Future<void> _captureImage() async {
     if (_controller == null ||
         !_controller!.value.isInitialized ||
-        _isProcessing ||
+        _isCapturing ||
         _capturedImage != null) {
       return;
     }
 
-    if (_stableFrameCount < _requiredStableFrames) {
-      setState(() => _message = AppUtils.languageTranslate('errorCardNotStableInFrame'));
-      _resetCountdown();
-      return;
-    }
-
-    // Stop detection immediately to prevent double capture
+    setState(() => _isCapturing = true);
     _detectionTimer?.cancel();
-    _resetCountdown();
-
-    setState(() => _isProcessing = true);
 
     try {
+      await Future.delayed(const Duration(milliseconds: 100));
+
       final image = await _controller!.takePicture();
       final bytes = await image.readAsBytes();
       final decodedImage = img.decodeImage(bytes);
 
       if (decodedImage == null) {
-        setState(() => _isProcessing = false);
-        _startDetection(); // Restart detection if failed
+        setState(() => _isCapturing = false);
+        _startDetection();
         return;
       }
 
-      // Crop to frame area (ID card ratio) - smaller frame
-      final screenWidth = decodedImage.width * 0.75;
-      final frameWidth = screenWidth.toInt();
-      final frameHeight = (screenWidth / 1.586).toInt();
-      final frameX = ((decodedImage.width - frameWidth) / 2).toInt();
-      final frameY = ((decodedImage.height - frameHeight) / 2).toInt();
-
-      final croppedImage = img.copyCrop(
-        decodedImage,
-        x: frameX,
-        y: frameY,
-        width: frameWidth,
-        height: frameHeight,
-      );
-
+      final croppedImage = _getCroppedFrame(decodedImage);
       final jpegBytes =
-          Uint8List.fromList(img.encodeJpg(croppedImage, quality: 95));
+          Uint8List.fromList(img.encodeJpg(croppedImage, quality: 90));
 
-      // Save to file
       final directory = await getApplicationDocumentsDirectory();
       final imagePath =
-          '${directory.path}/id_card_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          '${directory.path}/card_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final imageFile = File(imagePath);
       await imageFile.writeAsBytes(jpegBytes);
 
-      setState(() {
-        _capturedImage = jpegBytes;
-        _capturedImageFile = imageFile;
-        _message = AppUtils.languageTranslate('imageCapturedSuccessfully');
-        _isProcessing = false;
-      });
+      if (mounted) {
+        setState(() {
+          _capturedImage = jpegBytes;
+          _capturedImageFile = imageFile;
+          _message = AppUtils.languageTranslate('imageCapturedSuccessfully');
+          _isCapturing = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        _message = '${AppUtils.languageTranslate('captureError')} ${e.toString()}';
-        _isProcessing = false;
-      });
-      _startDetection(); // Restart detection if failed
+      if (mounted) {
+        setState(() {
+          _message =
+              '${AppUtils.languageTranslate('captureError')} ${e.toString()}';
+          _isCapturing = false;
+        });
+      }
+      _startDetection();
     }
   }
 
-  Future<File?> getCapturedImageFile() async {
-    return _capturedImageFile;
-  }
-
   void _retakePhoto() {
-    // Clean up old file if exists
     if (_capturedImageFile != null && _capturedImageFile!.existsSync()) {
       try {
         _capturedImageFile!.deleteSync();
       } catch (e) {
-        print('Error deleting old file: $e');
+        debugPrint('Error deleting file: $e');
       }
     }
-
     setState(() {
       _capturedImage = null;
       _capturedImageFile = null;
       _message = AppUtils.languageTranslate('positionCardWithinFrame');
-      _countdown = 0;
       _stableFrameCount = 0;
-      _isProcessing = false;
+      _isCapturing = false;
+      _captureTriggered = false;
     });
-
-    // Small delay before restarting to ensure camera is ready
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        _startDetection();
-      }
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (mounted) _startDetection();
     });
   }
 
   @override
   void dispose() {
     _detectionTimer?.cancel();
-    _countdownTimer?.cancel();
     _controller?.dispose();
-
-    // Clean up temporary file if exists
     if (_capturedImageFile != null && _capturedImageFile!.existsSync()) {
       try {
         _capturedImageFile!.deleteSync();
       } catch (e) {
-        print('Error deleting file on dispose: $e');
+        debugPrint('Error deleting file on dispose: $e');
       }
     }
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_capturedImage != null) {
-      return _buildCaptureResult();
-    }
+    if (_capturedImage != null) return _buildCaptureResult();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -536,26 +435,24 @@ class _CardScannerState extends State<CardScanner> {
 
   Widget _buildCameraView() {
     final size = MediaQuery.of(context).size;
-    final cameraRatio = _controller!.value.aspectRatio;
+    final isTablet = size.shortestSide >= 600;
+    final frameWidthRatio = isTablet ? 0.55 : 0.80;
 
     return Stack(
       children: [
-        // Camera Preview - Fill screen while maintaining aspect ratio
         SizedBox.expand(
           child: FittedBox(
             fit: BoxFit.cover,
             child: SizedBox(
               width: size.width,
-              height: size.width * cameraRatio,
+              height: size.width * _controller!.value.aspectRatio,
               child: CameraPreview(_controller!),
             ),
           ),
         ),
-
-        // Dark overlay outside frame
         ColorFiltered(
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.5),
+            Colors.black.withValues(alpha: 0.6),
             BlendMode.srcOut,
           ),
           child: Stack(
@@ -568,8 +465,8 @@ class _CardScannerState extends State<CardScanner> {
               ),
               Center(
                 child: Container(
-                  width: size.width * 0.75, // Smaller frame
-                  height: (size.width * 0.75) / 1.586,
+                  width: size.width * frameWidthRatio,
+                  height: (size.width * frameWidthRatio) / 1.586,
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(16),
@@ -579,16 +476,14 @@ class _CardScannerState extends State<CardScanner> {
             ],
           ),
         ),
-
-        // Header
         Positioned(
           top: 16,
           left: 16,
           right: 16,
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -596,15 +491,16 @@ class _CardScannerState extends State<CardScanner> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Row(
+                    Row(
                       children: [
-                        Icon(Icons.camera_alt, color: Colors.white),
-                        SizedBox(width: 8),
+                        const Icon(Icons.camera_alt,
+                            color: Colors.white, size: 20),
+                        const SizedBox(width: 8),
                         Text(
                           AppUtils.languageTranslate('idCardScanner'),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -612,19 +508,20 @@ class _CardScannerState extends State<CardScanner> {
                     ),
                     Row(
                       children: [
-                         Text(
+                        Text(
                           AppUtils.languageTranslate('auto'),
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 12),
                         ),
                         Switch(
                           value: _autoCapture,
                           onChanged: (value) {
                             setState(() {
                               _autoCapture = value;
-                              _resetCountdown();
+                              _captureTriggered = false;
                             });
                           },
-                          activeColor: Colors.blue,
+                          activeThumbColor: Colors.blue,
                         ),
                       ],
                     ),
@@ -645,7 +542,7 @@ class _CardScannerState extends State<CardScanner> {
                               _stableFrameCount >= _requiredStableFrames)
                           ? Colors.green
                           : Colors.red,
-                      size: 20,
+                      size: 18,
                     ),
                     const SizedBox(width: 8),
                     Flexible(
@@ -653,6 +550,7 @@ class _CardScannerState extends State<CardScanner> {
                         _message,
                         style: const TextStyle(
                           color: Colors.white,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                         textAlign: TextAlign.center,
@@ -660,50 +558,33 @@ class _CardScannerState extends State<CardScanner> {
                     ),
                   ],
                 ),
-                if (_countdown > 0)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      '$_countdown',
-                      style: const TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),
         ),
-
-        // Card Frame Overlay
-        Center(
-          child: _buildFrameOverlay(),
-        ),
-
-        // Status Indicators
+        Center(child: _buildFrameOverlay(frameWidthRatio)),
         Positioned(
           bottom: _autoCapture ? 16 : 96,
           left: 16,
           right: 16,
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatusIndicator(AppUtils.languageTranslate("cardDetected"), _isCardDetected),
-                _buildStatusIndicator(AppUtils.languageTranslate('imageClear'), _isImageClear),
+                _buildStatusIndicator(
+                    AppUtils.languageTranslate("cardDetected"),
+                    _isCardDetected),
+                _buildStatusIndicator(
+                    AppUtils.languageTranslate('imageClear'), _isImageClear),
               ],
             ),
           ),
         ),
-
-        // Manual Capture Button
         if (!_autoCapture)
           Positioned(
             bottom: 16,
@@ -711,38 +592,46 @@ class _CardScannerState extends State<CardScanner> {
             right: 0,
             child: Center(
               child: GestureDetector(
-                onTap: (_isCardDetected &&
-                        _isImageClear &&
-                        _stableFrameCount >= _requiredStableFrames)
-                    ? _captureImage
-                    : null,
+                onTap: () {
+                  if (_isCardDetected &&
+                      _isImageClear &&
+                      _stableFrameCount >= _requiredStableFrames &&
+                      !_isCapturing) {
+                    _captureTriggered = true;
+                    _captureImage();
+                  }
+                },
                 child: Container(
-                  width: 80,
-                  height: 80,
+                  width: 70,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: (_isCardDetected &&
                             _isImageClear &&
-                            _stableFrameCount >= _requiredStableFrames)
+                            _stableFrameCount >= _requiredStableFrames &&
+                            !_isCapturing)
                         ? Colors.white
                         : Colors.grey.shade700,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: (_isCardDetected &&
-                                  _isImageClear &&
-                                  _stableFrameCount >= _requiredStableFrames)
-                              ? Colors.blue
-                              : Colors.grey.shade500,
-                          width: 4,
-                        ),
-                      ),
-                    ),
+                    child: _isCapturing
+                        ? const CircularProgressIndicator(strokeWidth: 3)
+                        : Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: (_isCardDetected &&
+                                        _isImageClear &&
+                                        _stableFrameCount >=
+                                            _requiredStableFrames)
+                                    ? Colors.blue
+                                    : Colors.grey.shade500,
+                                width: 3,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -752,10 +641,9 @@ class _CardScannerState extends State<CardScanner> {
     );
   }
 
-  Widget _buildFrameOverlay() {
-    // ID card aspect ratio is 1.586:1 (85.6mm x 54mm - credit card size)
+  Widget _buildFrameOverlay(double frameWidthRatio) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.75; // Smaller frame
+    final cardWidth = screenWidth * frameWidthRatio;
     final cardHeight = cardWidth / 1.586;
 
     final isReady = _isCardDetected &&
@@ -777,33 +665,31 @@ class _CardScannerState extends State<CardScanner> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: (isReady ? Colors.green : Colors.white).withOpacity(0.5),
-            blurRadius: 15,
-            spreadRadius: 2,
+            color:
+                (isReady ? Colors.green : Colors.white).withValues(alpha: 0.4),
+            blurRadius: 12,
+            spreadRadius: 1,
           ),
         ],
       ),
       child: Stack(
         children: [
-          // Corner markers
           _buildCorner(Alignment.topLeft, true, true, isReady),
           _buildCorner(Alignment.topRight, true, false, isReady),
           _buildCorner(Alignment.bottomLeft, false, true, isReady),
           _buildCorner(Alignment.bottomRight, false, false, isReady),
-
-          // Center text
           Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child:  Text(
+              child: Text(
                 AppUtils.languageTranslate('alignCardHere'),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -818,33 +704,25 @@ class _CardScannerState extends State<CardScanner> {
     return Align(
       alignment: alignment,
       child: Container(
-        width: 32,
-        height: 32,
+        width: 28,
+        height: 28,
         decoration: BoxDecoration(
           border: Border(
             top: top
                 ? BorderSide(
-                    color: isReady ? Colors.green : Colors.white,
-                    width: 5,
-                  )
+                    color: isReady ? Colors.green : Colors.white, width: 4)
                 : BorderSide.none,
             bottom: !top
                 ? BorderSide(
-                    color: isReady ? Colors.green : Colors.white,
-                    width: 5,
-                  )
+                    color: isReady ? Colors.green : Colors.white, width: 4)
                 : BorderSide.none,
             left: left
                 ? BorderSide(
-                    color: isReady ? Colors.green : Colors.white,
-                    width: 5,
-                  )
+                    color: isReady ? Colors.green : Colors.white, width: 4)
                 : BorderSide.none,
             right: !left
                 ? BorderSide(
-                    color: isReady ? Colors.green : Colors.white,
-                    width: 5,
-                  )
+                    color: isReady ? Colors.green : Colors.white, width: 4)
                 : BorderSide.none,
           ),
         ),
@@ -856,19 +734,19 @@ class _CardScannerState extends State<CardScanner> {
     return Row(
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: 10,
+          height: 10,
           decoration: BoxDecoration(
             color: isActive ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 6),
         Text(
           label,
           style: TextStyle(
             color: isActive ? Colors.green : Colors.grey,
-            fontSize: 12,
+            fontSize: 11,
           ),
         ),
       ],
@@ -885,22 +763,23 @@ class _CardScannerState extends State<CardScanner> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   children: [
-                     Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 32),
-                        SizedBox(width: 8),
+                        const Icon(Icons.check_circle,
+                            color: Colors.green, size: 28),
+                        const SizedBox(width: 8),
                         Text(
                           AppUtils.languageTranslate('captureSuccessful'),
-                          style: TextStyle(
-                            fontSize: 24,
+                          style: const TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
@@ -922,30 +801,13 @@ class _CardScannerState extends State<CardScanner> {
                             invert: true,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: CustomButton(
-                            text: AppUtils.languageTranslate('confirmAndUpload'),
-                            onPressed: () async {
-                              // Get the file
-                              // final file = await getCapturedImageFile();
-                              Navigator.pop(context, _capturedImageFile);
-                              // if (file != null) {
-                              //   // Use the file - upload to server, save, etc.
-                              //   print('Image file path: ${file.path}');
-                              //
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(
-                              //       content:
-                              //           Text('Image saved at: ${file.path}'),
-                              //       backgroundColor: Colors.green,
-                              //     ),
-                              //   );
-                              //
-                              //   // Example: You can now upload this file to your server
-                              //   // await uploadToServer(file);
-                              // }
-                            },
+                            text:
+                                AppUtils.languageTranslate('confirmAndUpload'),
+                            onPressed: () =>
+                                Navigator.pop(context, _capturedImageFile),
                           ),
                         ),
                       ],

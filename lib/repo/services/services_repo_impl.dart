@@ -7,7 +7,6 @@ import '../../data/network/network_api_services.dart';
 import '../../model/service/add_service_log_response_model.dart';
 import '../../model/service/visitors_service_complete_response_model.dart';
 import '../../resource/constants/api_url.dart';
-import '../../helper/encrption/encryption_helper.dart';
 
 class ServiceRepoImpl implements ServiceRepo {
   final BaseApiServices _apiService = NetworkApiServices();
@@ -35,58 +34,7 @@ class ServiceRepoImpl implements ServiceRepo {
   Future<ServiceDetailsResponseModel?> getServiceDetails(
       {required int? serviceId, required String? applicationType}) async {
     try {
-      // final filter = {"vendors":{"where":{"and":[{"field":"id","value":serviceId}]},"include":[{"relation":"application"},{"relation":"status_history","include":[{"relation":"user","select":["id","first_name","last_name"]}]},{"relation":"unit","select":["id"]}, {"relation": "documents"}]}};
-      final filter = {
-        "filter": {
-          "where": {
-            "and": [
-              {"field": "id", "value": serviceId}
-            ]
-          },
-          "include": [
-            {
-              "relation": "application",
-              if (applicationType == 'CCS')
-                "include": [
-                  {
-                    "relation": "fields",
-                    "include": [
-                      {"relation": "values"}
-                    ]
-                  }
-                ]
-            },
-            {
-              "relation": "status_history",
-              "include": [
-                {
-                  "relation": "user",
-                  "select": ["id", "first_name", "last_name"]
-                }
-              ]
-            },
-            {
-              "relation": "unit",
-              "select": ["id"]
-            },
-            {"relation": "evidence"},
-            {
-              "relation": "documents",
-              "where": {
-                "and": [
-                  {
-                    "field": "label",
-                    "operator": "not_in",
-                    "value": ["Sent For Approval File", "Approve File"]
-                  }
-                ]
-              },
-            }
-          ]
-        }
-      };
-      String url =
-          '${ApiUrl.serviceDetails}?xyz=${Uri.encodeComponent(EncryptionHelper.encryptPayload(filter))}';
+      String url = '${ApiUrl.serviceDetails}/$serviceId';
       dynamic response = await _apiService.getAuthGetApiResponse((url));
       return ServiceDetailsResponseModel.fromJson(response);
     } catch (e) {

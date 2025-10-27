@@ -34,8 +34,8 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent &&
-      context.read<WorkOrderCubit>().state.loadMore == false) {
+              _scrollController.position.maxScrollExtent &&
+          context.read<WorkOrderCubit>().state.loadMore == false) {
         context
             .read<WorkOrderCubit>()
             .getMoreWorkOrder(keyword: _searchController.text);
@@ -135,6 +135,8 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                           ? true
                                           : false,
                                       checkInPressed: () {
+                                        WorkOrderCubit workOrderCubit =
+                                            context.read<WorkOrderCubit>();
                                         Navigator.pushNamed(
                                             context, AppRoutes.guestCheckIn,
                                             arguments: {
@@ -142,11 +144,9 @@ class _WorkOrderRfpScreenState extends State<WorkOrderRfpScreen> {
                                             }).then(
                                           (value) {
                                             if (value == true) {
-                                              context
-                                                  .read<WorkOrderCubit>()
-                                                  .getWorkOrder(
-                                                      keyword: _searchController
-                                                          .text);
+                                              workOrderCubit.getWorkOrder(
+                                                  keyword:
+                                                      _searchController.text);
                                             }
                                           },
                                         );

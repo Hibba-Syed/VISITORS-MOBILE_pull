@@ -131,6 +131,8 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                           service?.applicationTitle ?? "--",
                                       name: service?.clientName ?? "--",
                                       checkInOnPressed: () {
+                                        ServiceCubit serviceCubit =
+                                            context.read<ServiceCubit>();
                                         context
                                             .read<GuestCheckInCubit>()
                                             .clearData();
@@ -140,12 +142,9 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                             .then(
                                           (value) {
                                             if (value == true) {
-                                              context
-                                                  .read<ServiceCubit>()
-                                                  .getServices(
-                                                    keyword:
-                                                        _searchController.text,
-                                                  );
+                                              serviceCubit.getServices(
+                                                keyword: _searchController.text,
+                                              );
                                             }
                                           },
                                         );
@@ -167,6 +166,8 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                             AppRoutes.serviceableCheckIns);
                                       },
                                       detailsOnPressed: () {
+                                        ServiceCubit serviceCubit =
+                                            context.read<ServiceCubit>();
                                         ServiceDetailsCubit
                                             serviceDetailsCubit =
                                             context.read<ServiceDetailsCubit>();
@@ -184,12 +185,9 @@ class _AllServicesScreenState extends State<AllServicesScreen> {
                                                       service),
                                             )).then((value) {
                                           if (value == true) {
-                                            context
-                                                .read<ServiceCubit>()
-                                                .getServices(
-                                                  keyword:
-                                                      _searchController.text,
-                                                );
+                                            serviceCubit.getServices(
+                                              keyword: _searchController.text,
+                                            );
                                           }
                                         });
                                       },

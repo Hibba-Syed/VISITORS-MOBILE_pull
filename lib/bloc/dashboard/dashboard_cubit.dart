@@ -276,26 +276,24 @@ class DashboardCubit extends Cubit<DashboardState> {
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.mainDashboard,
-              (route) => false,
+          (route) => false,
         );
       }
     } else {
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.login,
-              (route) => false,
+          (route) => false,
         );
       }
     }
   }
 
-
-  Future<void> refreshData(BuildContext context) async {
-    final dashboardCubit = context.read<DashboardCubit>();
-    await dashboardCubit.getDashboardCheckIns(limit: 3);
-    await dashboardCubit.getDashboardCount();
-    await dashboardCubit.getDashboardServices(limit: 3);
-    await dashboardCubit.getDashboardWorkOrder(limit: 3);
-    dashboardCubit.getVisitorPassesCount();
+  Future<void> refreshData() async {
+    await getDashboardCheckIns(limit: 3);
+    await getDashboardCount();
+    await getDashboardServices(limit: 3);
+    await getDashboardWorkOrder(limit: 3);
+    getVisitorPassesCount();
   }
 }

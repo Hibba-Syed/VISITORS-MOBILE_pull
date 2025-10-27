@@ -274,7 +274,7 @@ class DashboardScreen extends StatelessWidget {
           ];
           return RefreshIndicator(
             onRefresh: () async {
-              await context.read<DashboardCubit>().refreshData(context);
+              await context.read<DashboardCubit>().refreshData();
             },
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -324,13 +324,13 @@ class DashboardScreen extends StatelessWidget {
                       image: AppImages.guestCheckIn,
                       onPressed: () {
                         context.read<GuestCheckInCubit>().clearData();
+                        DashboardCubit dashboardCubit =
+                            context.read<DashboardCubit>();
                         Navigator.pushNamed(context, AppRoutes.guestCheckIn)
                             .then(
                           (value) {
                             if (value == true) {
-                              context
-                                  .read<DashboardCubit>()
-                                  .refreshData(context);
+                              dashboardCubit.refreshData();
                             }
                           },
                         );
@@ -512,6 +512,8 @@ class DashboardScreen extends StatelessWidget {
                               name: service?.clientName ?? "--",
                               checkInOnPressed: () {
                                 context.read<GuestCheckInCubit>().clearData();
+                                DashboardCubit dashboardCubit =
+                                    context.read<DashboardCubit>();
                                 Navigator.pushNamed(
                                   context,
                                   AppRoutes.guestCheckIn,
@@ -519,9 +521,7 @@ class DashboardScreen extends StatelessWidget {
                                 ).then(
                                   (value) {
                                     if (value == true) {
-                                      context
-                                          .read<DashboardCubit>()
-                                          .refreshData(context);
+                                      dashboardCubit.refreshData();
                                     }
                                   },
                                 );
@@ -616,6 +616,8 @@ class DashboardScreen extends StatelessWidget {
                                   workOrder?.finishDate),
                               checkInPressed: () {
                                 context.read<GuestCheckInCubit>().clearData();
+                                DashboardCubit dashboardCubit =
+                                    context.read<DashboardCubit>();
                                 Navigator.pushNamed(
                                   context,
                                   AppRoutes.guestCheckIn,
@@ -625,9 +627,7 @@ class DashboardScreen extends StatelessWidget {
                                 ).then(
                                   (value) {
                                     if (value == true) {
-                                      context
-                                          .read<DashboardCubit>()
-                                          .refreshData(context);
+                                      dashboardCubit.refreshData();
                                     }
                                   },
                                 );
@@ -733,7 +733,7 @@ class DashboardScreen extends StatelessWidget {
       return Scaffold(
         body: RefreshIndicator(
           onRefresh: () async {
-            await context.read<DashboardCubit>().refreshData(context);
+            await context.read<DashboardCubit>().refreshData();
           },
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
@@ -784,10 +784,12 @@ class DashboardScreen extends StatelessWidget {
                     image: AppImages.guestCheckIn,
                     onPressed: () {
                       context.read<GuestCheckInCubit>().clearData();
+                      DashboardCubit dashboardCubit =
+                          context.read<DashboardCubit>();
                       Navigator.pushNamed(context, AppRoutes.guestCheckIn).then(
                         (value) {
                           if (value == true) {
-                            context.read<DashboardCubit>().refreshData(context);
+                            dashboardCubit.refreshData();
                           }
                         },
                       );
@@ -967,6 +969,8 @@ class DashboardScreen extends StatelessWidget {
                             name: service?.clientName ?? "",
                             checkInOnPressed: () {
                               context.read<GuestCheckInCubit>().clearData();
+                              DashboardCubit dashboardCubit =
+                                  context.read<DashboardCubit>();
                               Navigator.pushNamed(
                                 context,
                                 AppRoutes.guestCheckIn,
@@ -974,9 +978,7 @@ class DashboardScreen extends StatelessWidget {
                               ).then(
                                 (value) {
                                   if (value == true) {
-                                    context
-                                        .read<DashboardCubit>()
-                                        .refreshData(context);
+                                    dashboardCubit.refreshData();
                                   }
                                 },
                               );
@@ -1069,6 +1071,8 @@ class DashboardScreen extends StatelessWidget {
                                 workOrder?.finishDate),
                             checkInPressed: () {
                               context.read<GuestCheckInCubit>().clearData();
+                              DashboardCubit dashboardCubit =
+                                  context.read<DashboardCubit>();
                               Navigator.pushNamed(
                                 context,
                                 AppRoutes.guestCheckIn,
@@ -1078,9 +1082,7 @@ class DashboardScreen extends StatelessWidget {
                               ).then(
                                 (value) {
                                   if (value == true) {
-                                    context
-                                        .read<DashboardCubit>()
-                                        .refreshData(context);
+                                    dashboardCubit.refreshData();
                                   }
                                 },
                               );
