@@ -237,10 +237,10 @@ class ScannerService {
         img.decodeImage(originalImage.readAsBytesSync())!;
 
     // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt() - 50;
-    final int top = boundingBox.top.toInt() - 40;
-    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 100;
-    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 100;
+    final int left = boundingBox.left.toInt() - 40;
+    final int top = boundingBox.top.toInt() - 30;
+    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 80;
+    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 80;
     // Crop the image
     final img.Image croppedImg = img.copyCrop(originalImg,
         x: left, y: top, width: width, height: height);
