@@ -78,7 +78,7 @@ class Record {
   String? status;
   dynamic securityNumber;
   int? allSecurityPersonnel;
-  int? payableAmount;
+  double? payableAmount;
   dynamic securityDeposit;
   String? paymentStatus;
   dynamic paymentRef;
@@ -241,7 +241,7 @@ class Record {
     status: json["status"],
     securityNumber: json["security_number"],
     allSecurityPersonnel: json["all_security_personnel"],
-    payableAmount: json["payable_amount"],
+    payableAmount: double.tryParse(json["payable_amount"]?.toString()??''),
     securityDeposit: json["security_deposit"],
     paymentStatus: json["payment_status"],
     paymentRef: json["payment_ref"],

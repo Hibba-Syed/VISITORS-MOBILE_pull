@@ -1,24 +1,25 @@
 class AddonsModel {
   AddonsModel({
-      this.id, 
-      this.applicationFitOutId, 
-      this.serviceName, 
-      this.servicePrice, 
-      this.createdAt, 
-      this.updatedAt,});
+    this.id,
+    this.applicationFitOutId,
+    this.serviceName,
+    this.servicePrice,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   AddonsModel.fromJson(dynamic json) {
     id = json['id'];
     applicationFitOutId = json['application_fit_out_id'];
     serviceName = json['service_name'];
-    servicePrice = json['service_price'];
+    servicePrice = double.tryParse(json["service_price"]?.toString() ?? '');
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
   int? id;
   int? applicationFitOutId;
   String? serviceName;
-  int? servicePrice;
+  double? servicePrice;
   String? createdAt;
   String? updatedAt;
 
@@ -32,5 +33,4 @@ class AddonsModel {
     map['updated_at'] = updatedAt;
     return map;
   }
-
 }

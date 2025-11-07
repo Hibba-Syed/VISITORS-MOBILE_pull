@@ -47,7 +47,7 @@ class WorkOrderDetailsModel {
   int? fromReservedFund;
   String? contractTime;
   String? paymentsTime;
-  int? amount;
+  double? amount;
   dynamic estimatedAmount;
   int? isOld;
   int? isAwarded;
@@ -70,7 +70,7 @@ class WorkOrderDetailsModel {
   int? categoryMatch;
   bool? isViewed;
   String? excerpt;
-  int? totalAmount;
+  double? totalAmount;
   bool? isApplied;
   bool? isBookmarked;
   String? applyUrl;
@@ -200,8 +200,8 @@ class WorkOrderDetailsModel {
     fromReservedFund: json["from_reserved_fund"],
     contractTime: json["contract_time"],
     paymentsTime: json["payments_time"],
-    amount: json["amount"],
-    estimatedAmount: json["estimated_amount"],
+    amount: double.tryParse(json["amount"]?.toString()??''),
+    estimatedAmount: double.tryParse(json["estimated_amount"]?.toString()??''),
     isOld: json["is_old"],
     isAwarded: json["is_awarded"],
     contactId: json["contact_id"],
@@ -223,7 +223,7 @@ class WorkOrderDetailsModel {
     categoryMatch: json["category_match"],
     isViewed: json["is_viewed"],
     excerpt: json["excerpt"],
-    totalAmount: json["total_amount"],
+    totalAmount: double.tryParse(json["total_amount"]?.toString()??''),
     isApplied: json["is_applied"],
     isBookmarked: json["is_bookmarked"],
     applyUrl: json["apply_url"],
