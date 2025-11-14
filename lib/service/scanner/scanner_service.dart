@@ -78,16 +78,14 @@ class ScannerService {
 
   Future<PassportModel?> scanMrzForPassportAndParse(
       BuildContext context) async {
-    final imagesPaths = await CunningDocumentScanner.getPictures(
-      noOfPages: 1,
-    );
+    // final imagesPaths = await CunningDocumentScanner.getPictures(
+    //   noOfPages: 1,
+    // );
 
-    File? scannedImageFile;
-    final List<String> images = imagesPaths ?? [];
-    if (images.isNotEmpty && images.first.isNotEmpty) {
-      scannedImageFile = File(images.first);
-      final path = images.first;
-      final inputImage = InputImage.fromFilePath(path);
+    File? scannedImageFile = await _startDocumentScanningAndGetFile();
+    // final List<String> images = imagesPaths ?? [];
+    if (scannedImageFile != null) {
+      final inputImage = InputImage.fromFilePath(scannedImageFile.path);
 
       final textRecognizer = TextRecognizer();
       final visionText = await textRecognizer.processImage(inputImage);
@@ -137,20 +135,20 @@ class ScannerService {
     return null;
   }
 
-  Future<PassportModel?> scanPassportAndPerformOcr() async {
-    OcrModel? ocrData = await _scanDocumentAndPerformOCR();
-    String? recognizedText;
-    if (ocrData != null) {
-      recognizedText = ocrData.recognizedTExt;
-      if (recognizedText?.isNotEmpty ?? false) {
-        PassportModel? passportData =
-            _parsePassportExtractedText(recognizedText!, ocrData.personImage);
-
-        return passportData;
-      }
-    }
-    return null;
-  }
+  // Future<PassportModel?> scanPassportAndPerformOcr() async {
+  //   OcrModel? ocrData = await _scanDocumentAndPerformOCR();
+  //   String? recognizedText;
+  //   if (ocrData != null) {
+  //     recognizedText = ocrData.recognizedTExt;
+  //     if (recognizedText?.isNotEmpty ?? false) {
+  //       PassportModel? passportData =
+  //           _parsePassportExtractedText(recognizedText!, ocrData.personImage);
+  //
+  //       return passportData;
+  //     }
+  //   }
+  //   return null;
+  // }
 
   Future<OcrModel?> _scanDocumentAndPerformOCR() async {
     try {
@@ -166,7 +164,7 @@ class ScannerService {
       //
       //   return await _performOCR(scannedImageFile);
       // }
-      
+
       // Recent commented code
       // final cameras = await availableCameras();
       // File? capturedImageFile = await Navigator.push(
@@ -182,18 +180,23 @@ class ScannerService {
       // if (capturedImageFile != null) {
       //   return await _performOCR(capturedImageFile);
       // }
-      
+      File? scannedImageFile = await _startDocumentScanningAndGetFile();
+
       // Create the default configuration object.
-      return await startDocumentScanning();
+      if (scannedImageFile != null) {
+        return await _performOCR(scannedImageFile);
+      } else {
+        return null;
+      }
     } catch (e) {
       _showInvalidDocumentToast();
       return null;
     }
   }
 
-  Future<OcrModel?> startDocumentScanning() async {
+  Future<File?> _startDocumentScanningAndGetFile() async {
     try {
-      final configuration = ScanbotDocumentConfig.configuration;
+      final configuration = ScanBotDocumentConfig.configuration;
 
       final result = await ScanbotSdkUiV2.startDocumentScanner(configuration);
 
@@ -217,20 +220,20 @@ class ScannerService {
       debugPrint("📸 Captured file: ${file.path}");
 
       // 🔍 AUTO-DETECT DOCUMENT TYPE
-      final type = await detectDocumentType(file);
+      final type = await _detectDocumentType(file);
       debugPrint("📄 Detected Document Type: $type");
 
       // Send the image to OCR
-      return await _performOCR(file);
+      return file;
     } catch (e) {
       debugPrint("❌ Error: $e");
+      return null;
     }
-    return null;
   }
 
-  Future<String> detectDocumentType(File imageFile) async {
+  Future<String> _detectDocumentType(File imageFile) async {
     final bytes = await imageFile.readAsBytes();
-    final text = await extractTextForDetection(bytes);
+    final text = await _extractTextForDetection(bytes);
 
     if (text.contains("PN") || text.contains("P<")) {
       return "Passport";
@@ -249,13 +252,13 @@ class ScannerService {
     return "Unknown Document";
   }
 
-  Future<String> extractTextForDetection(Uint8List bytes) async {
-    final temp = await uint8ListToFile(bytes, "detect_temp.jpg");
+  Future<String> _extractTextForDetection(Uint8List bytes) async {
+    final temp = await _uint8ListToFile(bytes, "detect_temp.jpg");
     final text = await _performOCR(temp); // create a lightweight OCR function
     return (text?.recognizedTExt ?? "").toUpperCase();
   }
 
-  Future<File> uint8ListToFile(Uint8List data, String filename) async {
+  Future<File> _uint8ListToFile(Uint8List data, String filename) async {
     final tempDir = await getTemporaryDirectory();
     final file = File('${tempDir.path}/$filename');
     await file.writeAsBytes(data);

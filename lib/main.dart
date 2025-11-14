@@ -10,9 +10,9 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await initPreferences();
   ScanbotSdk.initScanbotSdk(ScanbotSdkConfig(
- licenseKey: AppConstants.trialLicenseKey,
- loggingEnabled: true,
-));
+    licenseKey: AppConstants.trialLicenseKey,
+    loggingEnabled: true,
+  ));
 
   runApp(
     EasyLocalization(

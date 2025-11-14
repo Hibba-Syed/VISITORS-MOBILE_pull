@@ -161,17 +161,10 @@ class AppUtils {
   ];
 
   static List<TypeModel> checkInTypeList = [
-    TypeModel(
-        label: "guests", value: Strings.keyGuest),
-    TypeModel(
-        label: "services",
-        value: Strings.keyServices),
-    TypeModel(
-        label:"workOrdersRFPs",
-        value: Strings.keyWorkOrder),
-    TypeModel(
-        label: "visitorPass",
-        value: Strings.keyVisitorPass),
+    TypeModel(label: "guests", value: Strings.keyGuest),
+    TypeModel(label: "services", value: Strings.keyServices),
+    TypeModel(label: "workOrdersRFPs", value: Strings.keyWorkOrder),
+    TypeModel(label: "visitorPass", value: Strings.keyVisitorPass),
   ];
 
   static Widget getServiceRouteName(ServiceModel? service) {
@@ -304,8 +297,8 @@ class AppUtils {
                     idController.text = drivingLicenseDate.licenseNumber ?? '';
                   }
                 } else {
-                  PassportModel? passportData =
-                      await ScannerService().scanPassportAndPerformOcr();
+                  PassportModel? passportData = await ScannerService()
+                      .scanMrzForPassportAndParse(context);
                   if (passportData != null) {
                     nameController.text = passportData.name ?? '';
                     idController.text = passportData.passportNumber ?? '';

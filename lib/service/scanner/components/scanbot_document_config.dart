@@ -1,13 +1,15 @@
 import 'package:scanbot_sdk/rtu_ui_common.dart';
 import 'package:scanbot_sdk/rtu_ui_document.dart';
 import 'package:scanbot_sdk/scanbot_sdk.dart';
+import 'package:visitors/resource/constants/app_colors.dart';
 
-class ScanbotDocumentConfig {
+class ScanBotDocumentConfig {
   static final configuration = DocumentScanningFlow(
     screens: _screenConfig,
-    appearance: _apperanceConfig,
+    appearance: _appearanceConfig,
     cleanScanningSession: true,
     outputSettings: DocumentScannerOutputSettings(pagesScanLimit: 1),
+    localization: DocumentScannerTextLocalization()
   );
 
   static final DocumentScannerScreens _screenConfig = DocumentScannerScreens(
@@ -16,11 +18,13 @@ class ScanbotDocumentConfig {
         DocumentScannerParameters(ignoreOrientationMismatch: true),
   ));
 
-  static final DocumentFlowAppearanceConfiguration _apperanceConfig =
+  static final DocumentFlowAppearanceConfiguration _appearanceConfig =
       DocumentFlowAppearanceConfiguration(
-          bottomBarBackgroundColor: ScanbotColor('#2F82CE'),
+          bottomBarBackgroundColor:
+              ScanbotColor('#${AppColors.primaryColorCode}'),
           navigationBarMode: NavigationBarMode.DARK,
           orientationLockMode: OrientationLockMode.PORTRAIT,
           statusBarMode: StatusBarMode.DARK,
-          topBarBackgroundColor: ScanbotColor('#2F82CE'));
+          topBarBackgroundColor:
+              ScanbotColor('#${AppColors.primaryColorCode}'));
 }
