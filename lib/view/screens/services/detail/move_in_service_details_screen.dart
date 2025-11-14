@@ -236,7 +236,6 @@ class _MoveInServiceDetailsScreenState
                                     state.serviceDetails?.clientPhone ?? "--",
                               ),
                               TitleValueRowDividerDetailsContainerWidget(
-                                isLast: true,
                                 title: AppUtils.languageTranslate('email'),
                                 value:
                                     state.serviceDetails?.clientEmail ?? "--",
