@@ -58,6 +58,21 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+
+    packaging {
+    resources {
+        pickFirsts += listOf(
+            "META-INF/atomicfu.kotlin_module",
+            "META-INF/proguard/coroutines.pro"
+        )
+        excludes += listOf(
+            "META-INF/LICENSE.txt",
+            "META-INF/NOTICE.txt",
+            "META-INF/LICENSE",
+            "META-INF/NOTICE"
+        )
+    }
+}
 }
 
 flutter {

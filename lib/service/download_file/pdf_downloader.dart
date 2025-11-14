@@ -36,7 +36,7 @@ class FileDownloader {
     // Determine download URL based on the type
     final downloadUrl = await _getDownloadUrl(dateRange: dateRage);
 
-    final token = _getAuthToken(context);
+    final token = _getAuthToken(globalNavigatorKey.currentState?.context ?? context);
 
     try {
       final response = await http.get(downloadUrl,
@@ -177,7 +177,7 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
-      // print(e);
+      debugPrint(e.message.toString());
     }
   }
 
@@ -186,7 +186,7 @@ class FileDownloader {
     try {
       await _platform.invokeMethod('openFile', {'filePath': filePath});
     } on PlatformException catch (e) {
-      // print(e);
+      debugPrint(e.message.toString());
     }
   }
 
@@ -202,6 +202,7 @@ class FileDownloader {
         });
         return result as String?;
       } on PlatformException catch (e) {
+        debugPrint(e.message.toString());
         return null;
       }
     } else {

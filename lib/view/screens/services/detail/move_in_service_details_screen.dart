@@ -9,6 +9,7 @@ import 'package:visitors/bloc/e_service/details/service_details_cubit.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
 import 'package:visitors/resource/constants/app_constants.dart';
 import 'package:visitors/resource/constants/images.dart';
+import 'package:visitors/resource/globals.dart';
 import 'package:visitors/resource/styles/styles.dart';
 import 'package:visitors/utils/date_time.dart';
 import 'package:visitors/view/widgets/activity%20log/activity_log_widget.dart';
@@ -439,7 +440,7 @@ class _MoveInServiceDetailsScreenState
                                               selectedImage = null;
                                               isPaymentReceived = false;
                                             }
-                                            Navigator.pop(context, true);
+                                            Navigator.pop(globalNavigatorKey.currentState?.context ?? context, true);
                                             return result;
                                           }
                                           return false;

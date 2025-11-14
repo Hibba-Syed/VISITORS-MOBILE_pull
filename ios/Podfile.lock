@@ -298,6 +298,14 @@ PODS:
   - permission_handler_apple (9.3.0):
     - Flutter
   - PromisesObjC (2.4.0)
+  - scanbot_sdk (1.0.0):
+    - Flutter
+    - ScanbotSDKNativeWrapper (= 7.1.4.0)
+  - ScanbotSDK (7.1.4):
+    - ScanbotSDK/NONE (= 7.1.4)
+  - ScanbotSDK/NONE (7.1.4)
+  - ScanbotSDKNativeWrapper (7.1.4.0):
+    - ScanbotSDK (= 7.1.4)
   - SDWebImage (5.21.3):
     - SDWebImage/Core (= 5.21.3)
   - SDWebImage/Core (5.21.3)
@@ -340,6 +348,7 @@ DEPENDENCIES:
   - open_file_ios (from `.symlinks/plugins/open_file_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - scanbot_sdk (from `.symlinks/plugins/scanbot_sdk/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -385,6 +394,8 @@ SPEC REPOS:
     - MLKitXenoCommon
     - nanopb
     - PromisesObjC
+    - ScanbotSDK
+    - ScanbotSDKNativeWrapper
     - SDWebImage
     - SSZipArchive
     - SwiftyGif
@@ -444,6 +455,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  scanbot_sdk:
+    :path: ".symlinks/plugins/scanbot_sdk/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
@@ -518,6 +531,9 @@ SPEC CHECKSUMS:
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  scanbot_sdk: 6fb46a2c43b5d8128b05ee03b237548d23f2db1f
+  ScanbotSDK: 8fa0da4759e7da6be77e1bc6eea8f60eb5651b28
+  ScanbotSDKNativeWrapper: 29e6d42aece7cef0a3cde93cc60c493b0a524139
   SDWebImage: 16309af6d214ba3f77a7c6f6fdda888cb313a50a
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d

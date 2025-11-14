@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:visitors/resource/globals.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../resource/constants/app_colors.dart';
 import '../resource/styles/styles.dart';
@@ -25,7 +26,7 @@ class ConnectivityService {
     _checkInternetInitially(context);
     _connectivity.onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
-      _checkInternetConnectivity(context);
+      _checkInternetConnectivity(globalNavigatorKey.currentState?.context ?? context);
     });
   }
 
@@ -37,7 +38,7 @@ class ConnectivityService {
     bool isConnected = await _hasInternetAccess();
     _isInternetAvailable = isConnected;
     _connectionController.add(isConnected);
-    _showOrDismissPopup(context, isConnected);
+    _showOrDismissPopup(globalNavigatorKey.currentState?.context ?? context, isConnected);
   }
 
   Future<bool> _hasInternetAccess() async {

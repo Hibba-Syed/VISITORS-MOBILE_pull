@@ -23,6 +23,7 @@ import 'package:visitors/view/widgets/text%20field/text_field_widget.dart';
 import 'package:visitors/utils/app_utils.dart';
 import '../../../../model/service/service_model.dart';
 import '../../../../model/service/status_history_model.dart';
+import '../../../../resource/globals.dart';
 import '../../../widgets/empty_widget.dart';
 
 class MoveOutServiceDetailsScreen extends StatefulWidget {
@@ -399,7 +400,7 @@ class _MoveOutServiceDetailsScreenState
                                               selectedImage = null;
                                               isPaymentReceived = false;
                                             }
-                                            Navigator.pop(context, true);
+                                            Navigator.pop(globalNavigatorKey.currentState?.context ?? context, true);
                                             return result;
                                           }
                                           return false;

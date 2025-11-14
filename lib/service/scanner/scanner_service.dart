@@ -1,26 +1,26 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:mrz_parser/mrz_parser.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:scanbot_sdk/scanbot_sdk_ui_v2.dart';
 import 'package:visitors/resource/constants/app_colors.dart';
+import 'package:visitors/service/scanner/components/scanbot_document_config.dart';
 
 import '../../helper/mrz_helper.dart';
 import '../../model/driving_license_model.dart';
 import '../../model/emirates_id_model.dart';
 import '../../model/ocr_model.dart';
 import '../../model/passport_model.dart';
-import '../../resource/globals.dart';
 import '../../utils/app_utils.dart';
-import 'package:image/image.dart' as img;
-import 'package:path/path.dart' as path;
-
 import '../../utils/date_time.dart';
-import '../../view/screens/scanner/card_scanner.dart';
 
 class ScannerService {
   Future<EmiratesIdModel?> scanEmiratesIdAndPerformOcr() async {
@@ -154,6 +154,7 @@ class ScannerService {
 
   Future<OcrModel?> _scanDocumentAndPerformOCR() async {
     try {
+      // old commented code
       // final imagesPaths = await CunningDocumentScanner.getPictures(
       //   noOfPages: 1,
       // );
@@ -165,25 +166,100 @@ class ScannerService {
       //
       //   return await _performOCR(scannedImageFile);
       // }
-      final cameras = await availableCameras();
-      File? capturedImageFile = await Navigator.push(
-        globalNavigatorKey.currentContext!,
-        MaterialPageRoute(
-          builder: (context) {
-            return CardScanner(
-              cameras: cameras,
-            );
-          },
-        ),
-      );
-      if (capturedImageFile != null) {
-        return await _performOCR(capturedImageFile);
-      }
-      return null;
+      
+      // Recent commented code
+      // final cameras = await availableCameras();
+      // File? capturedImageFile = await Navigator.push(
+      //   globalNavigatorKey.currentContext!,
+      //   MaterialPageRoute(
+      //     builder: (context) {
+      //       return CardScanner(
+      //         cameras: cameras,
+      //       );
+      //     },
+      //   ),
+      // );
+      // if (capturedImageFile != null) {
+      //   return await _performOCR(capturedImageFile);
+      // }
+      
+      // Create the default configuration object.
+      return await startDocumentScanning();
     } catch (e) {
       _showInvalidDocumentToast();
       return null;
     }
+  }
+
+  Future<OcrModel?> startDocumentScanning() async {
+    try {
+      final configuration = ScanbotDocumentConfig.configuration;
+
+      final result = await ScanbotSdkUiV2.startDocumentScanner(configuration);
+
+      // Check if scanning was successful
+      if (result.status != OperationStatus.OK || result.data == null) {
+        debugPrint("❌ Scanning cancelled or failed.");
+        return null;
+      }
+      final document = result.data!;
+      if (document.pages.isEmpty) {
+        debugPrint("⚠️ No pages found in the scanned document.");
+        return null;
+      }
+      final uri = document.pages.first.documentImageURI;
+      if (uri == null || uri.isEmpty) {
+        debugPrint("⚠️ No image URI returned for the page.");
+        return null;
+      }
+
+      final file = File(Uri.parse(uri).path);
+      debugPrint("📸 Captured file: ${file.path}");
+
+      // 🔍 AUTO-DETECT DOCUMENT TYPE
+      final type = await detectDocumentType(file);
+      debugPrint("📄 Detected Document Type: $type");
+
+      // Send the image to OCR
+      return await _performOCR(file);
+    } catch (e) {
+      debugPrint("❌ Error: $e");
+    }
+    return null;
+  }
+
+  Future<String> detectDocumentType(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    final text = await extractTextForDetection(bytes);
+
+    if (text.contains("PN") || text.contains("P<")) {
+      return "Passport";
+    }
+
+    if (text.contains("EMIRATES ID") ||
+        text.contains("ID NUMBER") ||
+        text.contains("UAE")) {
+      return "Emirates ID";
+    }
+
+    if (text.contains("DRIVING LICENCE") || text.contains("DRIVER")) {
+      return "Driving License";
+    }
+
+    return "Unknown Document";
+  }
+
+  Future<String> extractTextForDetection(Uint8List bytes) async {
+    final temp = await uint8ListToFile(bytes, "detect_temp.jpg");
+    final text = await _performOCR(temp); // create a lightweight OCR function
+    return (text?.recognizedTExt ?? "").toUpperCase();
+  }
+
+  Future<File> uint8ListToFile(Uint8List data, String filename) async {
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/$filename');
+    await file.writeAsBytes(data);
+    return file;
   }
 
   Future<OcrModel?> _performOCR(File imageFile) async {

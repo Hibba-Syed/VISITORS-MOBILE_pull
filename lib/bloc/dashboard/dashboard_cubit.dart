@@ -269,7 +269,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         dashboardCubit.getDashboardServices(limit: 3).catchError((_) {}),
         dashboardCubit.getDashboardWorkOrder(limit: 3).catchError((_) {}),
         guestCheckInCubit.getCountries().catchError((_) {}),
-        guestCheckInCubit.getProfile().catchError((_) {}),
+        guestCheckInCubit.getProfile().catchError((e) {return e;}),
         guestCheckInCubit.getUnits().catchError((_) {}),
       ]);
 

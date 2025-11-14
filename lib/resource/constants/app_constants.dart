@@ -98,4 +98,7 @@ class AppConstants {
     arabicLocale,
     nepaliLocale
   ];
+
+  static String trialLicenseKey = "TSoACjAKm0CMZ0jnEDsgK9PybCwrSpju9TbpvRRd9rkqnPMJ1wf1KxQM1KxRc0uAvs5ShnSNJrIqYP6L6bBK7h1Hu5sFYfDp9VHH9hyIB0mbiBtack8gTK+8CTxyPlvy+hRvwO4jlIXt/klXWu945K1dco9l91m5CMN6h8voBO6Egko/d6kJOSao0DzzJs+6jC/SIdjoOI3INmt1VtfTnuny8Vu1SdQP+wJrHBortDx7PX8gGDgi19nIR4ACK1T5HIw0cGszX4y56BHZRk5+ZRqJn1A5XbThlrTmihg0c/ElyRQrlveMevrzpkT1SwNkeJ7LTeGXQMBUicu2vlGQ/g==\nU2NhbmJvdFNESwpjb20uaXNrYWFuLnZpc2l0b3JzCjE3NjM2ODMxOTkKODM4ODYwNwoxOQ==\n";
+  
 }
