@@ -210,31 +210,31 @@ class _CustomServiceDetailsScreenState
                             ),
                             child: filteredDocuments?.isNotEmpty ?? true
                                 ? ListView.separated(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: filteredDocuments?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                Document? document =
-                                filteredDocuments?[index];
-                                if (document?.label ==
-                                    "Sent For Approval File" ||
-                                    document?.label == "Approve File") {
-                                  return SizedBox.shrink();
-                                }
-                                return ServicesDocumentsCardWidget(
-                                  name: document?.name,
-                                  url: document?.pathUrl ?? "",
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  color: AppColors.gray,
-                                );
-                              },
-                            )
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: filteredDocuments?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      Document? document =
+                                          filteredDocuments?[index];
+                                      if (document?.label ==
+                                              "Sent For Approval File" ||
+                                          document?.label == "Approve File") {
+                                        return SizedBox.shrink();
+                                      }
+                                      return ServicesDocumentsCardWidget(
+                                        name: document?.name,
+                                        url: document?.pathUrl ?? "",
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return Divider(
+                                        color: AppColors.gray,
+                                      );
+                                    },
+                                  )
                                 : EmptyWidget(
-                                text: AppUtils.languageTranslate(
-                                    'noDataAvailable')),
+                                    text: AppUtils.languageTranslate(
+                                        'noDataAvailable')),
                           ),
                         ],
                         if (state.serviceDetails?.securityDeposit != null) ...[
@@ -413,8 +413,10 @@ class _CustomServiceDetailsScreenState
                               );
                             }),
                       ),
-                      if ((state.serviceDetails?.securityDeposit == null) ||
-                          (state.serviceDetails?.securityDeposit == 0)) ...[
+                      if (((state.serviceDetails?.securityDeposit == null) ||
+                              (state.serviceDetails?.securityDeposit == 0)) &&
+                          state.serviceDetails?.status?.toLowerCase() ==
+                              'approved') ...[
                         const Gap(10),
                         Expanded(
                           child: CustomButton(

@@ -388,8 +388,10 @@ class _FitOutServiceDetailsScreenState
                               );
                             }),
                       ),
-                      if ((state.serviceDetails?.securityDeposit == null) ||
-                          (state.serviceDetails?.securityDeposit == 0)) ...[
+                      if (((state.serviceDetails?.securityDeposit == null) ||
+                          (state.serviceDetails?.securityDeposit == 0)) &&
+                          state.serviceDetails?.status?.toLowerCase() ==
+                              'approved') ...[
                         const Gap(10),
                         Expanded(
                           child: CustomButton(
