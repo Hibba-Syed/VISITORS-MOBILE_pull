@@ -196,7 +196,7 @@ class ScannerService {
 
   Future<File?> _startDocumentScanningAndGetFile() async {
     try {
-      final configuration = ScanBotDocumentConfig.configuration;
+      final configuration = ScanBotDocumentConfig().configuration;
 
       final result = await ScanbotSdkUiV2.startDocumentScanner(configuration);
 
@@ -216,7 +216,8 @@ class ScannerService {
         return null;
       }
 
-      final file = File(Uri.parse(uri).path);
+      // final file = File(Uri.parse(uri).path);
+      final file = File(Uri.parse(uri).toFilePath());
       debugPrint("📸 Captured file: ${file.path}");
 
       // 🔍 AUTO-DETECT DOCUMENT TYPE
@@ -316,10 +317,10 @@ class ScannerService {
         img.decodeImage(originalImage.readAsBytesSync())!;
 
     // Calculate the cropping dimensions
-    final int left = boundingBox.left.toInt() - 40;
-    final int top = boundingBox.top.toInt() - 30;
-    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 80;
-    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 80;
+    final int left = boundingBox.left.toInt() - 130;
+    final int top = boundingBox.top.toInt() - 130;
+    final int width = ((boundingBox.right - boundingBox.left).toInt()) + 270;
+    final int height = ((boundingBox.bottom - boundingBox.top).toInt()) + 270;
     // Crop the image
     final img.Image croppedImg = img.copyCrop(originalImg,
         x: left, y: top, width: width, height: height);

@@ -105,7 +105,7 @@ class _CheckInsScreenState extends State<CheckInsScreen> {
                   ),
                 ),
                 const Gap(15),
-                (state.checkIns?.isNotEmpty ?? false)
+                ((state.checkIns?.isNotEmpty ?? false)&&(state.isLoading==false))
                     ? Align(
                         alignment: Alignment.bottomRight,
                         child: CustomButton(
