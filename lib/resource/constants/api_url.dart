@@ -1,7 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = 'https://staging.iskaanapi.com';
-  static const String baseUrl = 'https://staging-uae.iskaanapi.com';
-  // static const String baseUrl = 'https://iskaanapi.com';
+  // static const String baseUrl = 'https://staging-uae.iskaanapi.com';
+  static const String baseUrl = 'https://iskaanapi.com';
 
   ///
   static const String dashboard = '$baseUrl/';

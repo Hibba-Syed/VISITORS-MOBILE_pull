@@ -24,6 +24,7 @@ import '../../bloc/check_out/check_out_cubit.dart';
 import '../../bloc/directory/directory_cubit.dart';
 import '../../bloc/main_dashboard/main_dashboard_cubit.dart';
 import '../../service/connectivity_service.dart';
+import '../../service/shorebird_update_service.dart';
 import '../../utils/app_utils.dart';
 import '../widgets/custom_switch_widget.dart';
 import 'check_ins/check_ins_screen.dart';
@@ -46,6 +47,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
   void initState() {
     super.initState();
     ConnectivityService().initialize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShorebirdUpdaterService().checkForUpdates(context);
+    });
   }
 
   @override

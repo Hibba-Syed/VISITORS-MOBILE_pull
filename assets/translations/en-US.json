@@ -417,7 +417,14 @@
         "cameraPermissionEnableCameraExplanation": "Please allow the usage of the camera to start the scanning process.",
         "cameraPermissionEnableCameraButton": "Grant permission",
         "cameraPermissionCloseButton": "Close"
-    }
+    },
+    "update_title": "Update available!",
+    "update_body": "A new version {{currentAppStoreVersion}} of {{appName}} is available!",
+    "update_prompt": "Click below to update",
+    "update_restart_title": "Restarting... Please wait.",
+    "update_restart_description": "Welcome! We're applying the latest enhancements — just a quick restart to complete your setup.",
+    "update_restart_button": "Restart",
+    "update_error": "Error while updating app:"
 
 }
 

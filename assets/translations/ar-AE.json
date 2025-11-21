@@ -415,6 +415,13 @@
         "cameraPermissionEnableCameraExplanation": "يرجى السماح باستخدام الكاميرا لبدء عملية المسح.",
         "cameraPermissionEnableCameraButton": "منح الإذن",
         "cameraPermissionCloseButton": "إغلاق"
-    }
+    },
+    "update_title": "تحديث متوفر!",
+    "update_body": "الإصدار الجديد {{currentAppStoreVersion}} من {{appName}} متوفر الآن لتطبيق {{appName}}!",
+    "update_prompt": "اضغط أدناه للتحديث",
+    "update_restart_title": "جاري إعادة التشغيل... الرجاء الانتظار.",
+    "update_restart_description": "مرحباً! نقوم بتطبيق أحدث التحسينات — مجرد إعادة تشغيل سريعة لإكمال الإعداد.",
+    "update_restart_button": "إعادة تشغيل",
+    "update_error": "حدث خطأ أثناء تحديث التطبيق:"
 
 }

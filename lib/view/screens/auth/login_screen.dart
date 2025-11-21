@@ -10,6 +10,8 @@ import 'package:visitors/view/widgets/loader/loader_widget.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../resource/styles/styles.dart';
 import '../../../service/LocalAuth/local_auth_service.dart';
+import '../../../service/connectivity_service.dart';
+import '../../../service/shorebird_update_service.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/preference_utils.dart';
 import '../../widgets/button/custom_button.dart';
@@ -37,6 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _checkBiometricSupport();
+    ConnectivityService().initialize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShorebirdUpdaterService().checkForUpdates(context);
+    });
   }
 
   Future<void> _checkBiometricSupport() async {

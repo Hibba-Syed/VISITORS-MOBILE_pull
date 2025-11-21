@@ -99,6 +99,21 @@ class AppConstants {
     nepaliLocale
   ];
 
-  static String trialLicenseKey = "TSoACjAKm0CMZ0jnEDsgK9PybCwrSpju9TbpvRRd9rkqnPMJ1wf1KxQM1KxRc0uAvs5ShnSNJrIqYP6L6bBK7h1Hu5sFYfDp9VHH9hyIB0mbiBtack8gTK+8CTxyPlvy+hRvwO4jlIXt/klXWu945K1dco9l91m5CMN6h8voBO6Egko/d6kJOSao0DzzJs+6jC/SIdjoOI3INmt1VtfTnuny8Vu1SdQP+wJrHBortDx7PX8gGDgi19nIR4ACK1T5HIw0cGszX4y56BHZRk5+ZRqJn1A5XbThlrTmihg0c/ElyRQrlveMevrzpkT1SwNkeJ7LTeGXQMBUicu2vlGQ/g==\nU2NhbmJvdFNESwpjb20uaXNrYWFuLnZpc2l0b3JzCjE3NjM2ODMxOTkKODM4ODYwNwoxOQ==\n";
+  // static String trialLicenseKey = "TSoACjAKm0CMZ0jnEDsgK9PybCwrSpju9TbpvRRd9rkqnPMJ1wf1KxQM1KxRc0uAvs5ShnSNJrIqYP6L6bBK7h1Hu5sFYfDp9VHH9hyIB0mbiBtack8gTK+8CTxyPlvy+hRvwO4jlIXt/klXWu945K1dco9l91m5CMN6h8voBO6Egko/d6kJOSao0DzzJs+6jC/SIdjoOI3INmt1VtfTnuny8Vu1SdQP+wJrHBortDx7PX8gGDgi19nIR4ACK1T5HIw0cGszX4y56BHZRk5+ZRqJn1A5XbThlrTmihg0c/ElyRQrlveMevrzpkT1SwNkeJ7LTeGXQMBUicu2vlGQ/g==\nU2NhbmJvdFNESwpjb20uaXNrYWFuLnZpc2l0b3JzCjE3NjM2ODMxOTkKODM4ODYwNwoxOQ==\n";
+  static final String trialLicenseKey =
+      "MLYAjGqGMcN8Z88Cm2N4ZjSwMUwgCZ" +
+          "ugAdOHWtuHel4P9p2TcWDJ4AqX+ijy" +
+          "vCzPn5laOkY+yPKNs9q5kZbiVTLG+q" +
+          "KK2dpmOzBjNJ73anL0ANlh60CVAzC0" +
+          "VMBYT/jwW/mrXxnfyf1TceoIKJnyS1" +
+          "XeiTZJWf75YxqQR8uCGrHUXJa3OSj4" +
+          "B5FnZjx207ajdk8mx0NdQBjbIbjrxa" +
+          "Mo7p/T+qVMPYcpJHvvl3kRA5JChvUz" +
+          "l/mYYnK1yAedu54O3rDH+GHiVHWo+U" +
+          "vvoLnBHlkQYeQufVjK70IGl6o9FaIM" +
+          "XFJ4/eXDY7pbYN/t+Y5R8ibK6OhpI8" +
+          "saGj4W2UuVbw==\nU2NhbmJvdFNESw" +
+          "pjb20uaXNrYWFuLnZpc2l0b3JzCjE3" +
+          "NjUwNjU1OTkKNTkwCjM=\n";
   
 }
