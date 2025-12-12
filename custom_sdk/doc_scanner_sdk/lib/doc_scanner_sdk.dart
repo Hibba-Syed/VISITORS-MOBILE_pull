@@ -8,6 +8,12 @@ class DocScannerSdk {
     return DocScannerSdkPlatform.instance.getPlatformVersion();
   }
 
+  /// Scan a single document and get both image and PDF
+  /// Returns Map with 'images' (List<String>) and 'pdf' (String) paths
+  Future<dynamic> scanDocument() {
+    return DocScannerSdkPlatform.instance.scanDocuments(1);
+  }
+
   /// Scan documents and get both images and PDF
   /// [page] - Maximum number of pages to scan (default: 4)
   /// Returns Map with 'images' (List<String>) and 'pdf' (String) paths
@@ -15,11 +21,23 @@ class DocScannerSdk {
     return DocScannerSdkPlatform.instance.scanDocuments(page);
   }
 
+  /// Scan a single document and get only the image
+  /// Returns List<String> with single image file path
+  Future<dynamic> scanDocumentAsImage() {
+    return DocScannerSdkPlatform.instance.scanDocumentsAsImages(1);
+  }
+
   /// Scan documents and get only images
   /// [page] - Maximum number of pages to scan (default: 4)
   /// Returns List<String> of image file paths
   Future<dynamic> scanDocumentsAsImages({int page = 4}) {
     return DocScannerSdkPlatform.instance.scanDocumentsAsImages(page);
+  }
+
+  /// Scan a single document and get only PDF
+  /// Returns String path to PDF file with single page
+  Future<dynamic> scanDocumentAsPdf() {
+    return DocScannerSdkPlatform.instance.scanDocumentsAsPdf(1);
   }
 
   /// Scan documents and get only PDF

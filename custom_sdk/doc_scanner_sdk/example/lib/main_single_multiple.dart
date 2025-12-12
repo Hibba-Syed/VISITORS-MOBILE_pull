@@ -23,7 +23,95 @@ class _MyAppState extends State<MyApp> {
   List<String> _images = [];
   bool _isLoading = false;
 
-  Future<void> _scanDocuments() async {
+  Future<void> _showIOSInstructions() async {
+    if (!Platform.isIOS) return;
+    
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.info_outline, color: Colors.blue),
+            SizedBox(width: 8),
+            Text('iOS Tip'),
+          ],
+        ),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'For unfiltered scans:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('1. After camera opens, tap the filter button at bottom'),
+            Text('2. Select "Photo" mode instead of "Auto"'),
+            SizedBox(height: 8),
+            Text(
+              'This gives you the original image without filters.',
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Single Document Scan Methods
+  Future<void> _scanSingleDocument() async {
+    await _showIOSInstructions();
+    setState(() => _isLoading = true);
+    try {
+      final result = await _scanner.scanDocument();
+      setState(() {
+        _result = result;
+        if (result != null && result['images'] != null) {
+          _images = List<String>.from(result['images']);
+        }
+      });
+      if (result != null) {
+        _showMessage('Single document scanned successfully!', isError: false);
+      }
+    } on PlatformException catch (e) {
+      _showError(e.message ?? 'Unknown error');
+    } catch (e) {
+      _showError('Error: $e');
+    }
+    setState(() => _isLoading = false);
+  }
+
+  Future<void> _scanSingleDocumentAsImage() async {
+    await _showIOSInstructions();
+    setState(() => _isLoading = true);
+    try {
+      final result = await _scanner.scanDocumentAsImage();
+      setState(() {
+        _result = result;
+        if (result != null) {
+          _images = List<String>.from(result);
+        }
+      });
+      if (result != null) {
+        _showMessage('Single image captured successfully!', isError: false);
+      }
+    } on PlatformException catch (e) {
+      _showError(e.message ?? 'Unknown error');
+    } catch (e) {
+      _showError('Error: $e');
+    }
+    setState(() => _isLoading = false);
+  }
+
+  // Multiple Documents Scan Methods
+  Future<void> _scanMultipleDocuments() async {
+    await _showIOSInstructions();
     setState(() => _isLoading = true);
     try {
       final result = await _scanner.scanDocuments(page: 5);
@@ -33,11 +121,8 @@ class _MyAppState extends State<MyApp> {
           _images = List<String>.from(result['images']);
         }
       });
-      print('Scan result: $result');
-
       if (result != null) {
-        _showSuccessMessage(
-            'Document scanned successfully! ${_images.length} pages captured.');
+        _showMessage('Documents scanned successfully!', isError: false);
       }
     } on PlatformException catch (e) {
       _showError(e.message ?? 'Unknown error');
@@ -47,7 +132,8 @@ class _MyAppState extends State<MyApp> {
     setState(() => _isLoading = false);
   }
 
-  Future<void> _scanAsImages() async {
+  Future<void> _scanMultipleDocumentsAsImages() async {
+    await _showIOSInstructions();
     setState(() => _isLoading = true);
     try {
       final result = await _scanner.scanDocumentsAsImages(page: 5);
@@ -57,29 +143,8 @@ class _MyAppState extends State<MyApp> {
           _images = List<String>.from(result);
         }
       });
-
       if (result != null) {
-        _showSuccessMessage('${_images.length} images captured successfully!');
-      }
-    } on PlatformException catch (e) {
-      _showError(e.message ?? 'Unknown error');
-    } catch (e) {
-      _showError('Error: $e');
-    }
-    setState(() => _isLoading = false);
-  }
-
-  Future<void> _scanAsPdf() async {
-    setState(() => _isLoading = true);
-    try {
-      final result = await _scanner.scanDocumentsAsPdf(page: 5);
-      setState(() {
-        _result = result;
-        _images = [];
-      });
-
-      if (result != null) {
-        _showSuccessMessage('PDF created successfully!');
+        _showMessage('Images captured successfully!', isError: false);
       }
     } on PlatformException catch (e) {
       _showError(e.message ?? 'Unknown error');
@@ -90,35 +155,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.error_outline, color: Colors.white),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
-        ),
-        backgroundColor: Colors.red.shade700,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    );
+    _showMessage(message, isError: true);
   }
 
-  void _showSuccessMessage(String message) {
+  void _showMessage(String message, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle_outline, color: Colors.white),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
-        ),
-        backgroundColor: Colors.green.shade700,
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -160,11 +205,51 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Scan Buttons
+              // Info Card
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Icon(Icons.info_outline, color: Colors.blue.shade700, size: 40),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Scanner Mode: BASE',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Android: Images appear without automatic enhancement\niOS: Use "Photo" mode for unfiltered scans',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Single Document Section
+              const Text(
+                'Single Document Scan',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              
               ElevatedButton.icon(
-                onPressed: _isLoading ? null : _scanDocuments,
-                icon: const Icon(Icons.document_scanner, size: 24),
-                label: const Text('Scan Documents (Images + PDF)'),
+                onPressed: _isLoading ? null : _scanSingleDocument,
+                icon: const Icon(Icons.document_scanner_outlined, size: 24),
+                label: const Text('Scan Single Document'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
                   backgroundColor: Colors.blue,
@@ -176,11 +261,11 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               const SizedBox(height: 12),
-
+              
               ElevatedButton.icon(
-                onPressed: _isLoading ? null : _scanAsImages,
-                icon: const Icon(Icons.image, size: 24),
-                label: const Text('Scan as Images Only'),
+                onPressed: _isLoading ? null : _scanSingleDocumentAsImage,
+                icon: const Icon(Icons.image_outlined, size: 24),
+                label: const Text('Scan Single Image'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
                   backgroundColor: Colors.green,
@@ -191,12 +276,22 @@ class _MyAppState extends State<MyApp> {
                   elevation: 2,
                 ),
               ),
-              const SizedBox(height: 12),
 
+              const SizedBox(height: 32),
+              const Divider(),
+              const SizedBox(height: 16),
+
+              // Multiple Documents Section
+              const Text(
+                'Multiple Documents Scan',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              
               ElevatedButton.icon(
-                onPressed: _isLoading ? null : _scanAsPdf,
-                icon: const Icon(Icons.picture_as_pdf, size: 24),
-                label: const Text('Scan as PDF Only'),
+                onPressed: _isLoading ? null : _scanMultipleDocuments,
+                icon: const Icon(Icons.library_books, size: 24),
+                label: const Text('Scan Multiple Documents'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
                   backgroundColor: Colors.orange,
@@ -207,9 +302,25 @@ class _MyAppState extends State<MyApp> {
                   elevation: 2,
                 ),
               ),
-
+              const SizedBox(height: 12),
+              
+              ElevatedButton.icon(
+                onPressed: _isLoading ? null : _scanMultipleDocumentsAsImages,
+                icon: const Icon(Icons.photo_library, size: 24),
+                label: const Text('Scan Multiple Images'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 2,
+                ),
+              ),
+              
               const SizedBox(height: 24),
-
+              
               if (_isLoading)
                 const Card(
                   child: Padding(
@@ -239,8 +350,7 @@ class _MyAppState extends State<MyApp> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.check_circle,
-                                color: Colors.green.shade700),
+                            Icon(Icons.check_circle, color: Colors.green.shade700),
                             const SizedBox(width: 8),
                             const Text(
                               'Scan Results',
@@ -262,13 +372,11 @@ class _MyAppState extends State<MyApp> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (_result is Map) ...[
-                                _buildInfoRow('Images',
-                                    '${(_result['images'] as List?)?.length ?? 0} pages'),
+                                _buildInfoRow('Images', '${(_result['images'] as List?)?.length ?? 0} page(s)'),
                                 if (_result['pdfUri'] != null)
                                   _buildInfoRow('PDF', 'Generated'),
                                 if (_result['pageCount'] != null)
-                                  _buildInfoRow(
-                                      'Page Count', '${_result['pageCount']}'),
+                                  _buildInfoRow('Page Count', '${_result['pageCount']}'),
                               ] else ...[
                                 Text(
                                   _result.toString(),
@@ -299,8 +407,7 @@ class _MyAppState extends State<MyApp> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.photo_library,
-                                color: Colors.blue.shade700),
+                            Icon(Icons.photo_library, color: Colors.blue.shade700),
                             const SizedBox(width: 8),
                             Text(
                               'Scanned Images (${_images.length})',
@@ -315,8 +422,7 @@ class _MyAppState extends State<MyApp> {
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 12,
                             mainAxisSpacing: 12,
@@ -324,8 +430,7 @@ class _MyAppState extends State<MyApp> {
                           ),
                           itemCount: _images.length,
                           itemBuilder: (context, index) {
-                            final file = File(
-                                _images[index].replaceFirst('file://', ''));
+                            final file = File(_images[index].replaceFirst('file://', ''));
                             return Card(
                               elevation: 3,
                               clipBehavior: Clip.antiAlias,

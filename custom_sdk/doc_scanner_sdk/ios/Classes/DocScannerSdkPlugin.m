@@ -7,6 +7,8 @@
 
 @implementation DocScannerSdkPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [DocScannerSdkPlugin registerWithRegistrar:registrar];
+  if (@available(iOS 13.0, *)) {
+    [SwiftDocScannerSdkPlugin registerWithRegistrar:registrar];
+  }
 }
 @end

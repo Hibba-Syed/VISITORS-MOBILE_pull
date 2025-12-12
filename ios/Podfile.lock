@@ -3,8 +3,6 @@ PODS:
     - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
-  - cunning_document_scanner (1.0.0):
-    - Flutter
   - DKImagePickerController/Core (4.3.9):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -36,6 +34,8 @@ PODS:
   - DKPhotoGallery/Resource (0.0.19):
     - SDWebImage
     - SwiftyGif
+  - doc_scanner_sdk (1.0.0):
+    - Flutter
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
@@ -327,7 +327,7 @@ PODS:
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
-  - cunning_document_scanner (from `.symlinks/plugins/cunning_document_scanner/ios`)
+  - doc_scanner_sdk (from `.symlinks/plugins/doc_scanner_sdk/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -411,8 +411,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
-  cunning_document_scanner:
-    :path: ".symlinks/plugins/cunning_document_scanner/ios"
+  doc_scanner_sdk:
+    :path: ".symlinks/plugins/doc_scanner_sdk/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   firebase_core:
@@ -477,9 +477,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   camera_avfoundation: 281867ff09f1da66f031a184ecfbc6f2e625c9f5
   connectivity_plus: 2a701ffec2c0ae28a48cf7540e279787e77c447d
-  cunning_document_scanner: 7cb9bd173f7cc7b11696dde98d01492187fc3a67
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
+  doc_scanner_sdk: cae4e6e444af9a3a627e224af267ff0e51397b57
   file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
   Firebase: f07b15ae5a6ec0f93713e30b923d9970d144af3e
   firebase_core: 49ffe9d2c7a2659f6e9e8d4a406e966bc084268e

@@ -5,14 +5,14 @@ import VisionKit
 import PDFKit
 
 @available(iOS 13.0, *)
-public class DocScannerSdkPlugin: NSObject, FlutterPlugin, VNDocumentCameraViewControllerDelegate {
+public class SwiftDocScannerSdkPlugin: NSObject, FlutterPlugin, VNDocumentCameraViewControllerDelegate {
     var resultChannel: FlutterResult?
     var presentingController: VNDocumentCameraViewController?
     var currentMethod: String?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "doc_scanner_sdk", binaryMessenger: registrar.messenger())
-        let instance = DocScannerSdkPlugin()
+        let instance = SwiftDocScannerSdkPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
 
