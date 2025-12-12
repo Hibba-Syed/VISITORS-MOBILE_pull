@@ -74,12 +74,15 @@ dependencies:
   mrz_parser: ^2.0.1
   easy_localization: ^3.0.8
   flutter_timezone: ^5.0.0
-  cunning_document_scanner: ^1.3.1
   camera: ^0.11.2+1
   scanbot_sdk: ^7.1.1
   shorebird_code_push: ^2.0.5
   restart_app: ^1.3.2
   upgrader: ^12.3.0
+  doc_scanner_sdk:
+    path: custom_sdk/doc_scanner_sdk
+  permission_handler: ^11.4.0
+
 
 dev_dependencies:
   flutter_test:

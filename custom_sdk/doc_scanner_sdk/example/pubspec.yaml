@@ -1,0 +1,23 @@
+name: doc_scanner_sdk_example
+description: Example app for doc_scanner_sdk
+
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=2.18.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  doc_scanner_sdk:
+    path: ../
+  image: ^4.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

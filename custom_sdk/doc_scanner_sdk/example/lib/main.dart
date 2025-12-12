@@ -112,6 +112,30 @@ class _MyAppState extends State<MyApp> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Info Card
+            Card(
+              color: Colors.blue.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Icon(Icons.info_outline, color: Colors.blue.shade700),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Scanner Mode: BASE',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Images appear without automatic enhancement',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             
             ElevatedButton.icon(
               onPressed: _isLoading ? null : _scanDocuments,
