@@ -1,5 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'doc_scanner_sdk_method_channel.dart';
+import 'doc_scanner_sdk.dart';
 
 abstract class DocScannerSdkPlatform extends PlatformInterface {
   DocScannerSdkPlatform() : super(token: _token);
@@ -19,19 +20,19 @@ abstract class DocScannerSdkPlatform extends PlatformInterface {
     throw UnimplementedError('getPlatformVersion() has not been implemented.');
   }
 
-  Future<dynamic> scanDocuments(int page) {
+  Future<dynamic> scanDocuments(int page, DocumentScannerLocalization localization) {
     throw UnimplementedError('scanDocuments() has not been implemented.');
   }
 
-  Future<dynamic> scanDocumentsAsImages(int page) {
+  Future<dynamic> scanDocumentsAsImages(int page, DocumentScannerLocalization localization) {
     throw UnimplementedError('scanDocumentsAsImages() has not been implemented.');
   }
 
-  Future<dynamic> scanDocumentsAsPdf(int page) {
+  Future<dynamic> scanDocumentsAsPdf(int page, DocumentScannerLocalization localization) {
     throw UnimplementedError('scanDocumentsAsPdf() has not been implemented.');
   }
 
-  Future<dynamic> scanDocumentsUri(int page) {
+  Future<dynamic> scanDocumentsUri(int page, DocumentScannerLocalization localization) {
     throw UnimplementedError('scanDocumentsUri() has not been implemented.');
   }
 }

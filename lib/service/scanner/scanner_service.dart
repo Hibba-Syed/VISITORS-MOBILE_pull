@@ -21,6 +21,129 @@ import '../../utils/date_time.dart';
 class ScannerService {
   final _scanner = DocScannerSdk();
 
+  /// This localization will only work when user will change the device's language, on the app level it will not work
+  DocumentScannerLocalization getLocalization() {
+    return DocumentScannerLocalization(
+      iosFilterButtonText:
+      AppUtils.languageTranslate('scanner.iosFilterButtonText'),
+      iosFilterModeText:
+      AppUtils.languageTranslate('scanner.iosFilterModeText'),
+      iosColorFilterText:
+      AppUtils.languageTranslate('scanner.iosColorFilterText'),
+      iosGrayscaleFilterText:
+      AppUtils.languageTranslate('scanner.iosGrayscaleFilterText'),
+      iosBlackAndWhiteFilterText:
+      AppUtils.languageTranslate('scanner.iosBlackAndWhiteFilterText'),
+      iosPhotoFilterText:
+      AppUtils.languageTranslate('scanner.iosPhotoFilterText'),
+      iosSaveButtonText:
+      AppUtils.languageTranslate('scanner.iosSaveButtonText'),
+      iosAddPageButtonText:
+      AppUtils.languageTranslate('scanner.iosAddPageButtonText'),
+      iosCancelButtonText:
+      AppUtils.languageTranslate('scanner.iosCancelButtonText'),
+      iosRetakeButtonText:
+      AppUtils.languageTranslate('scanner.iosRetakeButtonText'),
+      iosFlashButtonText:
+      AppUtils.languageTranslate('scanner.iosFlashButtonText'),
+      iosShutterButtonText:
+      AppUtils.languageTranslate('scanner.iosShutterButtonText'),
+      iosReadyForNextScanText:
+      AppUtils.languageTranslate('scanner.iosReadyForNextScanText'),
+      iosProcessingText:
+      AppUtils.languageTranslate('scanner.iosProcessingText'),
+      iosScanCompleteText:
+      AppUtils.languageTranslate('scanner.iosScanCompleteText'),
+
+      androidManualCaptureText:
+      AppUtils.languageTranslate('scanner.androidManualCaptureText'),
+      androidAutoCaptureText:
+      AppUtils.languageTranslate('scanner.androidAutoCaptureText'),
+      androidCaptureModeText:
+      AppUtils.languageTranslate('scanner.androidCaptureModeText'),
+      androidPositionDocumentText:
+      AppUtils.languageTranslate('scanner.androidPositionDocumentText'),
+      androidScanningHoldSteadyText:
+      AppUtils.languageTranslate('scanner.androidScanningHoldSteadyText'),
+      androidMoveCloserText:
+      AppUtils.languageTranslate('scanner.androidMoveCloserText'),
+      androidMoveFartherText:
+      AppUtils.languageTranslate('scanner.androidMoveFartherText'),
+      androidHoldSteadyText:
+      AppUtils.languageTranslate('scanner.androidHoldSteadyText'),
+      androidCapturingText:
+      AppUtils.languageTranslate('scanner.androidCapturingText'),
+      androidProcessingText:
+      AppUtils.languageTranslate('scanner.androidProcessingText'),
+      androidCroppingText:
+      AppUtils.languageTranslate('scanner.androidCroppingText'),
+      androidEnhancingText:
+      AppUtils.languageTranslate('scanner.androidEnhancingText'),
+      androidCropAndRotateText:
+      AppUtils.languageTranslate('scanner.androidCropAndRotateText'),
+      androidAutomaticCropText:
+      AppUtils.languageTranslate('scanner.androidAutomaticCropText'),
+      androidNoCropText:
+      AppUtils.languageTranslate('scanner.androidNoCropText'),
+      androidManualCropText:
+      AppUtils.languageTranslate('scanner.androidManualCropText'),
+      androidRotateText:
+      AppUtils.languageTranslate('scanner.androidRotateText'),
+      androidApplyText:
+      AppUtils.languageTranslate('scanner.androidApplyText'),
+      androidResetText:
+      AppUtils.languageTranslate('scanner.androidResetText'),
+      androidEditText:
+      AppUtils.languageTranslate('scanner.androidEditText'),
+      androidDoneText:
+      AppUtils.languageTranslate('scanner.androidDoneText'),
+
+      androidDiscardChangesTitle:
+      AppUtils.languageTranslate('scanner.androidDiscardChangesTitle'),
+      androidDiscardChangesMessage:
+      AppUtils.languageTranslate('scanner.androidDiscardChangesMessage'),
+      androidKeepEditingText:
+      AppUtils.languageTranslate('scanner.androidKeepEditingText'),
+      androidDiscardText:
+      AppUtils.languageTranslate('scanner.androidDiscardText'),
+
+      androidDeletePageTitle:
+      AppUtils.languageTranslate('scanner.androidDeletePageTitle'),
+      androidDeletePageMessage:
+      AppUtils.languageTranslate('scanner.androidDeletePageMessage'),
+      androidDeleteText:
+      AppUtils.languageTranslate('scanner.androidDeleteText'),
+      androidCancelText:
+      AppUtils.languageTranslate('scanner.androidCancelText'),
+
+      androidScanLimitReachedText:
+      AppUtils.languageTranslate('scanner.androidScanLimitReachedText'),
+      androidNoDocumentDetectedText:
+      AppUtils.languageTranslate('scanner.androidNoDocumentDetectedText'),
+      androidDocumentTooSmallText:
+      AppUtils.languageTranslate('scanner.androidDocumentTooSmallText'),
+      androidDocumentTooBigText:
+      AppUtils.languageTranslate('scanner.androidDocumentTooBigText'),
+      androidPoorLightingText:
+      AppUtils.languageTranslate('scanner.androidPoorLightingText'),
+
+      scanButtonText:
+      AppUtils.languageTranslate('scanner.scanButtonText'),
+      retakeButtonText:
+      AppUtils.languageTranslate('scanner.retakeButtonText'),
+      doneButtonText:
+      AppUtils.languageTranslate('scanner.doneButtonText'),
+      nextButtonText:
+      AppUtils.languageTranslate('scanner.nextButtonText'),
+      backButtonText:
+      AppUtils.languageTranslate('scanner.backButtonText'),
+      saveButtonText:
+      AppUtils.languageTranslate('scanner.saveButtonText'),
+      cancelButtonText:
+      AppUtils.languageTranslate('scanner.cancelButtonText'),
+    );
+  }
+
   Future<EmiratesIdModel?> scanEmiratesIdAndPerformOcr(
       BuildContext context) async {
     EmiratesIdModel? emiratesIdData;
@@ -197,7 +320,9 @@ class ScannerService {
   Future<File?> _startDocumentScanningAndGetFile(BuildContext context) async {
     try {
       await _showIOSInstructions(context);
-      final result = await _scanner.scanDocumentAsImage();
+
+      /// This localization will only work when user will change the device's language, on the app level it will not work
+      final result = await _scanner.scanDocumentAsImage(localization: getLocalization());
       final images = List<String>.from(result);
 
       // final file = File(Uri.parse(uri).path);
