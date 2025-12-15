@@ -359,7 +359,7 @@ class _AccessDeviceServiceDetailsScreenState
                                         onFirstButtonPressed: () async {
                                           EmiratesIdModel? emiratesIdData =
                                               await ScannerService()
-                                                  .scanEmiratesIdAndPerformOcr();
+                                                  .scanEmiratesIdAndPerformOcr(context);
                                           if (emiratesIdData != null) {
                                             setState(() {
                                               _nameController.text =

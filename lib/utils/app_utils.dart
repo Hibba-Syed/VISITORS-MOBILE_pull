@@ -284,14 +284,14 @@ class AppUtils {
               onFirstButtonPressed: () async {
                 if (selectedDocumentType?.value == 'Emirates ID') {
                   EmiratesIdModel? emiratesIdData =
-                      await ScannerService().scanEmiratesIdAndPerformOcr();
+                      await ScannerService().scanEmiratesIdAndPerformOcr(context);
                   if (emiratesIdData != null) {
                     nameController.text = emiratesIdData.name ?? '';
                     idController.text = emiratesIdData.idNumber ?? '';
                   }
                 } else if (selectedDocumentType?.value == 'Photo ID') {
                   DrivingLicenseModel? drivingLicenseDate =
-                      await ScannerService().scanDrivingLicenseAndPerformOcr();
+                      await ScannerService().scanDrivingLicenseAndPerformOcr(context);
                   if (drivingLicenseDate != null) {
                     nameController.text = drivingLicenseDate.name ?? '';
                     idController.text = drivingLicenseDate.licenseNumber ?? '';

@@ -655,7 +655,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
   void _onScanEmiratesIdTap() async {
     final ScannerService scannerService = ScannerService();
     EmiratesIdModel? emiratesIdData =
-        await scannerService.scanEmiratesIdAndPerformOcr();
+        await scannerService.scanEmiratesIdAndPerformOcr(context);
     if (emiratesIdData != null) {
       clearData();
 
@@ -693,7 +693,7 @@ class _GuestCheckInScreenState extends State<GuestCheckInScreen> {
     final ScannerService scannerService = ScannerService();
 
     DrivingLicenseModel? drivingLicenseData =
-        await scannerService.scanDrivingLicenseAndPerformOcr();
+        await scannerService.scanDrivingLicenseAndPerformOcr(context);
     if (drivingLicenseData != null) {
       clearData();
       setState(() {
